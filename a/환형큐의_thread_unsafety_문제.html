@@ -1,0 +1,65 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>환형큐의 thread unsafety 문제</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>환형큐의 thread unsafety 문제</h1>
+    </div>
+    <div id='content'>
+어떤 자원에 대한 환형큐가 있다고 해보자. size 는 2의 자승이다.<br />
+<pre class='brush: cpp'>void push(resource_t res) {
+    int index = atomic_inc32(&rear_) & size_;
+    array[index] = res;
+}
+resource_t pop() {
+    int index = atomic_inc32(&front_) & size_;
+    return array[index];
+}</pre>
+<br />
+위 코드는 당연히 thread safety 하지 않다.<br />
+하지만, 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자.<br />
+<pre class='brush: cpp'>void work(resource_t old) {
+    push(old);  // release old resource
+    resource_t newone = pop(); // acquire new on
+    // do some work
+}</pre>
+<br />
+예전 자원을 반환하고, 새로운 자원을 할당받아 그것으로 무슨 작업을 하는 것이다.<br />
+이렇게 되면 pop 을 부르는 시점의 thread 는 적어도 자신이 push 한 자원 1개가 반드시 존재함을 보장할 수 있으니까<br />
+문제가 생기지 않는다<br />
+<br />
+라고 생각하면 함정.<br />
+<br />
+thread 4개가 동시에 work 함수를 수행한다고 해보자.<br />
+push 를 수행했으니까 rear_ 는 4만큼 증가하겠지<br />
+<br />
+가장 마지막으로 rear_ 를 증가시킨 thread 만 array 에 resource_t 를 대입하였고,<br />
+나머지 thread 들은 아직 array 에 대입하기 전이다.<br />
+그러면 index 만 증가해있고, 실제 배열은 비어있겠지.<br />
+그래서 마지막 thread 가 pop 을 할 때 null pointer access 로 프로그램이 사망한다.<br />
+<br />
+즉, index 의 증가는 atomic 함을 보장하지만 그것이 배열에 자원이 대입되었음을 보장해주지 못하므로 사망.<br />
+척 봐도 당연한 소리를 여기에 쓰고 있는 이유는,<br />
+이걸 직접 당해보고도 몇 달 지나니까 다시 이 사실을 까먹기 때문이다.<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

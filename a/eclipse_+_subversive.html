@@ -1,0 +1,84 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>eclipse + subversive</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>eclipse + subversive</h1>
+    </div>
+    <div id='content'>
+#0: prologue<br />
+eclipse는 우연히 만나서 같이 지내오는 녀석이고<br />
+subversive는 알게 된지는 얼마 안됬는데 무지하게 많이 쓰게 된 녀석이다 [......]<br />
+<br />
+#0-1: eclipse<br />
+eclipse를 쓰게 된 역사는 1학년 2학기 때부터 시작하는데,<br />
+이 때 상상설계공학 수업을 들으면서 모바일 프로그래밍을 해야될 일이 있었는데<br />
+덕분에 J2ME 프로그래밍을 위해서 eclipse라는 걸 처음 써보았다.<br />
+정확히 말하면 eclipse 3.2에 SK-VM 플러그인을 설치해서 작업했던 것이지만,<br />
+아무튼 Java 문법보다, Java라는 언어보다 eclipse를 먼저 만났다-_-<br />
+<br />
+#0-2: subversive<br />
+subversive는 svn의 개념을 알고 난 뒤에 쓰게 된 거라 꽤나 최근 일인데,<br />
+svn은 2학년 여름 방학 때, 창희 선배님과 거엽 선배님과 모종의 알바를 할 때 거엽 선배로부터 배워서 알게 되었다. 그 때는 visual studio 기반으로 작업을 해서 visual svn을 썼었는데,<br />
+그리고 마침 마소(http://imaso.co.kr)에서 svn 관련 기사를 다루면서 eclipse 플러그인으로 subversive가 있다는 것을 소개해주었고, 이 것은 2학년 2학기 인터넷 프로그래밍 수업 시간에 프로젝트를 진행하면서 주로 사용하게 되었다.<br />
+<br />
+#1: eclipse<br />
+eclipse는 IBM에서 만든 통합 개발 환경(IDE)이다. 시작은 Java IDE로 시작한 것 같지만 요즘은 C/C++, Web, PHP, Modeling, Python, nesC 등등 별별 언어를 다 지원한다. (FLEX builder도 eclipse 기반이네)<br />
+보통 언어의 앞 글자를 따서 DT (Development Tookit)이라고 부르는데, JDT, PDT(PHP), CDT 라고 부르는 것들이 바로 이것이다.<br />
+하나의 eclipse에는 여러 DT가 포함될 수 있고 이것들은 내부에서 perspective라고 해서 나뉜다. 단 각 DT마다 eclipse 버전이 다를 수 있으므로 (이 글을 쓰는 시점을 기준으로 PDT는 아직도 eclipse 3.3을 못 벗어난 것 같다) 주의<br />
+아무튼 이 IDE를 쓰려면 일단 JRE(Java Runtime Environment)가 설치되어있어야 하는데, 이건 http://java.com이나 http://java.sun.com에 들어가서 받으면 된다. 벌써 jdk1.6.0_11이 나왔더라 헐<br />
+이클립스는 http://www.eclipse.org에서 다운받을 수 있다.<br />
+<br />
+#2: subversive<br />
+subversive는 앞서 말했듯이 eclipse 내에서 svn 기능을 (정확히 말하면 svn client) 사용할 수 있게 해주는 플러그인인데, 기존의 subclipse가 좀 호롤롤로한 감이 있어서 나는 주로 subversive를 사용한다.<br />
+http://www.polarion.org/index.php?page=download&project=subversive<br />
+다짜고짜 URL 먼저 뱉고 설명해보면,<br />
+eclipse에서 플러그인을 관리하는 곳은 3.4부터 update를 수행하는 곳과 완전히 통합되어버렸다.<br />
+재미있게도 그 메뉴는 help - software updates 이다.<br />
+Software Updates and Add-ons라는 창이 뜨는데, 여기서 새로운 것을 설치해야하니 Available Software Tab으로 이동한다.<br />
+그리고 Add Site를 눌러서 <br />
+http://download.eclipse.org/technology/subversive/0.7/update-site/<br />
+http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/<br />
+의 두 목록을 추가해주면 자신이 설치할 수 있는 목록을 가져와서 보여준다.<br />
+거기서 뭐 적당히 알아서 깔면 되겠지만 나는 뭐, source 빼고 다 까는 편인데 전문가들은 알아서 골라서 깔도록-_-<br />
+SVN Connectors 깔고, SVN Team Provider 깔고, JavaHL이나 SVNKit를 선택해서 깔아주면 된다.<br />
+<br />
+끝<br />
+아니 이게 무슨 소리야!<br />
+<br />
+#4: 요약<br />
+Java 개발자를 위한 Subversive 플러그인 설치<br />
+http://java.sun.com 들어가서 JDK 설치<br />
+http://www.eclipse.org 들어가서 eclipse 다운로드<br />
+eclipse 구동 후 Help - Software Updates 메뉴를 눌러 Available Software Tab로 이동한 다음 Add Site를 눌러<br />
+http://download.eclipse.org/technology/subversive/0.7/update-site/<br />
+http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/<br />
+의 목록을 추가하고, SVN Connectors, SVN Team Provider, JavaHL or SVNKit (혹은 둘다) 선택해서 깔아주면 된다.<br />
+<br />
+<br />
+ps//<br />
+omega를 망쳐버린 내가 이런 말할 자격은 없지만,<br />
+뭐랄까 wiki와 게시판의 중간 정도의 성향을 띄면서 뭐시기한 그런 게시판이 있으면 참 좋겠는데<br />
+웹 프로그래밍은 무서워서 섣불리 작업을 시작하기가 무섭단 말이지.<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>HashSet과 ArrayList</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>HashSet과 ArrayList</h1>
+    </div>
+    <div id='content'>
+시간이 없으니 일단 짧게.<br />
+<br />
+어떤 equals, hashCode가 구현된 Entity object에 대해 HashSet에 추가한 뒤,<br />
+그 object에 대한 reference 변수를 사용하여 저 두 함수(e/h)의 결과에 영향을 주는 field 값을 변경할 경우,<br />
+<br />
+HashSet은 contains가 false를 반환하는 반면,<br />
+ArrayList는 contains에서 true를 반환함.<br />
+<br />
+HashSet 내부에 hashCode 값을 caching하는지는 모르겠는데, 현재 잘 이해는 안가지만 시간이 없으므로 나중에 HashSet 코드를 봐야겠다. 끝.<br />
+<br />
+Entity entity = new Entity("lacti", "lactrious@gmail.com");<br />
+<br />
+#1<br />
+set.add (entity);<br />
+entity.setName ("choi");<br />
+set.contains (entity); // false<br />
+<br />
+#2<br />
+list.add (entity);<br />
+entity.setName ("choi");<br />
+list.contains (entity); // true<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

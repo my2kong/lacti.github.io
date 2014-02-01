@@ -1,0 +1,52 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>닫힌 descriptor와 write, SIGPIPE</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>닫힌 descriptor와 write, SIGPIPE</h1>
+    </div>
+    <div id='content'>
+예전에도 엄청 고생했던 것인데, socket이나 pipe 등에서<br />
+read와 write로 IO를 수행할 때 상대쪽(opposite endpoint)가 닫혔다면 어떤 현상이 벌어질까<br />
+뭐 벌어지긴 뭐가 벌어져 안되는거지-_-<br />
+<br />
+read는 -1을 반환한다<br />
+write는 SIGPIPE를 받는다.<br />
+<br />
+하지만 프로그램이 signal handler를 처리하지 않았다면 그 프로그램은 죽는다.<br />
+SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 조용히^^ 죽는다.<br />
+<br />
+send/recv를 사용해서 옵션을 주면 깔끔하게 EPIPE를 반환하게 할 수 있는데 write, read는 그런 옵션이 생략된 '범용적' 함수라서 signal handler를 설치하는 수 밖에 없다.<br />
+<br />
+stackoverflow에 나와있는걸 보면<br />
+<pre class='brush: c'>int set = 1;
+setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));</pre>
+http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly<br />
+와 같이 해결가능하다고 하는데 범용적이지는 않다.<br />
+<br />
+허허 그래서 결국 sigaction으로 handler 설치해주고 작업을 해야하는데<br />
+단지 signal 함수를 써서 handler를 지정했다가는 os에 따라서 한번밖에 handler가 설정 안되는 경우가 있으므로 주의<br />
+<br />
+이래저래 쉽지 않구나<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

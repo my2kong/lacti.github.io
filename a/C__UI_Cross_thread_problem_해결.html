@@ -1,0 +1,44 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>C# UI Cross thread problem 해결</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>C# UI Cross thread problem 해결</h1>
+    </div>
+    <div id='content'>
+다른 Thread 에서 UI component 에 접근하려면 문제가 발생한다. (cross thread)<br />
+동기화 이슈에서보면 당연한 이야기니 바로 해결책을 보자.<br />
+<br />
+System.Windows.Forms.Control 에는 Invoke 라는 UI Thread 로 작업을 delegate 하는 method 가 있다.<br />
+이녀석은 Delegate 를 받아서 그걸 내부에서 수행해주는데, <br />
+C# 에서는 어차피 외부 변수 capture 를 자동으로 해주므로 간단히 다음과 같이 쓰면 된다.<br />
+<pre class='brush: csharp'>Invoke(new MethodInvoker(delegate()
+{
+    // code for running in ui thread
+}));</pre>
+<br />
+그러면 delegate 내부의 내용은 UI thread 에서 수행되므로 문제가 없다.<br />
+(더 예전 버전의 C# 은 직접 method 를 만들어서 등록해주어야했지만 2.0 이후부터는 delegate 로 익명 함수자 생성이 가능하므로 문법이 좀 간단해졌다.)<br />
+(C# 4.0 부터는 lambda 를 지원하니까 문법이 더 간단해지지 않았나?)<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

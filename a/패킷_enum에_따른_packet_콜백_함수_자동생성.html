@@ -1,0 +1,106 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>패킷 enum에 따른 packet 콜백 함수 자동생성</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>패킷 enum에 따른 packet 콜백 함수 자동생성</h1>
+    </div>
+    <div id='content'>
+#<br />
+<a href="http://board.poolc.org/generation10/4123">http://board.poolc.org/generation10/4123</a><br />
+<br />
+#<br />
+일단 packet에 대한 기본 type과 각 packet을 구분하기 위한 enum이 있다.<br />
+<pre class='brush: cpp'>struct packet_base_t {};
+
+enum packet_enum {
+	packet1,
+	packet2,
+	packet3,
+	packet_count,
+};</pre>
+packet과 enum 값을 쉽게 연결하기 위해 중간 층을 도입한다.<br />
+<pre class='brush: cpp'>template <int code>
+struct packet_enum_t : public packet_base_t {
+	enum {
+		enum_value = code
+	};
+};</pre>
+이제 packet을 만든다.<br />
+<pre class='brush: cpp'>struct packet_struct_1 : public packet_enum_t<packet1> {};
+struct packet_struct_2 : public packet_enum_t<packet2> {};
+struct packet_struct_3 : public packet_enum_t<packet3> {};</pre>
+<br />
+#<br />
+기본적인 handler는 다음과 같이 단순하게 정의할 수 있다.<br />
+<pre class='brush: cpp'>typedef void (*base_handler_t)(const packet_base_t&);</pre>
+dispatch를 위해 handler에 대한 table을 하나 만들어둔다.<br />
+<pre class='brush: cpp'>typedef std::array<base_handler_t, packet_count> handler_table_t;
+static handler_table_t _handler_table_t;</pre>
+일단 등록된 handler가 없어도 서버 동작에 문제가 없도록 하기 위해 빈 handler로 초기화를 해준다.<br />
+<pre class='brush: cpp'>static void empty_handler(const packet_base_t&) {}
+static struct handler_init_t {
+	handler_init_t() {
+		for (int index = 0; index < packet_count; ++index)
+			_handler_table_t[index] = empty_handler;
+	}
+} _init;</pre>
+<br />
+#<br />
+각 handler를 쉽게 등록하기 위한 register를 만든다.<br />
+<pre class='brush: cpp'>struct handler_register_t {
+	handler_register_t(int index, base_handler_t handler) {
+		_handler_table_t[index] = handler;
+	}
+};</pre>
+handler의 귀찮은 함수 선언, casting, register 등록 부분의 코드를 생성해줄 macro를 정의한다.<br />
+<pre class='brush: cpp'>#define HANDLER(PacketName) \
+	static void handler_##PacketName(const PacketName& pkt); \
+	static void _base_##PacketName##_handler(const packet_base_t& pkt) { \
+		handler_##PacketName(static_cast<const PacketName&>(pkt)); \
+	} \
+	static handler_register_t _register_##PacketName( \
+		PacketName::enum_value, _base_##PacketName##_handler); \
+	static void handler_##PacketName(const PacketName& pkt)</pre>
+위 macro를 사용해서 handler를 구현한다.<br />
+<pre class='brush: cpp'>HANDLER(packet_struct_1) {
+	std::cout << typeid(pkt).name() << std::endl;
+}</pre>
+<br />
+#<br />
+dispatch를 구현한다.<br />
+<pre class='brush: cpp'>template <typename _PktTy>
+inline void dispatch_packet(const _PktTy& pkt) {
+	_handler_table_t[_PktTy::enum_value](pkt);
+}</pre>
+<br />
+#<br />
+모든 구현이 끝났으니 사용하면 된다.<br />
+<pre class='brush: cpp'>void main() {
+	dispatch_packet(packet_struct_1());
+	return 0;
+}</pre>
+<br />
+끝.<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>

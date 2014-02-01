@@ -1,0 +1,214 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>자바로 만드는 비행기 게임 #2</title>
+    <link href='../res/main.css' rel='stylesheet' type='text/css' />
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='title'>
+      <h1>자바로 만드는 비행기 게임 #2</h1>
+    </div>
+    <div id='content'>
+#<br />
+노란색 동그라미가 너무 없어보인다.<br />
+아무리 그래도 그림은 있어야지!<br />
+<br />
+그래서 준비했다. player.gif !<br />
+자바에서 이미지를 읽는 것은 간단하다.<br />
+<pre class='brush: java'>java.awt.Image ship = java.awt.Toolkit.getDefaultToolkit().getImage("player.gif");</pre>
+AWT 에서 제공해주는 Toolkit 의 helper function 인 getImage 함수를 통해 이미지 객체를 얻을 수 있다.<br />
+(물론 player.gif 는 프로젝트 안에 들어있어야 겠지)<br />
+<br />
+그럼 이제 그리는 방법을 알아보자.<br />
+그림을 그리는 것도 당연하지만, Graphics 객체가 존재하는 paintComponent 함수에서 이루어진다.<br />
+<pre class='brush: java'>protected void paintComponent(java.awt.Graphics g) {
+    g.drawImage(ship, shipPos.x, shipPos.y, this);
+}</pre>
+<br />
+마지막에 들어가는 this 는 ImageObserver 라고 한다.<br />
+이게 왜 필요하냐하면, 엄청 큰 Image 가 있다고 하면 Toolkit 을 통해 Image 를 읽어달라고 요청하면 MediaTracker 라는 요상한 것을 써서 비동기적으로 읽는다.<br />
+즉,<br />
+<pre class='brush: java'>java.awt.Image ship = java.awt.Toolkit.getDefaultToolkit().getImage("veryBigShip.bmp");
+int shipWidth = ship.getWidth()</pre>
+와 같이 했을 때 ship 객체는 아직 데이터가 읽어지지 않은 상태에서 getWidth 함수가 호출되어 저기서 반환되는 값이 요상한 값이 될 수가 있다.<br />
+(이 때문에 ImageIO 와 BufferedImage 객체를 쓰지만 그건 나중에 이야기하자)<br />
+따라서 ImageObserver 라는 callback 을 써서 데이터가 없을 때는 일단 가짜 정보가 반환되고, 실제로 로딩이 완료되면 ImageObserver 내의 imageUpdate 함수를 호출해주어서 이미지 로딩 완료를 알려준다는 것이다.<br />
+여기서 this 는 JPanel 객체이다. AWT 라이브러리들은 기본 imageUpdate 함수가 구현되어있으므로 처리하기 귀찮은 ImageObserver 에는 this 를 넣어주면 된다.<br />
+(자세하게 설명하는건 이 글타래의 취지에 맞지 않으니 더 이상의 자세한 설명은 생략한다.)<br />
+<br />
+아무튼 위의 방법으로 비행기를 그리면 중앙이 맞지 않기 때문에 그림의 width, height 값으로 보정을 해주어야한다.<br />
+<pre class='brush: java'>protected void paintComponent(java.awt.Graphics g) {
+    g.drawImage(ship, shipPos.x - ship.getWidth(this) / 2, shipPos.y - ship.getHeight(this) / 2, this);
+}</pre>
+<br />
+어휴, 매번 width 와 height 를 가져와달라고 호출하네, 효율이 영 좋지 못할 것 같지만,<br />
+자바로 짜는 상황에서 효율을 너무 고려하면 슬퍼지니까 그러려니 하고 넘어가자.<br />
+<br />
+그런데 배경에 흰색이 있네. 어쩔 수 없다. 배경 색을 흰색으로 바꿔야지.<br />
+그러면 전체적으로 아래와 같은 코드가 된다.<br />
+<pre class='brush: java'>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class Tatieul extends JPanel implements KeyListener {
+    private Point shipPos = new Point(320, 400);
+    private Image ship;
+    public Tatieul() {
+        setPreferredSize(new Dimension(640, 480));
+        setFocusable(true);
+        addKeyListener(this);
+        ship = Toolkit.getDefaultToolkit().getImage("player.gif");
+    }
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_UP:    shipPos.y -= 10; break;
+        case KeyEvent.VK_DOWN:  shipPos.y += 10; break;
+        case KeyEvent.VK_LEFT:  shipPos.x -= 10; break;
+        case KeyEvent.VK_RIGHT: shipPos.x += 10; break;
+        }
+        repaint();
+    }
+    public void keyReleased(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {}
+    public void paintComponent(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0, 0, 640, 480);
+        g.drawImage(ship, shipPos.x - ship.getWidth(this) / 2, shipPos.y - ship.getHeight(this) / 2, this);
+    }
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Tatieul - New Generation Shooting Game");
+        frame.setContentPane(new Tatieul());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}</pre>
+<br />
+#<br />
+자 이제 총알을 날려보자.<br />
+Space 키를 누르면 총알을 만든다. 그 총알은 당연히 위로(-y) 올라갈 것이고, 화면에서 사라지면(y < 0) 소멸될 것이다.<br />
+<br />
+먼저 Space 키를 누르면 총알을 만들자.<br />
+총알의 종류가 하나 밖에 없으니, 위치 정보만 저장해두자.<br />
+<pre class='brush: java'>private List<Point> bullets = new ArrayList<Point>();</pre>
+<br />
+이제 Space 를 누르면 총알을 만들어보자.<br />
+<pre class='brush: java'>switch (e.getKeyCode()) {
+case KeyEvent.VK_SPACE: bullets.add(new Point(shipPos.x, shipPos.y); break;</pre>
+<br />
+비행기가 어차피 shipPos 를 중앙 삼아서 그려지므로, 위와 같이 총알을 만들면 비행기 한 가운데서 총알이 나가는 것 처럼 보일 것이다.<br />
+<br />
+이제 시간에 따라 총알이 앞으로 나가야할 것이다.<br />
+<br />
+시간에 따라 이벤트가 발생하려면 Timer 를 쓰면 된다.<br />
+하지만 Timer 라고 하면 java.util.Timer 와 javax.swing.Timer 2 개가 있다.<br />
+UI Thread 에 의해 동기적으로 처리하는 것이 로직 구성하는데 편하니까 javax.swing.Timer 를 쓸거다.<br />
+<pre class='brush: java'>public Tatieul() { // Constructor
+    new javax.swing.Timer(100, this);</pre>
+<br />
+이제 Timer 는 100 ms 마다 한 번씩 this 의 actionPerformed 함수를 불러줍니다. 즉, Tatieul class 는 ActionListener interface 를 구현해야 한다.<br />
+<pre class='brush: java'>public class Tatieul extends JPanel implements KeyListener, ActionListener {
+    public void actionPerformed(ActionEvent e) {
+        // update bullets
+    }</pre>
+<br />
+총알은 bullets 에 저장되어있다. 이 자료구조를 한 번 돌면서 y 값을 갱신해주면 되겠다.<br />
+하지만, y 가 음수인 것에 대해서는 목록에서 빼야하니까, 귀찮다. 이 두 가지를 한 번에 하기 위해 Iterator 를 쓰자.<br />
+(enhanced for 문에서는 중간에 remove 가 불가능하니까.)<br />
+<pre class='brush: java'>Iterator<Point> iterator = bullets.iterator();
+while (iterator.hasNext()) {
+    Point bullet = iterator.next();
+    bullet.y -= 20;
+    if (bullet.y < 0)
+        iterator.remove();
+}
+repaint();</pre>
+총알의 위치를 갱신했으면 꼭 repaint 함수를 불러줘야 한다. 그래야 갱신된 위치로 총알을 다시 그릴테니까.<br />
+<br />
+이제 paintComponent 함수에서 bullets 목록을 돌면서, 총알을 그려보자.<br />
+<pre class='brush: java'>protected void paintComponent(Graphics g) {
+    g.setColor(Color.black);
+    for (Point bullet: bullets)
+        g.drawLine(bullet.x, bullet.y, bullet.x, bullet.y - 4);</pre>
+<br />
+여기까지하면 전체적인 코드는 다음과 같다.<br />
+<pre class='brush: java'>import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class Tatieul extends JPanel implements KeyListener, ActionListener {
+    private Point shipPos = new Point(320, 400);
+    private Image ship;
+    private ArrayList<Point> bullets = new ArrayList<Point>();
+    public Tatieul() {
+        setPreferredSize(new Dimension(640, 480));
+        setFocusable(true);
+        addKeyListener(this);
+        ship = Toolkit.getDefaultToolkit().getImage("player.gif");
+        new javax.swing.Timer(100, this).start();
+    }
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_UP:    shipPos.y -= 10; break;
+        case KeyEvent.VK_DOWN:  shipPos.y += 10; break;
+        case KeyEvent.VK_LEFT:  shipPos.x -= 10; break;
+        case KeyEvent.VK_RIGHT: shipPos.x += 10; break;
+        case KeyEvent.VK_SPACE: bullets.add(new Point(shipPos.x, shipPos.y)); break;
+        }
+        repaint();
+    }
+    public void actionPerformed(ActionEvent e) {
+        Iterator<Point> iterator = bullets.iterator();
+        while (iterator.hasNext()) {
+            Point bullet = iterator.next();
+            bullet.y -= 20;
+            if (bullet.y < 0)
+                iterator.remove();
+        }
+        repaint();
+    }
+    public void keyReleased(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {}
+    public void paintComponent(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0, 0, 640, 480);
+        g.drawImage(ship, shipPos.x - ship.getWidth(this) / 2, shipPos.y - ship.getHeight(this) / 2, this);
+        g.setColor(Color.black);
+        for (Point bullet: bullets)
+            g.drawLine(bullet.x, bullet.y, bullet.x, bullet.y - 4);
+    }
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Tatieul - New Generation Shooting Game");
+        frame.setContentPane(new Tatieul());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}</pre>
+<br />
+#<br />
+여기까지 따라 해봤다면, 키 입력에 상당한 불만이 생길 것이다.<br />
+Space 키를 누르면서 방향 키를 누르면, 분명 총알도 나가면서 이동도 되면 좋겠지만 전혀 그렇지 않고 총알이 안 나간채로 움직이기만 하는 것을 볼 수 있다.<br />
+<br />
+이러한 것을 단박에 개선하고 싶지만,<br />
+일단 내일은 적기 출현과 충돌 검사를 먼저 구현해보자.<br />
+
+    </div>
+    <div id='clear'></div>
+  </body>
+  <script type='text/javascript'>
+    SyntaxHighlighter.all();
+  </script>
+</html>
