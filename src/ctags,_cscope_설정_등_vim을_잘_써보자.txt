@@ -8,7 +8,7 @@
 
 #
 추가로, 여러 파일에서 특정 내용을 찾는 좋은 shell script
-<pre class="brush: bash; html-script: true">#!/bin/bash
+<pre class="brush: bash;">#!/bin/bash
 echo "- find --------"
 echo $1
 echo "---------------"
@@ -26,7 +26,7 @@ echo "---------------"
 대충 요약해서 쓰면, 커널 소스 디렉토리에서 ctags -R 을 해서 tags 파일을 만든 뒤,
 대충 .vimrc 파일에 다음을 추가하자.
 (vim이 열리는 위치마다 tags 파일을 만들면 귀찮으니 절대 경로로 tags 파일 경로를 지정해주는 것도 좋다.)
-<pre class="brush: bash; html-script: true">set dictionary=./tags,/usr/include/tags
+<pre class="brush: bash;">set dictionary=./tags,/usr/include/tags
 
 "=============== ctags setting =================
 set tags=./tags,/usr/include/tags

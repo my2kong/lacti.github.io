@@ -13,7 +13,7 @@
 
 #
 먼저 spin_lock을 만들어보자. 이전 글에서 몇 번 설명한적 있으니 대충 보자.
-<pre class="brush: cpp; html-script: true">class spin_lock_t {
+<pre class="brush: cpp;">class spin_lock_t {
 public:
     spin_lock_t() { _flag.clear(); }
     void acquire() { while (_flag.test_and_set()); }
@@ -57,7 +57,7 @@ spin_lock_raii는 spin_lock을 가지고 생성자/소멸자에서 acquire, rele
 그리고 spin_lock_support를 만들어서 lock이 필요한 class에서 이를 상속받아 사용할 수 있도록 코드를 작성하였다. 상황에 따라 lock을 여러 개 사용할 수도 있으므로 lock 개수를 template 인자로 받도록 하였다.
 
 이를 사용하여 구현한 바구니(basket)은 다음과 같다.
-<pre class="brush: cpp; html-script: true">class basket_t : public spin_lock_support_t<1> {
+<pre class="brush: cpp;">class basket_t : public spin_lock_support_t<1> {
 public:
     basket_t() : _bread_count(0) {}
     int count() const { return _bread_count; }
@@ -68,13 +68,13 @@ private:
 };</pre>
 lock을 여러 개 사용할 필요가 없으니 spin_lock_support의 template 인자를 1로 지정하여 사용하였다.
 이제 다른 actor에서 바구니를 접근할 때에는 다음과 같이 사용할 수 있다.
-<pre class="brush: cpp; html-script: true">auto locker = basket.lock();
+<pre class="brush: cpp;">auto locker = basket.lock();
 if (basket.count() >= 20) return;
 basket.add();</pre>
 
 #
 이제 actor를 만들어보자. ppl의 concurrent_queue는 너무 느려서 actor model의 mpsc queue를 구현하는데 적합하지 않은 것 같다. 따라서 InterlockedSList를 사용하여 간단히 구현해 보았다.
-<pre class="brush: cpp; html-script: true">typedef std::function<void()> message_t;
+<pre class="brush: cpp;">typedef std::function<void()> message_t;
 class actor_t {
 public:
     actor_t() {
@@ -134,13 +134,13 @@ private:
 이 때 절묘한 타이밍으로 queue에 넣은 작업이 처리될 수 없는 문제를 해결하기 위해 _job_count로 처리 구간을 보장해준다.
 
 template 인자를 받는 post 함수는 이 actor를 상속받은 하위 class들의 member function pointer를 받아서 this에 대해 post() 함수를 호출해주는 helper function이다. 이 helper function이 있으면 다음과 같이 간결하게 post()를 호출할 수 있다.
-<pre class="brush: cpp; html-script: true">eater_t eater;
+<pre class="brush: cpp;">eater_t eater;
 eater.post(&eater_t::act);</pre>
 
 #
 post()가 가능한 actor 기반을 만들었으니, 이를 기반으로 주기적인 작업을 수행하기 위한 interface를 정의해보자.
 간단히 다음과 같이 tick_actor_t를 선언하였다.
-<pre class="brush: cpp; html-script: true">class tick_actor_t : public actor_t {
+<pre class="brush: cpp;">class tick_actor_t : public actor_t {
 public:
     virtual void act() = 0;
 };</pre>
@@ -154,7 +154,7 @@ tick_actor_t class는 주기적으로 act() 함수가 불려져서 뭔가 지속
 - 각 <strong>일꾼(worker-thread)</strong>들은 자기가 연기할 대상(actor)을 주기적으로 연기(act)한다.
 
 해서 scenario, worker, 그리고 worker를 관리하기 위한 worker_pool class가 등장하였다.
-<pre class="brush: cpp; html-script: true">class scenario_t {
+<pre class="brush: cpp;">class scenario_t {
 public:
     typedef std::function<tick_actor_t* ()> tick_actor_factory_t;
     typedef concurrency::concurrent_queue<tick_actor_factory_t> tick_actor_factory_queue_t;
@@ -183,7 +183,7 @@ private:
 };</pre>
 scenario class는 일꾼(worker)의 총 수가 몇 명인지 가지고 있다가, 어떤 배역(actor)이 등장(enter)하게 될 경우 round-robin 방식으로 각 worker와 연결된 queue에 배역 생성기(actor)를 넣어준다.
 
-<pre class="brush: cpp; html-script: true">class worker_t {
+<pre class="brush: cpp;">class worker_t {
 public:
     worker_t(scenario_t& scenario, int index)
         : _scenario(scenario), _index(index) {}
@@ -210,7 +210,7 @@ private:
 worker class에서는 자신에게 할당된 (scenario에서 enter하면 추가되는) 배역 생성 queue를 확인하여 새로 부여받은 배역(actor)이 있나 확인하여 자신이 관리하는 vector에 넣는다.
 그리고 자신이 관리하는 모든 배역(actor)에 대해 act() 함수를 호출함으로써 각자의 act() 함수가 호출될 수 있도록 한다.
 
-<pre class="brush: cpp; html-script: true">class worker_pool_t {
+<pre class="brush: cpp;">class worker_pool_t {
 public:
     worker_pool_t(scenario_t& scenario)
         : _scenario(scenario) { employ(); }
@@ -241,7 +241,7 @@ private:
 #
 기반 코드 작성이 끝났으니 먹깨비와 제빵사를 구현해보자.
 tick_actor class의 act() 함수만 채우면 되니 간단하다.
-<pre class="brush: cpp; html-script: true">class baker_t : public tick_actor_t {
+<pre class="brush: cpp;">class baker_t : public tick_actor_t {
 public:
     baker_t(basket_t& basket)
         : _basket(basket) {}
@@ -255,7 +255,7 @@ public:
 private:
     basket_t& _basket;
 };</pre>
-<pre class="brush: cpp; html-script: true">class eater_t : public tick_actor_t {
+<pre class="brush: cpp;">class eater_t : public tick_actor_t {
 public:
     eater_t(basket_t& basket)
         : _basket(basket) {}
@@ -275,7 +275,7 @@ private:
 
 #
 이제 main 함수에서 판을 구성해보자.
-<pre class="brush: cpp; html-script: true">int _tmain(int argc, _TCHAR* argv[])
+<pre class="brush: cpp;">int _tmain(int argc, _TCHAR* argv[])
 {
     scenario_t scenario(std::thread::hardware_concurrency());
     worker_pool_t pool(scenario);

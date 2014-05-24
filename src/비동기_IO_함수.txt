@@ -9,7 +9,7 @@ IO 함수라고 하면 생소하게 느끼는 경우가 많다. IO 함수는 inp
 #
 IO 함수들은 기본적으로 blocking 모드로 동작하게 되어있다.
 blocking 모드는 프로그램의 수행을 멈추는 것으로 간단한 예를 보면 다음과 같다.
-<pre class="brush: cpp; html-script: true">while (true) {
+<pre class="brush: cpp;">while (true) {
     // 테트리스 블럭을 내린다
     // 벽돌 간 충돌 검사를 한다
     // 사용자의 키 입력을 받는다.
@@ -83,7 +83,7 @@ kernel 함수는 응용 프로그램의 IO 요청이 있을 때 IO 작업이 완
 1인용 테트리스야 enter key 눌러야만 벽돌이 움직입니다 이러면 실소로 끝나지만, MMORPG 에서 너님이 때려야만 AI 가 동작합니다, 이건 아니지 않겠는가 (혹시 턴제?)
 
 이런 이유로 인해서 수행 흐름을 막지 않는 IO 함수가 필요해졌다. 데이터가 들어올 때까지 기다리는 것이 아니라 데이터가 없으면 그냥 -1 반환해버리고 함수가 끝나는 것이다.
-<pre class="brush: cpp; html-script: true">while (true) {
+<pre class="brush: cpp;">while (true) {
     // 테트리스 블럭을 내린다
     // 벽돌 간 충돌 검사를 한다
     // 사용자의 키 입력을 받는다.
@@ -95,7 +95,7 @@ kernel 함수는 응용 프로그램의 IO 요청이 있을 때 IO 작업이 완
 그런데 뭔가 찜찜하다. 확실히 non blocking 함수를 쓰면 흐름이 중단되지 않으니까 전체 로직 수행 흐름에 영향을 안 주니까 따로 thread 를 안 써도 좋다. 그런데 그럼 값이 있든 없든 <strong>매번 물어봐야하니까 낭비 아닌가</strong>?
 
 낭비라고 생각할 수 있다. 저 수행 방식은 non-blocking 이기는 하지만 비동기적(asynchronous) 이지는 않다. non-blocking 으로 돌아가지만 <strong>동기(synchronous)적으로 계속 물어보는 방법</strong>이다. 로직을 처리하는 구문과 IO 를 처리하는 흐름이 하나되어 돌아간다. 그렇다면 비동기적으로 돌아가는 것은 어떤 것일까
-<pre class="brush: cpp; html-script: true">while (true) {
+<pre class="brush: cpp;">while (true) {
     // 테트리스 블럭을 내린다
     // 벽돌 간 충돌 검사를 한다
     // 사용자의 키 입력을 받는다.
@@ -123,7 +123,7 @@ async_read 함수는 마법같은 함수로 호출할 당시에는 아무 일도
 비동기 IO 함수는 다 좋은데 여러번 호출할 경우 완료 통지 후 처리의 순서 보장이 안될 가능성이 있다. 이를 해결하기 위한 가장 좋은 방법은 무엇일까?
 
 네트워크의 경우 주고받는 데이터 자체에 모종의 정보를 기록해서 순서를 맞춰주는 방법이 있는데 이건 너무 복잡하다. 뭔가 근본적이면서 쉬운 방법이 떠오를 것 같다. 바로 <strong>하나의 callback 요청이 끝난 다음에 다음 async IO 요청을 한다</strong> 인 것이다. 다음과 같다.
-<pre class="brush: cpp; html-script: true">while (true) {
+<pre class="brush: cpp;">while (true) {
     if (isIOCompletion)
         async_read (stdin, async_callback);
     // 생략
@@ -137,7 +137,7 @@ void async_callback (char *key) {
 <a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>
 
 보다 좋은 방법은 없을까? 다음을 보자.
-<pre class="brush: cpp; html-script: true">async_read (stdin, async_callback);
+<pre class="brush: cpp;">async_read (stdin, async_callback);
 while (true) {
     // 로직 처리
 }

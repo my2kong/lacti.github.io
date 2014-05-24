@@ -8,7 +8,7 @@
 
 #
 RpcWork는 다음의 방법으로 쉽게 구현할 수 있다.
-<pre class="brush: csharp; html-script: true">[Serializable]
+<pre class="brush: csharp;">[Serializable]
 public abstract class RpcWork<TReturn> : IWork
 {
     [Serializable]
@@ -57,7 +57,7 @@ Execute() 함수는 ExecuteWork() 함수를 수행해서 그 결과를 받은 �
 
 #
 간단한 덧셈 Rpc를 구현해보면 다음과 같다.
-<pre class="brush: csharp; html-script: true">[Serializable]
+<pre class="brush: csharp;">[Serializable]
 public class RemoteSumWork : RpcWork<int>
 {
     private readonly int _leftValue;
@@ -83,7 +83,7 @@ public class RemoteSumWork : RpcWork<int>
 두 인자를 생성자로 받아 멤버로 저장한다. ExecuteWork() 함수에서는 멤버의 두 값을 더해서 반환하고,
 ExecuteReturn() 함수에서는 인자로 그 결과를 받아서 화면에 출력한다.
 
-<pre class="brush: csharp; html-script: true">master.DistributeWork(new RemoteSumWork(100, 200));</pre>
+<pre class="brush: csharp;">master.DistributeWork(new RemoteSumWork(100, 200));</pre>
 
 RemoteSumWork의 ExecuteReturn() 함수가 수행될 때, _leftValue와 _rightValue 값은 master에서 slave로 요청할 때 한 번, slave에서 master로 ReturnWork 보낼 때 다시 묻어서 한 번, 총 두 번 network trip을 하게 된다.
 
@@ -102,7 +102,7 @@ Master에서 Slave에게 수행시키고 싶은 함수가 있는데 Slave에게�
 결국 DistFunctions로부터 만들어지는 DistFunctions.dll를 Slave에게 전달해주면, Master가 보내는 코드도 Slave가 잘 실행해줄 수 있다는 것이다.
 
 일단 파일을 보내기 위한 Work부터 만들어보자.
-<pre class="brush: csharp; html-script: true">[Serializable]
+<pre class="brush: csharp;">[Serializable]
 public class FileSendWork : IWork
 {
     private readonly string _fileName;
@@ -131,9 +131,9 @@ public class FileSendWork : IWork
 파일 이름은 서버가 지정해준대로 사용한다. 만약 동일한 파일 이름이 이미 Slave에 있다면 파일을 저장하지 않는다<strong>(!)</strong>
 
 자세한 설명은 잠시 뒤에 하고, Master와 Slave가 어떤 코드를 갖는지 보자.
-<pre class="brush: csharp; html-script: true">master.DistributeWork(new FileSendWork("DistFunctions.dll"));
+<pre class="brush: csharp;">master.DistributeWork(new FileSendWork("DistFunctions.dll"));
 master.DistributeWork(new RemoteSumWork(100, 200));</pre>
-<pre class="brush: csharp; html-script: true">var slave = new Slave("127.0.0.1", 12345);
+<pre class="brush: csharp;">var slave = new Slave("127.0.0.1", 12345);
 Task.Factory.StartNew(slave.Start);
 
 Logger.Write("Slave Start!");

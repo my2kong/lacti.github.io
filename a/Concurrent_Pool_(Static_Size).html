@@ -87,56 +87,56 @@ Web Programming 해본 사람들이라면 오히려 Connection Pool 개념이 �
 <br />
 말로 설명하니 길고 지루한데, 요약하자면<br />
 circular queue 에서 index 를 interlocked 으로 증가시켜서 그 지점에 객체를 넣었다 뺐다 할 수 있게 해주면 thread-safe 한 object pool 이 만들어진다는 것이다.<br />
-<pre class="brush: cpp; html-script: true">template <typename T><br />
-class ObjectPool {<br />
-public:<br />
-    bool Pop (T& element);<br />
-    bool Push (const T& element);<br />
-<br />
-    LONG Count (void) const { return mCount; }<br />
-    LONG Size (void) const { return mSize; }<br />
-<br />
-    ObjectPool (LONG size);<br />
-    ~ObjectPool (void);<br />
-<br />
-private:<br />
-    T*     mArray;<br />
-    LONG mSize;<br />
-    LONG mCount;<br />
-<br />
-    LONG mPushIndex;<br />
-    LONG mPopIndex;<br />
-}</pre><br />
+<pre class="brush: cpp;">template <typename T>
+class ObjectPool {
+public:
+    bool Pop (T& element);
+    bool Push (const T& element);
+
+    LONG Count (void) const { return mCount; }
+    LONG Size (void) const { return mSize; }
+
+    ObjectPool (LONG size);
+    ~ObjectPool (void);
+
+private:
+    T*     mArray;
+    LONG mSize;
+    LONG mCount;
+
+    LONG mPushIndex;
+    LONG mPopIndex;
+}</pre>
 <br />
 생성과 소멸은 객체의 배열의 할당과 해제를 해주면 된다.<br />
-<pre class="brush: cpp; html-script: true">template <typename T><br />
-ObjectPool<T>::ObjectPool (LONG size)<br />
-    : mSize (size), mCount (0), mPushIndex (0), mPopIndex (0) {<br />
-    mArray = new T[size];<br />
-}<br />
-template <typename T><br />
-ObjectPool<T>::~ObjectPool (void) {<br />
-    delete[] mArray;<br />
-}</pre><br />
+<pre class="brush: cpp;">template <typename T>
+ObjectPool<T>::ObjectPool (LONG size)
+    : mSize (size), mCount (0), mPushIndex (0), mPopIndex (0) {
+    mArray = new T[size];
+}
+template <typename T>
+ObjectPool<T>::~ObjectPool (void) {
+    delete[] mArray;
+}</pre>
 <br />
 Push 와 Pop 은 Circular Queue 와 동일하다. 다만 index 를 증가시키는 부분이 interlocked 으로 작성되어있다는 것이다.<br />
-<pre class="brush: cpp; html-script: true">template <typename T><br />
-bool ObjectPool<T>::Pop (T& element) {<br />
-    int index = InterlockedIncrement (&mPopIndex) % mSize;<br />
-    if (is_null (mArray[index]))<br />
-        return false;<br />
-    element = mArray[index];<br />
-    set_null (mArray[index]);<br />
-    return true;<br />
-}<br />
-template <typename T><br />
-bool ObjectPool<T>::Push (const T& element) {<br />
-    int index = InterlockedIncrement (&mPushIndex) % mSize;<br />
-    if (!is_null (mArray[index]))<br />
-        return false;<br />
-    mArray[index] = element;<br />
-    return false;<br />
-}</pre><br />
+<pre class="brush: cpp;">template <typename T>
+bool ObjectPool<T>::Pop (T& element) {
+    int index = InterlockedIncrement (&mPopIndex) % mSize;
+    if (is_null (mArray[index]))
+        return false;
+    element = mArray[index];
+    set_null (mArray[index]);
+    return true;
+}
+template <typename T>
+bool ObjectPool<T>::Push (const T& element) {
+    int index = InterlockedIncrement (&mPushIndex) % mSize;
+    if (!is_null (mArray[index]))
+        return false;
+    mArray[index] = element;
+    return false;
+}</pre>
 Push 와 Pop 함수가 bool 을 반환하는 이유는 Pool 의 크기가 정적인 이상 해당 요청이 실패할 수도 있기 때문이다.<br />
 T 라는 type 자체가 포인터일 경우에는 Pop 함수에서 NULL 을 반환하게 한다거나, 아니면 예외를 던지게 하는 방법이 있을 수 있겠지만 별로 둘 다 좋은 방법 같지는 않다는 생각에 bool 을 반환하게 했다.<br />
 <br />

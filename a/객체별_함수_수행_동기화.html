@@ -92,13 +92,13 @@ User 에는 AddExp 함수를 통해 내부에 경험치를 증가시킨다. 그�
 <br />
 Lock 을 생각해보자. Lock 이라는 것은 여러 Thread 가 접근해서 수행하는 영역의 시작과 끝에서 Lock, Unlock 을 수행하여 그 구간을 상호 배타적 구간(Mutual Exclusion)으로 설정하여 Thread 가 동시에 접근하지 못하도록 보호하는 장치이다.<br />
 즉, AcquireLock Logic 은 여러 Thread 가 동시에 접근하여 수행할 수 있지만, 실제로 그 routine 을 벗어나 Mutex 에 진입하여 코드를 실행하는 Thread 는 하나로 보장이 된다. 아래의 간단한 SpinLock 예제를 보자 (Windows via C/C++)<br />
-<pre class="brush: cpp; html-script: true">void SpinLock::Lock(void) {<br />
-    while (InterlockedExchange (&mLockFlag, 1) == 1)<br />
-        Sleep (0);<br />
-}<br />
-void SpinLock::Unlock(void) {<br />
-    InterlockedExchange (&mLockFlag, 0);<br />
-}</pre><br />
+<pre class="brush: cpp;">void SpinLock::Lock(void) {
+    while (InterlockedExchange (&mLockFlag, 1) == 1)
+        Sleep (0);
+}
+void SpinLock::Unlock(void) {
+    InterlockedExchange (&mLockFlag, 0);
+}</pre>
 InterlockedExchange 는 원자적으로 해당 변수에 값을 대입하고 그 변수의 초기값을 반환하는 연산이다. SpinLock 은 처음에 mLockFlag 가 0 이다. 따라서 누군가 Lock 함수를 요청하면 mLockFlag 의 값을 1로 바꾸고, 0 (초기값) 을 반환한다. 따라서 바로 함수 수행이 종료된다.<br />
 하지만 다른 Thread 가 동시에 Lock 을 요청할 경우 InterlockedExchange 함수는 1을 반환할 것이고, 그렇다면 무한 loop 를 돌면서 Sleep (0), 즉 다른 Thread 에게 수행 시간을 양보한다 (물론 자신보다 우선순위가 같거나 높은 Thread 들에 대해서)<br />
 <br />
@@ -110,59 +110,59 @@ InterlockedExchange 는 원자적으로 해당 변수에 값을 대입하고 그
 <br />
 함수는 각기 다른 형태(signature)을 갖고 있고, 수행에 필요한 인자가 각기 다르다. 따라서 모든 함수의 요청을 객체화(functor) 하기 위해서는 동일한 interface 로 함수 요청을 통일시켜줄 필요가 있다. 이러기 위해 사용하는 것이 std::bind 이다.<br />
 아래의 예제는 각 함수의 요청을 무항 함수 객체(nullary functor)로 변환하는 코드이다.<br />
-<pre class="brush: cpp; html-script: true">int add(int a, int b) { return a + b; }<br />
-struct Adder {<br />
-    int add(int a, int b) { return a + b; }<br />
-};<br />
-// ...<br />
-Adder adder;<br />
-auto functor1 = std::bind(&::add, 10, 20);<br />
-auto functor2 = std::bind(&Adder::add, &adder, 10, 20);<br />
-functor1();<br />
-functor2();</pre><br />
+<pre class="brush: cpp;">int add(int a, int b) { return a + b; }
+struct Adder {
+    int add(int a, int b) { return a + b; }
+};
+// ...
+Adder adder;
+auto functor1 = std::bind(&::add, 10, 20);
+auto functor2 = std::bind(&Adder::add, &adder, 10, 20);
+functor1();
+functor2();</pre>
 정확한 type 은 표기하기 어렵지만, 아무튼 함수 수행에 대해 함수의 주소와 객체, 그리고 인자까지 완벽하게 하나의 객체로 묶을 수 있게 되었다.<br />
 <br />
 #<br />
 하지만 이건 compile time 에 가능한 일이고, 저것들을 runtime 에 한군데 모아놓고 수행하기는 어렵다. runtime 에 객체들을 모아놓는다는 것은 하나의 Container 에 객체들을 담아두고 iterating 을 한다는 것인데 저것들의 type 은 모두 다르기 때문이다. 따라서 type 을 맞춰주기 위해 interface 를 작성한다.<br />
-<pre class="brush: cpp; html-script: true">struct RequestJob<br />
-{<br />
-    virtual void operator () (void) = 0;<br />
-    virtual ~RequestJob() {}<br />
-};</pre><br />
+<pre class="brush: cpp;">struct RequestJob
+{
+    virtual void operator () (void) = 0;
+    virtual ~RequestJob() {}
+};</pre>
 그리고 간단한 template 함수를 통해 함수 호출 요청 객체를 받아 저 interface 를 상속받은 struct 를 생성하도록 한다. 함수 내에서 template struct 를 갖을 수는 없지만 함수 자체가 template 이면 문제가 해결된다.<br />
-<pre class="brush: cpp; html-script: true">template <typename _Functor><br />
-void Request(const _Functor& functor)<br />
-{<br />
-    struct _RequestJobImpl : public RequestJob<br />
-    {<br />
-        _RequestJobImpl(const _Functor& functor)<br />
-            : mFunctor (functor) {}<br />
-        virtual void operator () (void) { mFunctor(); }<br />
-<br />
-        _Functor mFunctor;<br />
-    };<br />
-    mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));</pre><br />
+<pre class="brush: cpp;">template <typename _Functor>
+void Request(const _Functor& functor)
+{
+    struct _RequestJobImpl : public RequestJob
+    {
+        _RequestJobImpl(const _Functor& functor)
+            : mFunctor (functor) {}
+        virtual void operator () (void) { mFunctor(); }
+
+        _Functor mFunctor;
+    };
+    mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));</pre>
 당연한 이야기이지만 가상 소멸자가 중요하다. 객체에 대한 함수 수행이 지금 바로 수행되는 것이 아니라 요청되어 언제 수행될지 모르는, 즉 비동기적 수행을 요청하는 것이기 때문에 그때까지 객체가 살아있으리란 보장이 없다.<br />
 <br />
 따라서 shared_ptr 같은 것을 써야하는데, RequestJob struct 가 가상 소멸자를 갖지 않으면 _RequestJobImpl struct 의 멤버 변수인 _Functor 가 소멸되지 않고, 그러면 shared_ptr 의 Reference Count 가 감소하지 않아 메모리가 새게되는 후덜덜한 일이 벌어지기 때문이다 (당연한 소릴)<br />
 <br />
 아무튼 저렇게 inner struct 로 _RequestJobImpl struct 를 만들어서 template type인 _Functor 객체를 멤버로 갖고, operator () 에서 그 함수를 호출해줄 수 있도록 한다. 그렇게 만든 RequestJob 객체를 JobQueue 에 넣는다.<br />
 물론 JobQueue 는 여러 Thread 에서 동시에 Push 를 수행하고, 다른 Thread 에서 Pop 을 수행해야하므로 thread safe 해야한다. 따라서 concurrent_queue.h 에 정의된 Concurrency::concurrent_queue 를 사용한다.<br />
-<pre class="brush: cpp; html-script: true">typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;<br />
-JobQueue mJobQueue;</pre><br />
+<pre class="brush: cpp;">typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
+JobQueue mJobQueue;</pre>
 <br />
 #<br />
 마지막으로 JoqQueue 에 들어간 작업을 처리할 Thread 1개만 통과시켜서 Queue 에 들어있는 작업을 처리하게 해야한다. SpinLock 에서 공부했던 내용을 Request 함수 뒤에 끼얹어보자.<br />
-<pre class="brush: cpp; html-script: true">    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)<br />
-        return;<br />
-        <br />
-    for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)<br />
-    {<br />
-        (*job)();<br />
-        delete job;<br />
-    }<br />
-    InterlockedExchange(&mExclusiveFlag, 0);<br />
-}</pre><br />
+<pre class="brush: cpp;">    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)
+        return;
+        
+    for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)
+    {
+        (*job)();
+        delete job;
+    }
+    InterlockedExchange(&mExclusiveFlag, 0);
+}</pre>
 InterlockedExchange 함수를 사용해서 mExclusiveFlag 값을 통해 한 개의 Thread 만 통과시킨다. 나머지는 어차피 수행해야할 작업들을 JobQueue 에 추가시켰으니 마음놓고 Request 함수를 나온다.<br />
 <br />
 진입에 성공한 Thread 는 이제 독박을 쓴다. JobQueue 가 빌 때까지 RequestJob 객체를 하염없이 꺼내서 수행을 해준다. 물론 수행 후 job 객체를 제거하는 것도 잊지 않는다. 이 때문에 Thread 가 작업을 처리하는 동안 다른 Thread 들이 계속 JobQueue 에 작업을 채워주면 그 Thread 는 이 함수를 못 빠져나올지도 모른다.<br />
@@ -172,101 +172,101 @@ InterlockedExchange 함수를 사용해서 mExclusiveFlag 값을 통해 한 개�
 #<br />
 이제 모든 준비가 끝났다. 공유되어 여러 Thread 로부터 처리가 동시에 일어날 수 있는 class 는 위 class 를 상속받으면 된다.<br />
 User class 가 위 class 를 상속받았고, User 객체가 AddExp 함수를 가질 때, 다음과 같은 방법으로 요청할 수 있다.<br />
-<pre class="brush: cpp; html-script: true">typedef std::shared_ptr<User> UserRef;<br />
-UserRef user = UserRef (new User);<br />
-user->Request (std::bind (&User::AddExp, user, 100));</pre><br />
+<pre class="brush: cpp;">typedef std::shared_ptr<User> UserRef;
+UserRef user = UserRef (new User);
+user->Request (std::bind (&User::AddExp, user, 100));</pre>
 User 객체에게 멤버 함수 수행 요청을 Request 함수를 통해 전달한다. 수행에 필요한 정보는 std::bind 로 묶어줬다. 한 가지 아쉬운 점은 Request 를 부르는 대상이 이미 user 객체로 정해졌으므로 User::AddExp 를 수행할 대상도 Request 를 요청한 user 객체인데, std::bind 를 묶어줄 때 두 번째 인자로 이 AddExp 함수를 수행할 객체인 user 객체를 한 번 더 넣어줘야한다는 것이다.<br />
 이 문제에 대해서는 딱히 좋은 방법이 없는 것 같다.<br />
 (UserRef 는 User 에 대한 shared_ptr 로 분명 User::AddExp 함수를 수행하기 위해서는 User * 를 인자로 받아야하지만 shared_ptr 은 원본 Type 에 대한 casting operator 를 overloading 했으므로 문제가 없다.)<br />
 <br />
 #<br />
 예제 코드 전문을 보자.<br />
-<pre class="brush: cpp; html-script: true">#include <windows.h><br />
-#include <functional> <br />
-#include <algorithm> <br />
-#include <iostream><br />
-#include <concurrent_queue.h><br />
-#include <vector><br />
-<br />
-class RequestBase<br />
-{<br />
-private:<br />
-    struct RequestJob<br />
-    {<br />
-        virtual void operator () (void) = 0;<br />
-        virtual ~RequestJob() {}<br />
-    };<br />
-    typedef RequestJob* RequestJobPtr;<br />
-<br />
-public:<br />
-    template <typename _Functor><br />
-    void Request(const _Functor& functor)<br />
-    {<br />
-        struct _RequestJobImpl : public RequestJob<br />
-        {<br />
-            _RequestJobImpl(const _Functor& functor)<br />
-                : mFunctor (functor) {}<br />
-            virtual void operator () (void) { mFunctor(); }<br />
-<br />
-            _Functor mFunctor;<br />
-        };<br />
-        mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));<br />
-<br />
-        if (InterlockedExchange(&mExclusiveFlag, 1) == 1)<br />
-            return;<br />
-        <br />
-        for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)<br />
-        {<br />
-            (*job)();<br />
-            delete job;<br />
-        }<br />
-        InterlockedExchange(&mExclusiveFlag, 0);<br />
-    }<br />
-    RequestBase(void)<br />
-        : mExclusiveFlag(0) {}<br />
-<br />
-private:<br />
-    typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;<br />
-    JobQueue mJobQueue;<br />
-    LONG     mExclusiveFlag;<br />
-};<br />
-<br />
-class User : public RequestBase<br />
-{<br />
-public:<br />
-    void AddExp(int exp)    { mExp += exp; }<br />
-    int  GetExp(void) const { return mExp; }<br />
-<br />
-    User(void) : mExp(0) {}<br />
-    ~User(void) {}<br />
-<br />
-private:<br />
-    int mExp;<br />
-};<br />
-<br />
-typedef std::shared_ptr<User> UserRef;<br />
-<br />
-int _tmain(int argc, _TCHAR* argv[])<br />
-{<br />
-    typedef std::vector<UserRef> Users;<br />
-    Users users;<br />
-<br />
-    users.push_back(UserRef(new User));<br />
-    users.push_back(UserRef(new User));<br />
-    users.push_back(UserRef(new User));<br />
-    users.push_back(UserRef(new User));<br />
-<br />
-    std::for_each(users.begin(), users.end(), [=] (UserRef& user) {<br />
-        user->Request(std::bind(&User::AddExp, user, (rand() % 7) * 1000));<br />
-    });<br />
-    <br />
-    std::for_each(users.cbegin(), users.cend(), [=] (const UserRef& user) {<br />
-        std::cout << "Exp (" << user->GetExp() << ")" << std::endl;<br />
-    });<br />
-<br />
-    users.erase(users.begin(), users.end());<br />
-    return 0;<br />
-}</pre><br />
+<pre class="brush: cpp;">#include <windows.h>
+#include <functional> 
+#include <algorithm> 
+#include <iostream>
+#include <concurrent_queue.h>
+#include <vector>
+
+class RequestBase
+{
+private:
+    struct RequestJob
+    {
+        virtual void operator () (void) = 0;
+        virtual ~RequestJob() {}
+    };
+    typedef RequestJob* RequestJobPtr;
+
+public:
+    template <typename _Functor>
+    void Request(const _Functor& functor)
+    {
+        struct _RequestJobImpl : public RequestJob
+        {
+            _RequestJobImpl(const _Functor& functor)
+                : mFunctor (functor) {}
+            virtual void operator () (void) { mFunctor(); }
+
+            _Functor mFunctor;
+        };
+        mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));
+
+        if (InterlockedExchange(&mExclusiveFlag, 1) == 1)
+            return;
+        
+        for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)
+        {
+            (*job)();
+            delete job;
+        }
+        InterlockedExchange(&mExclusiveFlag, 0);
+    }
+    RequestBase(void)
+        : mExclusiveFlag(0) {}
+
+private:
+    typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
+    JobQueue mJobQueue;
+    LONG     mExclusiveFlag;
+};
+
+class User : public RequestBase
+{
+public:
+    void AddExp(int exp)    { mExp += exp; }
+    int  GetExp(void) const { return mExp; }
+
+    User(void) : mExp(0) {}
+    ~User(void) {}
+
+private:
+    int mExp;
+};
+
+typedef std::shared_ptr<User> UserRef;
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    typedef std::vector<UserRef> Users;
+    Users users;
+
+    users.push_back(UserRef(new User));
+    users.push_back(UserRef(new User));
+    users.push_back(UserRef(new User));
+    users.push_back(UserRef(new User));
+
+    std::for_each(users.begin(), users.end(), [=] (UserRef& user) {
+        user->Request(std::bind(&User::AddExp, user, (rand() % 7) * 1000));
+    });
+    
+    std::for_each(users.cbegin(), users.cend(), [=] (const UserRef& user) {
+        std::cout << "Exp (" << user->GetExp() << ")" << std::endl;
+    });
+
+    users.erase(users.begin(), users.end());
+    return 0;
+}</pre>
 <br />
 #<br />
 멀티 Thread 프로그래밍에서 Lock 없는 코드를 작성하는 것은 성능적으로 꽤나 중요한 일이다. 따라서 위와 같은 방법을 통해 공유 객체에 대한 수행을 보호하는 것도 좋은 방법일 것이다.<br />

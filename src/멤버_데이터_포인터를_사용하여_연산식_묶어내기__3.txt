@@ -7,15 +7,15 @@ BuffType과 그 인터페이스를 대응시키는 방법을 사용하였다.
 
 동일한 인터페이스를 사용하기 위해서, 그들을 하나의 동일한 타입으로 지칭하는 방법을 사용하였고,
 그렇기 때문에 서로 다른 type, int 변수와 float 변수, 그리고 그에 대한 배열 변수가 있을 때에는 사용할 수 없는 방법이었다.
-<pre class="brush: cpp; html-script: true">struct Stat {
+<pre class="brush: cpp;">struct Stat {
     int hp;
-    float attack;</pre><pre class="brush: cpp; html-script: true">typedef float Stat::*DataPtr;
+    float attack;</pre><pre class="brush: cpp;">typedef float Stat::*DataPtr;
 DataPtr ptr = &Stat::hp; // Error!</pre>
 이번 글에서는 형식 삭제(<a href="http://en.wikipedia.org/wiki/Type_erasure">type erasure</a>)를 사용하여 보다 다양한 type을 지원하면서, 확장 가능한 방법에 대해 알아보도록 하겠다.
 
 #
 형식 삭제라고 하면 뭔가 어려워 보이지만, 그 결과물을 보면 굉장히 친숙하다. C++에서 형식 삭제를 하는 방법은 가상 함수를 통한 다형성을 사용하는 것인데, 예를 들면 다음과 같다.
-<pre class="brush: cpp; html-script: true">struct ValueHolder {
+<pre class="brush: cpp;">struct ValueHolder {
     virtual float GetValue() const = 0;
     virtual void SetValue(float value) = 0;
 }
@@ -30,13 +30,13 @@ ValueHolder는 concrete class가 어떤 값을 들고 있던, GetValue() 함수�
 #
 그런데 왜 형식 삭제라는 골치 아픈 용어를 사용할까?
 char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolder concrete class를 작성하는 것은 매우 귀찮은 일이다. 그렇다면 template을 사용하여 그 귀찮음을 해결해보자.
-<pre class="brush: cpp; html-script: true">template <typename _Ty>
+<pre class="brush: cpp;">template <typename _Ty>
 struct ValueHolderImpl : public ValueHolder {
     virtual float GetValue() const { return static_cast<float>(value); }
     virtual void SetValue(float _value) { value = static_cast<_Ty>(_value); }
     _Ty value;</pre>
 이제 ValueHolderImpl<> class를 사용하면 float type과 static_cast 호환이 되는 모든 형식에 대해 ValueHolder를 만들 수 있다.
-<pre class="brush: cpp; html-script: true">ValueHolder* intHolder = new ValueHolderImpl<int>;
+<pre class="brush: cpp;">ValueHolder* intHolder = new ValueHolderImpl<int>;
 ValueHolder* floatHolder = new ValueHolderImpl<float>;</pre>
 concrete class들은 ValueHolderImpl<int> 와 같이 type 정보를 가진 채로 명시되지만 ValueHolder interface으로 지칭이 가능하다. 즉, runtime에는 concrete class의 type 정보 없이 그것들을 사용할 수 있게 되는 것이다.
 
@@ -45,7 +45,7 @@ concrete class들은 ValueHolderImpl<int> 와 같이 type 정보를 가진 채�
 #
 이제 필요한 이론을 모두 습득하였으니 즐거운 코딩을 해보자.
 형식 삭제를 위한 interface를 먼저 설계해보자.
-<pre class="brush: cpp; html-script: true">template <typename _Class>
+<pre class="brush: cpp;">template <typename _Class>
 class IAccessor {
 public:
     virtual float GetValue(const _Class&) const = 0;
@@ -55,7 +55,7 @@ public:
 좀 일반적인 설계를 위해, 어떤 class에 대한 Accessor를 만들 것인지를 template parameter로 남겨두었다.
 
 배열이 아닌 type에 대한 Accessor를 보면 이해하기가 쉽겠다. 다음 코드를 보자.
-<pre class="brush: cpp; html-script: true">template <typename _Class, typename _Ty>
+<pre class="brush: cpp;">template <typename _Class, typename _Ty>
 class SingleAccessor : public IAccessor<_Class> {
 public:
     virtual float GetValue(const _Class& obj) const {
@@ -74,7 +74,7 @@ private:
 이제 이 SingleAccessor를 사용하여 int 변수이든, float 변수이든 멤버 변수의 type에 상관없이 접근할 수 있는 IAccessor를 만들 수 있는 것이다.
 
 멤버 변수의 타입이 배열인 것은 배열에 대한 크기와, 몇 번째 element에 접근할지에 대한 index 값이 같이 필요하다.
-<pre class="brush: cpp; html-script: true">template <typename _Class, typename _Ty, size_t _Size>
+<pre class="brush: cpp;">template <typename _Class, typename _Ty, size_t _Size>
 class ArrayAccessor : public IAccessor<_Class> {
 public:
     virtual float GetValue(const _Class& obj) const {
@@ -94,7 +94,7 @@ Get/SetValue 함수의 구조는 SingleAccessor와 크게 차이가 없다. 배�
 
 #
 이제 Accessor들과 enum 값을 연관지어 관리할 관리자를 만들어보자.
-<pre class="brush: cpp; html-script: true">template <typename _Class>
+<pre class="brush: cpp;">template <typename _Class>
 class AccessorManager {
 public:
     typedef std::shared_ptr<IAccessor<_Class>> AccessorImpl;
@@ -121,7 +121,7 @@ AccessorManager는 int (BuffType)와 shared_ptr<IAccessor>의 map을 갖고 이�
 재미있는 것은 Register 함수들인데, Register 함수의 인자로 들어오는 값을 통해 template parameter들이 deduce되고, 이렇게 deduce된 template parameter들을 SingleAccessor나 ArrayAccessor의 template parameter로 넘겨주게 된다.
 
 이제 다음과 같이 쓸 수 있다.
-<pre class="brush: cpp; html-script: true">AccessorManager<Stat> manager;
+<pre class="brush: cpp;">AccessorManager<Stat> manager;
 manager.Register(BUFF_HP, &Stat::hp);
 manager.Register(BUFF_RUN_SPEED, &Stat::movingSpeed, MST_RUN);</pre>
 첫 번째 Register 호출은 SingleAccessor를 생성하는 Register 함수가 호출된다. 그리고 hp 멤버의 type이 적절히 deduce되어 SingleAccessor가 만들어진다.
@@ -130,7 +130,7 @@ manager.Register(BUFF_RUN_SPEED, &Stat::movingSpeed, MST_RUN);</pre>
 이 때 index인 MST_RUN이 같이 ArrayAccessor로 전달되어, BUFF_RUN_SPEED에 의해서 movingSpeed[MST_RUN]의 값을 제어할 수 있게 되는 것이다.
 
 생각해보니, 이러한 Manager class는 전역으로 하나만 있으면 좋겠다. 따라서 다음과 같이 간단한 singleton을 만들어서 써보자.
-<pre class="brush: cpp; html-script: true">template <typename _Class>
+<pre class="brush: cpp;">template <typename _Class>
 AccessorManager<_Class>& Accessor() {
     static AccessorManager<_Class> instance;
     return instance;
@@ -139,7 +139,7 @@ AccessorManager<_Class>& Accessor() {
 
 #
 이제 #2에서 정의한 BUFF_ENUM과 BUFF_ENUM_A 를 다음과 같이 정의하여 마무리를 지어보자.
-<pre class="brush: cpp; html-script: true">#define BUFF_ENUM(type, member) Accessor<Stat>().Register(type, member);
+<pre class="brush: cpp;">#define BUFF_ENUM(type, member) Accessor<Stat>().Register(type, member);
 #define BUFF_ENUM_A(type, member, index) Accessor<Stat>().Register(type, member, index);
 #include "BuffType.inl"
 #undef BUFF_ENUM
@@ -151,7 +151,7 @@ Stat 구조체 내의 변수와 BuffType을 엮을 수 있다는 것이다.
 #
 매번 AccessorManager에게 enum 값을 넘겨서 IAccessor를 받은 후, 그 IAccessor와 Stat 구조체 변수를 엮어서 값을 주고 받는 코딩을 하는 것은 너무 더럽고 귀찮다.
 따라서 간단히 이 둘을 연결해줄 수 있는 Accessible을 만들어보자.
-<pre class="brush: cpp; html-script: true">template <typename _Class>
+<pre class="brush: cpp;">template <typename _Class>
 class Accessible {
 public:
     Accessible(_Class& _object)
@@ -173,7 +173,7 @@ Accessible은 class를 template parameter로 받고, IAccessor를 통해 접근�
 그리고 Accessor<>를 통해 IAccessor를 불러와서 멤버로 가지고 있는 object와 연결하여 Get/SetValue를 할 수 있게 만들어준다. 
 
 이제 다음과 같이 사용할 수 있다.
-<pre class="brush: cpp; html-script: true">Accessible<Stat> accessible(stat);
+<pre class="brush: cpp;">Accessible<Stat> accessible(stat);
 switch (buffMethod) {
 case METHOD_SET: accessible.SetValue(buffType, buffValue); break;
 case METHOD_ADD: accessible.SetValue(buffType, accessible.GetValue(buffType) + buffValue); break;

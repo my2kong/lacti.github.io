@@ -77,76 +77,76 @@ MessageQueue 는 전역 객체이다. Message 를 받아서 이를 수신 Handle
 <br />
 #<br />
 Message 는 무슨 class 가 될지 모르니까 간단하게 mark interface 로 만든다.<br />
-<pre class="brush: java; html-script: true">public interface Message {<br />
-}</pre><br />
+<pre class="brush: java;">public interface Message {
+}</pre>
 <br />
 MessageQueue class 는 Message 를 공유하는 Queue 객체와 이를 처리할 수 있도록 내부 Thread 를 하나 돌린다.<br />
-<pre class="brush: java; html-script: true">private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); <br />
-<br />
-private MessageQueue() {<br />
-    new Thread() {<br />
-        /* public this() */ {<br />
-            setDaemon(true);<br />
-        }<br />
-        <br />
-        @Override<br />
-        public void run() {<br />
-            process();<br />
-        }<br />
-    }.start();<br />
-}<br />
-<br />
-private void process() {<br />
-    Message message = null;<br />
-    while ((message = pop()) != null) {<br />
-        delegate(message);<br />
-    }<br />
-}<br />
-<br />
-private Message pop() {<br />
-    try {<br />
-        return queue.take();<br />
-    } catch (InterruptedException e) {<br />
-        Logger.error(e);<br />
-    }<br />
-    return null;<br />
-}</pre><br />
+<pre class="brush: java;">private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); 
+
+private MessageQueue() {
+    new Thread() {
+        /* public this() */ {
+            setDaemon(true);
+        }
+        
+        @Override
+        public void run() {
+            process();
+        }
+    }.start();
+}
+
+private void process() {
+    Message message = null;
+    while ((message = pop()) != null) {
+        delegate(message);
+    }
+}
+
+private Message pop() {
+    try {
+        return queue.take();
+    } catch (InterruptedException e) {
+        Logger.error(e);
+    }
+    return null;
+}</pre>
 <br />
 #<br />
 보통의 단순한 Message Handler 라면, Message 에 MessageType 이나 id 값을 넣어서 그 내부적으로 switch case 로 분기하여 처리하는 구조가 될 것이다.<br />
 이에 대해서는 multiple-dispatch 를 사용하면 보다 깔끔한 구조의 Handler 를 작성할 수 있는데, Java 는 어차피 느리고 Reflection 을 통해 이 기능을 구현할 수 있으니 도전해보자.<br />
 <br />
 Handler 는 <em>handleMessage</em> 이라는 method 를 갖는다. 이 때 parameter 는 Message class 를 하나만 갖는다.<br />
-<pre class="brush: java; html-script: true">void handleMessage(StringMessage message) {<br />
-}<br />
-void handleMessage(IntMessage message) {<br />
-}</pre><br />
+<pre class="brush: java;">void handleMessage(StringMessage message) {
+}
+void handleMessage(IntMessage message) {
+}</pre>
 이 때 MessageQueue 에 StringMessage 객체를 넣으면 첫 번째 함수가, IntMessage 객체를 넣으면 후자의 함수가 호출되도록 하겠다는 것이다.<br />
 <br />
-<pre class="brush: java; html-script: true">private static final String HANDLER_NAME = "handleMessage";<br />
-private Map<Class<?>, List<Object>> handlerMap = new ConcurrentHashMap<Class<?>, List<Object>>();<br />
-<br />
-private void addHandler(Object handler) {<br />
-    Class<?> handlerClass = handler.getClass();<br />
-    for (Method method: handlerClass.getDeclaredMethods()) {<br />
-        if (!method.getName().equals(HANDLER_NAME))<br />
-            continue;<br />
-        <br />
-        Class<?>[] paramTypes = method.getParameterTypes();<br />
-        Class<?> messageClass = paramTypes[0];<br />
-        if (!Message.class.isAssignableFrom(messageClass) || paramTypes.length > 1) {<br />
-            Logger.error(new MessageQueueException("Invalid Handler in " + handlerClass.getSimpleName() <br />
-                    + "/" + method.toGenericString()));<br />
-            <br />
-            continue;<br />
-        }<br />
-        <br />
-        if (!handlerMap.containsKey(messageClass)) {<br />
-            handlerMap.put(messageClass, new CopyOnWriteArrayList<Object>());<br />
-        }<br />
-        handlerMap.get(messageClass).add(handler);<br />
-    }<br />
-}</pre><br />
+<pre class="brush: java;">private static final String HANDLER_NAME = "handleMessage";
+private Map<Class<?>, List<Object>> handlerMap = new ConcurrentHashMap<Class<?>, List<Object>>();
+
+private void addHandler(Object handler) {
+    Class<?> handlerClass = handler.getClass();
+    for (Method method: handlerClass.getDeclaredMethods()) {
+        if (!method.getName().equals(HANDLER_NAME))
+            continue;
+        
+        Class<?>[] paramTypes = method.getParameterTypes();
+        Class<?> messageClass = paramTypes[0];
+        if (!Message.class.isAssignableFrom(messageClass) || paramTypes.length > 1) {
+            Logger.error(new MessageQueueException("Invalid Handler in " + handlerClass.getSimpleName() 
+                    + "/" + method.toGenericString()));
+            
+            continue;
+        }
+        
+        if (!handlerMap.containsKey(messageClass)) {
+            handlerMap.put(messageClass, new CopyOnWriteArrayList<Object>());
+        }
+        handlerMap.get(messageClass).add(handler);
+    }
+}</pre>
 Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 가져온다.<br />
 그 Method 중 이름이 handleMessage 인 것들을 찾는다. 이 때 parameter 는 반드시 한 개이어야 하고, 그 type 은 Message class 를 상속받는 class 이어야(assignableFrom) 한다.<br />
 <br />
@@ -155,47 +155,47 @@ Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 �
 <br />
 #<br />
 이제 Message 가 들어오면 그 class type 에 해당하는 Handler 를 찾아서 invoke 를 해주면 된다.<br />
-<pre class="brush: java; html-script: true">private void delegate(Message message) {<br />
-    Set<Object> invoked = new HashSet<Object>();<br />
-    <br />
-    Class<?> clazz = message.getClass();<br />
-    while (!clazz.equals(Object.class)) {<br />
-        if (handlerMap.containsKey(clazz)) {<br />
-            for (Object handler: handlerMap.get(clazz)) {<br />
-                // prevent bubbling<br />
-                if (!invoked.contains(handler)) {<br />
-                    invoke(handler, clazz, message);<br />
-                    invoked.add(handler);<br />
-                }<br />
-            }<br />
-        }<br />
-        <br />
-        clazz = clazz.getSuperclass();<br />
-    }<br />
-    <br />
-    if (invoked.isEmpty()) {<br />
-        Logger.error(new MessageQueueException("Cannot Find MessageHandler(" + message.getClass().getName() + ")"));<br />
-    }<br />
-}<br />
-<br />
-private void invoke(Object handler, Class<?> messageClass, Message message) {<br />
-    Class<?> handlerClass = handler.getClass();<br />
-    try {<br />
-        Method method = handlerClass.getDeclaredMethod(HANDLER_NAME, messageClass);<br />
-        method.setAccessible(true);<br />
-        method.invoke(handler, message);<br />
-        <br />
-    } catch (Exception e) {<br />
-        Logger.error(e);<br />
-    }<br />
-}</pre><br />
+<pre class="brush: java;">private void delegate(Message message) {
+    Set<Object> invoked = new HashSet<Object>();
+    
+    Class<?> clazz = message.getClass();
+    while (!clazz.equals(Object.class)) {
+        if (handlerMap.containsKey(clazz)) {
+            for (Object handler: handlerMap.get(clazz)) {
+                // prevent bubbling
+                if (!invoked.contains(handler)) {
+                    invoke(handler, clazz, message);
+                    invoked.add(handler);
+                }
+            }
+        }
+        
+        clazz = clazz.getSuperclass();
+    }
+    
+    if (invoked.isEmpty()) {
+        Logger.error(new MessageQueueException("Cannot Find MessageHandler(" + message.getClass().getName() + ")"));
+    }
+}
+
+private void invoke(Object handler, Class<?> messageClass, Message message) {
+    Class<?> handlerClass = handler.getClass();
+    try {
+        Method method = handlerClass.getDeclaredMethod(HANDLER_NAME, messageClass);
+        method.setAccessible(true);
+        method.invoke(handler, message);
+        
+    } catch (Exception e) {
+        Logger.error(e);
+    }
+}</pre>
 <br />
 다만, bubbling 을 막기 위해서 한 번 Invoke 된 Handler 는 다시 Invoke 되지 않도록 했다.<br />
 예를 들어서,<br />
-<pre class="brush: java; html-script: true">class StringMessage implements Message {}<br />
-class SpecialStringMessage extends StringMessage {}<br />
-void handleMessage(StringMessage message) {}<br />
-void handleMessage(SpecialStringMessage message) {}</pre><br />
+<pre class="brush: java;">class StringMessage implements Message {}
+class SpecialStringMessage extends StringMessage {}
+void handleMessage(StringMessage message) {}
+void handleMessage(SpecialStringMessage message) {}</pre>
 SpecialStringMessage 객체를 전달했을 때 원하는 상황은 두 번째 함수가 호출되는 것이겠지만,<br />
 사실 SpecialStringMessage class 는 StringMessage class 로 assignable 하기 때문에 첫 번째 함수도 호출될 수 있다.<br />
 <br />
@@ -206,25 +206,25 @@ invoke 를 할 때 굳이 setAccessible 을 true 해주는 이유는, message ha
 <br />
 #<br />
 작성된 MessageQueue 는 다음과 같이 사용될 수 있다.<br />
-<pre class="brush: java; html-script: true">void handleMessage(StringMessage message) {<br />
-    System.out.println(message.getMessage());<br />
-}<br />
-<br />
-void handleMessage(IntMessage message) {<br />
-    System.out.println(message.getValue());<br />
-}<br />
-<br />
-public static void main(String[] args) {<br />
-    MessageQueue.listen(new ExampleHandler());<br />
-    MessageQueue.push(new StringMessage("hello world"));<br />
-    MessageQueue.push(new IntMessage(12345));<br />
-    <br />
-    try {<br />
-        Thread.sleep(1000);<br />
-    } catch (InterruptedException e) {<br />
-        e.printStackTrace();<br />
-    }<br />
-}</pre><br />
+<pre class="brush: java;">void handleMessage(StringMessage message) {
+    System.out.println(message.getMessage());
+}
+
+void handleMessage(IntMessage message) {
+    System.out.println(message.getValue());
+}
+
+public static void main(String[] args) {
+    MessageQueue.listen(new ExampleHandler());
+    MessageQueue.push(new StringMessage("hello world"));
+    MessageQueue.push(new IntMessage(12345));
+    
+    try {
+        Thread.sleep(1000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+}</pre>
 <br />
 IntMessage class 는 int 를 생성자로 받고 StringMessage class 는 String 을 생성자로 받는 단순한 wrapper class 이다. MessageQueue 에 ExampleHandler 객체를 등록하고 각 type 의 message 객체를 넣으면,<br />
 첫 번째는 StringMessage parameter type 을 갖는 handler 가, 두 번째는 IntMessage parameter type 을 갖는 handler 가 호출된다.<br />

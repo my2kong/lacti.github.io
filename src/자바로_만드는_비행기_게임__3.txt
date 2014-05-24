@@ -8,7 +8,7 @@
 적기의 속도를 다양하게 한다고 한다면 원래 속도를 랜덤하게 구해서 그만큼씩 이동하게 하겠지만,
 그렇게 계산해주기 귀찮으니까 등장 시간을 랜덤하게 뽑고(5초에서 10초 사이)
 그 시간에 대해 랜덤한 시작좌표 ~ 끝좌표를 토대로 매 tick(100ms) 마다 얼마나 이동하면 될지 delta 를 구한다.
-<pre class="brush: java; html-script: true">class EnemyPos {
+<pre class="brush: java;">class EnemyPos {
     Point2D delta, current;
     public EnemyPos(int shipHeight) {
         Random rand = new Random();
@@ -24,7 +24,7 @@
 
 적기를 만들어주는 것도 여러 고려할 것이 있겠지만, 귀찮으니까 랜덤한 시간으로 만들어준다.
 일단 spawnTick 이라는걸 두어서, 현재 시간이 spawnTick 을 넘어갈 때만 적기를 만들고, 이 때 spawnTick 을 랜덤하게 갱신한다.
-<pre class="brush: java; html-script: true">private long spawnTick = 0;
+<pre class="brush: java;">private long spawnTick = 0;
 private void generateEnemy() {
     if (spawnTick < System.currentTimeMillis()) {
         spawnTick = System.currentTimeMillis() + new Random().nextInt(2000) + 500;
@@ -34,7 +34,7 @@ private void generateEnemy() {
 
 이제 매 Tick 마다 적기가 움직일 수 있도록 위치 갱신을 해준다.
 적기는 +y 방향으로 진행하며, 대충 화면 크기 height 가 480 이니까 560 정도 지나갈 때 비행기를 없애준다.
-<pre class="brush: java; html-script: true">private void updateEnemyPos() {
+<pre class="brush: java;">private void updateEnemyPos() {
     Iterator<EnemyPos> iterator = enemies.iterator();
     while (iterator.hasNext()) {
         EnemyPos pos = iterator.next();
@@ -47,14 +47,14 @@ private void generateEnemy() {
 미리 매 tick 마다 얼마나 움직일 지 계산해놨으니까, 현재의 위치는 거기서 더해주기만 하면 된다.
 
 이제 적기도 그려주자. paint 함수에 현재 존재하는 적기들을 그려주도록 하면 된다.
-<pre class="brush: java; html-script: true">for (EnemyPos enemyPos: enemies) {
+<pre class="brush: java;">for (EnemyPos enemyPos: enemies) {
     g.drawImage(enemy, (int) enemyPos.current.getX() - enemy.getWidth(this) / 2,
         (int) enemyPos.current.getY() - enemy.getHeight(this) / 2, this);
 }</pre>
 
 이제 랜덤한 시간에, 랜덤한 위치로 적기가 생성되어서 +y 방향으로 진행하는 것을 볼 수 있다.
 여기까지 코드는 다음과 같다.
-<pre class="brush: java; html-script: true">import java.util.*;
+<pre class="brush: java;">import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -152,7 +152,7 @@ class EnemyPos {
 #
 적기도 총알을 쏴야한다. 하지만 지금까지 총알은 모두 -y 방향(플레이어가 쐈을 때)만 고려되어서 만들어져있다.
 따라서 총알도 방향 정보가 추가되어야 한다.
-<pre class="brush: java; html-script: true">class Bullet {
+<pre class="brush: java;">class Bullet {
     Point pos;
     int direction;
     public Bullet(int x, int y, int direction) {
@@ -164,7 +164,7 @@ class EnemyPos {
 이에 따라 기존에 총알을 관리하던 코드가 바뀌어야 한다.
 플레이어는 -y 방향으로 쏘니까 direction 값이 - 가 될테고, 이를 저장하는 List 는 Point 가 아닌 Bullet 을 가져야할테고,
 그림 그리는 곳과 총알이 사라지는 곳까지 다 고쳐주면 된다.
-<pre class="brush: java; html-script: true">private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+<pre class="brush: java;">private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
     case KeyEvent.VK_SPACE: bullets.add(new Bullet(shipPos.x, shipPos.y, -1)); break;
@@ -191,7 +191,7 @@ public void paintComponent(Graphics g) {
 
 적기도 총알을 쏴야한다.
 간단하게 각 적기가 매 tick 마다 random 돌려서 0.3 보다 작은 값이 나오면 총알을 만들도록 하자-_-
-<pre class="brush: java; html-script: true">private void generateEnemyBullet() {
+<pre class="brush: java;">private void generateEnemyBullet() {
     for (EnemyPos enemyPos: enemies) {
         if (Math.random() < 0.2) {
             bullets.add(new Bullet((int) enemyPos.current.getX(), 
@@ -208,7 +208,7 @@ public void paintComponent(Graphics g) {
 
 그런데 비행기가 적기와 플레이어의 비행기로 2 종류가 있으니 총 5가지 항목에 대해서 검사를 해야한다.
 먼저 매 tick 마다 총알간 충돌 검사를 하자.
-<pre class="brush: java; html-script: true">Set<Bullet> removeBulletSet = new HashSet<Bullet>();
+<pre class="brush: java;">Set<Bullet> removeBulletSet = new HashSet<Bullet>();
 for (int i = 0; i < bullets.size() - 1; ++i) {
     for (int j = i + 1; j < bullets.size(); ++j) {
         Bullet lhs = bullets.get(i), rhs = bullets.get(j);
@@ -225,7 +225,7 @@ for (Bullet removal: removeBulletSet)
 대충하는 건 좋은데 문제가 생겼다.
 space 키를 누르고 있으면 그 총알들이 겹쳐서 다 충돌처리가 되어버린다.
 이 문제를 없애기 위해 shot delay 를 준다.
-<pre class="brush: java; html-script: true">private long shotTick = 0;
+<pre class="brush: java;">private long shotTick = 0;
 private void playerShot() {
     if (shotTick < System.currentTimeMillis()) {
         shotTick = System.currentTimeMillis() + 200;
@@ -235,7 +235,7 @@ private void playerShot() {
 
 그리고 나머지 충돌 처리도 한다.
 적기와 플레이어의 비행기는 영역을 갖는 Rectangle 이므로 Rectangle 의 intersect 함수를 쓰면 간단하다.
-<pre class="brush: java; html-script: true">private void checkCollision() {
+<pre class="brush: java;">private void checkCollision() {
     Set<Bullet> removeBulletSet = new HashSet<Bullet>();
     Set<EnemyPos> removeEnemySet = new HashSet<EnemyPos>();
     int shipWidth = ship.getWidth(this), shipHeight = ship.getHeight(this);
@@ -289,7 +289,7 @@ private void playerShot() {
 
 엄청나게 대충 작성한 결과로 적기가 자신이 쏜 총알에 맞아 사망하는 놀라운 일이 발생했다-_-;
 여기까지 코드 전문은 다음과 같다.
-<pre class="brush: java; html-script: true">import java.util.*;
+<pre class="brush: java;">import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;

@@ -18,13 +18,13 @@
 클라이언트는 고객입니다. 고객은 요청하는 쪽이죠. 서버를 끊임없이 괴롭혀서 자신이 원하는 정보를 받아가는 녀석입니다. 대표적인 예로 웹이 그렇지요. 지금도 풀씨 웹 서버에게 풀씨 홈페이지 데이터를 받아서 읽고 계십니다.
 
 클라이언트가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같습니다.
-<pre class="brush: java; html-script: true">1. Socket을 만든다.
+<pre class="brush: java;">1. Socket을 만든다.
 2. 생성된 Socket으로 서버와 연결한다
 3. 신나게 데이터 통신을 한다.
 4. 연결을 종료한다.</pre>
 
 말은 길고 코드는 짧으니 바로 코드로 넘어가봅시다.
-<pre class="brush: java; html-script: true">import java.io.IOException;
+<pre class="brush: java;">import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -49,7 +49,7 @@ public class Client {
 서버는 응답자라고 보시면 됩니다. 클라이언트의 요청에 대한 결과물을 회신하는 쪽이죠. 이는 풀씨 웹서버가 열심히 여러분들께 웹페이지를 보내주고 있는 것으로 생각하시면 됩니다.
 
 서버가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같습니다.
-<pre class="brush: java; html-script: true">1. ServerSocket을 만든다.
+<pre class="brush: java;">1. ServerSocket을 만든다.
 2. 클라이언트의 연결 요청에 대해 accept를 하여 클라이언트와 데이터 통신을 수행할 Socket 객체를 만든다.
 3. 신나게 데이터 통신을 한다.
 4. 연결을 종료한다.</pre>
@@ -58,7 +58,7 @@ public class Client {
 
 서버는 클라이언트로부터의 연결을 계속 기다리고 있습니다. 단, 클라이언트가 어떤 <strong>PORT 번호</strong>로 접속해야할지를 알고 그 PORT에 달라붙어서(<strong>bind</strong>) 기다리고(<strong>listen</strong>) 있으면 됩니다. 그리고 클라이언트가 접속하면, 해당 클라이언트에 대한 소켓을 낚으면(<strong>accpet</strong>) 됩니다.
 
-<pre class="brush: java; html-script: true">import java.io.IOException;
+<pre class="brush: java;">import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;

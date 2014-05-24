@@ -88,7 +88,7 @@ string MakeContent(string original)
 	var isCode = false;
 	foreach (var line in original.Replace("\r", "").Split('\n'))
 	{
-		if (line.Contains("<pre class='brush:")) isCode = true;
+		if (line.Contains("<pre class=\"brush:")) isCode = true;
 		if (!isCode)
 		{
 			resultBuffer.Append(line + "<br />\n");

@@ -15,7 +15,7 @@ Lock (Lock 걸었으면 Unlock 해줘야하니까)
 본 글에서는 Lock 을 사용하여 예를 들어보자.
 
 #
-<pre class="brush: cpp; html-script: true">class lock_t {
+<pre class="brush: cpp;">class lock_t {
 public:
     void lock();
     void unlock();
@@ -23,7 +23,7 @@ public:
 
 위와 같은 Lock class 가 정의되어 있다.
 어떤 class 에서 저 객체를 쓴다고 해보자.
-<pre class="brush: cpp; html-script: true">class item_t;
+<pre class="brush: cpp;">class item_t;
 typedef __int64 item_id_t;
 typedef std::shared_ptr<item_t> item_ref;
 
@@ -55,7 +55,7 @@ lock 을 사용하여 items 로의 접근을 보호하지만, 실제 item 을 �
 따라서 이러한 문제를 해결하기 위해 정적 객체의 생존 주기를 활용한다.
 
 #
-<pre class="brush: cpp; html-script: true">class scope_lock_t {
+<pre class="brush: cpp;">class scope_lock_t {
 public:
     scope_lock_t(lock_t* _lock) : lock(_lock) { lock->lock(); }
     ~scope_lock_t() { lock->unlock(); }
@@ -65,7 +65,7 @@ private:
 
 멤버로 lock 에 대한 pointer 를 갖고, 생성자에서 lock 을 부르고 소멸자에서 unlock 을 부르도록 하는 scope_lock_t class 를 설계한다.
 그러면, 코드가 아래와 같이 바뀐다.
-<pre class="brush: cpp; html-script: true">item_ref inventory_t::find(item_id_t item_id) {
+<pre class="brush: cpp;">item_ref inventory_t::find(item_id_t item_id) {
     scope_lock_t scope_lock(&lock);
     auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id));
     if (iter != items.end())
@@ -84,7 +84,7 @@ inventory_t::find() 함수가 종료되는 시점, 즉 scope_lock 객체가 소�
 
 #
 C++11 은 lambda expression 을 지원해주니 좀 다르게 생각해볼 수 있다.
-<pre class="brush: cpp; html-script: true">class lock_t {
+<pre class="brush: cpp;">class lock_t {
 public:
     template <typename functor>
     void scoped(functor& func) {

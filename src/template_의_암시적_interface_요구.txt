@@ -2,7 +2,7 @@
 2012-01-10 12:09:30
 #
 상속을 통한 동적 다형성을 이용하려면, 명시적인 interface 가 형성되어야 한다.
-<pre class="brush: cpp; html-script: true">class game_object {
+<pre class="brush: cpp;">class game_object {
 public:
     virtual void update(float dt) = 0;
 };
@@ -17,7 +17,7 @@ public:
 };</pre>
 
 와 같이 interface 와 이를 구현(implements) 하는 구체 class 를 작성하고
-<pre class="brush: cpp; html-script: true">std::vector<game_object*> objects;
+<pre class="brush: cpp;">std::vector<game_object*> objects;
 std::for_each(objects.begin(), objects.end(), [=] (game_object* obj) {
     obj->update(dt);
 });</pre>
@@ -27,7 +27,7 @@ iterating 하면서 update 함수를 불러준다. 이 때 type 은 game_object 
 
 #
 template 을 쓰면 좀 더 유연해지는데, 굳이 game_object 라는 interface 를 명시적으로 두지 않아도 update 라는 함수만 있으면 된다.
-<pre class="brush: cpp; html-script: true">class character {
+<pre class="brush: cpp;">class character {
 public:
     void update(float dt) { }
 };
@@ -39,7 +39,7 @@ public:
 character 와 item 자체는 어쨌든 update 라는 함수를 갖는다. 하지만 그 둘이 같은 interface 를 갖는다는 명시적인 보장은 없다. (적어도 코드를 작성하는 사람이 눈으로 보고는 알 수 있겠다)
 
 이에 하지만 만약 둘을 처리하는 로직이 공통될 경우 (둘 다 update 을 불러줘야할 경우) 가 있을 것이다.
-<pre class="brush: cpp; html-script: true">std::vector<character> characters;
+<pre class="brush: cpp;">std::vector<character> characters;
 std::vector<item> items;
 std::for_each(characters.begin(), characters.end(), [=] (character& ch) {
     ch.update(dt);
@@ -51,7 +51,7 @@ std::for_each(items.begin(), items.end(), [=] (item& it) {
 그럼 위처럼 코드가 중복된다. 하지만 하는 동작이 동일하다면, (코드 형태가 유사하다면)
 명시적인 interface 규약이 없어도 암시적으로 코드의 틀이 비슷하다는 것이니까 이 때 template 을 쓴다.
 
-<pre class="brush: cpp; html-script: true">template <class _contTy>
+<pre class="brush: cpp;">template <class _contTy>
 void update_all(_contTy& cont, float dt) {
     std::for_each(cont.begin(), cont.end(), [=] (typename _contTy::value_type& val) {
         val.update(dt);
@@ -64,7 +64,7 @@ void update_all(_contTy& cont, float dt) {
 이걸 왜 암시적이라고 부르냐하면, update_all 함수는 실제 사용되기 전까지 컴파일 대상이 아니며,
 사용되었을 때 해당 type 으로 코드가 instantiate 되면서 올바른 코드인지 검사하기 때문이다.
 즉, std::vector<character> 라는 type 으로 위 함수를 부르게 되면,
-<pre class="brush: cpp; html-script: true">void update_all(std::vector<character>& cont, float dt) {
+<pre class="brush: cpp;">void update_all(std::vector<character>& cont, float dt) {
     std::for_each(cont.begin(), cont.end(), [=] (std::vector<character>::value_type& val) {
         val.update(dt);
     });

@@ -6,7 +6,7 @@
 
 #
 Stat 코드를 작성하다보니, 이동 속도에 관해서는 각각의 변수를 따로 두는 것 보다, 배열 하나로 처리하는 것이 더 낫다는 것을 깨닫게 되었다.
-<pre class="brush: cpp; html-script: true">enum MovingStatType {
+<pre class="brush: cpp;">enum MovingStatType {
     MST_WALK,
     MST_RUN,
     MST_RIDE,
@@ -16,7 +16,7 @@ struct Stat {
     float hp;
     float movingSpeed[MST_MAX];</pre>
 배열로 묶어서 movingSpeed 관련 코드가 개선된 것까지는 좋았는데 hp와 movingSpeed는 type이 다르기 때문에 #1의 방법을 더 이상 사용할 수 없게 되었다. 둘의 type을 비교해보면 아래와 같다.
-<pre class="brush: cpp; html-script: true">typedef float Stat::*DataPtr;
+<pre class="brush: cpp;">typedef float Stat::*DataPtr;
 typedef float (Stat::*ArrayPtr)[3];</pre>
 
 어쨌든 두 타입이 완전히 달라졌기 때문에, 이를 일치시키지 못한다면 또 다시 switch-case의 지옥을 맛보게 될 것이다.
@@ -27,41 +27,41 @@ typedef float (Stat::*ArrayPtr)[3];</pre>
 멤버 함수 포인터를 사용할 것이니 함수의 signature는 같아야 한다는 것이다.
 
 위 Stat 구조체에서는 다음과 같이 생각해볼 수 있다.
-<pre class="brush: cpp; html-script: true">struct Stat {
+<pre class="brush: cpp;">struct Stat {
     float& Hp() { return hp; }
     float& WalkSpeed() { return movingSpeed[MST_WALK]; }
     float& RunSpeed() { return movingSpeed[MST_RUN]; }
     float& RideSpeed() { return movingSpeed[MST_RIDE]; }</pre>
 이제 위 함수들은 다음의 멤버 함수 포인터로 지칭이 가능하다.
-<pre class="brush: cpp; html-script: true">typedef float& (Stat::*Accessor)();</pre>
+<pre class="brush: cpp;">typedef float& (Stat::*Accessor)();</pre>
 
 하지만 모든 멤버 변수에 대해서 저렇게 함수를 만들어주는 것은 여간 고역이 아니다.
 이런 일을 사람이 하는 것은 예의에 어긋나니, 컴파일러를 부려먹자.
-<pre class="brush: cpp; html-script: true">struct Stat {
+<pre class="brush: cpp;">struct Stat {
     float& Hp() { return hp; }
     template <int _Index>
     float& MovingSpeed() { return movingSpeed[_Index]; }</pre>
 template 함수를 사용해서 배열의 인자를 template으로 넘겼다. 저 _Index 값으로 MST_WALK 등의 값을 넘기면 그에 해당하는 MovingSpeed<> 함수를 컴파일러가 알아서 생성해줄 것이다.
 
 <strong>이렇게 생성된 template 함수들의 interface도 위에서 정의한 Accessor에 부합된다. 이것이 핵심 아이디어이다.</strong>
-<pre class="brush: cpp; html-script: true">Accessor acc1 = &Stat::MovingSpeed<MST_WALK>;
+<pre class="brush: cpp;">Accessor acc1 = &Stat::MovingSpeed<MST_WALK>;
 Accessor acc2 = &Stat::MovingSpeed<MST_RUN>;</pre>
 
 #
 Stat의 각 멤버에 대해 노출 함수를 만들어주는 것은 지겨운 일이다. 이 함수들 역시 template으로 묶어보자.
-<pre class="brush: cpp; html-script: true">struct Stat {
+<pre class="brush: cpp;">struct Stat {
     template <float Stat::*_DataPtr>
     float& Access() { return this->*_DataPtr; }</pre>
 Access 함수는 멤버 데이터 포인터를 template 인자로 받는다. 이 역시 위에서 정의한 Accessor 타입에 부합된다.
-<pre class="brush: cpp; html-script: true">Accessor acc3 = Stat::Access<&Stat::hp>;</pre>
+<pre class="brush: cpp;">Accessor acc3 = Stat::Access<&Stat::hp>;</pre>
 
 배열의 멤버 데이터 포인터를 template 인자로 받으려면 약간 까다로운데,
 그 이유는 배열의 멤버 데이터 포인터의 타입을 명시할 때에는 그 배열의 크기가 필요하기 때문이다.
-<pre class="brush: cpp; html-script: true">struct Stat {
+<pre class="brush: cpp;">struct Stat {
     template <size_t _Size, float (Stat::*_ArrayPtr)[_Size], int _Index>
     float& Access() { return (this->*_ArrayPtr)[_Index]; }</pre>
 배열 타입 명시를 위한 배열의 크기, 멤버 데이터 포인터 값, 그리고 배열 내의 index. 이렇게 3개의 template 인자를 받는다. 이 함수를 사용하여 acc1, acc2를 다시 정의해 본다면 다음과 같다.
-<pre class="brush: cpp; html-script: true">Accessor acc1 = &Stat::Access<MST_MAX, &Stat::movingSpeed, MST_WALK>;
+<pre class="brush: cpp;">Accessor acc1 = &Stat::Access<MST_MAX, &Stat::movingSpeed, MST_WALK>;
 Accessor acc2 = &Stat::Access<MST_MAX, &Stat::movingSpeed, MST_RUN>;</pre>
 
 이제 일반적인 <strong>Access</strong>라는 멤버 함수를 사용하여 모든 멤버를 접근할 수 있게 되었다.
@@ -70,19 +70,19 @@ Accessor acc2 = &Stat::Access<MST_MAX, &Stat::movingSpeed, MST_RUN>;</pre>
 #
 배열의 크기를 구하기 위해 간단한 메타 템플릿 함수를 작성해보자.
 일단 일반적인 interface를 선언하고,
-<pre class="brush: cpp; html-script: true">template <typename T>
+<pre class="brush: cpp;">template <typename T>
 struct countof;</pre>
 그리고 배열의 크기를 알아내기 위한 특수화된specialization 메타 템플릿 함수를 작성한다.
-<pre class="brush: cpp; html-script: true">template <typename _Ty, typename _Class, size_t _Size>
+<pre class="brush: cpp;">template <typename _Ty, typename _Class, size_t _Size>
 struct countof<_Ty (_Class::*)[_Size]> {
     enum { value = _Size };
 };</pre>
 
 countof의 타입 argument가 <strong>_Ty (_Class::*)[_Size]</strong> 형태이면 그 _Size를 value로 갖는 메타 템플릿 함수이다. <strong>decltype 키워드</strong>를 사용하여 멤버 데이터 포인터의 타입을 얻을 수 있으므로, 다음과 같이 멤버 데이터 포인터가 가리키는 배열의 크기를 얻을 수 있다.
-<pre class="brush: cpp; html-script: true">countof<decltype(&Stat::movingSpeed)>::value</pre>
+<pre class="brush: cpp;">countof<decltype(&Stat::movingSpeed)>::value</pre>
 
 이제 위 배열 멤버에 대한 접근을 다음과 같이 표현할 수 있게 되었다.
-<pre class="brush: cpp; html-script: true">Accessor acc1 = &Stat::Access<countof<decltype(&Stat::movingSpeed)>::value,
+<pre class="brush: cpp;">Accessor acc1 = &Stat::Access<countof<decltype(&Stat::movingSpeed)>::value,
     &Stat::movingSpeed, MST_WALK>;</pre>
 
 #
@@ -90,14 +90,14 @@ countof의 타입 argument가 <strong>_Ty (_Class::*)[_Size]</strong> 형태이�
 멤버의 데이터 타입이 배열이든, 그렇지 않든 float& (Stat::*)() signature를 사용하여 값을 얻을 수 있게 되었다.
 
 이제 #1에서 했던 방법처럼 코드를 정리하면 된다.
-<pre class="brush: cpp; html-script: true">typedef float& (Stat::*StatAccessor)();
+<pre class="brush: cpp;">typedef float& (Stat::*StatAccessor)();
 StatAccessor statAccessorTable[BUFF_MAX];
  
 statAccessorTable[BUFF_HP] = &Stat::Access<&Stat::hp>;
 statAccessorTable[BUFF_WALK_SPEED] = &Stat::Access<countof<decltype(&Stat::movingSpeed)>::value,
     &Stat::movingSpeed, MST_WALK>;</pre>
 
-<pre class="brush: cpp; html-script: true">StatAccessor accessor = statAccessorTable[buffType];
+<pre class="brush: cpp;">StatAccessor accessor = statAccessorTable[buffType];
 switch (buffMethod) {
 case SET: (stat.*accessor)() = buffValue; break;
 case ADD: (stat.*accessor)() += buffValue; break;
@@ -105,11 +105,11 @@ case RATE: (stat.*accessor)() *= buffValue; break;</pre>
 
 AccessorTable을 등록할 때, 아무래도 배열 타입을 등록하는데 코드가 쓸데없이 길어진다.
 이는 매크로를 사용하여 깔끔하게 정리할 수 있겠다.
-<pre class="brush: cpp; html-script: true">// buff_type.inl
+<pre class="brush: cpp;">// buff_type.inl
 BUFF_ENUM(BUFF_HP, &Stat::hp)
 BUFF_ENUM_A(BUFF_WALK_SPEED, &Stat::movingSpeed, MST_WALK)</pre>
 
-<pre class="brush: cpp; html-script: true">// buff_bind.cpp
+<pre class="brush: cpp;">// buff_bind.cpp
 #define BUFF_ENUM(name, ptr) statAccessorTable[name] = &Stat::Access<ptr>;
 #define BUFF_ENUM_A(name, ptr, idx) \
     statAccessorTable[name] = &Stat::Access<countof<decltype(ptr)>::value, ptr, idx>;

@@ -16,7 +16,7 @@ peterson's algorithm
 <a href="http://en.wikipedia.org/wiki/Peterson's_algorithm">http://en.wikipedia.org/wiki/Peterson's_algorithm</a>
 그냥 눈에 보이는대로 코드가 수행되면 문제가 발생하지 않는데,
 비순차 실행에 의해 flag[my_index] = true; turn = other_index; 대입의 순서가 뒤집히면 critical section에 두 thread가 진입할 수 있는 문제가 발생한다.
-<pre class="brush: cpp; html-script: true">P0: turn = 1;
+<pre class="brush: cpp;">P0: turn = 1;
     flag[0] = true;
     while (flag[1] == true && turn == 1)
     {
@@ -37,7 +37,7 @@ P1: turn = 0;
     ...
     // end of critical section
     flag[1] = false;</pre>
-<pre class="brush: cpp; html-script: true">(turn, flag_0, flag_1) = (0, f, f)
+<pre class="brush: cpp;">(turn, flag_0, flag_1) = (0, f, f)
 (1, f, f) // p0 turn = 1
 (0, f, f) // p1 turn = 0
 (0, f, t) // p1 = flag_1 = t -> p1 진입
@@ -88,7 +88,7 @@ hazard pointer
 객체별 수행 동기화 글 코드의 문제
 <a href="/a/객체별_함수_수행_동기화.html">객체별 함수 수행 동기화</a>
 angdev님의 문제 해결법
-<pre class="brush: cpp; html-script: true">mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));
+<pre class="brush: cpp;">mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));
 while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {
     for (RequestJobPtr job = nullptr; mJobQueue.try_pop(job); ) {
         (*job)();

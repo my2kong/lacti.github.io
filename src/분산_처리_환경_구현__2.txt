@@ -17,7 +17,7 @@ master에는 여러 slave가 연결한다. 각 연결된 slave는 master 내에 
 master에 command가 들어오면 수행할 work를 만든다. 연결된 slave의 info를 살펴보고 적절한 slave를 선택한 후 work를 보내준다. <strong>(distribute)</strong> 그러면 slave는 그 작업을 처리하고 결과를 master에게 보내주던가 한다.
 
 위 구현을 위해서는,
-<pre class="brush: cpp; html-script: true">1) c# network programming 기술
+<pre class="brush: cpp;">1) c# network programming 기술
 2) c# object serialization 기술</pre>
 정도만 알면 된다.
 
@@ -26,7 +26,7 @@ master에 command가 들어오면 수행할 work를 만든다. 연결된 slave�
 
 #
 먼저 master와 slave가 주고 받을 작업의 추상 형태인 IWork interface부터 살펴보면 다음과 같다.
-<pre class="brush: csharp; html-script: true">public interface IWork
+<pre class="brush: csharp;">public interface IWork
 {
     void Execute(Socket endPoint);
 }</pre>
@@ -41,7 +41,7 @@ Master class는 Slave의 통신을 위한 Socket과, 각 Slave의 상태에 대�
 Java같은 언어라면 interface로 해당 알고리즘을 분리하겠지만, C#이니 그냥 delegate로 빼서 관리한다.
 
 위 구현 사항을 분할해서 살펴보자. 먼저 Slave와 연결을 맺고 Slave가 전달하는 Work를 처리하기 위한 함수이다.
-<pre class="brush: csharp; html-script: true">// Master class
+<pre class="brush: csharp;">// Master class
 public async void Start()
 {
     var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -87,7 +87,7 @@ SocketContainer에서 관리하는 Socket 집합은 추후 작업을 분산시�
 #
 Slave는 Master에 연결한 뒤, 역시 동일하게 Master로부터 Work를 받아서 처리하는 구조로 작성하면 된다.
 때문에 이 부분은 Master의 코드와 크게 차이가 없다.
-<pre class="brush: csharp; html-script: true">public class Slave
+<pre class="brush: csharp;">public class Slave
 {
     public async void Start()
     {
@@ -108,7 +108,7 @@ Slave는 Master에 연결한 뒤, 역시 동일하게 Master로부터 Work를 �
 
 #
 Slave의 Socket을 관리하는 SocketContainer는, Slave의 연결이 동시 다발적으로 일어나므로 내부에 Lock을 가지고 Container를 관리하는 객체이다.
-<pre class="brush: csharp; html-script: true">// SocketContainer class
+<pre class="brush: csharp;">// SocketContainer class
 ReaderWriterLockSlim _lock =
     new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 private readonly Dictionary<Socket, SocketInformation> _sockets =
@@ -133,12 +133,12 @@ public Socket SelectSocket(Func<List<KeyValuePair<Socket, SocketInformation>>, S
 
 그런데 작업을 분산시키기 위해 필요한 정보는 Socket, SocketInformation 뿐만 아니라 어떤 작업인지(IWork)의 정보도 필요하다. 때문에 Master에서는 이 정보까지 취합해서 적절한 Slave를 선택할 수 있도록 delegator를 제공한다.
 
-<pre class="brush: csharp; html-script: true">public sealed class DistributeContext
+<pre class="brush: csharp;">public sealed class DistributeContext
 {
     public readonly IList<KeyValuePair<Socket, SocketInformation>> Sockets;
     public readonly IWork Work;
     private readonly SocketContainer _container;</pre>
-<pre class="brush: csharp; html-script: true">// Master class
+<pre class="brush: csharp;">// Master class
 public delegate Socket SelectSocketDecl(DistributeContext context);
 private SelectSocketDecl _socketSelector;
 public void DistributeWork(IWork work)
@@ -160,7 +160,7 @@ Master는 Slave의 연결을 기다리고, Slave가 연결되면 각 상태를 �
 Slave는 Master에게 연결한 뒤, Master의 작업을 기다리고 있다가 받는 즉시 처리해준다.
 
 소스 코드에 첨부된 간단한 예제 코드를 직접 보면 다음과 같다.
-<pre class="brush: csharp; html-script: true">[Serializable]
+<pre class="brush: csharp;">[Serializable]
 internal class SlaveWork : IWork
 {
     public void Execute(Socket endPoint)

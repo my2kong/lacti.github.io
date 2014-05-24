@@ -71,10 +71,10 @@
 System.Windows.Forms.Control 에는 Invoke 라는 UI Thread 로 작업을 delegate 하는 method 가 있다.<br />
 이녀석은 Delegate 를 받아서 그걸 내부에서 수행해주는데, <br />
 C# 에서는 어차피 외부 변수 capture 를 자동으로 해주므로 간단히 다음과 같이 쓰면 된다.<br />
-<pre class="brush: csharp; html-script: true">Invoke(new MethodInvoker(delegate()<br />
-{<br />
-    // code for running in ui thread<br />
-}));</pre><br />
+<pre class="brush: csharp;">Invoke(new MethodInvoker(delegate()
+{
+    // code for running in ui thread
+}));</pre>
 <br />
 그러면 delegate 내부의 내용은 UI thread 에서 수행되므로 문제가 없다.<br />
 (더 예전 버전의 C# 은 직접 method 를 만들어서 등록해주어야했지만 2.0 이후부터는 delegate 로 익명 함수자 생성이 가능하므로 문법이 좀 간단해졌다.)<br />

@@ -123,9 +123,9 @@ multi core 에서 동시에 실행된다면, spin lock 으로 기다리는게 �
 번거롭게 커널의 lock wait queue 에 들어가서 sleep 했다가 다시 wake up 해주는 무거운 방법(semaphore)을 쓸 필요가 없다<br />
 <br />
 2) 연산에 대한 lock operation 을 수행할 때 단일 core 의 수행만 보호해주는 것이 아니라 다른 core 까지도 보호를 해주어야 한다. 예를 들어 다음의 명령이 있다.<br />
-<pre class="brush: cpp; html-script: true">mov eax, dword ptr [count]<br />
-add eax, 1<br />
-mov dword ptr [count], eax</pre><br />
+<pre class="brush: cpp;">mov eax, dword ptr [count]
+add eax, 1
+mov dword ptr [count], eax</pre>
 이 명령을 단일 core 에서 수행한다면 저 명령 3줄을 실행하는 동안 context switching 을 못하게 하면 그만이다. 하지만 여러 core 에서 수행된다면 thread A 가 add eax, 1 을 수행하는 와중에 thread B 가 mov eax, dword ptr [count] 를 수행해버릴 수 있다.<br />
 뭐 spin lock 등을 걸어서 저 명령어 수행의 배타성을 보장해줘도 되지만 그건 너무 비싸다. 그래서 하드웨어 설계하시는 아저씨들이 열심히 고민을 해서 lock operation 이라는걸 만들었다.<br />
 <br />

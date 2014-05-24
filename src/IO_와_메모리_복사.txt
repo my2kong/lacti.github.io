@@ -42,7 +42,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 커널은 위대하다. 유저는 멍청하다. 유저는 악독하다. 유저는 적이다!
 
 다음의 예제를 보자.
-<pre class="brush: cpp; html-script: true">char *buffer = new char[4096];
+<pre class="brush: cpp;">char *buffer = new char[4096];
 read_async (socket, buffer, 4096);
 delete buffer; // 훼이크다, 커널아!</pre>
 위의 read_async 요청은 적법하다. buffer 포인터도 유효하고, 공간도 잘 할당되어있다. 하지만 완료 통지는 언제 될지 모른다. 여기서 커널은 유저를 <strong>믿고</strong> 유저가 넘긴 포인터에다가 데이터를 덮어쓰면, 잘 돌아갈까?
@@ -61,7 +61,7 @@ delete buffer; // 훼이크다, 커널아!</pre>
 이렇게 되면 커널에서 잘못된 유저 메모리에 접근할 일이 없고, 접근한다고 해도 유저 영역의 API 함수 내에서 접근하기 때문에 그 프로세스만 종료되게 되는 것이다(segmentation fault)
 
 같은 맥락으로 유저 영역 메모리에 있는 내용을 커널 모드에서 참조해야할 경우, 유저 영역 메모리가 없을 수도 있다.
-<pre class="brush: cpp; html-script: true">char *buffer = new char[4096];
+<pre class="brush: cpp;">char *buffer = new char[4096];
 // 뭔가 내용을 buffer 에 쓴다
 write_async (socket, buffer, written);
 delete buffer; // 훼이크다, 커널아!</pre>

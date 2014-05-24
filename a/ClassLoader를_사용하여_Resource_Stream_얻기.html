@@ -65,20 +65,20 @@
                     <span class="glyphicon glyphicon-time"></span> Posted on June 10, 2012 at 5:44 PM</p>
                 <hr>
                 <div class="content">
-<pre class="brush: java; html-script: true">import java.util.Scanner;<br />
-<br />
-public class Loader {<br />
-	public void printResourceList() {<br />
-		Scanner reader = new Scanner(getClass().getResourceAsStream("ResourceList"));<br />
-		while (reader.hasNextLine()) {<br />
-			System.out.println(reader.nextLine());<br />
-		}<br />
-		reader.close();<br />
-	}<br />
-	public static void main(String[] args) {<br />
-		new Loader().printResourceList();<br />
-	}<br />
-}</pre><br />
+<pre class="brush: java;">import java.util.Scanner;
+
+public class Loader {
+	public void printResourceList() {
+		Scanner reader = new Scanner(getClass().getResourceAsStream("ResourceList"));
+		while (reader.hasNextLine()) {
+			System.out.println(reader.nextLine());
+		}
+		reader.close();
+	}
+	public static void main(String[] args) {
+		new Loader().printResourceList();
+	}
+}</pre>
 <br />
 class 파일이 있는 위치와 resource가 같다면,<br />
 위처럼 간단히 getClass().getResourceAsStream() 으로 읽어올 수 있고,<br />

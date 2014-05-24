@@ -5,7 +5,7 @@
 
 #
 C++11 은 lambda expression 을 지원해주니 좀 다르게 생각해볼 수 있다.
-<pre class="brush: cpp; html-script: true">class lock_t {
+<pre class="brush: cpp;">class lock_t {
 public:
     template <typename functor>
     void scoped(functor& func) {
@@ -19,7 +19,7 @@ lock_t class 자체에 위와 같이 functor 를 받아 실행할 수 있는 함
 그리고 그 앞 뒤로 lock-unlock 을 불러준다.
 
 이렇게 하면, lambda 를 사용하여 lock 사용 코드를 보다 깔끔하게 정리해볼 수 있다.
-<pre class="brush: cpp; html-script: true">item_ref inventory_t::find(item_id_t item_id) {
+<pre class="brush: cpp;">item_ref inventory_t::find(item_id_t item_id) {
     item_ref item(NULL);
     lock.scoped([&item] () {
         auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id));
@@ -32,7 +32,7 @@ lock_t class 자체에 위와 같이 functor 를 받아 실행할 수 있는 함
 lambda 를 통해 lock 구문을 수행하는 코드를 보다 깔끔하게 묶어낼 수 있다... 라고 이야기하고 싶지만, item 이라는 값을 반환해야할 방법이 딱히 없어서 외부에서 변수를 선언하고 내부로 전달하는 영 좋지 못한 방법을 쓰고 있다.
 
 약간 이야기가 다른 길로 가지만, 보다 깔끔한 해결책을 위해 아래와 같이 코드를 작성해볼 수 있다는 것을 이야기하고 싶다.
-<pre class="brush: cpp; html-script: true">class lock_t {
+<pre class="brush: cpp;">class lock_t {
 public:
     template <typename R, typename functor>
     R&& scoped_return(functor&& func) {
@@ -42,7 +42,7 @@ public:
         return std::move(r);
     }
 };</pre>
-<pre class="brush: cpp; html-script: true">item_ref inventory_t::find(item_id_t item_id) {
+<pre class="brush: cpp;">item_ref inventory_t::find(item_id_t item_id) {
     return lock.scoped_return<item_ref>([=] () {
         auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id));
         return (iter != items.end())? (*iter): NULL;
@@ -57,7 +57,7 @@ lambda 를 이용해 raii 영역을 하나의 scope 로 묶어주는 방법에 �
 
 이러한 패턴은 생각보다 자주 등장하게 되므로, 이에 대한 일반적인 패턴을 만들어놓으면 좋을 것이다.
 이를 만족시키는 적절한 template class 를 작성해보자.
-<pre class="brush: cpp; html-script: true">template <class _Ty, void (_Ty::*begin)(), void (_Ty::*end)()>
+<pre class="brush: cpp;">template <class _Ty, void (_Ty::*begin)(), void (_Ty::*end)()>
 class raii_t {
 public:
     raii_t(_Ty* _obj)
@@ -72,10 +72,10 @@ private:
 };</pre>
 raii_t 라는 class 는 특정 type 과, 그 type 에 대해 시작 시 수행할 함수와 끝날 때 수행될 함수를 template 인자로 받는다.
 이제 lock_t 에 대한 lock_raii_t class 는 다음과 같은 typedef 로 정의할 수 있다.
-<pre class="brush: cpp; html-script: true">typedef raii_t<lock_t, &lock_t::lock, &lock_t::unlock> lock_raii_t;</pre>
+<pre class="brush: cpp;">typedef raii_t<lock_t, &lock_t::lock, &lock_t::unlock> lock_raii_t;</pre>
 
 lock_raii_t 는 lock_t 에 대해 동작하면서, 해당 변수가 생성 시 lock_t::lock 함수를 부르고, 소멸될 때 lock_t::unlock 함수를 부르게 된다.
-<pre class="brush: cpp; html-script: true">lock_t lock;
+<pre class="brush: cpp;">lock_t lock;
 lock_raii_t raii(&lock);</pre>
 
 저 raii_t 는 꽤 일반적이어서, 생성과 소멸 시 특정 함수를 통해 자원 관리가 되어야 하는 class 에 대해 모두 적용될 수 있다. 예를 들면 shared_ptr (add_ref/release_ref) 등이 될 수 있다.
@@ -86,7 +86,7 @@ lock_raii_t raii(&lock);</pre>
 즉, 익명의 객체를 하나 만들고, 그 소멸자에서 수행될 함수를 인자로 받도록 한다.
 
 먼저, 소멸자에서 무언가를 수행해줄 수 있는 class 를 만들어보자.
-<pre class="brush: cpp; html-script: true">template <typename _Func>
+<pre class="brush: cpp;">template <typename _Func>
 struct finalizer {
     finalizer(_Func&& _func)
         : func(_func) {}
@@ -100,13 +100,13 @@ private:
 위 finalizer class 는 생성자로 받은 함수를 소멸자에서 수행하므로, 해당 객체가 소멸될 때까지 인자로 받은 함수의 수행을 미루게 된다.
 
 이제 template argument 유추를 컴파일러에게 맡기기 위해 이 객체를 만들어주는 함수를 만들자.
-<pre class="brush: cpp; html-script: true">template <typename _Func>
+<pre class="brush: cpp;">template <typename _Func>
 finalizer<_Func> do_exit_scope(_Func&& func) {
     return finalizer<_Func>(std::move(func));
 }</pre>
 
 그러면 다음과 같이 사용이 가능해진다.
-<pre class="brush: cpp; html-script: true">auto f = do_exit_scope([=] () {
+<pre class="brush: cpp;">auto f = do_exit_scope([=] () {
     // implements here!
 });</pre>
 
@@ -115,7 +115,7 @@ finalizer<_Func> do_exit_scope(_Func&& func) {
 솔직히 g++ 은 어떻게 해야 좋을지 모르겠고, __COUNTER__ macro 가 있는 msvc 기준으로 설명하겠다.
 __COUNTER__ 는 해당 매크로가 해석될 때마다 1씩 증가하는 predefined macro 이다. 따라서 임시 변수 명을 지어주기에는 적합한 녀석이다. (대체품으로 __LINE__ 를 쓰기도 한데, 이러면 한 줄에 여러 코드를 작성할 수 없다.)
 
-<pre class="brush: cpp; html-script: true">#define __concat(a, b)      a##b
+<pre class="brush: cpp;">#define __concat(a, b)      a##b
 #define __auto_var          __concat(_auto_var, __COUNTER__)
 #define __do_exit_scope(f)  auto __auto_var = do_exit_scope(f)</pre>
 __auto_var 매크로는 자동으로 변수의 이름을 대충 지어주는 매크로다. _auto_var 라는 prefix 를 붙이고, 뒤에 __COUNTER__ 를 붙여서 _auto_var1, _auto_var2 등으로 해당 매크로를 사용할 때마다 이름이 알아서 지어지도록 한다.
@@ -124,7 +124,7 @@ __COUNTER__ 와 _auto_var 를 붙이기 위해서 ## 연산자를 썼다. 다만
 
 마지막으로 __do_exit_scope 라는 매크로 함수를 만들어서, 인자로 받은 함수에 대해 자동 변수 이름을 부여하도록 한다.
 이러면 auto f 와 같이 명시적으로 이름을 지정해주지 않아도 자동으로 변수를 할당하므로 조금이나마 더 나은 코드를 작성할 수 있다 (라는 기분이 든다-_-)
-<pre class="brush: cpp; html-script: true">__do_exit_scope([=] () { _tprintf_s(_T("third\n")); });
+<pre class="brush: cpp;">__do_exit_scope([=] () { _tprintf_s(_T("third\n")); });
 __do_exit_scope([=] () { _tprintf_s(_T("second\n")); });
 __do_exit_scope([=] () { _tprintf_s(_T("first\n")); });</pre>
 (변수의 소멸 순서는 생성 순서의 역순이므로, 출력 순서는 first - second - third 가 된다.)

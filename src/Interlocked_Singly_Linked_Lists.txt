@@ -36,7 +36,7 @@ SLIST 에서는 SLIST_ENTRY 라는 객체를 사용하는데 이걸 메모리에
 
 갑자기 항목에서 왜 항목의 주소로 넘어가는지는 SLIST_ENTRY 구조체 속을 들여다보면 알 수 있다.
 WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있다.
-<pre class="brush: cpp; html-script: true">typedef struct _SINGLE_LIST_ENTRY {
+<pre class="brush: cpp;">typedef struct _SINGLE_LIST_ENTRY {
     struct _SINGLE_LIST_ENTRY *Next;
 } SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
 #define SLIST_ENTRY SINGLE_LIST_ENTRY</pre>
@@ -45,7 +45,7 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 따라서 모든 항목의 주소가 메모리 정렬 되어있어야 하는 것이다.
 
 역시 WinNT.h 파일에 보면,
-<pre class="brush: cpp; html-script: true">#if defined(_WIN64) || defined(_M_ALPHA)
+<pre class="brush: cpp;">#if defined(_WIN64) || defined(_M_ALPHA)
 #define MAX_NATURAL_ALIGNMENT sizeof(ULONGLONG)
 #define MEMORY_ALLOCATION_ALIGNMENT 16
 #else
@@ -66,7 +66,7 @@ Flush 란 함수가 있다. 이는 Stack 에 들어있는 모든 Node 를 반환
 SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일단 SLIST 로 관리해야할 Node 들이 SLIST_ENTRY 객체를 멤버로 가져야하고, SLIST_ENTRY 멤버 변수들의 주소는 MEMORY_ALLOCATION_ALIGNMENT 값으로 정렬 되어있어야 한다.
 
 가장 간단한 방법은 다음과 같다.
-<pre class="brush: cpp; html-script: true">struct MyItem
+<pre class="brush: cpp;">struct MyItem
 {
     SLIST_ENTRY ListEntry;
     // Other Variables
@@ -79,7 +79,7 @@ SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일�
 이와 같은 이유로, virtual function pointer table 을 갖는 class type 에서 SLIST_ENTRY 을 멤버로 넣어 사용할 경우, 과연 이 변수를 정렬하기 위해서는 어떻게 해야할까 고민이 좀 되는데, 그냥 그러지 말자고 하고 싶다-_-
 
 아무튼 저렇게 만들어놓고 꺼내서 쓸 때는 단순히 casting 만 해서 쓰면 되니까 편하다.
-<pre class="brush: cpp; html-script: true">MyItem* item = (MyItem*) InterlockedPopEntryList (listHead);</pre>
+<pre class="brush: cpp;">MyItem* item = (MyItem*) InterlockedPopEntryList (listHead);</pre>
 
 #
 궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자.
@@ -87,15 +87,15 @@ SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일�
 <a href="http://msdn.microsoft.com/en-us/library/ms686962(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ms686962(v=vs.85).aspx</a>
 
 먼저 LIST_HEADER 를 만들어줘야한다. 이는 사용할 SLIST 의 Head 포인터이다. 당연한 이야기이지만 이것도 메모리 정렬이 되어야 한다.
-<pre class="brush: cpp; html-script: true">pListHead = (PSLIST_HEADER)_aligned_malloc(sizeof(SLIST_HEADER),
+<pre class="brush: cpp;">pListHead = (PSLIST_HEADER)_aligned_malloc(sizeof(SLIST_HEADER),
        MEMORY_ALLOCATION_ALIGNMENT);</pre>
 
 PROGRAM_ITEM 이라는 구조체가 첫 번째 멤버 변수로 SLIST_ENTRY 를 갖는다. 따라서 PROGRAM_ITEM 객체의 메모리 주소만 정렬해주면 된다.
-<pre class="brush: cpp; html-script: true">pProgramItem = (PPROGRAM_ITEM)_aligned_malloc(sizeof(PROGRAM_ITEM),
+<pre class="brush: cpp;">pProgramItem = (PPROGRAM_ITEM)_aligned_malloc(sizeof(PROGRAM_ITEM),
             MEMORY_ALLOCATION_ALIGNMENT);</pre>
 
 꺼내서 쓸 때는 어차피 SLIST_ENTRY 의 주소가 곧 PROGRAM_ITEM 의 주소이므로 casting 만 해서 쓰면 된다.
-<pre class="brush: cpp; html-script: true">pListEntry = InterlockedPopEntrySList(pListHead);
+<pre class="brush: cpp;">pListEntry = InterlockedPopEntrySList(pListHead);
 pProgramItem = (PPROGRAM_ITEM)pListEntry;</pre>
 
 #

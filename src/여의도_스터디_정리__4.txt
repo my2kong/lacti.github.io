@@ -49,7 +49,7 @@ read/write를 허용하는 좋은 방법은 없다. 처음에 read lock을 획�
 #
 잘 기억은 안 나는데 asynchronous method에 대해서 잠깐 이야기가 있었다.
 async-method를 요청할 때의 코드 패턴에 대한 이야기였는데
-<pre class="brush: cpp; html-script: true">void request_async(request_context context, async_state state, callback_t callback) {
+<pre class="brush: cpp;">void request_async(request_context context, async_state state, callback_t callback) {
     async_result result = magical_async_method(context);
     callback(result, state);
 }</pre>
@@ -91,7 +91,7 @@ availability은 장애 상황에서의 서비스 가용 상태를 뜻하고, lat
 지난 번에 구현한 actor model은 진정한 actor가 아니기 때문에 자원 접근 측면에서 문제가 발생할 수 있다.
 진정한 actor model이라면 다른 actor의 정보에 접근할 때에도 정보 접근 요청 message 같은 것을 보내서 처리해야 할 텐데, 만약에 해당 정보에 lock을 걸고 접근할 수 있도록 코드를 작성하였다고 해보자.
 즉, actor A, B가 있고, B가 A의 특정 데이터를 가져올 때 A의 lock을 걸고 데이터를 가져오게 된다는 것이다.
-<pre class="brush: cpp; html-script: true">class a_t : public actor_t {
+<pre class="brush: cpp;">class a_t : public actor_t {
 public:
     some_struct_t get_some() const { auto _ = read_lock(); return _some_struct; }
 };
@@ -104,7 +104,7 @@ public:
 };</pre>
 actor model로 구현한 주제에 lock을 쓴다는 점부터가 마음에 안 들지만 일단 그 부분은 그냥 넘어가자. 기존에 구현한 actor model의 job scheduling 방식은 "해당 actor를 먼저 점유한 thread가 있으면 그 thread가 해당 actor의 job_queue가 빌 때까지 모두 처리한다"이다.
 때문에 A에서 B로 함수를 호출할 때, A의 함수 수행이 끝나기 전에 B의 함수가 호출될 수 있다. 이는 A가 A에게 message를 보낼 때와 다른 수행 양상을 보인다.
-<pre class="brush: cpp; html-script: true">class a_t : public actor_t {
+<pre class="brush: cpp;">class a_t : public actor_t {
 public:
     void proc1() {
         post(&a_t::proc1);
@@ -125,7 +125,7 @@ public:
 <strong>do something 3, 1, 2 순으로 수행될 것이다.</strong>
 
 때문에 위의 코드로 돌아가서 lock 문제를 다시 살펴보자.
-<pre class="brush: cpp; html-script: true">class a_t : public actor_t {
+<pre class="brush: cpp;">class a_t : public actor_t {
 public:
     void update() {
         auto _ = write_lock();

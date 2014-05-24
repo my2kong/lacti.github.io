@@ -74,12 +74,12 @@ IO 함수라고 하면 생소하게 느끼는 경우가 많다. IO 함수는 inp
 #<br />
 IO 함수들은 기본적으로 blocking 모드로 동작하게 되어있다.<br />
 blocking 모드는 프로그램의 수행을 멈추는 것으로 간단한 예를 보면 다음과 같다.<br />
-<pre class="brush: cpp; html-script: true">while (true) {<br />
-    // 테트리스 블럭을 내린다<br />
-    // 벽돌 간 충돌 검사를 한다<br />
-    // 사용자의 키 입력을 받는다.<br />
-    scanf ("%c", &key);<br />
-    // 키 입력에 대한 처리를 한다.</pre><br />
+<pre class="brush: cpp;">while (true) {
+    // 테트리스 블럭을 내린다
+    // 벽돌 간 충돌 검사를 한다
+    // 사용자의 키 입력을 받는다.
+    scanf ("%c", &key);
+    // 키 입력에 대한 처리를 한다.</pre>
 혹시나 테트리스를 짜면서 위와 같은 코드를 짜본 경험이 있는 사람들은 금방 이해가 될 것이다. 완벽하다고 생각했던 위 코드는 제대로 동작하지 않는다. 키를 누르고 enter key 를 누르기 전까지는 테트리스 블럭이 다음 줄로 내려가지 않기 때문이다.<br />
 또한 재밌는 것은, 키를 여러번 누르고 enter key 를 눌러 input stream 을 flush 해주면 블럭이 아까 키 눌렀던만큼 쉬지 않고 한 순간에 움직이는 것을 볼 수 있다.<br />
 <br />
@@ -148,26 +148,26 @@ kernel 함수는 응용 프로그램의 IO 요청이 있을 때 IO 작업이 완
 1인용 테트리스야 enter key 눌러야만 벽돌이 움직입니다 이러면 실소로 끝나지만, MMORPG 에서 너님이 때려야만 AI 가 동작합니다, 이건 아니지 않겠는가 (혹시 턴제?)<br />
 <br />
 이런 이유로 인해서 수행 흐름을 막지 않는 IO 함수가 필요해졌다. 데이터가 들어올 때까지 기다리는 것이 아니라 데이터가 없으면 그냥 -1 반환해버리고 함수가 끝나는 것이다.<br />
-<pre class="brush: cpp; html-script: true">while (true) {<br />
-    // 테트리스 블럭을 내린다<br />
-    // 벽돌 간 충돌 검사를 한다<br />
-    // 사용자의 키 입력을 받는다.<br />
-    if (nb_scanf ("%c", &key) != -1) {<br />
-        // 키 입력에 대한 처리를 한다.</pre><br />
+<pre class="brush: cpp;">while (true) {
+    // 테트리스 블럭을 내린다
+    // 벽돌 간 충돌 검사를 한다
+    // 사용자의 키 입력을 받는다.
+    if (nb_scanf ("%c", &key) != -1) {
+        // 키 입력에 대한 처리를 한다.</pre>
 저 nb_scanf 함수는 마법의 함수이어서 키보드 입력이 없으면 -1 을 반환하고, 그렇지 않으면 그 결과값을 key 변수로 돌려받는다. 이와 같이 짜면 테트리스가 우리가 생각했던 대로 돌아간다. 그래서 우리는 scanf 를 쓰지 않고 conio.h 의 getch 함수를 쓰게 되는 것이다.<br />
 <br />
 #<br />
 그런데 뭔가 찜찜하다. 확실히 non blocking 함수를 쓰면 흐름이 중단되지 않으니까 전체 로직 수행 흐름에 영향을 안 주니까 따로 thread 를 안 써도 좋다. 그런데 그럼 값이 있든 없든 <strong>매번 물어봐야하니까 낭비 아닌가</strong>?<br />
 <br />
 낭비라고 생각할 수 있다. 저 수행 방식은 non-blocking 이기는 하지만 비동기적(asynchronous) 이지는 않다. non-blocking 으로 돌아가지만 <strong>동기(synchronous)적으로 계속 물어보는 방법</strong>이다. 로직을 처리하는 구문과 IO 를 처리하는 흐름이 하나되어 돌아간다. 그렇다면 비동기적으로 돌아가는 것은 어떤 것일까<br />
-<pre class="brush: cpp; html-script: true">while (true) {<br />
-    // 테트리스 블럭을 내린다<br />
-    // 벽돌 간 충돌 검사를 한다<br />
-    // 사용자의 키 입력을 받는다.<br />
-    async_read (stdin, async_callback);<br />
-}<br />
-void async_callback (char *key) {<br />
-    // 키 입력에 대한 처리를 한다.</pre><br />
+<pre class="brush: cpp;">while (true) {
+    // 테트리스 블럭을 내린다
+    // 벽돌 간 충돌 검사를 한다
+    // 사용자의 키 입력을 받는다.
+    async_read (stdin, async_callback);
+}
+void async_callback (char *key) {
+    // 키 입력에 대한 처리를 한다.</pre>
 async_read 함수는 마법같은 함수로 호출할 당시에는 아무 일도 일어나지 않는다. 하지만 kernel 에서 IO 작업이 완료되면 그 통지를 인자로 넘긴 callback 함수를 통해 호출해주는 것이다.<br />
 <br />
 어찌보면 interrupt handler 같은 방식으로 동작하는데, 이 때 async_callback 함수는 어떤 흐름에 의해 실행될지 모른다. 단일 thread 프로그램이라면 테트리스 logic 을 처리하고 있다가 <strong>중간에 갑자기</strong> async_callback 함수가 수행될 것이고, 여러 thread 라면 logic 이 수행되면서 <strong>동시에 callback 이 수행</strong>될 수 있을 것이다.<br />
@@ -188,28 +188,28 @@ async_read 함수는 마법같은 함수로 호출할 당시에는 아무 일도
 비동기 IO 함수는 다 좋은데 여러번 호출할 경우 완료 통지 후 처리의 순서 보장이 안될 가능성이 있다. 이를 해결하기 위한 가장 좋은 방법은 무엇일까?<br />
 <br />
 네트워크의 경우 주고받는 데이터 자체에 모종의 정보를 기록해서 순서를 맞춰주는 방법이 있는데 이건 너무 복잡하다. 뭔가 근본적이면서 쉬운 방법이 떠오를 것 같다. 바로 <strong>하나의 callback 요청이 끝난 다음에 다음 async IO 요청을 한다</strong> 인 것이다. 다음과 같다.<br />
-<pre class="brush: cpp; html-script: true">while (true) {<br />
-    if (isIOCompletion)<br />
-        async_read (stdin, async_callback);<br />
-    // 생략<br />
-}<br />
-void async_callback (char *key) {<br />
-    isIOCompletion = false;<br />
-    // 생략<br />
-    isIOCompletion = true;<br />
-}</pre><br />
+<pre class="brush: cpp;">while (true) {
+    if (isIOCompletion)
+        async_read (stdin, async_callback);
+    // 생략
+}
+void async_callback (char *key) {
+    isIOCompletion = false;
+    // 생략
+    isIOCompletion = true;
+}</pre>
 좋은 방법인 것 같다. 그런데 flag 를 사용할 경우 발생하는 문제가 있다. 여러 thread 에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 아래의 글을 보자.<br />
 <a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a><br />
 <br />
 보다 좋은 방법은 없을까? 다음을 보자.<br />
-<pre class="brush: cpp; html-script: true">async_read (stdin, async_callback);<br />
-while (true) {<br />
-    // 로직 처리<br />
-}<br />
-void async_callback (char *key) {<br />
-    // 생략<br />
-    async_read (stdin, async_callback);<br />
-}</pre><br />
+<pre class="brush: cpp;">async_read (stdin, async_callback);
+while (true) {
+    // 로직 처리
+}
+void async_callback (char *key) {
+    // 생략
+    async_read (stdin, async_callback);
+}</pre>
 명쾌하다! 처음에 딱 한번 read 요청을 한다. 그러면 keyboard 입력이 들어오면 async_callback 함수가 수행될 것이다. 그리고 그 함수의 모든 수행이 끝나면 다시 async_read 함수를 통해 다음 입력을 읽어올 수 있도록 요청하는 것이다.<br />
 <br />
 이러한 방법을 통해 비동기적 IO 요청에 대해 순서 보장을 고려해줄 수 있다.<br />

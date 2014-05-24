@@ -19,7 +19,7 @@ reflection으로 이를 적절히 읽어서 model과 xml의 상호 변환(mappin
 
 #
 먼저 model을 하나 만들자.
-<pre class="brush: java; html-script: true">public class Customer {
+<pre class="brush: java;">public class Customer {
     public String name;
     public int age;
     public String order;
@@ -33,7 +33,7 @@ name이라는 field는 xml에 attribute로 기록되어야 할까? 아니면 chi
 
 #
 class에 사용할 annotation을 정의한다. (import 생략)
-<pre class="brush: java; html-script: true">@Target(ElementType.TYPE)
+<pre class="brush: java;">@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XmlClassBind {
     public String nodeName();
@@ -44,7 +44,7 @@ public @interface XmlClassBind {
 그리고 nodeName이라는 annotation 값을 하나 같는데, 해당 class가 mapping될 xml element의 이름 정보를 넣기 위해 쓸 것이다.
 
 이제 field에 사용할 annotation을 정의한다. (import 생략)
-<pre class="brush: java; html-script: true">@Target(ElementType.FIELD)
+<pre class="brush: java;">@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XmlAttrBind {
     public string nodeName();
@@ -55,7 +55,7 @@ XmlClassBind와 유사한데 ElementType을 FIELD로 선언하여 Field에만 �
 그리고 useAttribute라는 boolean 속성을 추가하여 true이면 attribute로 기록하고 false이면 child-element를 만들도록 할 것이다.
 
 이제 정의한 annotation으로 model class에 metadata를 넣어보자.
-<pre class="brush: java; html-script: true">@XmlClassBind(nodeName="customer")
+<pre class="brush: java;">@XmlClassBind(nodeName="customer")
 public class Customer {
     @XmlAttrBind(nodeName="name", useAttribute=true)
     public String name;
@@ -75,7 +75,7 @@ order 문자열만 child element로 생성되는데 이 때 element 이름은 cu
 Java 기본 Xml Api는 영 좋지 않으므로 예전부터 사용하던 자체 구현 XmlElement을 사용하여 Bind를 수행하는 코드를 작성할 것이다.
 
 먼저 model 객체들을 Xml로 변환하는 코드는 다음과 같다. (예외 선언 생략)
-<pre class="brush: java; html-script: true">public static XmlElement ToXml(List<?> models) {
+<pre class="brush: java;">public static XmlElement ToXml(List<?> models) {
     if (models.isEmpty())
         throw new IllegalArgumentException();
     
@@ -130,7 +130,7 @@ XmlElement로부터 Model 객체를 생성하는 방식은 위와는 좀 다를 
 
 준겸이가 작성한 것처럼, class의 full name을 xml에 기록하여 Class.forName으로 해당 class에 대한 정보를 가져와서 사용하는 방법도 있고,
 아래 예제처럼 Class<T> 자체를 인자로 받아서 구현할 수도 있다. (예외 선언 생략)
-<pre class="brush: java; html-script: true">public static <T> List<T> ToModel(Class<T> clazz, XmlElement rootElement) {
+<pre class="brush: java;">public static <T> List<T> ToModel(Class<T> clazz, XmlElement rootElement) {
     List<T> models = new ArrayList<T>();
     
     String classNodeName = clazz.getAnnotation(XmlClassBind.class).nodeName();
@@ -170,7 +170,7 @@ ReflectionHelper.setValue() 를 수행하는 부분이다.
 #
 newInstance() 를 사용하여 model class의 객체를 만들 때 해당 class에 default constructor가 정의되어있지 않으면 생성할 수가 없다. 때문에 bean class들은 기본 생성자만 정의하고 field를 초기화하는 paramter를 갖는 생성자를 안 만드는 경향이 있다.
 그런데 POJO를 사용하다보면 기본 생성자를 놓치는 경우가 있는데, 그럴 경우 reflection을 사용하더라도 호출할 적절한 생성자를 찾기가 힘드므로 생성하기가 좀 곤란해진다.
-<pre class="brush: java; html-script: true">public class Customer {
+<pre class="brush: java;">public class Customer {
     public String name;
     public int age;
     public Customer(String name, int age) { /* ... */ }
@@ -183,7 +183,7 @@ newInstance() 를 사용하여 model class의 객체를 만들 때 해당 class�
 Class.newInstance() 함수는 기본 생성자가 있고, 해당 생성자가 접근 가능(public)할 때만 사용할 수 있는 함수이다. 따라서 외부에서 접근할 수 없는 private, default, protected로 선언한 기본 생성자가 있다면 문제가 될 수 있다.
 
 이를 고려하여 ReflectionHelper.newInstance() 함수를 작성하면 다음과 같다. (예외 선언 생략)
-<pre class="brush: java; html-script: true">public static <T> T newInstance(Class<T> clazz) {
+<pre class="brush: java;">public static <T> T newInstance(Class<T> clazz) {
     Constructor<T> defaultConstructor = clazz.getConstructor();
     defaultConstructor.setAccessible(true);
     return defaultConstructor.newInstance();
@@ -194,7 +194,7 @@ Class.newInstance() 함수는 기본 생성자가 있고, 해당 생성자가 �
 값을 Field의 type에 맞게 적절히 parsing해서 넣어주는 ReflectionHelper.setValue() 함수는 우아하지 못하다.
 그냥 Field의 type을 case by case로 검사해서 값을 직접 넣어주는 방법 밖에 없다.
 간단하게 int, String에 대해서만 구현을 해보면 다음과 같다. (예외 선언 생략)
-<pre class="brush: java; html-script: true">public static void setValue(Object target, Field field, String value) {
+<pre class="brush: java;">public static void setValue(Object target, Field field, String value) {
     Class<?> fieldType = field.getType();
     field.setAccessible(true);
     if (fieldType.equals(int.class) || fieldType.equals(Integer.class)) {

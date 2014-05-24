@@ -84,11 +84,11 @@ Database Table에 대응되는 객체를 설계(class)하고,<br />
 각 객체에 대해 Database Adapter의 CRUD(Insert, Select, Update, Delete)를 수행할 때 객체 내부의 Member 정보를 Reflection을 통해 접근해서 Query를 자동으로 생성할 수 있도록 한다.<br />
 <br />
 이러한 Database Adapter를 통해서 굉장히 간단한 방법으로, 객체 기반의 Database 접근이 가능해진다.<br />
-<pre class="brush: java; html-script: true">Database db = new MySQLDatabase();<br />
-db.insert(new Person("최재영", "연세대학교"));<br />
-Person p = new Person("최재영");<br />
-db.read(p);<br />
-db.delete(p);</pre><br />
+<pre class="brush: java;">Database db = new MySQLDatabase();
+db.insert(new Person("최재영", "연세대학교"));
+Person p = new Person("최재영");
+db.read(p);
+db.delete(p);</pre>
 <br />
 # 문제점<br />
 해당 Database Adapter는 Relation Database를 Object Database로 adapting해버리므로 JOIN 등의 Select query를 처리할만한 좋은 방법이 없다.<br />

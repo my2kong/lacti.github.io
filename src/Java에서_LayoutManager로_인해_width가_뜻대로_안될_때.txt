@@ -14,7 +14,7 @@ GridLayout 같은 LayoutManager를 쓸 경우 그 출력 Pane의 가로 길이�
 이를 해결하기 위한 가장 간단한 방법은 LayoutManager를 새로 만드는 것이다.
 GridLayout을 상속받은 CustomLayout을 하나 만들고, layoutContainer method를 override해서 control의 boundary를 지정하는 곳에서 width 값을 고정으로 지정해버리면 해당 문제를 막을 수 있다.
 
-<pre class="brush: java; html-script: true">@Override
+<pre class="brush: java;">@Override
 public void layoutContainer(Container parent) {
 	synchronized (parent.getTreeLock()) {
 		Insets insets = parent.getInsets();

@@ -6,7 +6,7 @@
 #
 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
 그냥 민철 선배님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.
-<pre class="brush: cpp; html-script: true">class A {
+<pre class="brush: cpp;">class A {
 public: void a(); void b(); void c();
 };
 class X {
@@ -44,7 +44,7 @@ java reflection 중에는 Proxy라고 하여 해당 interface에 대한 method�
 덕분에 어떤 interface를 넣어도 Proxy를 적절히 써서, 해당 interface의 함수가 호출될 때 이 정보를 대상 객체(target)의 함수로 잘 넘겨서 실행해주면 되겠다.
 
 이에 대한 코드는 다음과 같다.
-<pre class="brush: java; html-script: true">import java.lang.reflect.InvocationHandler;
+<pre class="brush: java;">import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -79,7 +79,7 @@ interface class에서 호출되는 method의 정보(name, parameter = 결국 sig
 
 #
 이제 다음과 같이 사용해볼 수 있다.
-<pre class="brush: java; html-script: true">public class Test {
+<pre class="brush: java;">public class Test {
     public static void main(String[] args) {
         Character ch = new Character();
         Drawable dr = InfOp.assign(Drawable.class, ch);

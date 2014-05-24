@@ -15,7 +15,7 @@ mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고
 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데,
 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다.
 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다.
-<pre class="brush: cpp; html-script: true">class field_t {
+<pre class="brush: cpp;">class field_t {
 public:
     field_t(std::string _name) : field_name(_name) {}
     template <typename _FieldTy, typename _ObjTy>
@@ -42,7 +42,7 @@ protected:
 (덕분에 실 사용 type 검증 로직은 하나도 없고, 잘못 사용하면 안드로메다를 보게 된다.)
 
 이제 저 ptr을 구현하는 구체 클래스를 만들면 되는데, 역시 대충 만들었다.
-<pre class="brush: cpp; html-script: true">template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)>
+<pre class="brush: cpp;">template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)>
 class field_impl_t : public field_t {
 public:
     field_impl_t(std::string _name) : field_t(_name) {}
@@ -66,7 +66,7 @@ field_t와 field_impl_t의 관계에서 볼 수 있듯이 둘은 object의 type�
 
 #
 이제 저 field_t를 관리하는 관리 class를 만들어보자. 귀찮으니까 코드를 먼저 보자.
-<pre class="brush: cpp; html-script: true">template <typename _Ty>
+<pre class="brush: cpp;">template <typename _Ty>
 struct field_info_map_t {
 protected:
     typedef _Ty impl_type;
@@ -96,7 +96,7 @@ typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</p
 (이는 실 사용 부분에서 자세히 보자.)
 
 이제 각 field를 어떻게 등록할 것인지, helper macro를 먼저 보자.
-<pre class="brush: cpp; html-script: true">#define REGISTER_FIELD_BEGIN() \
+<pre class="brush: cpp;">#define REGISTER_FIELD_BEGIN() \
     struct __register { \
         __register() { \
             static bool init = false; \
@@ -119,7 +119,7 @@ typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</p
 이제 다 만들었으니까 사용해보자.
 
 #
-<pre class="brush: cpp; html-script: true">struct user_t : field_info_map_t<user_t> {
+<pre class="brush: cpp;">struct user_t : field_info_map_t<user_t> {
     int index;
     std::string name;
 
@@ -138,7 +138,7 @@ user_t라는 구조체는 index, name라는 변수를 갖는다.
 좀 더 깔끔한 방법이 있을 것 같은데, 피곤하니 일단 저 정도에서 타협!
 
 이제 다음과 같이 사용할 수 있다.
-<pre class="brush: cpp; html-script: true">user_t user;
+<pre class="brush: cpp;">user_t user;
 user.index = 100;
 user.name = "choi";
     
