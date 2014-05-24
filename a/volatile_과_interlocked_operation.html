@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>volatile 과 interlocked operation</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,21 +48,20 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>volatile 과 interlocked operation</h1>
+                <h2>volatile 과 interlocked operation</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on August 02, 2011 at 9:40 AM</p>
                 <hr>
                 <div class="content">
 <strong># volatile</strong><br />
 다음과 같은 코드가 있다.<br />
-<pre class="brush: cpp;">// 공유되는 변수, static 이라든지 member 변수라든지 전역변수라든지
+<pre class="brush: cpp">// 공유되는 변수, static 이라든지 member 변수라든지 전역변수라든지
 int count = 0;
 ++count;
 ++count;
 ++count;</pre>
 세 번의 ++ 연산을 모두 a 라는 변수에 수행하므로, 컴파일러는 최적화를 통해 다음과 같은 코드를 만들어낼 수 있다.<br />
-<pre class="brush: cpp;">mov eax, dword ptr [count]
+<pre class="brush: cpp">mov eax, dword ptr [count]
 add eax, 1
 add eax, 1
 add eax, 1
@@ -86,7 +74,7 @@ mov dword ptr [count], eax</pre>
 이럴 때 volatile 키워드를 사용한다. volatile 키워드를 붙이면 해당 변수의 값을 다른 무언가가 바꿀 수 있다는 의미, 즉 값이 보장되지 않음을 명시해주게 된다. 때문에 저렇게 최적화 과정을 통해 register 를 사용하여 연산을 진행하고 그 값을 바로 메모리에 반영을 안해주는 것을 막아준다.<br />
 <br />
 아래와 같이 바로바로 연산을 수행한 다음에 메모리에 넣어준다.<br />
-<pre class="brush: cpp;">mov eax, dword ptr [count]
+<pre class="brush: cpp">mov eax, dword ptr [count]
 add eax, 1
 mov dword ptr [count], eax
 mov eax, dword ptr [count]
@@ -112,7 +100,7 @@ volatile 을 붙이면 메모리에 값을 바로 반영해주므로 여러 thre
 <br />
 <strong># interlocked</strong><br />
 연산의 원자성이란 해당 연산이 multi-thread 환경에서 중간에 switching 이 되어도 그 연산에 문제가 안 생기게 잘 수행된다는 이야기인데, 다음 예제를 보자<br />
-<pre class="brush: cpp;">class Object
+<pre class="brush: cpp">class Object
 {
 public:
     void Hit (void) { ++mCount; }
@@ -123,7 +111,7 @@ private:
 이 Object class 의 객체는 몇 개의 thread 에서 공유되는 변수이다. 그리고 Hit 이라는 함수를 통해 각 Thread 가 Object 에 접근하는 회수를 측정한다고 하자.<br />
 <br />
 이 연산에 대해 컴파일러는 대충 이런 기계어를 만들어낼거다.<br />
-<pre class="brush: cpp;">mov eax, dword ptr [this]
+<pre class="brush: cpp">mov eax, dword ptr [this]
 mov ecx, dword ptr [eax]
 add ecx, 1
 mov edx, dword ptr [this]
@@ -145,7 +133,7 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 (하지만 kernel 단에서 관리해주는 세마포어는 꽤 큰 비용이 들고, spin lock 역시 cpu 소모를 피할 수 없다. 하지만 lock 을 사용했을 경우 가장 곤란한 문제는 dead lock 이다.)<br />
 <br />
 위와 같은 Hit 함수를 lock 으로 보호한다면 대충 이럴 것이다.<br />
-<pre class="brush: cpp;">void Object::Hit (void)
+<pre class="brush: cpp">void Object::Hit (void)
 {
     lock();
     ++mCount;
@@ -158,7 +146,7 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 즉 공유되는 변수, 즉 멤버 변수만 원자적인 연산을 사용하게 되면 lock 범위를 함수 전체가 아니라 한 명령 구문으로 줄일 수 있다는 것이다. (Compare And Swap 등)<br />
 <br />
 그래서 MS 에서는 Interlocked operation 을 지원해준다.<br />
-<pre class="brush: cpp;">void Object::Hit (void)
+<pre class="brush: cpp">void Object::Hit (void)
 {
     // 함수 인자 type 맞춰주기 위해 mCount 는 LONG type 이 되어야한다.
     InterlockedIncrement (&mCount);
@@ -182,10 +170,7 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -234,10 +219,6 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -249,6 +230,31 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

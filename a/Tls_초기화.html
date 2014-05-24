@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>Tls 초기화</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>Tls 초기화</h1>
+                <h2>Tls 초기화</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on July 13, 2011 at 1:20 AM</p>
                 <hr>
@@ -73,14 +61,14 @@ Tls 로 선언한 자원들은 해당 Thread 별로 따로 갖는다고 보면 �
 (이 때문에 strtok 같은 함수도 내부에서 static 변수를 써도 Tls 로 선언하면 Multithread 에서도 문제가 없다는 것)<br />
 <br />
 그런데, Tls 는 생성자, 소멸자가 정의된 객체에 대해 사용할 수가 없다. 따라서 primitive type, pointer, 그냥 구조체만 선언해서 쓸 수 있게 된다.<br />
-<pre class="brush: cpp;">__declspec(thread) int tlsValue;
+<pre class="brush: cpp">__declspec(thread) int tlsValue;
 __descspec(thread) struct {
     char header[32];
     char body[64];
     char tail[16];
 } tlsChunk;</pre>
 그 외의 객체를 쓰고 싶으면 객체의 포인터를 Tls 선언해서 각 Thread 마다 객체를 동적할당(new)하여 사용해야하는 것이다.<br />
-<pre class="brush: cpp;">typedef std::vector<std::string> Strings;
+<pre class="brush: cpp">typedef std::vector&lt;std::string&gt; Strings;
 typedef Strings* StringsPtr;
 __declspec(thread) StringsPtr tlsStrings;
 
@@ -93,7 +81,7 @@ Thread 모듈은 다른 각 모듈과 독립적이다. 즉, 뭐가 Tls 에 추�
 예를 들어 Timer 라는 모듈을 Tls 로 갖는다고 하자. 그러면 Timer 가 Tls 구현을 위해 Thread 를 아는 것은 당연한 이야기이지만, Thread 모듈 입장에서는 어떤 모듈이 Tls 를 하는지 알 수 없으므로 Thread 가 Timer 혹은 다른 모듈을 알 수 없고, 알 필요도 없고, 의존성을 낮추기 위해서 알아서도 안 된다는 것이다.<br />
 <br />
 왜 이런 장황한 이야기를 하냐면, 내가 본 코드가 아래와 유사한 구조이기 때문이다.<br />
-<pre class="brush: cpp;">#define __declspec(thread) TLS
+<pre class="brush: cpp">#define __declspec(thread) TLS
 TLS int tlsTimerIndex;
 TLS TimerPtr tlsTimer;
 TLS QueuePtr tlsQueue;
@@ -101,7 +89,7 @@ TLS TracerPtr tlsTracer;</pre>
 이와 같이 한 파일에 Tls 관련 변수를 다 정의해놓고, 이것들에 대해 extern 으로 해놓은 h 파일을 여기저기에서 include 해서 쓰고 있다. 딱 보면 알 수 있지만 저 파일 선언하려면 Timer, Queue, Tracer 를 모두 include 해줘야한다. 폭풍의존이 생긴다.<br />
 <br />
 그리고 아래와 같이 Thread 가 갖고 있는 static method 인 InitializeTls 함수에서 Tls 를 일괄 초기화해준다.<br />
-<pre class="brush: cpp;">class Thread {
+<pre class="brush: cpp">class Thread {
 public:
     static void InitializeTls (void) {
         tlsTimer = new Timer;
@@ -122,27 +110,27 @@ Tls 로 사용하는 Queue 가 뭔가 잘못되었다. 그래서 새로운 Enhan
 <br />
 그래서 위 코드를 적어도 나같으면 이렇게 하겠다.<br />
 먼저, Tls 변수를 절대 전역적으로 노출시키지 않는다. Timer 를 예로 들자면,<br />
-<pre class="brush: cpp;">class Timer {
+<pre class="brush: cpp">class Timer {
 public:
     static Timer& GetCurrentThreadTimer(void);
 };</pre>
 와 같이 static method 로 interface 를 노출시켜준다. 그리고 cpp 파일에서,<br />
-<pre class="brush: cpp;">__declspec Timer* tlsTimer;
+<pre class="brush: cpp">__declspec Timer* tlsTimer;
 Timer& Timer::GetCurrentThreadTimer(void) {
     return *tlsTimer;
 }</pre>
 와 같이 tls 를 외부로 노출시키지 않은 채(즉 extern 을 쓰지 않고) 선언하고, 이를 static method 를 통해 반환할 수 있게 해준다. 그러면 Timer::GetCurrentThreadTimer() 함수를 써서 얻는 객체는 Thread-safe 하게 사용할 수 있는 Timer 가 될 것이다.<br />
 <br />
 그리고 Thread 에서 Tls 초기화를 위해 약간 신경을 써준다.<br />
-<pre class="brush: cpp;">typedef void (*TlsInitializer) (void);
+<pre class="brush: cpp">typedef void (*TlsInitializer) (void);
 class Thread {
 public:
-    typedef std::vector<TlsInitializer> TlsInitializers;
+    typedef std::vector&lt;TlsInitializer&gt; TlsInitializers;
     static void RegisterTlsInitializer(TlsInitializer initializer);
 private:
     static TlsInitializers sTlsInitializers;
 };</pre>
-<pre class="brush: cpp;">Thread::TlsInitializers Thread::sTlsInitializers;
+<pre class="brush: cpp">Thread::TlsInitializers Thread::sTlsInitializers;
 void Thread::RegisterTlsInitializer(TlsInitializer initializer) {
     sTlsInitializers.push_back(initializer);
 }</pre>
@@ -150,34 +138,34 @@ Thread 의 static method 인 RegisterTlsInitializer 함수를 통해서 Tls 를 
 <br />
 그런데 여기까지 해도 여전히 Tls 초기화 함수를 RegisterTlsInitializer 함수의 인자로 호출해주는 시점이 문제다. Thread 객체가 처음 만들어지기 전까지는 각 모듈의 Tls 초기화 함수들이 등록되어야하기 때문이다.<br />
 따라서 아래와 같이 생성자 기반의 Functor를 만든다.<br />
-<pre class="brush: cpp;">struct TlsInitializerRegister {
+<pre class="brush: cpp">struct TlsInitializerRegister {
     TlsInitializerRegister(TlsInitializer initializer) {
         Thread::RegisterTlsInitializer(initializer);
     }
 };</pre>
 이제 Tls Initializer 함수를 만들고, 그 함수 포인터를 인자로 저 객체를 생성해주면 된다.<br />
-<pre class="brush: cpp;">class Timer {
+<pre class="brush: cpp">class Timer {
 public:
     static void InitializeTls(void);
 };</pre>
 당연한 이야기이지만 함수 포인터의 원형이 void (*) (void) 이므로 member method 가 아닌 static method이다.<br />
 그리고 Timer.cpp 에서 아래와 같이 전역 변수를 만들어준다.<br />
-<pre class="brush: cpp;">static TlsInitializerRegister _TimerTlsInitializerRegister (Timer::InitializeTls);</pre>
+<pre class="brush: cpp">static TlsInitializerRegister _TimerTlsInitializerRegister (Timer::InitializeTls);</pre>
 그러면 해당 전역 변수가 생성되면서 Timer::InitializeTls 함수가 Thread 의 Tls 목록에 등록되는 것이다.<br />
 행여나 다른 파일 등에서 저 변수를 접근해서 쓰지 못하도록 static 으로 전역 변수를 선언했다.<br />
 <br />
 초기화 함수 이름이나 등록 방법이 애매하면, Macro 등을 사용하여 코드를 찍어낼 수 있다.<br />
-<pre class="brush: cpp;">#define DECLARE_TLS_INITIALIZER() static void _InitializeTls(void)
+<pre class="brush: cpp">#define DECLARE_TLS_INITIALIZER() static void _InitializeTls(void)
 #define IMPLEMENT_TLS_INITIALIZER(_ClassName) \
     static TlsInitializerRegister _##_ClassName##TlsInitializerRegister (_ClassName::_InitializeTls); \
     void _ClassName::InitializeTls(void)</pre>
 <br />
 그러면 아래와 같이 사용할 수 있다.<br />
-<pre class="brush: cpp;">class Timer {
+<pre class="brush: cpp">class Timer {
 public:
     DECLARE_TLS_INITIALIZER();
 };</pre>
-<pre class="brush: cpp;">IMPLEMENT_TLS_INITIALIZER(Timer) {
+<pre class="brush: cpp">IMPLEMENT_TLS_INITIALIZER(Timer) {
     tlsTimer = new Timer;
 }</pre>
 <br />
@@ -190,10 +178,7 @@ public:
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -242,10 +227,6 @@ public:
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -257,6 +238,31 @@ public:
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

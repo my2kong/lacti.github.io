@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>class의 public 과 private</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>class의 public 과 private</h1>
+                <h2>class의 public 과 private</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on July 20, 2011 at 9:03 PM</p>
                 <hr>
@@ -76,7 +64,7 @@
 요즘 코드를 읽고 있는데 몇 개의 class 들이 저런 문제점을 지니고 있다.<br />
 다음 예제를 보자.<br />
 <br />
-<pre class="brush: cpp;">class Worker
+<pre class="brush: cpp">class Worker
 {
 public:
     void DoWork();
@@ -103,7 +91,7 @@ Append와 Remove가 있으니 뭔가 Work 를 넣었다 뺐다도 할 수 있나
 여기까지 읽은 사람이라면 수도 없이 많은 문제를 떠올리겠지만, 다 생략하고 몇 개만 보겠다.<br />
 <br />
 1) class 의 역할을 파악하고 동작을 이해함에 있어 private 의 역할은 꽤나 중요하다. public method 는 외부에서 호출한다는 것이니까, 결국 이 class가 어떤 동작을 외부로 제공해줄지를 결정하는 것이기 때문이다. 위의 class를 제대로 적어보면,<br />
-<pre class="brush: cpp;">class Worker
+<pre class="brush: cpp">class Worker
 {
 public:
     void Run();
@@ -136,10 +124,7 @@ java의 package나 c#의 internal 같은 나름 우아한 방법으로 묶어주
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -188,10 +173,6 @@ java의 package나 c#의 internal 같은 나름 우아한 방법으로 묶어주
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -203,6 +184,31 @@ java의 package나 c#의 internal 같은 나름 우아한 방법으로 묶어주
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

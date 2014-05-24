@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>여의도 스터디 과제 풀이 #1</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>여의도 스터디 과제 풀이 #1</h1>
+                <h2>여의도 스터디 과제 풀이 #1</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on August 04, 2013 at 1:53 AM</p>
                 <hr>
@@ -68,21 +56,21 @@
 #<br />
 먼저 간단한 counter example을 만들어보자.<br />
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.<br />
-<pre class="brush: cpp;">const int thread_count = 128;
+<pre class="brush: cpp">const int thread_count = 128;
 const int loop_count = 65536;
 
 volatile int counter;
 
 void add_entry()
 {
-    for (int loop_index = 0; loop_index < loop_count; ++loop_index)
+    for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index)
         ++counter;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    std::vector<std::thread> threads;
-    for (int thread_index = 0; thread_index < thread_count; ++thread_index)
+    std::vector&lt;std::thread&gt; threads;
+    for (int thread_index = 0; thread_index &lt; thread_count; ++thread_index)
     {
         threads.push_back(std::thread(add_entry));
     }
@@ -90,8 +78,8 @@ int _tmain(int argc, _TCHAR* argv[])
     for (auto& each : threads)
         each.join();
 
-    std::cout << "expect: " << thread_count * loop_count << std::endl;
-    std::cout << "actual: " << counter << std::endl;
+    std::cout &lt;&lt; "expect: " &lt;&lt; thread_count * loop_count &lt;&lt; std::endl;
+    std::cout &lt;&lt; "actual: " &lt;&lt; counter &lt;&lt; std::endl;
     return 0;
 }</pre>
 c++ code 한 줄이 원자적(atomic)으로 실행된다는 보장은 없다. assembly의 한 줄도 원자적으로 실행된다는 보장은 없다(smp, micro-operation)<br />
@@ -106,13 +94,13 @@ counter += loop_counter 명령은 원자적이지 않지만, 다음 thread가 �
 <br />
 #<br />
 가장 손쉬운 해결법은 lock을 사용하는 것이다.<br />
-<pre class="brush: cpp;">std::mutex m;
+<pre class="brush: cpp">std::mutex m;
 
 void add_entry()
 {
-    for (int loop_index = 0; loop_index < loop_count; ++loop_index)
+    for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index)
     {
-        std::unique_lock<std::mutex> lock(m);
+        std::unique_lock&lt;std::mutex&gt; lock(m);
         ++counter;
     }
 }</pre>
@@ -121,11 +109,11 @@ void add_entry()
 <br />
 #<br />
 두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>)<br />
-<pre class="brush: cpp;">std::atomic_int counter;
+<pre class="brush: cpp">std::atomic_int counter;
 
 void add_entry()
 {
-    for (int loop_index = 0; loop_index < loop_count; ++loop_index)
+    for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index)
         ++counter;
 }</pre>
 결과도 굉장히 빠르게 나오고, 제대로 actual과 expect가 같게 나온다.<br />
@@ -135,12 +123,12 @@ atomic_int::operator++()은 내부에서 atomic_fetch_add() 함수를 부르게 
 #<br />
 세 번째 해결책으로 넘어가기 전에 두 번째 해결책에서 배운 atomic을 사용하여 첫 번째 해결책의 성능을 개선해보자.<br />
 lock을 직접 만들어서 성능을 개선하는 것이다.(<http://en.cppreference.com/w/cpp/atomic/atomic_flag">http://en.cppreference.com/w/cpp/atomic/atomic_flag</a>)<br />
-<pre class="brush: cpp;">volatile int counter;
+<pre class="brush: cpp">volatile int counter;
 std::atomic_flag lock = ATOMIC_FLAG_INIT;
 
 void add_entry()
 {
-    for (int loop_index = 0; loop_index < loop_count; ++loop_index)
+    for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index)
     {
         while (lock.test_and_set(std::memory_order_acquire))
              ; // spin
@@ -153,7 +141,7 @@ void add_entry()
 <br />
 #<br />
 세 번째 방법은 actor 기반의 message passing을 사용하는 것이다.<br />
-<pre class="brush: cpp;">enum message_t {
+<pre class="brush: cpp">enum message_t {
     msg_none,
     msg_add
 };
@@ -190,14 +178,14 @@ public:
 private:
     bool exited;
     std::thread worker;
-    concurrency::concurrent_queue<message_t> message_queue;
+    concurrency::concurrent_queue&lt;message_t&gt; message_queue;
 };
 
 actor_t counter;
 
 void add_entry()
 {
-    for (int loop_index = 0; loop_index < loop_count; ++loop_index)
+    for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index)
         counter.request(msg_add);
 }</pre>
 actor_t는 dispatch() 함수에서 message_queue에 쌓인 message를 자체적인 worker thread를 사용하여 비동기로 처리되도록 구성된 class이다. (대충 구현해서 성능은 안 좋다)<br />
@@ -219,10 +207,7 @@ concurrent_queue가 비어있을 때(empty)에는 try_pop()이 바로 실패하�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -278,10 +263,6 @@ concurrent_queue가 비어있을 때(empty)에는 try_pop()이 바로 실패하�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -293,6 +274,31 @@ concurrent_queue가 비어있을 때(empty)에는 try_pop()이 바로 실패하�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

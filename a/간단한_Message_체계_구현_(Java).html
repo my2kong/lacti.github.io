@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>간단한 Message 체계 구현 (Java)</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>간단한 Message 체계 구현 (Java)</h1>
+                <h2>간단한 Message 체계 구현 (Java)</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on November 27, 2011 at 3:14 AM</p>
                 <hr>
@@ -77,11 +65,11 @@ MessageQueue 는 전역 객체이다. Message 를 받아서 이를 수신 Handle
 <br />
 #<br />
 Message 는 무슨 class 가 될지 모르니까 간단하게 mark interface 로 만든다.<br />
-<pre class="brush: java;">public interface Message {
+<pre class="brush: java">public interface Message {
 }</pre>
 <br />
 MessageQueue class 는 Message 를 공유하는 Queue 객체와 이를 처리할 수 있도록 내부 Thread 를 하나 돌린다.<br />
-<pre class="brush: java;">private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); 
+<pre class="brush: java">private BlockingQueue&lt;Message&gt; queue = new LinkedBlockingQueue&lt;Message&gt;(); 
 
 private MessageQueue() {
     new Thread() {
@@ -117,24 +105,24 @@ private Message pop() {
 이에 대해서는 multiple-dispatch 를 사용하면 보다 깔끔한 구조의 Handler 를 작성할 수 있는데, Java 는 어차피 느리고 Reflection 을 통해 이 기능을 구현할 수 있으니 도전해보자.<br />
 <br />
 Handler 는 <em>handleMessage</em> 이라는 method 를 갖는다. 이 때 parameter 는 Message class 를 하나만 갖는다.<br />
-<pre class="brush: java;">void handleMessage(StringMessage message) {
+<pre class="brush: java">void handleMessage(StringMessage message) {
 }
 void handleMessage(IntMessage message) {
 }</pre>
 이 때 MessageQueue 에 StringMessage 객체를 넣으면 첫 번째 함수가, IntMessage 객체를 넣으면 후자의 함수가 호출되도록 하겠다는 것이다.<br />
 <br />
-<pre class="brush: java;">private static final String HANDLER_NAME = "handleMessage";
-private Map<Class<?>, List<Object>> handlerMap = new ConcurrentHashMap<Class<?>, List<Object>>();
+<pre class="brush: java">private static final String HANDLER_NAME = "handleMessage";
+private Map&lt;Class&lt;?&gt;, List&lt;Object&gt;&gt; handlerMap = new ConcurrentHashMap&lt;Class&lt;?&gt;, List&lt;Object&gt;&gt;();
 
 private void addHandler(Object handler) {
-    Class<?> handlerClass = handler.getClass();
+    Class&lt;?&gt; handlerClass = handler.getClass();
     for (Method method: handlerClass.getDeclaredMethods()) {
         if (!method.getName().equals(HANDLER_NAME))
             continue;
         
-        Class<?>[] paramTypes = method.getParameterTypes();
-        Class<?> messageClass = paramTypes[0];
-        if (!Message.class.isAssignableFrom(messageClass) || paramTypes.length > 1) {
+        Class&lt;?&gt;[] paramTypes = method.getParameterTypes();
+        Class&lt;?&gt; messageClass = paramTypes[0];
+        if (!Message.class.isAssignableFrom(messageClass) || paramTypes.length &gt; 1) {
             Logger.error(new MessageQueueException("Invalid Handler in " + handlerClass.getSimpleName() 
                     + "/" + method.toGenericString()));
             
@@ -142,7 +130,7 @@ private void addHandler(Object handler) {
         }
         
         if (!handlerMap.containsKey(messageClass)) {
-            handlerMap.put(messageClass, new CopyOnWriteArrayList<Object>());
+            handlerMap.put(messageClass, new CopyOnWriteArrayList&lt;Object&gt;());
         }
         handlerMap.get(messageClass).add(handler);
     }
@@ -155,10 +143,10 @@ Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 �
 <br />
 #<br />
 이제 Message 가 들어오면 그 class type 에 해당하는 Handler 를 찾아서 invoke 를 해주면 된다.<br />
-<pre class="brush: java;">private void delegate(Message message) {
-    Set<Object> invoked = new HashSet<Object>();
+<pre class="brush: java">private void delegate(Message message) {
+    Set&lt;Object&gt; invoked = new HashSet&lt;Object&gt;();
     
-    Class<?> clazz = message.getClass();
+    Class&lt;?&gt; clazz = message.getClass();
     while (!clazz.equals(Object.class)) {
         if (handlerMap.containsKey(clazz)) {
             for (Object handler: handlerMap.get(clazz)) {
@@ -178,8 +166,8 @@ Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 �
     }
 }
 
-private void invoke(Object handler, Class<?> messageClass, Message message) {
-    Class<?> handlerClass = handler.getClass();
+private void invoke(Object handler, Class&lt;?&gt; messageClass, Message message) {
+    Class&lt;?&gt; handlerClass = handler.getClass();
     try {
         Method method = handlerClass.getDeclaredMethod(HANDLER_NAME, messageClass);
         method.setAccessible(true);
@@ -192,7 +180,7 @@ private void invoke(Object handler, Class<?> messageClass, Message message) {
 <br />
 다만, bubbling 을 막기 위해서 한 번 Invoke 된 Handler 는 다시 Invoke 되지 않도록 했다.<br />
 예를 들어서,<br />
-<pre class="brush: java;">class StringMessage implements Message {}
+<pre class="brush: java">class StringMessage implements Message {}
 class SpecialStringMessage extends StringMessage {}
 void handleMessage(StringMessage message) {}
 void handleMessage(SpecialStringMessage message) {}</pre>
@@ -206,7 +194,7 @@ invoke 를 할 때 굳이 setAccessible 을 true 해주는 이유는, message ha
 <br />
 #<br />
 작성된 MessageQueue 는 다음과 같이 사용될 수 있다.<br />
-<pre class="brush: java;">void handleMessage(StringMessage message) {
+<pre class="brush: java">void handleMessage(StringMessage message) {
     System.out.println(message.getMessage());
 }
 
@@ -237,10 +225,7 @@ IntMessage class 는 int 를 생성자로 받고 StringMessage class 는 String 
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -289,10 +274,6 @@ IntMessage class 는 int 를 생성자로 받고 StringMessage class 는 String 
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -304,6 +285,31 @@ IntMessage class 는 int 를 생성자로 받고 StringMessage class 는 String 
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

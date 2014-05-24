@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>EventHandler 와 Message Passing</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>EventHandler 와 Message Passing</h1>
+                <h2>EventHandler 와 Message Passing</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on December 20, 2011 at 12:17 PM</p>
                 <hr>
@@ -77,7 +65,7 @@
 명부(List) 는 내부에 사람(Person) 을 포함한다. 사람은 이름(name) 이라는 속성(property) 을 갖고, 이 값은 외부에서 변경될 수 있다(mutator method). 명부는 사람의 이름이 변경되는 것을 감지해야한다.<br />
 <br />
 이를 위한 가장 간단한 방법은 아래와 같다.<br />
-<pre class="brush: java;">class Person {
+<pre class="brush: java">class Person {
     private List observer;
     private String name;
     public Person() {}
@@ -101,12 +89,12 @@ class List {
 <br />
 #<br />
 두 객체 간의 강결합을 피하기 위해 이를 분리하기 위한 중간 interface 를 도입한다.<br />
-<pre class="brush: java;">interface NameObserver {
+<pre class="brush: java">interface NameObserver {
     public void nameChanged(String oldName, String newName);
 }</pre>
 <br />
 이제 Person 과 List 의 관계는 NameObserver 를 통해서 약간은 분리되었다.<br />
-<pre class="brush: java;">class Person {
+<pre class="brush: java">class Person {
     NameObserver observer;
     public void attach(NameObserver observer) {
         this.observer = observer;
@@ -120,8 +108,8 @@ Person 은 자신의 이름이 변경될 때 그 사실을 알려주어야 할 �
 #<br />
 하나의 Person 이 여러 NameObserver 에게 사실을 알려주어야 한다면?<br />
 NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있으면 된다.<br />
-<pre class="brush: java;">class Person {
-    List<NameObserver> observers = new ArrayList<NameObserver>();
+<pre class="brush: java">class Person {
+    List&lt;NameObserver&gt; observers = new ArrayList&lt;NameObserver&gt;();
     public void attach(NameObserver observer) {
         this.observers.add(observer);
     }
@@ -139,7 +127,7 @@ NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있�
 interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통지해야할 속성 값의 개수가 늘어나거나, 그 내용이 변경되거나 하면 이 interface 의 수정은 불가피하다.<br />
 <br />
 예를 들어, Person class 에 나이(age) 속성이 추가된다고 하자.<br />
-<pre class="brush: java;">class Person {
+<pre class="brush: java">class Person {
     private String name;
     private int age;
 }</pre>
@@ -153,7 +141,7 @@ interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통�
 Person class 는 자신의 상태(속성)가 변화될 때의 정보를 적절히 capsulation 하여 객체로 구성하고, 이를 통지받는 쪽에서는 그 정보 객체를 받아 적절히 처리하는 것이다.<br />
 <br />
 즉, 정보를 담기 위한 중간 객체가 등장한다.<br />
-<pre class="brush: java;">class PropertyChangeEvent {
+<pre class="brush: java">class PropertyChangeEvent {
     String propertyName;
     Object oldValue;
     Object newValue;
@@ -164,8 +152,8 @@ interface PropertyListener {
 <br />
 이제 Person 은 자신의 정보가 변경될 때마다 PropertyChangeEvent 객체를 자신에게 등록되어있는(subscribe) PropertyListener 객체들에게 던진다.<br />
 그러면 그 PropertyListener 의 구현체들은(implements or concrete) PropertyChangeEvent 객체를 받았을 때 자신이 원하는 이벤트에 대해서만 처리하는 것이다.<br />
-<pre class="brush: java;">class Person {
-    List<PropertyChangeListener> listeners = new ArrayList<>();
+<pre class="brush: java">class Person {
+    List&lt;PropertyChangeListener&gt; listeners = new ArrayList&lt;&gt;();
     public void setName(String newName) {
         for (PropertyChangeListener each: listeners) {
             each.propertyChanged(new PropertyChangedEvent("name", this.name, newName));
@@ -173,7 +161,7 @@ interface PropertyListener {
         this.name = newName;
     }</pre>
 <br />
-<pre class="brush: java;">class List implements PropertyChangeListener {
+<pre class="brush: java">class List implements PropertyChangeListener {
     public void propertyChanged(PropertyChangeEvent event) {
         if (event.propertyName.equals("name") {
             // name changed</pre>
@@ -219,10 +207,7 @@ Actor 모델에서는 주로 Event 보다는 Message 를 쓰는 것 같기는 �
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -271,10 +256,6 @@ Actor 모델에서는 주로 Event 보다는 Message 를 쓰는 것 같기는 �
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -286,6 +267,31 @@ Actor 모델에서는 주로 Event 보다는 Message 를 쓰는 것 같기는 �
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

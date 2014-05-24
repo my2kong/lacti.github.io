@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>Interlocked Singly Linked Lists</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>Interlocked Singly Linked Lists</h1>
+                <h2>Interlocked Singly Linked Lists</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on August 03, 2011 at 10:32 PM</p>
                 <hr>
@@ -101,7 +89,7 @@ SLIST 에서는 SLIST_ENTRY 라는 객체를 사용하는데 이걸 메모리에
 <br />
 갑자기 항목에서 왜 항목의 주소로 넘어가는지는 SLIST_ENTRY 구조체 속을 들여다보면 알 수 있다.<br />
 WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있다.<br />
-<pre class="brush: cpp;">typedef struct _SINGLE_LIST_ENTRY {
+<pre class="brush: cpp">typedef struct _SINGLE_LIST_ENTRY {
     struct _SINGLE_LIST_ENTRY *Next;
 } SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
 #define SLIST_ENTRY SINGLE_LIST_ENTRY</pre>
@@ -110,7 +98,7 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 따라서 모든 항목의 주소가 메모리 정렬 되어있어야 하는 것이다.<br />
 <br />
 역시 WinNT.h 파일에 보면,<br />
-<pre class="brush: cpp;">#if defined(_WIN64) || defined(_M_ALPHA)
+<pre class="brush: cpp">#if defined(_WIN64) || defined(_M_ALPHA)
 #define MAX_NATURAL_ALIGNMENT sizeof(ULONGLONG)
 #define MEMORY_ALLOCATION_ALIGNMENT 16
 #else
@@ -131,7 +119,7 @@ Flush 란 함수가 있다. 이는 Stack 에 들어있는 모든 Node 를 반환
 SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일단 SLIST 로 관리해야할 Node 들이 SLIST_ENTRY 객체를 멤버로 가져야하고, SLIST_ENTRY 멤버 변수들의 주소는 MEMORY_ALLOCATION_ALIGNMENT 값으로 정렬 되어있어야 한다.<br />
 <br />
 가장 간단한 방법은 다음과 같다.<br />
-<pre class="brush: cpp;">struct MyItem
+<pre class="brush: cpp">struct MyItem
 {
     SLIST_ENTRY ListEntry;
     // Other Variables
@@ -144,7 +132,7 @@ SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일�
 이와 같은 이유로, virtual function pointer table 을 갖는 class type 에서 SLIST_ENTRY 을 멤버로 넣어 사용할 경우, 과연 이 변수를 정렬하기 위해서는 어떻게 해야할까 고민이 좀 되는데, 그냥 그러지 말자고 하고 싶다-_-<br />
 <br />
 아무튼 저렇게 만들어놓고 꺼내서 쓸 때는 단순히 casting 만 해서 쓰면 되니까 편하다.<br />
-<pre class="brush: cpp;">MyItem* item = (MyItem*) InterlockedPopEntryList (listHead);</pre>
+<pre class="brush: cpp">MyItem* item = (MyItem*) InterlockedPopEntryList (listHead);</pre>
 <br />
 #<br />
 궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자.<br />
@@ -152,15 +140,15 @@ SLIST_ENTRY 항목들의 메모리 주소는 정렬되어야 한다. 이를 일�
 <a href="http://msdn.microsoft.com/en-us/library/ms686962(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ms686962(v=vs.85).aspx</a><br />
 <br />
 먼저 LIST_HEADER 를 만들어줘야한다. 이는 사용할 SLIST 의 Head 포인터이다. 당연한 이야기이지만 이것도 메모리 정렬이 되어야 한다.<br />
-<pre class="brush: cpp;">pListHead = (PSLIST_HEADER)_aligned_malloc(sizeof(SLIST_HEADER),
+<pre class="brush: cpp">pListHead = (PSLIST_HEADER)_aligned_malloc(sizeof(SLIST_HEADER),
        MEMORY_ALLOCATION_ALIGNMENT);</pre>
 <br />
 PROGRAM_ITEM 이라는 구조체가 첫 번째 멤버 변수로 SLIST_ENTRY 를 갖는다. 따라서 PROGRAM_ITEM 객체의 메모리 주소만 정렬해주면 된다.<br />
-<pre class="brush: cpp;">pProgramItem = (PPROGRAM_ITEM)_aligned_malloc(sizeof(PROGRAM_ITEM),
+<pre class="brush: cpp">pProgramItem = (PPROGRAM_ITEM)_aligned_malloc(sizeof(PROGRAM_ITEM),
             MEMORY_ALLOCATION_ALIGNMENT);</pre>
 <br />
 꺼내서 쓸 때는 어차피 SLIST_ENTRY 의 주소가 곧 PROGRAM_ITEM 의 주소이므로 casting 만 해서 쓰면 된다.<br />
-<pre class="brush: cpp;">pListEntry = InterlockedPopEntrySList(pListHead);
+<pre class="brush: cpp">pListEntry = InterlockedPopEntrySList(pListHead);
 pProgramItem = (PPROGRAM_ITEM)pListEntry;</pre>
 <br />
 #<br />
@@ -188,10 +176,7 @@ Windows API 가 제공해주는 SLIST 를 사용하여 multi thread 환경에서
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -240,10 +225,6 @@ Windows API 가 제공해주는 SLIST 를 사용하여 multi thread 환경에서
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -255,6 +236,31 @@ Windows API 가 제공해주는 SLIST 를 사용하여 multi thread 환경에서
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

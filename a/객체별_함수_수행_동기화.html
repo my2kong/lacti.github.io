@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>객체별 함수 수행 동기화</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>객체별 함수 수행 동기화</h1>
+                <h2>객체별 함수 수행 동기화</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on August 11, 2011 at 2:37 AM</p>
                 <hr>
@@ -92,7 +80,7 @@ User 에는 AddExp 함수를 통해 내부에 경험치를 증가시킨다. 그�
 <br />
 Lock 을 생각해보자. Lock 이라는 것은 여러 Thread 가 접근해서 수행하는 영역의 시작과 끝에서 Lock, Unlock 을 수행하여 그 구간을 상호 배타적 구간(Mutual Exclusion)으로 설정하여 Thread 가 동시에 접근하지 못하도록 보호하는 장치이다.<br />
 즉, AcquireLock Logic 은 여러 Thread 가 동시에 접근하여 수행할 수 있지만, 실제로 그 routine 을 벗어나 Mutex 에 진입하여 코드를 실행하는 Thread 는 하나로 보장이 된다. 아래의 간단한 SpinLock 예제를 보자 (Windows via C/C++)<br />
-<pre class="brush: cpp;">void SpinLock::Lock(void) {
+<pre class="brush: cpp">void SpinLock::Lock(void) {
     while (InterlockedExchange (&mLockFlag, 1) == 1)
         Sleep (0);
 }
@@ -110,7 +98,7 @@ InterlockedExchange 는 원자적으로 해당 변수에 값을 대입하고 그
 <br />
 함수는 각기 다른 형태(signature)을 갖고 있고, 수행에 필요한 인자가 각기 다르다. 따라서 모든 함수의 요청을 객체화(functor) 하기 위해서는 동일한 interface 로 함수 요청을 통일시켜줄 필요가 있다. 이러기 위해 사용하는 것이 std::bind 이다.<br />
 아래의 예제는 각 함수의 요청을 무항 함수 객체(nullary functor)로 변환하는 코드이다.<br />
-<pre class="brush: cpp;">int add(int a, int b) { return a + b; }
+<pre class="brush: cpp">int add(int a, int b) { return a + b; }
 struct Adder {
     int add(int a, int b) { return a + b; }
 };
@@ -124,13 +112,13 @@ functor2();</pre>
 <br />
 #<br />
 하지만 이건 compile time 에 가능한 일이고, 저것들을 runtime 에 한군데 모아놓고 수행하기는 어렵다. runtime 에 객체들을 모아놓는다는 것은 하나의 Container 에 객체들을 담아두고 iterating 을 한다는 것인데 저것들의 type 은 모두 다르기 때문이다. 따라서 type 을 맞춰주기 위해 interface 를 작성한다.<br />
-<pre class="brush: cpp;">struct RequestJob
+<pre class="brush: cpp">struct RequestJob
 {
     virtual void operator () (void) = 0;
     virtual ~RequestJob() {}
 };</pre>
 그리고 간단한 template 함수를 통해 함수 호출 요청 객체를 받아 저 interface 를 상속받은 struct 를 생성하도록 한다. 함수 내에서 template struct 를 갖을 수는 없지만 함수 자체가 template 이면 문제가 해결된다.<br />
-<pre class="brush: cpp;">template <typename _Functor>
+<pre class="brush: cpp">template &lt;typename _Functor&gt;
 void Request(const _Functor& functor)
 {
     struct _RequestJobImpl : public RequestJob
@@ -148,12 +136,12 @@ void Request(const _Functor& functor)
 <br />
 아무튼 저렇게 inner struct 로 _RequestJobImpl struct 를 만들어서 template type인 _Functor 객체를 멤버로 갖고, operator () 에서 그 함수를 호출해줄 수 있도록 한다. 그렇게 만든 RequestJob 객체를 JobQueue 에 넣는다.<br />
 물론 JobQueue 는 여러 Thread 에서 동시에 Push 를 수행하고, 다른 Thread 에서 Pop 을 수행해야하므로 thread safe 해야한다. 따라서 concurrent_queue.h 에 정의된 Concurrency::concurrent_queue 를 사용한다.<br />
-<pre class="brush: cpp;">typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
+<pre class="brush: cpp">typedef Concurrency::concurrent_queue&lt;RequestJobPtr&gt; JobQueue;
 JobQueue mJobQueue;</pre>
 <br />
 #<br />
 마지막으로 JoqQueue 에 들어간 작업을 처리할 Thread 1개만 통과시켜서 Queue 에 들어있는 작업을 처리하게 해야한다. SpinLock 에서 공부했던 내용을 Request 함수 뒤에 끼얹어보자.<br />
-<pre class="brush: cpp;">    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)
+<pre class="brush: cpp">    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)
         return;
         
     for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)
@@ -172,21 +160,21 @@ InterlockedExchange 함수를 사용해서 mExclusiveFlag 값을 통해 한 개�
 #<br />
 이제 모든 준비가 끝났다. 공유되어 여러 Thread 로부터 처리가 동시에 일어날 수 있는 class 는 위 class 를 상속받으면 된다.<br />
 User class 가 위 class 를 상속받았고, User 객체가 AddExp 함수를 가질 때, 다음과 같은 방법으로 요청할 수 있다.<br />
-<pre class="brush: cpp;">typedef std::shared_ptr<User> UserRef;
+<pre class="brush: cpp">typedef std::shared_ptr&lt;User&gt; UserRef;
 UserRef user = UserRef (new User);
-user->Request (std::bind (&User::AddExp, user, 100));</pre>
+user-&gt;Request (std::bind (&User::AddExp, user, 100));</pre>
 User 객체에게 멤버 함수 수행 요청을 Request 함수를 통해 전달한다. 수행에 필요한 정보는 std::bind 로 묶어줬다. 한 가지 아쉬운 점은 Request 를 부르는 대상이 이미 user 객체로 정해졌으므로 User::AddExp 를 수행할 대상도 Request 를 요청한 user 객체인데, std::bind 를 묶어줄 때 두 번째 인자로 이 AddExp 함수를 수행할 객체인 user 객체를 한 번 더 넣어줘야한다는 것이다.<br />
 이 문제에 대해서는 딱히 좋은 방법이 없는 것 같다.<br />
 (UserRef 는 User 에 대한 shared_ptr 로 분명 User::AddExp 함수를 수행하기 위해서는 User * 를 인자로 받아야하지만 shared_ptr 은 원본 Type 에 대한 casting operator 를 overloading 했으므로 문제가 없다.)<br />
 <br />
 #<br />
 예제 코드 전문을 보자.<br />
-<pre class="brush: cpp;">#include <windows.h>
-#include <functional> 
-#include <algorithm> 
-#include <iostream>
-#include <concurrent_queue.h>
-#include <vector>
+<pre class="brush: cpp">#include &lt;windows.h&gt;
+#include &lt;functional&gt; 
+#include &lt;algorithm&gt; 
+#include &lt;iostream&gt;
+#include &lt;concurrent_queue.h&gt;
+#include &lt;vector&gt;
 
 class RequestBase
 {
@@ -199,7 +187,7 @@ private:
     typedef RequestJob* RequestJobPtr;
 
 public:
-    template <typename _Functor>
+    template &lt;typename _Functor&gt;
     void Request(const _Functor& functor)
     {
         struct _RequestJobImpl : public RequestJob
@@ -226,7 +214,7 @@ public:
         : mExclusiveFlag(0) {}
 
 private:
-    typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
+    typedef Concurrency::concurrent_queue&lt;RequestJobPtr&gt; JobQueue;
     JobQueue mJobQueue;
     LONG     mExclusiveFlag;
 };
@@ -244,11 +232,11 @@ private:
     int mExp;
 };
 
-typedef std::shared_ptr<User> UserRef;
+typedef std::shared_ptr&lt;User&gt; UserRef;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    typedef std::vector<UserRef> Users;
+    typedef std::vector&lt;UserRef&gt; Users;
     Users users;
 
     users.push_back(UserRef(new User));
@@ -257,11 +245,11 @@ int _tmain(int argc, _TCHAR* argv[])
     users.push_back(UserRef(new User));
 
     std::for_each(users.begin(), users.end(), [=] (UserRef& user) {
-        user->Request(std::bind(&User::AddExp, user, (rand() % 7) * 1000));
+        user-&gt;Request(std::bind(&User::AddExp, user, (rand() % 7) * 1000));
     });
     
     std::for_each(users.cbegin(), users.cend(), [=] (const UserRef& user) {
-        std::cout << "Exp (" << user->GetExp() << ")" << std::endl;
+        std::cout &lt;&lt; "Exp (" &lt;&lt; user-&gt;GetExp() &lt;&lt; ")" &lt;&lt; std::endl;
     });
 
     users.erase(users.begin(), users.end());
@@ -279,10 +267,7 @@ int _tmain(int argc, _TCHAR* argv[])
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -331,10 +316,6 @@ int _tmain(int argc, _TCHAR* argv[])
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -346,6 +327,31 @@ int _tmain(int argc, _TCHAR* argv[])
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

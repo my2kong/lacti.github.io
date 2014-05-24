@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>java annotation을 사용한 InstanceId 구현</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>java annotation을 사용한 InstanceId 구현</h1>
+                <h2>java annotation을 사용한 InstanceId 구현</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on March 02, 2011 at 9:54 PM</p>
                 <hr>
@@ -75,7 +63,7 @@ Java의 Annotation은 특정 지점(ElementType: Type, Method, Field, ...)에 �
 @interface keyword로 정의할 수 있고, 지정된 지점에 맞게 class, method, field, parameter 등에 선언될 수 있고, 이는 지정된 시점까지 유지됩니다.<br />
 <br />
 예를 들어, 위 문제를 해결하기 위해 새로 작성하는 IndexCategory 라는 annotation은 index를 발급할 category class를 지정합니다.<br />
-<pre class="brush: java;">import java.lang.annotation.ElementType;
+<pre class="brush: java">import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -83,7 +71,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IndexCategory {
-	public Class<?> category();
+	public Class&lt;?&gt; category();
 }</pre>
 이 annotation은 Type에 선언될 수 있는데, 여기서 Type은 class를 뜻합니다.<br />
 또한 Runtime까지 유지되는 정보인데, 그 이유는 객체가 "생성되는 시점"인 runtime에 해당 정보를 통해서 어떤 category의 class type으로 index를 발급받을지 얻어내야하기 때문입니다.<br />
@@ -91,7 +79,7 @@ public @interface IndexCategory {
 annotation은 속성property를 갖는데, IndexCategory는 category()라는 속성을 갖습니다. 이는 Class<?>를 값으로 갖는 속성으로 그 이름은 category 가 됩니다.<br />
 <br />
 위와 같은 IndexCategory annotation을 다음과 같이 사용하고자 할 class에 적용합니다.<br />
-<pre class="brush: java;">class Skill extends Thing {}
+<pre class="brush: java">class Skill extends Thing {}
 
 @IndexCategory(category=Skill.class)
 class Magic extends Skill {}
@@ -107,13 +95,13 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
 간단히 Override annotation만 설명하자면 이는 method에 선언 가능하며 source 시간까지 유지됩니다. 즉 compiler가 확인하고 버리는 시점까지 유지되는 annotation으로 override 되지 않은 method가 이 annotation을 가지고 있을 경우 compile error를 띄워주는 역할을 하여 compile time에 잘못된 override를 막아주는 역할을 합니다.<br />
 <br />
 위와 같이 IndexCategory annotation을 명시한 뒤, 객체를 생성하여 index를 발급하는 코드에서는 이를 반영하여 index를 발급해주어야 할 것입니다.<br />
-<pre class="brush: java;">public static int generateNextIndex() {
+<pre class="brush: java">public static int generateNextIndex() {
 	String callerClassName = findCallerClassName();
 	try {
-		Class<?> callerClass = Class.forName(callerClassName);
+		Class&lt;?&gt; callerClass = Class.forName(callerClassName);
 		if (callerClass.isAnnotationPresent(IndexCategory.class)) {
 			IndexCategory category = callerClass.getAnnotation(IndexCategory.class);
-			Class<?> categoryClass = category.category();
+			Class&lt;?&gt; categoryClass = category.category();
 			return generateNextIndex(categoryClass);
 		}
 		return generateNextIndex(callerClass);
@@ -137,10 +125,7 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -189,10 +174,6 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -204,6 +185,31 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

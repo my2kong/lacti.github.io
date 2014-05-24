@@ -82,25 +82,28 @@ List<Article> LoadArticle(string path)
 	return articles;
 }
 
+static readonly Regex CodeSectionRegex = new Regex(@"\[code lang=""([^""]+)""\s*\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 string MakeContent(string original)
 {
 	var resultBuffer = new StringBuilder();
 	var isCode = false;
 	foreach (var line in original.Replace("\r", "").Split('\n'))
 	{
-		if (line.Contains("<pre class=\"brush:")) isCode = true;
+		if (line.Contains("[code lang=\"")) isCode = true;
 		if (!isCode)
 		{
 			resultBuffer.Append(line + "<br />\n");
 		}
 		else
 		{
-			resultBuffer.Append(line + "\n");
+			resultBuffer.Append(line.Replace("<", "&lt;").Replace(">", "&gt;") + "\n");
 		}
 		
-		if (line.Contains("</pre>")) isCode = false;
+		if (line.Contains("[/code]")) isCode = false;
 	}
 	var content = resultBuffer.ToString();
+	content = CodeSectionRegex.Replace(content, match => string.Format("<pre class=\"brush: {0}\">", match.Groups[1].Value));
+	content = content.Replace("[/code]", "</pre>");
 	if (!content.Contains("<a"))
 	{
 		content = ConvertUrlsToLinks(content);
@@ -129,7 +132,7 @@ const string RecentTemplateItem = @"
 						<li><a href=""{2}"">{0}</a> <span class=""date"">{1}</span></li>";
 						
 const string ListItemTemplate = @"
-                <h3><a href=""{2}"">{0}</a></h3>
+                <h4><a href=""{2}"">{0}</a></h4>
                 <p>
                     <span class=""glyphicon glyphicon-time""></span> Posted on {1}</p>
                 <hr>";

@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>c++에서 reflection 사용하기 #3</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>c++에서 reflection 사용하기 #3</h1>
+                <h2>c++에서 reflection 사용하기 #3</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on June 09, 2012 at 6:34 PM</p>
                 <hr>
@@ -83,7 +71,7 @@ type 정보를 코드 하나하나에 다 열거하는 것은 쓸데없는 노�
 <br />
 문제는 이렇게 type capture를 한 template class는 일반 type으로 지칭할 수 없다는 귀찮은 점이 있다.<br />
 예를 들어서,<br />
-<pre class="brush: cpp;">template <class _Ty>
+<pre class="brush: cpp">template &lt;class _Ty&gt;
 class class_t {};</pre>
 위와 같은 class_t에 대해, class_t<int> 와 같은 type 정보를 넣어 template class를 구체화했다면,<br />
 이 class는 class_t가 아니고 class_t<int>이다. 좀 더 엄밀히 말하면 구체화되지 않은 class_t 라는 class는 없는 것이다.<br />
@@ -94,26 +82,26 @@ class class_t {};</pre>
 <br />
 #<br />
 변경된 class_t는 다음과 같다. (class_impl_t는 삭제되었다, 그리고 지난 번과 중복되는 내용은 삭제한다.)<br />
-<pre class="brush: cpp;">class class_t {
+<pre class="brush: cpp">class class_t {
 public:
-    template <typename _Ty>
-    class_t(const typeinfo<_Ty>&, std::string name)
-        : inf(new impl_t<_Ty>), class_name(name) {}
+    template &lt;typename _Ty&gt;
+    class_t(const typeinfo&lt;_Ty&gt;&, std::string name)
+        : inf(new impl_t&lt;_Ty&gt;), class_name(name) {}
 
-    template <typename _Class>
+    template &lt;typename _Class&gt;
     _Class* new_instance() const {
-        return reinterpret_cast<_Class*>(inf->new_instance());
+        return reinterpret_cast&lt;_Class*&gt;(inf-&gt;new_instance());
     }
 private:
     struct interface_t {
         virtual void* new_instance() const = 0;
     };
-    template <typename _Ty>
+    template &lt;typename _Ty&gt;
     struct impl_t : public interface_t {
         virtual void* new_instance() const { return new _Ty; }
     };
 private:
-    std::shared_ptr<interface_t> inf;
+    std::shared_ptr&lt;interface_t&gt; inf;
 };</pre>
 지난 번과 동일한 부분을 과감히 생략하고 변경된 부분만 모아보면 위와 같다.<br />
 class_t 내부에 interface_t와 impl_t가 들어갔다.<br />
@@ -123,7 +111,7 @@ interface_t는 impl_t를 일반적으로 접근하기 위한 interface class이�
 class_t의 생성자가 type 정보를 직접 받기 위해 template 함수로 작성되었다.<br />
 재밌는 점은, 함수 template 생성자에 type 정보를 넘기기 위해 < >으로 명시해주는 것은 쓸 수가 없어서,<br />
 이를 적당히 회피하기 위해 type 정보를 컴파일러에게 알려주기 위해 class 하나를 추가한다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 class typeinfo {};</pre>
 <br />
 그래서 class_t 생성자는 typeinfo<_Ty> 객체를 인자로 받는 것이고, <br />
@@ -135,17 +123,17 @@ class typeinfo {};</pre>
 <br />
 #<br />
 field_t 역시 위와 동일한 방법으로 개선하였다.<br />
-<pre class="brush: cpp;">class field_t {
+<pre class="brush: cpp">class field_t {
 public:
-    template <typename _ObjTy, typename _FieldTy>
+    template &lt;typename _ObjTy, typename _FieldTy&gt;
     field_t(_FieldTy (_ObjTy::*Field), std::string name)
-        : inf(new impl_t<_ObjTy, _FieldTy>(field)), field_name(name) {}
+        : inf(new impl_t&lt;_ObjTy, _FieldTy&gt;(field)), field_name(name) {}
 private:
     struct interface_t {
         virtual void* ptr(void* obj_addr) const = 0;
         virtual const std::type_info& type() const = 0;
     };
-    template <typename _ObjTy, typename _FieldTy>
+    template &lt;typename _ObjTy, typename _FieldTy&gt;
     struct impl_t : public interface_t {
         impl_t(_FieldTy (_ObjTy::*Field)) : field(Field) {}
         virtual const std::type_info& type() const { return typeid(_FieldTy); }
@@ -154,7 +142,7 @@ private:
         _FieldTy (_ObjTy::*field);
     };
 private:
-    std::shared_ptr<interface_t> inf;
+    std::shared_ptr&lt;interface_t&gt; inf;
 };</pre>
 생성자를 template 함수로 만드는 방법은 class_t와 똑같은데, 아까 만든 typeinfo를 사용하여 type정보를 넘기지는 않는다.<br />
 기존의 field_impl_t에서 실제 field까지 template 인자로 받았던 것에 반해, 새로운 구조에서는 data member pointer를 생성 인자로 받기 때문에 _FieldTy (_ObjTy::*Field) 이 인자를 통해서 충분한 type 유추가 가능하기 때문이다.<br />
@@ -167,26 +155,26 @@ private:
 기존에는 외부로 노출된 template 함수를 통해 직접 type 및 이름 정보를 입력하여 하나씩 정보를 등록하였다.<br />
 <br />
 하지만 각 field를 정의할 때마다 어떤 class에 대한 field인지 매번 써주는 것은 비효율적이므로, 이를 개선하기 위해 다음과 같이 register를 도와주면서 어떤 class에 대한 register인지 type 정보를 갖고 있는 class를 설계해보자.<br />
-<pre class="brush: cpp;">template <typename _ObjTy>
+<pre class="brush: cpp">template &lt;typename _ObjTy&gt;
 struct reflection_register_helper_t {
     typedef _ObjTy target_type;
 
     static void register_class(std::string class_name);
-    template <typename _FieldTy>
+    template &lt;typename _FieldTy&gt;
     static void register_field(_FieldTy (_ObjTy::*Field), std::string field_name);
 };
 
-template <typename _ObjTy>
-inline void reflection_register_helper_t<_ObjTy>::register_class(std::string class_name)
+template &lt;typename _ObjTy&gt;
+inline void reflection_register_helper_t&lt;_ObjTy&gt;::register_class(std::string class_name)
 {
     reflection_base::instance().add_class_name(&typeid(_ObjTy), class_name);
     reflection_base::instance().add_class(class_name, 
-        new class_t(typeinfo<_ObjTy>(), class_name));
+        new class_t(typeinfo&lt;_ObjTy&gt;(), class_name));
 }
 
-template <typename _ObjTy>
-template <typename _FieldTy>
-inline void reflection_register_helper_t<_ObjTy>::register_field(
+template &lt;typename _ObjTy&gt;
+template &lt;typename _FieldTy&gt;
+inline void reflection_register_helper_t&lt;_ObjTy&gt;::register_field(
     _FieldTy (_ObjTy::*Field), std::string field_name)
 {
     const char* class_name = reflection_base::instance()
@@ -201,15 +189,15 @@ reflection_register_helper_t class는 template으로 type 정보를 받고 이�
 따라서 register_class() 함수나 register_field() 함수는 따로 어떤 class에 대한 정보인지 type 정보를 받을 필요가 없다.<br />
 <br />
 이제 매크로를 통해 다음과 같이 대신 등록해주는 코드를 만들어볼 수 있다.<br />
-<pre class="brush: cpp;">#define REFLECTION_REGISTER_BEGIN(class_name)  \
+<pre class="brush: cpp">#define REFLECTION_REGISTER_BEGIN(class_name)  \
     static struct _register_##class_name :
-            public reflection::reflection_register_helper_t<class_name> { \
+            public reflection::reflection_register_helper_t&lt;class_name&gt; { \
        _register_##class_name() \
         { \
             register_class(#class_name);
 
 #define REFLECTION_REGISTER_FIELD(type, field_name) \
-            register_field<type>(&target_type::field_name, #field_name);
+            register_field&lt;type&gt;(&target_type::field_name, #field_name);
 
 #define REFLECTION_REGISTER_END()  \
         } \
@@ -222,7 +210,7 @@ REFLECTION_REGISTER_BEGIN, FIELD, END 매크로를 사용하면 등록하고자 
 만약 이 변수가 전역 변수로 선언된다면 프로그램이 실행될 때 해당 객체가 초기화되면서 생성자의 코드가 실행될 것이고,<br />
 그 때 해당 type에 대한 reflection 정보가 등록될 것이다.<br />
 <br />
-<pre class="brush: cpp;">REFLECTION_REGISTER_BEGIN(user_t)
+<pre class="brush: cpp">REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
 REFLECTION_REGISTER_END()</pre>
@@ -236,11 +224,11 @@ REFLECTION_REGISTER_END()</pre>
 선언된 header 파일을 여러 번 incldue하고, 그 때마다 선언 매크로를 다른 것으로 치환(undef/define)하여 사용하는 것이다.<br />
 <br />
 먼저 선언을 위한 매크로를 정의해보면 다음과 같다.<br />
-<pre class="brush: cpp;">#ifndef __DECLARE_TYPE_MACRO_DEFINED__
+<pre class="brush: cpp">#ifndef __DECLARE_TYPE_MACRO_DEFINED__
 #define __DECLARE_TYPE_MACRO_DEFINED__
 #define DECLARE_BEGIN(class_name) \
     struct class_name; \
-    typedef std::shared_ptr<class_name> class_name##_ref; \
+    typedef std::shared_ptr&lt;class_name&gt; class_name##_ref; \
     struct class_name : public object_t {
 
 #define DECLARE_FIELD(type, field_name) \
@@ -257,18 +245,18 @@ REFLECTION_REGISTER_END()</pre>
 <br />
 STRUCT_BEGIN, FIELD, END 매크로는 선언(declare) 단계에서는 DECLARE_BEGIN, FIELD, END를 사용하도록 작성이 되어있다.<br />
 이제 다음과 같이 user_t를 정의하면 (user.h)<br />
-<pre class="brush: cpp;">STRUCT_BEGIN(user_t)
+<pre class="brush: cpp">STRUCT_BEGIN(user_t)
     STRUCT_FIELD(int, index)
     STRUCT_FIELD(std::string, name)
 STRUCT_END()</pre>
 위 매크로에 의해 다음과 같이 번역될 것이다. (STRUCT -> DECLARE)<br />
-<pre class="brush: cpp;">struct user_t {
+<pre class="brush: cpp">struct user_t {
     int index;
     std::string name;
 };</pre>
 <br />
 이제, STRUCT_BEGIN, FIELD, END를 reflection을 등록하기 위한 매크로로 치환한다. (type_register_macro.h)<br />
-<pre class="brush: cpp;">#ifdef STRUCT_BEGIN
+<pre class="brush: cpp">#ifdef STRUCT_BEGIN
 #undef STRUCT_BEGIN
 #endif
 
@@ -285,13 +273,13 @@ STRUCT_END()</pre>
 #define STRUCT_END()                    REFLECTION_REGISTER_END()</pre>
 <br />
 이제 다시 user.h 파일을 include하면, 이 때의 코드는 다음과 같이 번역될 것이다. (STRUCT -> REFLECTION_REGISTER)<br />
-<pre class="brush: cpp;">REFLECTION_REGISTER_BEGIN(user_t)
+<pre class="brush: cpp">REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
 REFLECTION_REGISTER_END()</pre>
 <br />
 이에 대한 전체적인 코드 구조는 다음과 같다.<br />
-<pre class="brush: cpp;">#include "object.h"
+<pre class="brush: cpp">#include "object.h"
 #include "user.h"
 
 #include "type_register_macro.h"
@@ -321,10 +309,7 @@ include가 복잡하게 꼬이는 구조가 발생하면 여러 번 include 되�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -341,6 +326,7 @@ include가 복잡하게 꼬이는 구조가 발생하면 여러 번 include 되�
                 <div class="well">
 					<h4>Related</h4>
 					<ul>
+						<li><a href="/a/c++에서_reflection_사용하기__1.html">c++에서 reflection 사용하기 #1</a> <span class="date">6. 3.</span></li>
 						<li><a href="/a/c++에서_reflection_사용하기__2.html">c++에서 reflection 사용하기 #2</a> <span class="date">6. 4.</span></li>
 						<li><a href="/a/c++에서_reflection_사용하기__4.html">c++에서 reflection 사용하기 #4</a> <span class="date">6. 9.</span></li>
 					</ul>
@@ -381,10 +367,6 @@ include가 복잡하게 꼬이는 구조가 발생하면 여러 번 include 되�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -396,6 +378,31 @@ include가 복잡하게 꼬이는 구조가 발생하면 여러 번 include 되�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

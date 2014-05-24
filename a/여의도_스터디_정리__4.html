@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>여의도 스터디 정리 #4</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>여의도 스터디 정리 #4</h1>
+                <h2>여의도 스터디 정리 #4</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on August 26, 2013 at 5:59 PM</p>
                 <hr>
@@ -114,7 +102,7 @@ read/write를 허용하는 좋은 방법은 없다. 처음에 read lock을 획�
 #<br />
 잘 기억은 안 나는데 asynchronous method에 대해서 잠깐 이야기가 있었다.<br />
 async-method를 요청할 때의 코드 패턴에 대한 이야기였는데<br />
-<pre class="brush: cpp;">void request_async(request_context context, async_state state, callback_t callback) {
+<pre class="brush: cpp">void request_async(request_context context, async_state state, callback_t callback) {
     async_result result = magical_async_method(context);
     callback(result, state);
 }</pre>
@@ -156,24 +144,24 @@ availability은 장애 상황에서의 서비스 가용 상태를 뜻하고, lat
 지난 번에 구현한 actor model은 진정한 actor가 아니기 때문에 자원 접근 측면에서 문제가 발생할 수 있다.<br />
 진정한 actor model이라면 다른 actor의 정보에 접근할 때에도 정보 접근 요청 message 같은 것을 보내서 처리해야 할 텐데, 만약에 해당 정보에 lock을 걸고 접근할 수 있도록 코드를 작성하였다고 해보자.<br />
 즉, actor A, B가 있고, B가 A의 특정 데이터를 가져올 때 A의 lock을 걸고 데이터를 가져오게 된다는 것이다.<br />
-<pre class="brush: cpp;">class a_t : public actor_t {
+<pre class="brush: cpp">class a_t : public actor_t {
 public:
     some_struct_t get_some() const { auto _ = read_lock(); return _some_struct; }
 };
 class b_t : public actor_t {
 public:
     void process(a_t* a) {
-        auto some_a = a->get_some();
+        auto some_a = a-&gt;get_some();
         // .. do anything
     }
 };</pre>
 actor model로 구현한 주제에 lock을 쓴다는 점부터가 마음에 안 들지만 일단 그 부분은 그냥 넘어가자. 기존에 구현한 actor model의 job scheduling 방식은 "해당 actor를 먼저 점유한 thread가 있으면 그 thread가 해당 actor의 job_queue가 빌 때까지 모두 처리한다"이다.<br />
 때문에 A에서 B로 함수를 호출할 때, A의 함수 수행이 끝나기 전에 B의 함수가 호출될 수 있다. 이는 A가 A에게 message를 보낼 때와 다른 수행 양상을 보인다.<br />
-<pre class="brush: cpp;">class a_t : public actor_t {
+<pre class="brush: cpp">class a_t : public actor_t {
 public:
     void proc1() {
         post(&a_t::proc1);
-        _b->post(&b_t::pass1);
+        _b-&gt;post(&b_t::pass1);
         // do something 1
     }
     void proc2() {
@@ -190,12 +178,12 @@ public:
 <strong>do something 3, 1, 2 순으로 수행될 것이다.</strong><br />
 <br />
 때문에 위의 코드로 돌아가서 lock 문제를 다시 살펴보자.<br />
-<pre class="brush: cpp;">class a_t : public actor_t {
+<pre class="brush: cpp">class a_t : public actor_t {
 public:
     void update() {
         auto _ = write_lock();
         // update some_struct upper half
-        _b->post(&b_t::process, this);
+        _b-&gt;post(&b_t::process, this);
         // update some_struct bottom half
     }
 };</pre>
@@ -211,10 +199,7 @@ b_t::process() 함수가 호출된다. 이 때 a_t::_some_struct를 접근한다
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -272,10 +257,6 @@ b_t::process() 함수가 호출된다. 이 때 a_t::_some_struct를 접근한다
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -287,6 +268,31 @@ b_t::process() 함수가 호출된다. 이 때 a_t::_some_struct를 접근한다
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

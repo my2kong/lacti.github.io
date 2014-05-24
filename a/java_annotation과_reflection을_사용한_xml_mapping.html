@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>java annotation과 reflection을 사용한 xml mapping</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>java annotation과 reflection을 사용한 xml mapping</h1>
+                <h2>java annotation과 reflection을 사용한 xml mapping</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on May 31, 2012 at 12:52 AM</p>
                 <hr>
@@ -84,7 +72,7 @@ reflection으로 이를 적절히 읽어서 model과 xml의 상호 변환(mappin
 <br />
 #<br />
 먼저 model을 하나 만들자.<br />
-<pre class="brush: java;">public class Customer {
+<pre class="brush: java">public class Customer {
     public String name;
     public int age;
     public String order;
@@ -98,7 +86,7 @@ name이라는 field는 xml에 attribute로 기록되어야 할까? 아니면 chi
 <br />
 #<br />
 class에 사용할 annotation을 정의한다. (import 생략)<br />
-<pre class="brush: java;">@Target(ElementType.TYPE)
+<pre class="brush: java">@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XmlClassBind {
     public String nodeName();
@@ -109,7 +97,7 @@ public @interface XmlClassBind {
 그리고 nodeName이라는 annotation 값을 하나 같는데, 해당 class가 mapping될 xml element의 이름 정보를 넣기 위해 쓸 것이다.<br />
 <br />
 이제 field에 사용할 annotation을 정의한다. (import 생략)<br />
-<pre class="brush: java;">@Target(ElementType.FIELD)
+<pre class="brush: java">@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XmlAttrBind {
     public string nodeName();
@@ -120,7 +108,7 @@ XmlClassBind와 유사한데 ElementType을 FIELD로 선언하여 Field에만 �
 그리고 useAttribute라는 boolean 속성을 추가하여 true이면 attribute로 기록하고 false이면 child-element를 만들도록 할 것이다.<br />
 <br />
 이제 정의한 annotation으로 model class에 metadata를 넣어보자.<br />
-<pre class="brush: java;">@XmlClassBind(nodeName="customer")
+<pre class="brush: java">@XmlClassBind(nodeName="customer")
 public class Customer {
     @XmlAttrBind(nodeName="name", useAttribute=true)
     public String name;
@@ -140,12 +128,12 @@ order 문자열만 child element로 생성되는데 이 때 element 이름은 cu
 Java 기본 Xml Api는 영 좋지 않으므로 예전부터 사용하던 자체 구현 XmlElement을 사용하여 Bind를 수행하는 코드를 작성할 것이다.<br />
 <br />
 먼저 model 객체들을 Xml로 변환하는 코드는 다음과 같다. (예외 선언 생략)<br />
-<pre class="brush: java;">public static XmlElement ToXml(List<?> models) {
+<pre class="brush: java">public static XmlElement ToXml(List&lt;?&gt; models) {
     if (models.isEmpty())
         throw new IllegalArgumentException();
     
     // get class type for first element
-    Class<?> clazz = models.get(0).getClass();
+    Class&lt;?&gt; clazz = models.get(0).getClass();
     
     String classNodeName = clazz.getAnnotation(XmlClassBind.class).nodeName();
     String listNodeName = classNodeName + "-list";
@@ -195,8 +183,8 @@ XmlElement로부터 Model 객체를 생성하는 방식은 위와는 좀 다를 
 <br />
 준겸이가 작성한 것처럼, class의 full name을 xml에 기록하여 Class.forName으로 해당 class에 대한 정보를 가져와서 사용하는 방법도 있고,<br />
 아래 예제처럼 Class<T> 자체를 인자로 받아서 구현할 수도 있다. (예외 선언 생략)<br />
-<pre class="brush: java;">public static <T> List<T> ToModel(Class<T> clazz, XmlElement rootElement) {
-    List<T> models = new ArrayList<T>();
+<pre class="brush: java">public static &lt;T&gt; List&lt;T&gt; ToModel(Class&lt;T&gt; clazz, XmlElement rootElement) {
+    List&lt;T&gt; models = new ArrayList&lt;T&gt;();
     
     String classNodeName = clazz.getAnnotation(XmlClassBind.class).nodeName();
     for (XmlElement classElement: rootElement.findByTagName(classNodeName)) {
@@ -235,7 +223,7 @@ ReflectionHelper.setValue() 를 수행하는 부분이다.<br />
 #<br />
 newInstance() 를 사용하여 model class의 객체를 만들 때 해당 class에 default constructor가 정의되어있지 않으면 생성할 수가 없다. 때문에 bean class들은 기본 생성자만 정의하고 field를 초기화하는 paramter를 갖는 생성자를 안 만드는 경향이 있다.<br />
 그런데 POJO를 사용하다보면 기본 생성자를 놓치는 경우가 있는데, 그럴 경우 reflection을 사용하더라도 호출할 적절한 생성자를 찾기가 힘드므로 생성하기가 좀 곤란해진다.<br />
-<pre class="brush: java;">public class Customer {
+<pre class="brush: java">public class Customer {
     public String name;
     public int age;
     public Customer(String name, int age) { /* ... */ }
@@ -248,8 +236,8 @@ newInstance() 를 사용하여 model class의 객체를 만들 때 해당 class�
 Class.newInstance() 함수는 기본 생성자가 있고, 해당 생성자가 접근 가능(public)할 때만 사용할 수 있는 함수이다. 따라서 외부에서 접근할 수 없는 private, default, protected로 선언한 기본 생성자가 있다면 문제가 될 수 있다.<br />
 <br />
 이를 고려하여 ReflectionHelper.newInstance() 함수를 작성하면 다음과 같다. (예외 선언 생략)<br />
-<pre class="brush: java;">public static <T> T newInstance(Class<T> clazz) {
-    Constructor<T> defaultConstructor = clazz.getConstructor();
+<pre class="brush: java">public static &lt;T&gt; T newInstance(Class&lt;T&gt; clazz) {
+    Constructor&lt;T&gt; defaultConstructor = clazz.getConstructor();
     defaultConstructor.setAccessible(true);
     return defaultConstructor.newInstance();
 }</pre>
@@ -259,8 +247,8 @@ Class.newInstance() 함수는 기본 생성자가 있고, 해당 생성자가 �
 값을 Field의 type에 맞게 적절히 parsing해서 넣어주는 ReflectionHelper.setValue() 함수는 우아하지 못하다.<br />
 그냥 Field의 type을 case by case로 검사해서 값을 직접 넣어주는 방법 밖에 없다.<br />
 간단하게 int, String에 대해서만 구현을 해보면 다음과 같다. (예외 선언 생략)<br />
-<pre class="brush: java;">public static void setValue(Object target, Field field, String value) {
-    Class<?> fieldType = field.getType();
+<pre class="brush: java">public static void setValue(Object target, Field field, String value) {
+    Class&lt;?&gt; fieldType = field.getType();
     field.setAccessible(true);
     if (fieldType.equals(int.class) || fieldType.equals(Integer.class)) {
         field.set(target, Integer.parseInt(value));
@@ -304,10 +292,7 @@ annotation, reflection 관련하여 혹시 다른 예제를 보고 싶으면 아
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -356,10 +341,6 @@ annotation, reflection 관련하여 혹시 다른 예제를 보고 싶으면 아
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -371,6 +352,31 @@ annotation, reflection 관련하여 혹시 다른 예제를 보고 싶으면 아
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

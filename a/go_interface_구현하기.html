@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>go interface 구현하기</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>go interface 구현하기</h1>
+                <h2>go interface 구현하기</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on June 21, 2012 at 10:31 PM</p>
                 <hr>
@@ -71,7 +59,7 @@
 #<br />
 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고<br />
 그냥 민철 선배님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.<br />
-<pre class="brush: cpp;">class A {
+<pre class="brush: cpp">class A {
 public: void a(); void b(); void c();
 };
 class X {
@@ -86,7 +74,7 @@ public void c() = 0;
 
 A obj;
 X* x = /* 어떻게든 obj랑 연결 */;
-x->a(); // A::a() 함수가 호출됨</pre>
+x-&gt;a(); // A::a() 함수가 호출됨</pre>
 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다.<br />
 하지만 암시적으로라도, 동일한 함수 signature가 존재한다면 interface로 지칭할 수 있게 해주는 것이 목적이다.<br />
 (template 함수에서 암시적 interface를 요구하는 것을 객체화하여 접근할 수 있게 하였다고 봐도 되겠다)<br />
@@ -109,19 +97,19 @@ java reflection 중에는 Proxy라고 하여 해당 interface에 대한 method�
 덕분에 어떤 interface를 넣어도 Proxy를 적절히 써서, 해당 interface의 함수가 호출될 때 이 정보를 대상 객체(target)의 함수로 잘 넘겨서 실행해주면 되겠다.<br />
 <br />
 이에 대한 코드는 다음과 같다.<br />
-<pre class="brush: java;">import java.lang.reflect.InvocationHandler;
+<pre class="brush: java">import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 public class InfOp {
-    public static <T> T assign(Class<T> infClazz, Object target) {
+    public static &lt;T&gt; T assign(Class&lt;T&gt; infClazz, Object target) {
         return infClazz.cast(Proxy.newProxyInstance(infClazz.getClassLoader(), 
-                new Class<?>[] { infClazz }, new InvocImpl(target)));
+                new Class&lt;?&gt;[] { infClazz }, new InvocImpl(target)));
     }
     
     private static class InvocImpl implements InvocationHandler {
         private Object target;
-        private Class<?> targetClazz;
+        private Class&lt;?&gt; targetClazz;
         
         public InvocImpl(Object target) {
             super();
@@ -144,7 +132,7 @@ interface class에서 호출되는 method의 정보(name, parameter = 결국 sig
 <br />
 #<br />
 이제 다음과 같이 사용해볼 수 있다.<br />
-<pre class="brush: java;">public class Test {
+<pre class="brush: java">public class Test {
     public static void main(String[] args) {
         Character ch = new Character();
         Drawable dr = InfOp.assign(Drawable.class, ch);
@@ -181,10 +169,7 @@ Character class와 Drawable interface는 명시적인 구현 관계(implements)�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -233,10 +218,6 @@ Character class와 Drawable interface는 명시적인 구현 관계(implements)�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -248,6 +229,31 @@ Character class와 Drawable interface는 명시적인 구현 관계(implements)�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

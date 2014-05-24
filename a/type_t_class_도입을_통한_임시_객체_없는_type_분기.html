@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>type_t class 도입을 통한 임시 객체 없는 type 분기</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,8 +48,7 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>type_t class 도입을 통한 임시 객체 없는 type 분기</h1>
+                <h2>type_t class 도입을 통한 임시 객체 없는 type 분기</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on November 15, 2011 at 12:35 AM</p>
                 <hr>
@@ -71,40 +59,40 @@
 <br />
 #<br />
 어떤 class 2개가 있다.<br />
-<pre class="brush: cpp;">class big_class {};
+<pre class="brush: cpp">class big_class {};
 class huge_class {};</pre>
 <br />
 이 class 들은 기본 생성자에서 굉장히 복잡한 작업을 하는 객체들 혹은 생성 자체가 복잡한 class 들이다.<br />
 이러한 class 에 대해 어떠한 작업을 수행하는 generic 한 함수가 있다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 void operation() {}</pre>
 <br />
 이 함수는 객체의 type 을 받아서 내부에서 모종의 작업을 수행하게 된다.<br />
 따라서 메인 함수에서는 다음과 같이 각 class 에 대해 operation 을 요청하게 된다.<br />
-<pre class="brush: cpp;">int _tmain(int argc, _TCHAR* argv[]) {
-    operation<big_class>();
-    operation<huge_class>();
+<pre class="brush: cpp">int _tmain(int argc, _TCHAR* argv[]) {
+    operation&lt;big_class&gt;();
+    operation&lt;huge_class&gt;();
     return 0;
 }</pre>
 (굳이 객체를 넘기지 않은건 이 예제에서는 별로 그럴 필요가 없기 때문이다.)<br />
 <br />
 operation 내에서는 각 type 별로 type 의 이름을 출력해주는 print 라는 함수를 호출한다고 하자.<br />
 그러면 간단하게 template 의 specialization 을 사용하여, print 함수는 다음과 같다고 생각할 수 있다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 void print(Ty&) {}
 
-template <typename _Ty>
+template &lt;typename _Ty&gt;
 void print(big_class&) {
     printf_s("big_class\n");
 }
 
-template <typename _Ty>
+template &lt;typename _Ty&gt;
 void print(huge_class&) {
     printf_s("huge_class\n");
 }</pre>
 <br />
 specialization 을 하기 위해 함수 interface 에 인자로 받을 객체를 추가했다. 덕분에 각 type 별로 함수가 구분되기는 했지만, 저 함수를 부르려면 일단 객체를 만들어야하는 부담이 생긴다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 void operation() {
     print(_Ty());
 }</pre>
@@ -116,65 +104,65 @@ big_class 와 huge_class 는 기본 생성자에서 굉장히 많은 일을 하�
 c++ template meta programming 책에서는 이에 대해서, <strong>간접층을 도입하여 문제를 해결할 수 있다</strong> 라고 소개한다.<br />
 <br />
 먼저 type 정보를 위한 template class 를 도입한다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 class type_t {
     typedef _Ty type;
 };</pre>
 <br />
 단순히 저 class 를 사용하는 것만으로 위 문제가 깔끔하게 해결된다.<br />
 이제 print 함수는 실제 객체의 type 을 인자로 넣는 것이 아니라 type_t 를 인자로 받는다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
-void print(type_t<_Ty>&) {}
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
+void print(type_t&lt;_Ty&gt;&) {}
 
-template <>
-void print(type_t<big_class>&) {
+template &lt;&gt;
+void print(type_t&lt;big_class&gt;&) {
     printf_s("big_class\n");
 }
 
-template <>
-void print(type_t<huge_class>&) {
+template &lt;&gt;
+void print(type_t&lt;huge_class&gt;&) {
     printf_s("huge_class\n");
 }</pre>
 print 함수의 인자는 이제 type_t 의 객체이지 실제 big_class 와 huge_class 의 객체가 아니다. 그리고 type_t class 는 아무런 멤버 변수도 갖지 않는 매우 가벼운 임시 객체를 생성할 수 있다.<br />
 (typedef 정보만 갖기 때문에 컴파일러가 최적화하여 아무런 임시 객체를 만들지 않고 바로 함수를 호출하도록 linking 을 할 것이다)<br />
 <br />
 이제 operation 함수는 무거운 big_class 와 huge_class 에 대한 임시 객체를 만드는 대신, 각 type 에 대한 type_t 객체를 만들어서 print 함수에게 넘겨주면 된다.<br />
-<pre class="brush: cpp;">template <typename _Ty>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
 void operation() {
-    print(type_t<_Ty>());
+    print(type_t&lt;_Ty&gt;());
 }</pre>
 <br />
 #<br />
 다음은 코드 전문이다.<br />
-<pre class="brush: cpp;">class big_class {};
+<pre class="brush: cpp">class big_class {};
 class huge_class {};
 
-template <typename _Ty>
+template &lt;typename _Ty&gt;
 class type_t {
     typedef _Ty type;
 };
 
-template <typename _Ty>
-void print(type_t<_Ty>&) {}
+template &lt;typename _Ty&gt;
+void print(type_t&lt;_Ty&gt;&) {}
 
-template <>
-void print(type_t<big_class>&) {
+template &lt;&gt;
+void print(type_t&lt;big_class&gt;&) {
     printf_s("big_class\n");
 }
 
-template <>
-void print(type_t<huge_class>&) {
+template &lt;&gt;
+void print(type_t&lt;huge_class&gt;&) {
     printf_s("huge_class\n");
 }
 
-template <typename _Ty>
+template &lt;typename _Ty&gt;
 void operation() {
-    print(type_t<_Ty>());
+    print(type_t&lt;_Ty&gt;());
 }
 
 int _tmain(int argc, _TCHAR* argv[]) {
-    operation<big_class>();
-    operation<huge_class>();
+    operation&lt;big_class&gt;();
+    operation&lt;huge_class&gt;();
     return 0;
 }</pre>
 <br />
@@ -183,11 +171,11 @@ template 의 specialization 이 들어가면 컴파일 순서에 따라 문제�
 <br />
 operation<big_class> 가 컴파일 될 때 big_class type 에 대한 operation 함수의 코드가 만들어진다고 보면 되고, 이 때 print(type_t<big_class>()); 구문을 생성하게 된다.<br />
 이 시점에서<br />
-<pre class="brush: cpp;">template <>
-void print(type_t<big_class>&)</pre>
+<pre class="brush: cpp">template &lt;&gt;
+void print(type_t&lt;big_class&gt;&)</pre>
 함수를 컴파일러가 알지 못한다면, 컴파일러는<br />
-<pre class="brush: cpp;">template <typename _Ty>
-void print(type_t<_Ty>&)</pre>
+<pre class="brush: cpp">template &lt;typename _Ty&gt;
+void print(type_t&lt;_Ty&gt;&)</pre>
 의 코드만 보고 직접 big_class 에 대한 print 함수 또한 만들어버릴 것이다.<br />
 <br />
 즉, 컴파일러가 특수화된 template 함수를 미처 보지 못하면 그 template 함수의 원형을 통해 필요한 type 의 함수를 만들어버리게 되므로 의도치 않은 동작을 할 수 있다.<br />
@@ -207,10 +195,7 @@ overload 된 함수는 모두 컴파일 대상이지만, template 함수는 실�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -259,10 +244,6 @@ overload 된 함수는 모두 컴파일 대상이지만, template 함수는 실�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -274,6 +255,31 @@ overload 된 함수는 모두 컴파일 대상이지만, template 함수는 실�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 

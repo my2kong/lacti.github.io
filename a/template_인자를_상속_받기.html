@@ -8,24 +8,13 @@
     <meta name="author" content="lacti">
 
     <title>template 인자를 상속 받기</title>
-	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
-    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
 
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <!-- Add custom CSS here -->
     <link href="../css/blog-post.css" rel="stylesheet">
 
+	<!-- Syntax highlighter -->
+    <link href="../css/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+    <link href="../css/shCore.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -59,14 +48,13 @@
         <div class="row">
             <div class="col-lg-8">
 
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>template 인자를 상속 받기</h1>
+                <h2>template 인자를 상속 받기</h2>
                 <p>
                     <span class="glyphicon glyphicon-time"></span> Posted on January 09, 2012 at 11:38 PM</p>
                 <hr>
                 <div class="content">
 #<br />
-<pre class="brush: cpp;">template <class _Base>
+<pre class="brush: cpp">template &lt;class _Base&gt;
 class MyClass : public _Base {};</pre>
 위와 같은 형태가 어떤 의미를 지니고, 어느 곳에서 사용될 수 있는지 살펴보자<br />
 <br />
@@ -81,13 +69,13 @@ class MyClass : public _Base {};</pre>
 #<br />
 부모 class 의 종류에 상관없이 동일한 기능을 추가하는 가장 간단한 예제는 singleton 이다.<br />
 아래와 같은 MyClass 가 있다고 해보자.<br />
-<pre class="brush: cpp;">class MyClass {
+<pre class="brush: cpp">class MyClass {
 public:
     int GetValue() const { return 100; }
 };</pre>
 <br />
 이 Class 를 Singleton 으로 만드려면 가장 간단한 방법은, 직접 해당 method 를 MyClass 에 추가하는 것이다.<br />
-<pre class="brush: cpp;">class MyClass {
+<pre class="brush: cpp">class MyClass {
 public:
     int GetValue() const { return 100; }
 
@@ -107,7 +95,7 @@ MyClass* MyClass::_ptr = nullptr;</pre>
 그러면 매번 저런 식의 static 함수와 변수를 각 class 마다 추가해주어야 할 것이다.<br />
 <br />
 이를 해결해주기 위한 여러 방법이 있는데, 가장 간단한 방법은 다음과 같은 template singleton class 를 만드는 것이다.<br />
-<pre class="brush: cpp;">template <class _Target>
+<pre class="brush: cpp">template &lt;class _Target&gt;
 class Singleton {
 public:
     static _Target& Instance() {
@@ -117,20 +105,20 @@ public:
 private:
     static _Target* _ptr;
 };
-template <class _Target>
-_Target* Singleton<_Target>::_ptr = nullptr;</pre>
+template &lt;class _Target&gt;
+_Target* Singleton&lt;_Target&gt;::_ptr = nullptr;</pre>
 <br />
 위와 같은 Singleton 을 설계하고 모든 문제가 해결되었다! 라고 생각하면 안된다. MyClass 는 여러 instance 가 생기면 안되기 때문에 생성자가 private 이 되어있다.<br />
 하지만 위 Singleton class 는 new _Target 를 통해서 직접 해당 객체를 생성하므로,<br />
 Singleton<MyClass>::Instance() 는 컴파일 에러를 발생시킬 것이다.<br />
 <br />
 이를 해결하기 위해 다음과 같이 코드를 수정한다.<br />
-<pre class="brush: cpp;">template <class _Class>
+<pre class="brush: cpp">template &lt;class _Class&gt;
 class Singleton : private _Class {
 public:
     static _Class& Instance() {
         if (_ptr == nullptr)
-            _ptr = new Singleton<_Class>;
+            _ptr = new Singleton&lt;_Class&gt;;
         return *_ptr;
     }
 private:
@@ -138,8 +126,8 @@ private:
 private:
     static Singleton* _ptr;
 };
-template <class _Class>
-Singleton<_Class>* Singleton<_Class>::_ptr = nullptr;
+template &lt;class _Class&gt;
+Singleton&lt;_Class&gt;* Singleton&lt;_Class&gt;::_ptr = nullptr;
 
 class MyClass {
 public:
@@ -165,9 +153,9 @@ Singleton<MyClass>::Instance() 와 같이 유일 객체에 접근이 가능하�
 이들에게 공통적으로 적용될 수 있는 기능을 추가한 class 를 확장해보자.<br />
 <br />
 약간 억지 예제이지만, STL container 의 iterator 를 확장해 보겠다.<br />
-<pre class="brush: cpp;">template <class _FwdIter>
+<pre class="brush: cpp">template &lt;class _FwdIter&gt;
 struct for_each_iter : public _FwdIter {
-    template <class _FuncTy>
+    template &lt;class _FuncTy&gt;
     void for_each(_FwdIter end, _FuncTy funct) {
         for (_FwdIter it = begin; it != end; ++it)
             funct(*it);
@@ -181,14 +169,14 @@ for_each_iter 는 forward iterator 기능을 모두 가지면서 for_each 라는
 이를 만족하기 위해 _FwdIter 에 대해 public 상속을 하였으며, for_each 함수를 추가로 갖는다.<br />
 <br />
 단, 저렇게 만들어놓으면 매번 for_each_iter<std::vector<int>::iterator> 등 type 을 길게 써주는게 귀찮으니, 간단하게 type 추론하여 객체를 생성해주는 생성 함수를 만들자.<br />
-<pre class="brush: cpp;">template <class _FwdIter>
-for_each_iter<_FwdIter> make_for_each_iter(_FwdIter iter)
+<pre class="brush: cpp">template &lt;class _FwdIter&gt;
+for_each_iter&lt;_FwdIter&gt; make_for_each_iter(_FwdIter iter)
 {
-    return for_each_iter<_FwdIter>(iter);
+    return for_each_iter&lt;_FwdIter&gt;(iter);
 }</pre>
 <br />
 그러면 아래와 같이 사용할 수 있다.<br />
-<pre class="brush: cpp;">std::vector<int> ints;
+<pre class="brush: cpp">std::vector&lt;int&gt; ints;
 ints.push_back(0); ints.push_back(1); ints.push_back(2); ints.push_back(3);
 
 auto ea1 = make_for_each_iter(ints.begin());
@@ -213,10 +201,7 @@ template 인자로 받게되는 것은 암시적 interface 가 요구되기 때�
                 <!-- the comments -->
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
-					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
-
-					/* * * DON'T EDIT BELOW THIS LINE * * */
+					var disqus_shortname = 'lacti';
 					(function() {
 						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -265,10 +250,6 @@ template 인자로 받게되는 것은 암시적 interface 가 요구되기 때�
     <script src="../js/jquery-1.10.2.js"></script>
     <script src="../js/bootstrap.js"></script>
 
-	<script type='text/javascript'>
-		SyntaxHighlighter.all();
-	</script>
-
 	<script>
 	  (function() {
 		var cx = '001870890642618183212:k8iqprsstre';
@@ -280,6 +261,31 @@ template 인자로 받게되는 것은 암시적 interface 가 요구되기 때�
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(gcse, s);
 	  })();
+	</script>
+	
+    <script src="../js/shCore.js" type="text/javascript"></script>
+    <script src="../js/shAutoloader.js" type="text/javascript"></script>
+	<script>
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			// do nothing
+		} else {
+			SyntaxHighlighter.autoloader(
+			  'bash shell             ../js/shBrushBash.js',
+			  'cpp c                  ../js/shBrushCpp.js',
+			  'c# c-sharp csharp      ../js/shBrushCSharp.js',
+			  'css                    ../js/shBrushCss.js',
+			  'java                   ../js/shBrushJava.js',
+			  'js jscript javascript  ../js/shBrushJScript.js',
+			  'php                    ../js/shBrushPhp.js',
+			  'text plain             ../js/shBrushPlain.js',
+			  'py python              ../js/shBrushPython.js',
+			  'ruby rails ror rb      ../js/shBrushRuby.js',
+			  'sql                    ../js/shBrushSql.js',
+			  'xml xhtml xslt html    ../js/shBrushXml.js'
+			);
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.all();
+		}
 	</script>
 </body>
 
