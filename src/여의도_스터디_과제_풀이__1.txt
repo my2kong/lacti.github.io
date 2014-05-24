@@ -3,7 +3,7 @@
 #
 먼저 간단한 counter example을 만들어보자.
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.
-<pre class="brush: cpp;">const int thread_count = 128;
+[code lang="cpp"]const int thread_count = 128;
 const int loop_count = 65536;
 
 volatile int counter;
@@ -28,7 +28,7 @@ int _tmain(int argc, _TCHAR* argv[])
     std::cout << "expect: " << thread_count * loop_count << std::endl;
     std::cout << "actual: " << counter << std::endl;
     return 0;
-}</pre>
+}[/code]
 c++ code 한 줄이 원자적(atomic)으로 실행된다는 보장은 없다. assembly의 한 줄도 원자적으로 실행된다는 보장은 없다(smp, micro-operation)
 위 코드를 release로 빌드해보면 ++counter 부분에 대한 코드가 assembly로 한 줄이 나오는데, 어쨌든 expect와 actual 값이 다르게 나온다는 것은 해당 연산이 원자적으로 수행되지 않는다는 것이다.
 
@@ -41,7 +41,7 @@ counter += loop_counter 명령은 원자적이지 않지만, 다음 thread가 �
 
 #
 가장 손쉬운 해결법은 lock을 사용하는 것이다.
-<pre class="brush: cpp;">std::mutex m;
+[code lang="cpp"]std::mutex m;
 
 void add_entry()
 {
@@ -50,19 +50,19 @@ void add_entry()
         std::unique_lock<std::mutex> lock(m);
         ++counter;
     }
-}</pre>
+}[/code]
 간단하게 전역 변수로 mutex를 추가하고, ++counter 수행 전후의 단일 thread 진입을 보장해주기 위해 lock을 걸었다.
 수행시간이 굉장히(!) 오래 걸리고 cpu도 엄청 소모하지만 한참 기다리면 어쨌든 actual과 expect가 동일하게 나오는 것을 볼 수 있다.
 
 #
 두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>)
-<pre class="brush: cpp;">std::atomic_int counter;
+[code lang="cpp"]std::atomic_int counter;
 
 void add_entry()
 {
     for (int loop_index = 0; loop_index < loop_count; ++loop_index)
         ++counter;
-}</pre>
+}[/code]
 결과도 굉장히 빠르게 나오고, 제대로 actual과 expect가 같게 나온다.
 atomic_int::operator++()은 내부에서 atomic_fetch_add() 함수를 부르게 된다. 여기서 memory_order를 지정할 수 있는데  windows api는 (arm을 사용하지 않을 경우) memory order가 뭐인지와 상관없이 _InterlockedExchangeAdd() [Intrinsic] 함수를 부른다.
 (물론 기본 memory_order 값은 memory_order_seq_cst이다)
@@ -70,7 +70,7 @@ atomic_int::operator++()은 내부에서 atomic_fetch_add() 함수를 부르게 
 #
 세 번째 해결책으로 넘어가기 전에 두 번째 해결책에서 배운 atomic을 사용하여 첫 번째 해결책의 성능을 개선해보자.
 lock을 직접 만들어서 성능을 개선하는 것이다.(<http://en.cppreference.com/w/cpp/atomic/atomic_flag">http://en.cppreference.com/w/cpp/atomic/atomic_flag</a>)
-<pre class="brush: cpp;">volatile int counter;
+[code lang="cpp"]volatile int counter;
 std::atomic_flag lock = ATOMIC_FLAG_INIT;
 
 void add_entry()
@@ -82,13 +82,13 @@ void add_entry()
         ++counter;
         lock.clear(std::memory_order_release);
     }
-}</pre>
+}[/code]
 동기화를 위해 atomic_flag를 사용한다. lock이라는 flag를 획득하지 못할 경우 spin-wait을 수행하고, 얻으면 ++counter를 한다. 작업이 끝나면 lock flag를 clear해서 다른 thread가 진입하게 하는 것이다.
 이전에 lock을 쓸 때에 비해서 성능이 훨씬 좋아졌다. (그래도 atomic_int를 사용하는 것에 비하면 많이 느리다.)
 
 #
 세 번째 방법은 actor 기반의 message passing을 사용하는 것이다.
-<pre class="brush: cpp;">enum message_t {
+[code lang="cpp"]enum message_t {
     msg_none,
     msg_add
 };
@@ -134,7 +134,7 @@ void add_entry()
 {
     for (int loop_index = 0; loop_index < loop_count; ++loop_index)
         counter.request(msg_add);
-}</pre>
+}[/code]
 actor_t는 dispatch() 함수에서 message_queue에 쌓인 message를 자체적인 worker thread를 사용하여 비동기로 처리되도록 구성된 class이다. (대충 구현해서 성능은 안 좋다)
 concurrent_queue가 비어있을 때(empty)에는 try_pop()이 바로 실패하므로, worker thread가 message를 과도하게 busy-waiting하지 않도록 대충 sleep(0)을 넣어주었다.
 

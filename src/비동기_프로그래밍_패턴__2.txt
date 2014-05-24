@@ -3,13 +3,13 @@
 #
 위 이야기에 이어, async 작업과 then 작업 간의 상태 공유에 대해서 알아보자. 
 async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반환값을 사용하는 방법이다. 다른 방법으로는 lambda function에 의한 variable capture가 있겠다.
-<pre class="brush: cpp;">std::async([] () { return 1; })
+[code lang="cpp"]std::async([] () { return 1; })
     .then([] (std::future&lt;int&gt; f) { return f.get() + 1; })
-    .then([] (std::future&lt;int&gt; f) { return f.get() + 1; });</pre>
-<pre class="brush: cpp;">int result = 0;
+    .then([] (std::future&lt;int&gt; f) { return f.get() + 1; });[/code]
+[code lang="cpp"]int result = 0;
 std::async([&result] () { result = 1; })
     .then([] () { ++result; })
-    .then([] () { ++result; });</pre>
+    .then([] () { ++result; });[/code]
 반환 값으로 모든 context를 전달하는 것에는 한계가 있기 때문에 capture를 통한 방법이 더 편할 수 있다.
 
 하지만 capture되는 변수라는 것도 결국 접근 가능한 scope 내에 있을 때 컴파일러가 해줄 수 있는 것이기 때문에
@@ -18,7 +18,7 @@ std::async([&result] () { result = 1; })
 
 #
 async_worker는 대충 context + async_work라고 생각하면 된다.
-<pre class="brush: cpp;">class my_async_worker {
+[code lang="cpp"]class my_async_worker {
 public:
     // async works
     void work1();
@@ -28,7 +28,7 @@ private:
     // contexts
     int _context1;
     std::string _context2;
-};</pre>
+};[/code]
 즉, 수행할 작업을 모두 멤버 함수로 넣고, 필요한 정보를 멤버 변수로 넣는다.
 그리고 객체를 생성하고, 각 작업들을 비동기로 수행하고, 모두 완료되면 객체를 메모리에서 해제한다.
 
@@ -47,7 +47,7 @@ stackless coroutine은 말 그대로 stack을 갖지 않는 coroutine으로 c#�
 (자세한 이야기는 coroutine 이야기에서 다루도록 하겠다)
 
 쉬운 접근을 위해 async_worker 코드를 다음과 같이 고쳐보도록 하겠다.
-<pre class="brush: cpp;">class my_async_worker {
+[code lang="cpp"]class my_async_worker {
 public:
     bool execute() {
         if (_state == 0) { work1(); _state = 1; return true; }
@@ -58,7 +58,7 @@ public:
 private:
     int _state;
     // functions
-    // contexts</pre>
+    // contexts[/code]
 비동기 함수의 context와 function을 private으로 갖고, execute() 함수만 노출되어 있다.
 그리고 execute() 함수가 불릴 때마다 state가 전이되어 차례로 work1, 2, 3이 호출될 수 있도록 해준다.
 

@@ -21,19 +21,19 @@ C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴
 
 #
 RTTI 는 string 을 통해 각 정보를 가져오는 것이므로 먼저 char, wchar 로부터 자유로워야 한다.
-<pre class="brush: cpp;">namespace std
+[code lang="cpp"]namespace std
 {
     typedef wstring  tstring;
     typedef wostream tostream;
     typedef wistream tistream;
-}</pre>
+}[/code]
 
 #
 간단하게 type 의 종류를 정의해보자. 여러 타입이 있겠지만 귀찮으니까 int, float 만 정의하자.
-<pre class="brush: cpp;">enum type_t { NONE, INT, FLOAT };</pre>
+[code lang="cpp"]enum type_t { NONE, INT, FLOAT };[/code]
 
 구조체의 각 변수 정보를 남기기 위해 그 정보를 저장할 자료를 선언하자.
-<pre class="brush: cpp;">struct var_info
+[code lang="cpp"]struct var_info
 {
     var_info (const std::tstring& _name, const type_t& _type, size_t _offset)
         : name (_name), type (_type), offset (_offset) {}
@@ -45,7 +45,7 @@ RTTI 는 string 을 통해 각 정보를 가져오는 것이므로 먼저 char, 
     type_t       type;
     size_t       offset;
 };
-typedef std::map<std::tstring, var_info> varmap_t;</pre>
+typedef std::map<std::tstring, var_info> varmap_t;[/code]
 
 구조체 내의 변수의 이름과 타입 정보를 갖는 것은 당연하다.
 그런데 offset 이라는 정보도 필요하다. 왜냐하면, xml read 를 수행할 때, 읽은 데이터를 객체의 <strong>어느 공간</strong> 에 넣어야 할 지 그 위치를 계산해서 넣어야 하기 때문에,
@@ -53,7 +53,7 @@ typedef std::map<std::tstring, var_info> varmap_t;</pre>
 
 #
 이제 구조체 정보를 저장해보자.
-<pre class="brush: cpp;">struct struct_info
+[code lang="cpp"]struct struct_info
 {
     struct_info (const std::tstring& _name) : name (_name) {}
     struct_info (const struct_info& o) : name (o.name) {}
@@ -61,35 +61,35 @@ typedef std::map<std::tstring, var_info> varmap_t;</pre>
 
     std::tstring name;
     varmap_t varmap;
-};</pre>
+};[/code]
 
 그냥 단순히 구조체에 대한 이름과 구조체에 대한 변수 목록을 map 객체로 갖고 있다.
 
 #
 rtti 라는 단순한 객체를 정의해보자. 단순히 이건 각 구조체 이름에 대응되는 struct_info 객체를 갖고 있으면 되니까 map 이면 충분하다.
-<pre class="brush: cpp;">typedef std::map<std::tstring, struct_info> rtti_t;
-rtti_t rtti;</pre>
+[code lang="cpp"]typedef std::map<std::tstring, struct_info> rtti_t;
+rtti_t rtti;[/code]
 
 #
 구조체 내의 어떤 변수가 구조체 객체의 시작 주소로부터 얼마나 떨어져 있나를 계산하는 것은 간단하다.
 시작 주소를 0으로 만든 뒤 그 변수의 주소를 가져오면 되기 때문이다. 따라서 다음과 같은 매크로를 만들 수 있다.
-<pre class="brush: cpp;">#define OFFSET_OF(_struct, _var) ((size_t) &(((_struct *) NULL)->_var))</pre>
+[code lang="cpp"]#define OFFSET_OF(_struct, _var) ((size_t) &(((_struct *) NULL)->_var))[/code]
 
 NULL 을 구조체 주소로 casting 해서 그 변수를 접근한다. 하지만 접근해서 값을 쓰는게 아니라 단순히 & 연산자로 주소 값만 얻으니까 access violation 은 없다. 그리고 저 주소 값이 얼마만큼 떨어졌는지의 값(offset) 이다.
 
 #
 이제 구조체를 정의하는 매크로를 만들어야 한다.
 이게 약간 문제가 있는데, 병후의 요구 사항은 이와 같다.
-<pre class="brush: cpp;">STRUCT_BEGIN(SampleStruct)
+[code lang="cpp"]STRUCT_BEGIN(SampleStruct)
     STRUCT_VAR_FLOAT(SampleStruct, a)
     STRUCT_VAR_INT(SampleStruct, b)
-STRUCT_END()</pre>
+STRUCT_END()[/code]
 
 보통 프로그램의 시작과 함께 초기화되는 정보를 구성할 경우에는 전역 변수를 많이 쓴다.
 예를 들면,
-<pre class="brush: cpp;">struct __temp {
+[code lang="cpp"]struct __temp {
     __temp () { printf ("hello world!"); }
-} ___temp;</pre>
+} ___temp;[/code]
 와 같이 __temp 라는 struct 를 정의해서 ___temp 라는 전역 변수를 만들었다.
 전역 변수는 프로그램이 시작될 때 초기화되고, 이 때 생성자가 불리면서 hello world 가 출력될 것이다.
 
@@ -99,16 +99,16 @@ STRUCT_END()</pre>
 #
 구조체 내의 멤버 변수들은 구조체 객체가 처음 생성될 때, 그 생성자가 호출된다.
 예를 들면,
-<pre class="brush: cpp;">struct Sample {
+[code lang="cpp"]struct Sample {
     struct __temp {
         __temp () { printf ("hello world"); }
     } ___temp;
-};</pre>
+};[/code]
 위와 같이 Sample 구조체를 정의했다. 저 Sample 의 변수를 하나라도 만드는 순간,
 Sample 구조체 내의 변수들이 초기화된다. ___temp 변수도 초기화된다. 따라서 __temp 의 생성자가 호출된다. 따라서 Sample 구조체의 instance 를 만들 때 마다 우리는 hello world 를 볼 수 있을 것이다.
 
 중복 실행을 막으려면 어떻게 해야할까? 간단히 static 변수를 하나 쓰면 된다.
-<pre class="brush: cpp;">struct Sample {
+[code lang="cpp"]struct Sample {
     struct __temp {
         __temp () { 
             static bool once = true;
@@ -117,25 +117,25 @@ Sample 구조체 내의 변수들이 초기화된다. ___temp 변수도 초기�
             once = false;
         }
     } ___temp;
-};</pre>
+};[/code]
 그러면 hello world 는 Sample 객체를 처음 만들 때는 나오겠지만 그 다음부터는 안 나올 것이다.
 이 방법을 사용하여 각 변수들까지 RTTI 에 등록할 것이다.
 
 #
 먼저 한 번만 등록하기 위한 매크로를 만들어보자.
-<pre class="brush: cpp;">#define REGISTER_ONLY_ONCE(_rtti, _name, _info) \
+[code lang="cpp"]#define REGISTER_ONLY_ONCE(_rtti, _name, _info) \
     static bool init = false; \
     if (!init) \
         _rtti.insert(std::make_pair(_T(#_name), _info)); \
-    init = true;</pre>
+    init = true;[/code]
 이 코드는 구조체와 구조체의 변수를 각각 RTTI 에 등록할 때 사용될 것이다.
 
 이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.
-<pre class="brush: cpp;">#define REGISTER_RTTI_STRUCT(_name) \
+[code lang="cpp"]#define REGISTER_RTTI_STRUCT(_name) \
     REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))
 
 #define REGISTER_RTTI_VAR(_struct, _var, _type) \
-    REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))</pre>
+    REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))[/code]
 
 구조체를 등록하는 매크로는 전역 rtti map 객체에 struct_info 를 넣어준다.
 구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 varmap 객체에 var_info 를 넣어준다.
@@ -146,13 +146,13 @@ Sample 구조체 내의 변수들이 초기화된다. ___temp 변수도 초기�
 #
 이제 기본 RTTI 등록 매크로가 완성되었으니, 구조체 선언 매크로와 구조체 변수 선언 매크로를 작성하면 된다.
 구조체 선언 매크로는 다음과 같다.
-<pre class="brush: cpp;">#define STRUCT_BEGIN(_name)    \
+[code lang="cpp"]#define STRUCT_BEGIN(_name)    \
     struct _name \
     {    \
     private: \
         struct __register_init { __register_init () { REGISTER_RTTI_STRUCT(_name); } } ___register_init; \
     public: \
-        static const std::tstring& name() { static std::tstring __name(_T(#_name)); return __name; }</pre>
+        static const std::tstring& name() { static std::tstring __name(_T(#_name)); return __name; }[/code]
 지정된 이름으로 구조체를 시작한다.
 멤버로 갖는 구조체의 생성자에서 RTTI 등록 매크로를 사용하여 구조체 정보를 등록하도록 한다.
 이왕이면 private 으로 만들어서 그 임시 변수는 접근을 못하게 하자.
@@ -160,26 +160,26 @@ Sample 구조체 내의 변수들이 초기화된다. ___temp 변수도 초기�
 나중에 xml read / write 를 할 때 구조체의 이름으로부터 RTTI 정보를 얻어와야 하므로 static 함수로 그 이름을 반환하도록 한다. 구조체의 이름으로 static string 변수를 하나 선언해놓고 그걸 반환해준다.
 
 구조체 내 변수 선언 매크로는 다음과 같다.
-<pre class="brush: cpp;">#define STRUCT_VAR(_struct, _var, _ctype, _type) \
+[code lang="cpp"]#define STRUCT_VAR(_struct, _var, _ctype, _type) \
     public: \
         _ctype _var; \
     private: \
         struct __register_##_var { __register_##_var () { REGISTER_RTTI_VAR(_struct, _var, _type); } } ___register_##_var; \
-    public:</pre>
+    public:[/code]
 
 인자로 받은 c-type 으로 public 변수를 선언하고, RTTI 에 등록하기 위한 임시 멤버 변수로 RTTI 등록 매크로를 불러준다.
 이제 저 기본 매크로를 이용하여 type 별 선언 매크로를 만든다.
-<pre class="brush: cpp;">#define STRUCT_VAR_INT(_struct, _var)        STRUCT_VAR(_struct, _var, int, INT)
-#define STRUCT_VAR_FLOAT(_struct, _var)        STRUCT_VAR(_struct, _var, float, FLOAT)</pre>
+[code lang="cpp"]#define STRUCT_VAR_INT(_struct, _var)        STRUCT_VAR(_struct, _var, int, INT)
+#define STRUCT_VAR_FLOAT(_struct, _var)        STRUCT_VAR(_struct, _var, float, FLOAT)[/code]
 
 마지막으로 구조체 선언을 닫아주어야 하므로 마무리 매크로를 만든다.
-<pre class="brush: cpp;">#define STRUCT_END()    };</pre>
+[code lang="cpp"]#define STRUCT_END()    };[/code]
 
 그러면 병후가 제시한 대로 매크로를 통해 RTTI 가 등록된 구조체를 선언할 수 있다.
-<pre class="brush: cpp;">STRUCT_BEGIN(SampleStruct)
+[code lang="cpp"]STRUCT_BEGIN(SampleStruct)
     STRUCT_VAR_FLOAT(SampleStruct, a)
     STRUCT_VAR_INT(SampleStruct, b)
-STRUCT_END()</pre>
+STRUCT_END()[/code]
 
 저 SampleStruct 구조체는 a: float, b: int 변수를 가질 것이고, 그 정보들은 이름 문자열과 함께 rtti 변수에 저장될 것이다.
 
@@ -200,15 +200,15 @@ Object 시작 주소를 & 연산자로 구해놓고 그 포인터에  + 연산�
 (char * 와 int * 각각의 변수에 대해 + 연산자를 사용하면 증가하는 값이 다르다는 이야기인데, 다 알고 있겠지만 한 번 더 설명 해 봤다.)
 
 그러면 아래와 같은 매크로를 만들 수 있다.
-<pre class="brush: cpp;">#define GET_VAR_ADDR(_ctype, _obj, _offset) ((_ctype *) (((char*) &_obj) + _offset))
-#define GET_VAR(_ctype, _obj, _offset) (*(GET_VAR_ADDR(_ctype, _obj, _offset)))</pre>
+[code lang="cpp"]#define GET_VAR_ADDR(_ctype, _obj, _offset) ((_ctype *) (((char*) &_obj) + _offset))
+#define GET_VAR(_ctype, _obj, _offset) (*(GET_VAR_ADDR(_ctype, _obj, _offset)))[/code]
 
 #
 xml write 를 먼저 만들어보자. std::ostream 을 쓸 예정이다.
 자주 입력해야하는 문자열은 미리 매크로로 만들어두자. 귀찮다.
-<pre class="brush: cpp;">#define XML_START_TAG(name)        _T("<") << name << _T(">")
+[code lang="cpp"]#define XML_START_TAG(name)        _T("<") << name << _T(">")
 #define XML_END_TAG(name)        _T("</") << name << _T(">")
-#define XML_TAB                    _T("\t")</pre>
+#define XML_TAB                    _T("\t")[/code]
 
 그런데 ostream 은 뭐가 들어올지 모른다. 기본적으로 wostream 과 그냥 ostream 부터가 다르다.
 그러니까 template 을 쓴다. 그러면 << 연산자만 overloading 되어있는 모든 대상에 대해 이 함수를 쓸 수 있다.
@@ -217,7 +217,7 @@ xml write 를 먼저 만들어보자. std::ostream 을 쓸 예정이다.
 그리고 xml 로 작성해야할 대상 객체로부터도 general 해야하므로 그것도 template 으로 정한다.
 
 그래서 함수를 만들면 아래와 같다.
-<pre class="brush: cpp;">template <typename _stream, typename _struct>
+[code lang="cpp"]template <typename _stream, typename _struct>
 bool xml_write(_stream& out, const _struct& obj)
 {
     if (rtti.find(obj.name()) == rtti.end())
@@ -238,7 +238,7 @@ bool xml_write(_stream& out, const _struct& obj)
     }
     out << XML_END_TAG(si.name) << std::endl;
     return true;
-}</pre>
+}[/code]
 
 매우 간단하다. 멤버의 타입도 2개 밖에 없다고 한정지었고, 구조체 내의 구조체(nested struct)와 같은 구조도 전혀 고려하지 않았다.
 
@@ -250,11 +250,11 @@ xml read 는 write 에 비해 훨씬 복잡해야한다.
 하지만 난 매우 피곤하고 제대로 된 xml parser 를 작성할 생각은 추호도 없다.
 
 먼저 배열의 개수를 얻는 매크로를 보자. 크기는 sizeof 로 얻을 수 있으니 개수를 얻으려면 아래와 같겠다.
-<pre class="brush: cpp;">#define COUNT_OF(array)        (sizeof (array) / sizeof (array[0]))</pre>
+[code lang="cpp"]#define COUNT_OF(array)        (sizeof (array) / sizeof (array[0]))[/code]
 
 자, 이제 모든 준비가 끝났으니 xml read 를 작성하자.
 이번에도 역시 입력 스트림과 값을 읽을 객체에 대해 template 인자로 받는다.
-<pre class="brush: cpp;">template <typename _stream, typename _struct>
+[code lang="cpp"]template <typename _stream, typename _struct>
 bool xml_read(_stream& in, _struct& obj)
 {
     if (rtti.find(obj.name()) == rtti.end())
@@ -278,7 +278,7 @@ bool xml_read(_stream& in, _struct& obj)
         }
     }
     return true;
-}</pre>
+}[/code]
 구조체의 이름으로 rtti 정보를 가져온다.
 xml 에 어떤 순서로 기록될지는 모르지만, 어쨌든 구조체 내 멤버만큼은 node 가 있겠지, 라고 가정했다.
 따라서 구조체 내 멤버 정보로 iteration 을 수행하는데, 사실 그냥 개수만 세기 위한 훼이크다!
@@ -289,7 +289,7 @@ getline 함수의 delim 을 적절히 활용하여 각 node 의 이름과 값을
 
 #
 그럼 아래와 같이 쓸 수 있다.
-<pre class="brush: cpp;">int _tmain(int argc, _TCHAR* argv[]) {
+[code lang="cpp"]int _tmain(int argc, _TCHAR* argv[]) {
     SampleStruct s;
     s.a = 1.0f;
     s.b = 2;
@@ -299,7 +299,7 @@ getline 함수의 delim 을 적절히 활용하여 각 node 의 이름과 값을
     if (in)
         xml_read(in, s);
     
-    xml_write(std::wcout, s);</pre>
+    xml_write(std::wcout, s);[/code]
 
 재밌는 점은 구조체를 한 번도 만들지 않았다면 RTTI 정보도 없다는 것이다.
 (이러한 동작 방식은 자바와 매우 유사하다! 자바도 해당 클래스를 접근하기 전까지는 그 클래스 내부의 어떠한 정보도 로딩되지 않는다.)

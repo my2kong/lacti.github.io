@@ -11,7 +11,7 @@
 요즘 코드를 읽고 있는데 몇 개의 class 들이 저런 문제점을 지니고 있다.
 다음 예제를 보자.
 
-<pre class="brush: cpp;">class Worker
+[code lang="cpp"]class Worker
 {
 public:
     void DoWork();
@@ -22,7 +22,7 @@ public:
 public:
     volatile long workCount;
     Work* workArray;
-};</pre>
+};[/code]
 (volatile keyword 를 사용한 이유는 다음에 설명하겠다)
 
 저런 class가 있다고 할 때 저 interface 만 보고 class가 무슨 일을 하는지 알 수 있을까?
@@ -38,7 +38,7 @@ Append와 Remove가 있으니 뭔가 Work 를 넣었다 뺐다도 할 수 있나
 여기까지 읽은 사람이라면 수도 없이 많은 문제를 떠올리겠지만, 다 생략하고 몇 개만 보겠다.
 
 1) class 의 역할을 파악하고 동작을 이해함에 있어 private 의 역할은 꽤나 중요하다. public method 는 외부에서 호출한다는 것이니까, 결국 이 class가 어떤 동작을 외부로 제공해줄지를 결정하는 것이기 때문이다. 위의 class를 제대로 적어보면,
-<pre class="brush: cpp;">class Worker
+[code lang="cpp"]class Worker
 {
 public:
     void Run();
@@ -51,7 +51,7 @@ private:
 private:
     volatile long workCount;
     Work* workArray;
-};</pre>
+};[/code]
 와 같이 되어야하지 않을까. 개인적으로 private나 protected 구간도 여러 개로 설정해서 member, variable, static 을 또 나누어서 표현한다. 혹자는 아예 public method 의 가장 아래 부분에 생성자, 소멸자를 적음으로써 이 밑으로는 볼 필요가 없다는 convention 을 제시하기도 했다.
 
 2) refactoring 등을 할 때 coverage 를 설정하기 위해서라도 private은 중요하다. 여기저기에서 호출하고 있는 method를 refactoring을 하는건 고난의 행군이 될 것이다. 최대한 외부로 노출되는 method 를 줄이고 private로 꽁꽁 묶어놔야 기능이나 설계를 개선할 때 수정으로 인해 영향을 받는 외부 부분이 줄어들면서 그나마 좀 나아지지 않을까 싶다.

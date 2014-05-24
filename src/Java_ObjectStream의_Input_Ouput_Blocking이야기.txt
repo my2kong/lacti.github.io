@@ -5,7 +5,7 @@ Client와 Server 양측에서 ObjectInputStream을 먼저 생성하면 프로그
 그 이유는 다음과 같다.
 
 ObjectInputStream의 initialize 코드
-<pre class="brush: java;">    public ObjectInputStream(InputStream in) throws IOException {
+[code lang="java"]    public ObjectInputStream(InputStream in) throws IOException {
         verifySubclass();
         bin = new BlockDataInputStream(in);
         handles = new HandleTable(10);
@@ -13,24 +13,24 @@ ObjectInputStream의 initialize 코드
         enableOverride = false;
         readStreamHeader();
         bin.setBlockDataMode(true);
-    }</pre>
+    }[/code]
 
 보면, readStreamHeader(); 함수가 호출되는데,
-<pre class="brush: java;">    protected void readStreamHeader()
+[code lang="java"]    protected void readStreamHeader()
         throws IOException, StreamCorruptedException
     {
         short s0 = bin.readShort();
-        short s1 = bin.readShort();</pre>
+        short s1 = bin.readShort();[/code]
 
 다음과 같이 bin이라는 멤버 변수를 사용하여 short 값 2개를 읽는다. 이 bin이라는 녀석은,
-<pre class="brush: java;">    /** filter stream for handling block data conversion */
-    private final BlockDataInputStream bin;</pre>
+[code lang="java"]    /** filter stream for handling block data conversion */
+    private final BlockDataInputStream bin;[/code]
 와 같은데, 딱 봐도 뭔가 block 시킬 것 같이 무시무시한 이름을 가졌다.
 
 이 때문에 양측에서 먼저 InputStream을 생성하면 둘다 short 값 2개를 서로 기다리다가 프로그램이 진행이 안되는 것.
 
 이것을 해결하기 위해서 ObjectOutputStream을 먼저 생성하는데, 그 이유는 이와 같다.
-<pre class="brush: java;">    public ObjectOutputStream(OutputStream out) throws IOException {
+[code lang="java"]    public ObjectOutputStream(OutputStream out) throws IOException {
         verifySubclass();
         bout = new BlockDataOutputStream(out);
         handles = new HandleTable(10, (float) 3.00);
@@ -43,13 +43,13 @@ ObjectInputStream의 initialize 코드
         } else {
             debugInfoStack = null;
         }   
-    }</pre>
+    }[/code]
 ObjectOutputStream의 생성 코드를 보면, writeStreamHeader(); 를 호출한다.
 
-<pre class="brush: java;">    protected void writeStreamHeader() throws IOException {
+[code lang="java"]    protected void writeStreamHeader() throws IOException {
         bout.writeShort(STREAM_MAGIC);
         bout.writeShort(STREAM_VERSION);
-    }</pre>
+    }[/code]
 여기서는 딱 에누리없이 정의된 short 값 2개를 보내는데, 이것이 바로 MAGIC_NUMBER였던 것이라
 
 이와 같은 작용으로 인해 ObjectStream은 서로 Object를 주고받을 준비가 되었는지(양쪽다 ObjectStream인지) 확인하고 데이터를 주고 받을 수 있는 것이다.

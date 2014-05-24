@@ -13,8 +13,8 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 조용히^^ 죽는다.
 send/recv를 사용해서 옵션을 주면 깔끔하게 EPIPE를 반환하게 할 수 있는데 write, read는 그런 옵션이 생략된 '범용적' 함수라서 signal handler를 설치하는 수 밖에 없다.
 
 stackoverflow에 나와있는걸 보면
-<pre class="brush: c;">int set = 1;
-setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));</pre>
+[code lang="c"]int set = 1;
+setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));[/code]
 http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly
 와 같이 해결가능하다고 하는데 범용적이지는 않다.
 

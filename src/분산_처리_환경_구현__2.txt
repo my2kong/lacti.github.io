@@ -17,8 +17,8 @@ master에는 여러 slave가 연결한다. 각 연결된 slave는 master 내에 
 master에 command가 들어오면 수행할 work를 만든다. 연결된 slave의 info를 살펴보고 적절한 slave를 선택한 후 work를 보내준다. <strong>(distribute)</strong> 그러면 slave는 그 작업을 처리하고 결과를 master에게 보내주던가 한다.
 
 위 구현을 위해서는,
-<pre class="brush: cpp;">1) c# network programming 기술
-2) c# object serialization 기술</pre>
+[code lang="cpp"]1) c# network programming 기술
+2) c# object serialization 기술[/code]
 정도만 알면 된다.
 
 하지만 본 글에서 위 내용을 설명하는 것은 매우 무의미하기 때문에 이 부분에 대해서는 설명하지 않는다.
@@ -26,10 +26,10 @@ master에 command가 들어오면 수행할 work를 만든다. 연결된 slave�
 
 #
 먼저 master와 slave가 주고 받을 작업의 추상 형태인 IWork interface부터 살펴보면 다음과 같다.
-<pre class="brush: csharp;">public interface IWork
+[code lang="csharp"]public interface IWork
 {
     void Execute(Socket endPoint);
-}</pre>
+}[/code]
 이 interface를 구현한 class가 Serializable하면 Master와 Slave간에 serialize/deserialize되어 전달될 수 있고,
 전달된 후에 Execute를 호출해주면 되므로 사실상 RPC와 같은 형태가 된다.
 이 때 endPoint의 Socket을 받는 이유는 수행한 결과에 대해 상대측으로 다시 결과를 전달하기 위함이다.
@@ -41,7 +41,7 @@ Master class는 Slave의 통신을 위한 Socket과, 각 Slave의 상태에 대�
 Java같은 언어라면 interface로 해당 알고리즘을 분리하겠지만, C#이니 그냥 delegate로 빼서 관리한다.
 
 위 구현 사항을 분할해서 살펴보자. 먼저 Slave와 연결을 맺고 Slave가 전달하는 Work를 처리하기 위한 함수이다.
-<pre class="brush: csharp;">// Master class
+[code lang="csharp"]// Master class
 public async void Start()
 {
     var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -77,7 +77,7 @@ private async void ProcessSocket(Socket socket)
     try { socket.Shutdown(SocketShutdown.Both); }
     catch { }
     _container.RemoveSocket(socket);
-}</pre>
+}[/code]
 지정된 port에 bind된 socket이 Slave와 연결되면 그 Socket으로부터 Work를 하나씩 받아서(deserialize) 처리하는 형태이다.
 awaitable한 프로그램을 작성했기 때문에 managed thread pool이 적절히 잘 운영해준다.
 
@@ -87,7 +87,7 @@ SocketContainer에서 관리하는 Socket 집합은 추후 작업을 분산시�
 #
 Slave는 Master에 연결한 뒤, 역시 동일하게 Master로부터 Work를 받아서 처리하는 구조로 작성하면 된다.
 때문에 이 부분은 Master의 코드와 크게 차이가 없다.
-<pre class="brush: csharp;">public class Slave
+[code lang="csharp"]public class Slave
 {
     public async void Start()
     {
@@ -104,11 +104,11 @@ Slave는 Master에 연결한 뒤, 역시 동일하게 Master로부터 Work를 �
         }
         catch (Exception e) { Logger.Write(e); }
     }
-}</pre>
+}[/code]
 
 #
 Slave의 Socket을 관리하는 SocketContainer는, Slave의 연결이 동시 다발적으로 일어나므로 내부에 Lock을 가지고 Container를 관리하는 객체이다.
-<pre class="brush: csharp;">// SocketContainer class
+[code lang="csharp"]// SocketContainer class
 ReaderWriterLockSlim _lock =
     new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 private readonly Dictionary<Socket, SocketInformation> _sockets =
@@ -127,18 +127,18 @@ public void RemoveSocket(Socket socket)
 public Socket SelectSocket(Func<List<KeyValuePair<Socket, SocketInformation>>, Socket> selector)
 {
     return _lock.DoReadLock(() => selector(_sockets.ToList()));
-}</pre>
+}[/code]
 약간이나마 효율을 높이기 위해 ReaderWriterLock을 사용했다.
 재미있는 부분은 SelectSocket을 수행하는 부분인데, 이 과정에서는 모든 Socket과 그에 대한 Information을 순회하면서 적절한 Socket을 뽑아내야한다. 하지만 해당 자료구조를 순회하려면 자료구조가 Lock으로 보호된 상태이어야 하므로 Socket을 선택하는 selector를 delegator 형태로 받아서 ReadLock 구역 내에서 수행될 수 있도록 한다.
 
 그런데 작업을 분산시키기 위해 필요한 정보는 Socket, SocketInformation 뿐만 아니라 어떤 작업인지(IWork)의 정보도 필요하다. 때문에 Master에서는 이 정보까지 취합해서 적절한 Slave를 선택할 수 있도록 delegator를 제공한다.
 
-<pre class="brush: csharp;">public sealed class DistributeContext
+[code lang="csharp"]public sealed class DistributeContext
 {
     public readonly IList<KeyValuePair<Socket, SocketInformation>> Sockets;
     public readonly IWork Work;
-    private readonly SocketContainer _container;</pre>
-<pre class="brush: csharp;">// Master class
+    private readonly SocketContainer _container;[/code]
+[code lang="csharp"]// Master class
 public delegate Socket SelectSocketDecl(DistributeContext context);
 private SelectSocketDecl _socketSelector;
 public void DistributeWork(IWork work)
@@ -149,7 +149,7 @@ public void DistributeWork(IWork work)
         throw new NullReferenceException();
 
     socket.SendWork(work);
-}</pre>
+}[/code]
 필요한 정보(Socket, SocketInformation, IWork)를 DistributeContext로 감싸서 SelectSocketDecl로 넘겨준다.
 이 delegator는 _container의 SelectSocket() 내에서 수행되므로 _container의 ReadLock 내에서 수행된다.
 이렇게 socket을 하나 선택하게 되면 해당 socket으로 work를 전달한다. 즉 해당 slave에게 work를 전달한다.
@@ -160,7 +160,7 @@ Master는 Slave의 연결을 기다리고, Slave가 연결되면 각 상태를 �
 Slave는 Master에게 연결한 뒤, Master의 작업을 기다리고 있다가 받는 즉시 처리해준다.
 
 소스 코드에 첨부된 간단한 예제 코드를 직접 보면 다음과 같다.
-<pre class="brush: csharp;">[Serializable]
+[code lang="csharp"][Serializable]
 internal class SlaveWork : IWork
 {
     public void Execute(Socket endPoint)
@@ -224,7 +224,7 @@ internal class Program
             Thread.Sleep(1000);
         }
     }
-}</pre>
+}[/code]
 
 Master를 시작하고, Slave를 10개 만들어서 Master에 연결한다.
 Master는 SlaveWork 객체를 만들어서 적절히 Slave에게 넘겨준다. 기본 알고리즘은 RoundRobin이므로 첫 번째 Slave부터 차례대로 일을 받게 된다.

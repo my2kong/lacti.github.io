@@ -12,7 +12,7 @@
 명부(List) 는 내부에 사람(Person) 을 포함한다. 사람은 이름(name) 이라는 속성(property) 을 갖고, 이 값은 외부에서 변경될 수 있다(mutator method). 명부는 사람의 이름이 변경되는 것을 감지해야한다.
 
 이를 위한 가장 간단한 방법은 아래와 같다.
-<pre class="brush: java;">class Person {
+[code lang="java"]class Person {
     private List observer;
     private String name;
     public Person() {}
@@ -30,32 +30,32 @@ class List {
     }
     public void nameChanged(String oldName, String newName) {
     }
-}</pre>
+}[/code]
 
 간단한 구조에서는 위와 같이 하는 것이 더 직관적일 수 있다. 하지만 Person 과 List 는 강결합되고, 추후에 Person 객체의 name 값이 변경되는 것을 감지하려는 대상(observer) 이 늘어날 수록 코드는 복잡해질 것이다.
 
 #
 두 객체 간의 강결합을 피하기 위해 이를 분리하기 위한 중간 interface 를 도입한다.
-<pre class="brush: java;">interface NameObserver {
+[code lang="java"]interface NameObserver {
     public void nameChanged(String oldName, String newName);
-}</pre>
+}[/code]
 
 이제 Person 과 List 의 관계는 NameObserver 를 통해서 약간은 분리되었다.
-<pre class="brush: java;">class Person {
+[code lang="java"]class Person {
     NameObserver observer;
     public void attach(NameObserver observer) {
         this.observer = observer;
     }
 }
 class List implements NameObserver {
-}</pre>
+}[/code]
 
 Person 은 자신의 이름이 변경될 때 그 사실을 알려주어야 할 대상을 NameObserver 로 한정지을 수 있다. 즉, NameObserver 를 구현하는(implements) 모든 대상들은 Person 의 name 변경에 대한 고지(notify)를 받을 수 있는 것이다.
 
 #
 하나의 Person 이 여러 NameObserver 에게 사실을 알려주어야 한다면?
 NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있으면 된다.
-<pre class="brush: java;">class Person {
+[code lang="java"]class Person {
     List<NameObserver> observers = new ArrayList<NameObserver>();
     public void attach(NameObserver observer) {
         this.observers.add(observer);
@@ -66,7 +66,7 @@ NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있�
         }
         this.name = newName;
     }
-}</pre>
+}[/code]
 
 위 같은 작업은 속성(property) 를 갖는 많은 JavaBean 객체에서 주로 사용되므로, Java 쪽에서는 PropertyChangeSupport 라는 Utility class 를 통해 위 작업을 편하게 구현할 수 있게 해준다.
 
@@ -74,10 +74,10 @@ NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있�
 interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통지해야할 속성 값의 개수가 늘어나거나, 그 내용이 변경되거나 하면 이 interface 의 수정은 불가피하다.
 
 예를 들어, Person class 에 나이(age) 속성이 추가된다고 하자.
-<pre class="brush: java;">class Person {
+[code lang="java"]class Person {
     private String name;
     private int age;
-}</pre>
+}[/code]
 
 그리고 age 에 대해서도 변경 통지를 해주고 싶다. 그러면 AgeObserver 를 하나 새로 만들어야 하나? 아니면 NameObserver 를 적절히 PersonObserver 로 변경한 다음 ageChanged 라는 함수를 추가해줄까?
 이전에 NameObserver 를 구현(implements) 하고 있던 class 들이 모두 age 에 대한 변경 통지를 원할까?
@@ -88,30 +88,30 @@ interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통�
 Person class 는 자신의 상태(속성)가 변화될 때의 정보를 적절히 capsulation 하여 객체로 구성하고, 이를 통지받는 쪽에서는 그 정보 객체를 받아 적절히 처리하는 것이다.
 
 즉, 정보를 담기 위한 중간 객체가 등장한다.
-<pre class="brush: java;">class PropertyChangeEvent {
+[code lang="java"]class PropertyChangeEvent {
     String propertyName;
     Object oldValue;
     Object newValue;
 }
 interface PropertyListener {
     public void propertyChanged(PropertyChangeEvent event);
-}</pre>
+}[/code]
 
 이제 Person 은 자신의 정보가 변경될 때마다 PropertyChangeEvent 객체를 자신에게 등록되어있는(subscribe) PropertyListener 객체들에게 던진다.
 그러면 그 PropertyListener 의 구현체들은(implements or concrete) PropertyChangeEvent 객체를 받았을 때 자신이 원하는 이벤트에 대해서만 처리하는 것이다.
-<pre class="brush: java;">class Person {
+[code lang="java"]class Person {
     List<PropertyChangeListener> listeners = new ArrayList<>();
     public void setName(String newName) {
         for (PropertyChangeListener each: listeners) {
             each.propertyChanged(new PropertyChangedEvent("name", this.name, newName));
         }
         this.name = newName;
-    }</pre>
+    }[/code]
 
-<pre class="brush: java;">class List implements PropertyChangeListener {
+[code lang="java"]class List implements PropertyChangeListener {
     public void propertyChanged(PropertyChangeEvent event) {
         if (event.propertyName.equals("name") {
-            // name changed</pre>
+            // name changed[/code]
 
 실제로 위 방법의 PropertyChageEvent 는 너무 일반적(generic) 해서 정보를 가져올 때 썩 좋지는 않다. 어떤 속성 값이 바뀌었는지 String 변수를 통해 판단하므로 판단에 위험도 있고, 그 값도 모두 Object 이므로 type-cast 위험도 있다.
 

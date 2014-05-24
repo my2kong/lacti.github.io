@@ -19,7 +19,7 @@
 두 번째는 선언된 구조체의 reflection 정보를 등록하는 단계로 REGISTER_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 REFLECTION_REGISTER 매크로가 사용되어야 하므로, 이 시점에서는 type_register_macro.h가 include된 상태이어야 한다.
 
 두 macro.h 파일이 처음 참조하게 되는 초기화 파일인 reset_type_macro.h 파일에서 각 상태를 먼저 초기화해줄 수 있도록 한다.
-<pre class="brush: cpp;">#ifdef STRUCT_BEGIN
+[code lang="cpp"]#ifdef STRUCT_BEGIN
 #undef STRUCT_BEGIN
 #endif
 
@@ -37,13 +37,13 @@
 
 #ifdef __REGISTER_PHASE__
 #undef __REGISTER_PHASE__
-#endif</pre>
+#endif[/code]
 
 이제 어떤 macro.h가 include되냐에 따라서 STRUCT와 PHASE도 변경될 수 있도록 밑작업을 마쳤다.
 
 #
 구조체를 선언하기 위한 매크로가 정의된 type_declare_macro.h 파일을 보면 다음과 같다.
-<pre class="brush: cpp;">#include "reset_type_macro.h"
+[code lang="cpp"]#include "reset_type_macro.h"
 
 #ifndef __DECLARE_TYPE_MACRO_DEFINED__
 #define __DECLARE_TYPE_MACRO_DEFINED__
@@ -63,24 +63,24 @@
 #define STRUCT_FIELD(type, field_name)  DECLARE_FIELD(type, field_name)
 #define STRUCT_END()                    DECLARE_END()
 
-#define __DECLARE_PHASE__</pre>
+#define __DECLARE_PHASE__[/code]
 DECLARE 계열 매크로의 중복 정의를 막고, STRUCT가 DECLARE 매크로를 가리키게 한 다음,
 현재 상태를 DECLARE_PHASE로 만든다.
 
 선언된 구조체의 reflection 정보를 등록하기 위한 매크로가 정의된 type_register_macro.h 파일을 보면 다음과 같다.
-<pre class="brush: cpp;">#include "reflection_macro.h"
+[code lang="cpp"]#include "reflection_macro.h"
 #include "reset_type_macro.h"
 
 #define STRUCT_BEGIN(class_name)        REFLECTION_REGISTER_BEGIN(class_name)
 #define STRUCT_FIELD(type, field_name)  REFLECTION_REGISTER_FIELD(type, field_name)
 #define STRUCT_END()                    REFLECTION_REGISTER_END()
 
-#define __REGISTER_PHASE__</pre>
+#define __REGISTER_PHASE__[/code]
 STRUCT가 REFLECTION_REGISTER 매크로를 가리키게 한 다음, 현재 상태를 REGISTER_PHASE로 만든다.
 
 #
 이제 모든 준비가 완료되었으니, user.h 파일에서 각 상태 별로 한 번씩만 include가 되도록 만들어주자.
-<pre class="brush: cpp;">#if (defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)) \
+[code lang="cpp"]#if (defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)) \
     || (defined(__REGISTER_PHASE__) && !defined(__USER_REGISTERED__))
 
 #if defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)
@@ -96,7 +96,7 @@ STRUCT_BEGIN(user_t)
     STRUCT_FIELD(std::string, name)
 STRUCT_END()
 
-#endif</pre>
+#endif[/code]
 기존에는 #ifndef, #define ~ #endif 와 같이 단순히 중복 include를 막아줄 수 있었지만,
 이제는 DECLARE, REGISTER PHASE 각각 한 번씩 include를 허용해주어야 하므로 상태를 따로 관리해야 한다.
 

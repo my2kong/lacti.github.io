@@ -18,8 +18,8 @@ type 정보를 코드 하나하나에 다 열거하는 것은 쓸데없는 노�
 
 문제는 이렇게 type capture를 한 template class는 일반 type으로 지칭할 수 없다는 귀찮은 점이 있다.
 예를 들어서,
-<pre class="brush: cpp;">template <class _Ty>
-class class_t {};</pre>
+[code lang="cpp"]template <class _Ty>
+class class_t {};[/code]
 위와 같은 class_t에 대해, class_t<int> 와 같은 type 정보를 넣어 template class를 구체화했다면,
 이 class는 class_t가 아니고 class_t<int>이다. 좀 더 엄밀히 말하면 구체화되지 않은 class_t 라는 class는 없는 것이다.
 
@@ -29,7 +29,7 @@ class class_t {};</pre>
 
 #
 변경된 class_t는 다음과 같다. (class_impl_t는 삭제되었다, 그리고 지난 번과 중복되는 내용은 삭제한다.)
-<pre class="brush: cpp;">class class_t {
+[code lang="cpp"]class class_t {
 public:
     template <typename _Ty>
     class_t(const typeinfo<_Ty>&, std::string name)
@@ -49,7 +49,7 @@ private:
     };
 private:
     std::shared_ptr<interface_t> inf;
-};</pre>
+};[/code]
 지난 번과 동일한 부분을 과감히 생략하고 변경된 부분만 모아보면 위와 같다.
 class_t 내부에 interface_t와 impl_t가 들어갔다.
 impl_t는 template을 사용하여 실 type 정보를 capture할 class이고,
@@ -58,8 +58,8 @@ interface_t는 impl_t를 일반적으로 접근하기 위한 interface class이�
 class_t의 생성자가 type 정보를 직접 받기 위해 template 함수로 작성되었다.
 재밌는 점은, 함수 template 생성자에 type 정보를 넘기기 위해 < >으로 명시해주는 것은 쓸 수가 없어서,
 이를 적당히 회피하기 위해 type 정보를 컴파일러에게 알려주기 위해 class 하나를 추가한다.
-<pre class="brush: cpp;">template <typename _Ty>
-class typeinfo {};</pre>
+[code lang="cpp"]template <typename _Ty>
+class typeinfo {};[/code]
 
 그래서 class_t 생성자는 typeinfo<_Ty> 객체를 인자로 받는 것이고, 
 이 인자를 통해 어떤 _Ty을 넘기려 하는 것인지 type 추론이 가능해진다.
@@ -70,7 +70,7 @@ class typeinfo {};</pre>
 
 #
 field_t 역시 위와 동일한 방법으로 개선하였다.
-<pre class="brush: cpp;">class field_t {
+[code lang="cpp"]class field_t {
 public:
     template <typename _ObjTy, typename _FieldTy>
     field_t(_FieldTy (_ObjTy::*Field), std::string name)
@@ -90,7 +90,7 @@ private:
     };
 private:
     std::shared_ptr<interface_t> inf;
-};</pre>
+};[/code]
 생성자를 template 함수로 만드는 방법은 class_t와 똑같은데, 아까 만든 typeinfo를 사용하여 type정보를 넘기지는 않는다.
 기존의 field_impl_t에서 실제 field까지 template 인자로 받았던 것에 반해, 새로운 구조에서는 data member pointer를 생성 인자로 받기 때문에 _FieldTy (_ObjTy::*Field) 이 인자를 통해서 충분한 type 유추가 가능하기 때문이다.
 (따라서 impl_t도 data member pointer를 인자로 갖도록 수정되었다.)
@@ -102,7 +102,7 @@ private:
 기존에는 외부로 노출된 template 함수를 통해 직접 type 및 이름 정보를 입력하여 하나씩 정보를 등록하였다.
 
 하지만 각 field를 정의할 때마다 어떤 class에 대한 field인지 매번 써주는 것은 비효율적이므로, 이를 개선하기 위해 다음과 같이 register를 도와주면서 어떤 class에 대한 register인지 type 정보를 갖고 있는 class를 설계해보자.
-<pre class="brush: cpp;">template <typename _ObjTy>
+[code lang="cpp"]template <typename _ObjTy>
 struct reflection_register_helper_t {
     typedef _ObjTy target_type;
 
@@ -130,13 +130,13 @@ inline void reflection_register_helper_t<_ObjTy>::register_field(
 
     reflection_base::instance().add_field(class_name, field_name,
         new field_t(Field, field_name));
-}</pre>
+}[/code]
 
 reflection_register_helper_t class는 template으로 type 정보를 받고 이를 유지한다.
 따라서 register_class() 함수나 register_field() 함수는 따로 어떤 class에 대한 정보인지 type 정보를 받을 필요가 없다.
 
 이제 매크로를 통해 다음과 같이 대신 등록해주는 코드를 만들어볼 수 있다.
-<pre class="brush: cpp;">#define REFLECTION_REGISTER_BEGIN(class_name)  \
+[code lang="cpp"]#define REFLECTION_REGISTER_BEGIN(class_name)  \
     static struct _register_##class_name :
             public reflection::reflection_register_helper_t<class_name> { \
        _register_##class_name() \
@@ -148,7 +148,7 @@ reflection_register_helper_t class는 template으로 type 정보를 받고 이�
 
 #define REFLECTION_REGISTER_END()  \
         } \
-    } __AUTO_NAME;</pre>
+    } __AUTO_NAME;[/code]
 (__AUTO_NAME은 __COUNTER__를 사용하여 겹치지 않는 아무 이름이나 만들어주는 매크로이다. <a href="/a/lambda_와_RAII__2.html">lambda 와 RAII #2</a>)
 
 REFLECTION_REGISTER_BEGIN, FIELD, END 매크로를 사용하면 등록하고자 하는 class의 정보를 template argument로 갖는 reflection_register_helper_t에 대한 상속 class를 만든다.
@@ -157,10 +157,10 @@ REFLECTION_REGISTER_BEGIN, FIELD, END 매크로를 사용하면 등록하고자 
 만약 이 변수가 전역 변수로 선언된다면 프로그램이 실행될 때 해당 객체가 초기화되면서 생성자의 코드가 실행될 것이고,
 그 때 해당 type에 대한 reflection 정보가 등록될 것이다.
 
-<pre class="brush: cpp;">REFLECTION_REGISTER_BEGIN(user_t)
+[code lang="cpp"]REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
-REFLECTION_REGISTER_END()</pre>
+REFLECTION_REGISTER_END()[/code]
 (reflection_register_helper_t class가 user_t에 대한 type 정보를 target_type이라고 지칭할 수 있게 해주어서, FIELD를 등록할 때 다시 user_t를 언급할 필요가 없어졌다!)
 
 #
@@ -171,7 +171,7 @@ REFLECTION_REGISTER_END()</pre>
 선언된 header 파일을 여러 번 incldue하고, 그 때마다 선언 매크로를 다른 것으로 치환(undef/define)하여 사용하는 것이다.
 
 먼저 선언을 위한 매크로를 정의해보면 다음과 같다.
-<pre class="brush: cpp;">#ifndef __DECLARE_TYPE_MACRO_DEFINED__
+[code lang="cpp"]#ifndef __DECLARE_TYPE_MACRO_DEFINED__
 #define __DECLARE_TYPE_MACRO_DEFINED__
 #define DECLARE_BEGIN(class_name) \
     struct class_name; \
@@ -187,23 +187,23 @@ REFLECTION_REGISTER_END()</pre>
 
 #define STRUCT_BEGIN(class_name)        DECLARE_BEGIN(class_name)
 #define STRUCT_FIELD(type, field_name)  DECLARE_FIELD(type, field_name)
-#define STRUCT_END()                    DECLARE_END()</pre>
+#define STRUCT_END()                    DECLARE_END()[/code]
 (본 글에서는 생략했지만 DECLARE로 정의된 모든 class는 object_t를 상속받고, object_t는 reflection_class_t를 상속받기 때문에 reflection 정보를 가질 수 있다.)
 
 STRUCT_BEGIN, FIELD, END 매크로는 선언(declare) 단계에서는 DECLARE_BEGIN, FIELD, END를 사용하도록 작성이 되어있다.
 이제 다음과 같이 user_t를 정의하면 (user.h)
-<pre class="brush: cpp;">STRUCT_BEGIN(user_t)
+[code lang="cpp"]STRUCT_BEGIN(user_t)
     STRUCT_FIELD(int, index)
     STRUCT_FIELD(std::string, name)
-STRUCT_END()</pre>
+STRUCT_END()[/code]
 위 매크로에 의해 다음과 같이 번역될 것이다. (STRUCT -> DECLARE)
-<pre class="brush: cpp;">struct user_t {
+[code lang="cpp"]struct user_t {
     int index;
     std::string name;
-};</pre>
+};[/code]
 
 이제, STRUCT_BEGIN, FIELD, END를 reflection을 등록하기 위한 매크로로 치환한다. (type_register_macro.h)
-<pre class="brush: cpp;">#ifdef STRUCT_BEGIN
+[code lang="cpp"]#ifdef STRUCT_BEGIN
 #undef STRUCT_BEGIN
 #endif
 
@@ -217,23 +217,23 @@ STRUCT_END()</pre>
 
 #define STRUCT_BEGIN(class_name)        REFLECTION_REGISTER_BEGIN(class_name)
 #define STRUCT_FIELD(type, field_name)  REFLECTION_REGISTER_FIELD(type, field_name)
-#define STRUCT_END()                    REFLECTION_REGISTER_END()</pre>
+#define STRUCT_END()                    REFLECTION_REGISTER_END()[/code]
 
 이제 다시 user.h 파일을 include하면, 이 때의 코드는 다음과 같이 번역될 것이다. (STRUCT -> REFLECTION_REGISTER)
-<pre class="brush: cpp;">REFLECTION_REGISTER_BEGIN(user_t)
+[code lang="cpp"]REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
-REFLECTION_REGISTER_END()</pre>
+REFLECTION_REGISTER_END()[/code]
 
 이에 대한 전체적인 코드 구조는 다음과 같다.
-<pre class="brush: cpp;">#include "object.h"
+[code lang="cpp"]#include "object.h"
 #include "user.h"
 
 #include "type_register_macro.h"
 #include "user.h"
 
 int main(int argc, char* argv[]) {
-    const reflection::class_t* clazz = reflection::class_t::from_name("user_t");</pre>
+    const reflection::class_t* clazz = reflection::class_t::from_name("user_t");[/code]
 
 DECLARE 매크로 정의를 포함한 object.h를 먼저 include하면, 그 뒤에 오는 user.h를 include하는 시점에는 구조체 선언이 이루어진다.
 그리고 REFLECTION_REGISTER 매크로로 치환하는 type_register_macro.h를 include한 이후에 오는 user.h에서는 reflection 정보를 자동으로 등록하는 코드가 생성될 것이다.

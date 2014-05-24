@@ -18,13 +18,13 @@
 어차피 게임이 한 번 떠서 끝날 때까지 resource 를 내릴 필요가 없으므로,
 모든 정보가 메모리에 올라가있는 java.awt.BufferedImage 를 사용하여 resource 를 관리하자.
 먼저 resource 의 type 을 정의하자
-<pre class="brush: java;">enum ResourceType {
+[code lang="java"]enum ResourceType {
     ENEMY_SHIP, PLAYER_SHIP
-}</pre>
+}[/code]
 
 이제 이 type 에 대해 BufferedImage 를 갖는 manager class 를 만들자.
 이 manager class 는 게임 전체에 딱 하나만 존재하면 되므로 singleton 을 사용한다.
-<pre class="brush: java;">class ResourceManager {
+[code lang="java"]class ResourceManager {
     static ResourceManager instance = new ResourceManager();
     public static ResourceManager getInstance() {
         return instance;
@@ -42,7 +42,7 @@
     public BufferedImage getImage(ResourceType type) {
         return imageMap.get(type);
     }
-}</pre>
+}[/code]
 
 객체가 생성될 때 javax.imageio.ImageIO class 의 helper function 을 사용하여 png 파일을 읽는다.
 이 때 굳이 파일을 절대경로로 주지 않고 class loader 의 getResource 함수를 이유는 해당 png 파일을 project 내에 포함시켜서 하나의 jar 로 배포할 때도 동작하게 하기 위함이다.
@@ -55,7 +55,7 @@ static 함수로 ResourceManager class 의 단일 객체를 반환하도록 하�
 그리고 모든 게임 내의 물체에 대한 추상 class 를 만들자.
 GameObject 라고 부를 이 class 는 자신의 고유 id 와 충돌 영역을 갖고,
 매 tick 마다 어떻게 갱신 (update) 를 할지, 그리고 어떻게 그려져야할 지 (paint) 에 대한 interface 를 갖는다.
-<pre class="brush: java;">abstract class GameObject {
+[code lang="java"]abstract class GameObject {
     private static long idSerial = 0;
     
     protected long id = ++idSerial;
@@ -89,7 +89,7 @@ GameObject 라고 부를 이 class 는 자신의 고유 id 와 충돌 영역을 
     public abstract void paint(Graphics2D g2d);
     public abstract void update();
     public abstract boolean isOutOfScreen(int screenWidth, int screenHeight);
-}</pre>
+}[/code]
 
 id 는 순차적으로 발급하면 되므로 static 변수의 값을 증가시키면서 얻는다. 이는 추후 총알과 비행기의 충돌검사를 할 때, 자기가 쏜 총알에는 안 맞도록 처리하기 위해 사용된다.
 
@@ -102,7 +102,7 @@ id 는 순차적으로 발급하면 되므로 static 변수의 값을 증가시�
 
 #
 이제 이 class 를 상속받아 Ship 에 대한 기본 class 를 만들어보자. Ship class 는 Enemy class 와 Player class 가 상속받게 되는 class 로, 어떤 ship image 를 갖고, 그것을 어떻게 그리는지를 명시한다.
-<pre class="brush: java;">abstract class Ship extends GameObject {
+[code lang="java"]abstract class Ship extends GameObject {
     private BufferedImage image;
     public Ship(BufferedImage image) {
         super(image.getWidth(), image.getHeight());
@@ -118,7 +118,7 @@ id 는 순차적으로 발급하면 되므로 static 변수의 값을 증가시�
         return new Rectangle2D.Float((float) location.getX() - width / 2,
                 (float) location.getY() - height / 2, width, height);
     }
-}</pre>
+}[/code]
 
 Ship class 는 어떤 image 기반으로 동작할지 생성자로 Image 에 대한 정보를 받는다.
 그리고 그 image 를 paint 함수에서 그려준다. 이 때 현재 비행기의 위치를 그림의 중앙으로 보정하기 때문에 width / 2, height / 2 를 빼게 된다.
@@ -126,7 +126,7 @@ Ship class 는 어떤 image 기반으로 동작할지 생성자로 Image 에 대
 
 #
 총알에 대한 class 를 만든다.
-<pre class="brush: java;">class Bullet extends GameObject {
+[code lang="java"]class Bullet extends GameObject {
     public static final int PLAYER = -1;
     public static final int ENEMY = 1;
     private static final int WIDTH = 2;
@@ -168,7 +168,7 @@ Ship class 는 어떤 image 기반으로 동작할지 생성자로 Image 에 대
         }
         return true;
     }
-}</pre>
+}[/code]
 Player 의 총알은 -y 방향으로 진행하고, Enemy 의 총알은 +y 방향으로 진행하므로 이를 구분하는 값을 -1, 1 과 같이 정의하였다. (당연한 이야기이지만 이는 #5 에서 수정될 구조이다. 딱 봐도 좋지 않다)
 
 총알을 쏜 ship 과는 충돌을 하면 안되므로 총알을 생성할 때 자신이 누구에 대한 총알인지 owner 의 game object id 를 받는다. 그래서 충돌 검사 함수를 override 하여 owner id 가 해당 game object 의 id 와 같다면 충돌 처리를 하지 않는다.
@@ -180,7 +180,7 @@ resource 가 없으니까 간단하게 충돌 영역을 회색으로 칠해서 �
 
 #
 Player 의 Ship 은 방향 키에 따라 움직일 수 있다. 따라서 먼저 어떤 방향으로 움직일지에 대한 정보를 enum 으로 만든다.
-<pre class="brush: java;">enum MoveDirection {
+[code lang="java"]enum MoveDirection {
     NONE, LEFT, RIGHT, UP, DOWN;
     public static MoveDirection fromKeyEvent(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -191,11 +191,11 @@ Player 의 Ship 은 방향 키에 따라 움직일 수 있다. 따라서 먼저 
         }
         return NONE;
     }
-}</pre>
+}[/code]
 어차피 방향은 KeyEvent 정보로부터 받게 되므로, enum 내에 KeyEvent 로부터 enum 값을 반환하는 함수를 작성했다.
 
 Player 의 Ship 은 사용자가 누른 Key 에 대해서 움직이고, 총알을 쏠 수 있다.
-<pre class="brush: java;">class Player extends Ship {
+[code lang="java"]class Player extends Ship {
     private static final int BULLET_Y_POS_MARGIN = 8;
     private static final int SHOT_DELAY = 300;
     private static final int SPEED = 10;
@@ -232,7 +232,7 @@ Player 의 Ship 은 사용자가 누른 Key 에 대해서 움직이고, 총알�
         player.setLocation(screenWidth / 2, screenHeight * 2 / 3);
         return player;
     }
-}</pre>
+}[/code]
 먼저 생성할 때 ResourceManager 로부터 PlayerShip image resource 를 가져와서 Ship class 의 생성자로 넣어준다.
 move 함수에서는 어떤 방향으로 움직일 지에 대해 지정된 값으로 더해서 이동할 수 있도록 한다.
 
@@ -244,7 +244,7 @@ Player 를 만드는 create 함수가 static 으로 선언되어있는데, 현�
 
 #
 마지막으로 적기에 대한 class 를 만들어 보자.
-<pre class="brush: java;">class Enemy extends Ship {
+[code lang="java"]class Enemy extends Ship {
     private static final int SPAWN_BASE_TICK = 500;
     private static final int SPAWN_RANDOM_TICK = 2000;
     private static final int BULLET_Y_POS_MARGIN = 8;
@@ -291,7 +291,7 @@ Player 를 만드는 create 함수가 static 으로 선언되어있는데, 현�
         Point2D moveDelta = new Point2D.Float((endX - startX) / lifetime, (screenHeight + shipHeight * 2) / lifetime);
         return new Enemy(location, moveDelta);
     }
-}</pre>
+}[/code]
 
 적기의 logic 은 이전 코드에서 그대로 가져온 것으로, 처음 시작 위치 (location) 과 매 tick 마다 update 에서 더해줄 이동 값 (moveDelta) 을 생성자로 받는다.
 이것도 역시 canShot 과 shot 함수를 통해 총알을 발사하게 된다.
@@ -301,20 +301,20 @@ Player 를 만드는 create 함수가 static 으로 선언되어있는데, 현�
 #
 이제 main class 를 정리해보자.
 기존에는 각 type 에 대한 List 를 가지고 있었어야 했지만, 이제는 GameObject 로 이루어진 container 하나만 있으면 된다.
-<pre class="brush: java;">private Player player = Player.create(WIDTH, HEIGHT);
-private List<GameObject> objects = new ArrayList<GameObject>();</pre>
+[code lang="java"]private Player player = Player.create(WIDTH, HEIGHT);
+private List<GameObject> objects = new ArrayList<GameObject>();[/code]
 대신, Player 의 경우는 move 함수 등을 직접 조작해주어야 하니까 따로 reference 를 갖는다.
 하지만 이것도 update 함수나 paint 함수가 불리어야 하므로 objects 안에 넣어준다.
-<pre class="brush: java;">public Tatieul() {
+[code lang="java"]public Tatieul() {
     setPreferredSize(new Dimension(WIDTH, HEIGHT));
     setFocusable(true);
     addKeyListener(this);
     new Timer(100, this).start();
     objects.add(player);
-}</pre>
+}[/code]
 
 Key 를 눌렀을 때는 Player 객체의 move 함수를 불러주면 된다. 단 VK_SPACE 를 눌렀다면 총알을 만들어서 objects 에 넣어준다.
-<pre class="brush: java;">public void keyPressed(KeyEvent e) {
+[code lang="java"]public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
     case KeyEvent.VK_UP:
     case KeyEvent.VK_DOWN:
@@ -329,10 +329,10 @@ Key 를 눌렀을 때는 Player 객체의 move 함수를 불러주면 된다. �
         break;
     }
     repaint();
-}</pre>
+}[/code]
 
 매 tick 마다는 모든 객체의 위치를 갱신하고, 충돌 검사를 하며, 적기를 만들어내는 코드는, 실제 수행하는 부분이 모두 각 class 로 빠졌으므로 단순해진다.
-<pre class="brush: java;">public void actionPerformed(ActionEvent e) {
+[code lang="java"]public void actionPerformed(ActionEvent e) {
     updateAll();
     checkCollision();
     generateEnemyAndBullet();
@@ -373,7 +373,7 @@ private void generateEnemyAndBullet() {
             bullets.add(enemy.shot());
     }
     objects.addAll(bullets);
-}</pre>
+}[/code]
 
 모든 object 의 update 는 단순히 objects 의 객체를 순회하면서 update 를 불러주는 것으로 가능하다.
 충돌 검사도, 각 case 마다 따로 순회하는 것이 아니라 objects 내의 원소들 간의 충돌을 검사해주는 식으로 통합되었다.
@@ -384,13 +384,13 @@ private void generateEnemyAndBullet() {
 (총알을 만드는 부분 역시 #5 에서의 리팩토링 대상이다)
 
 이 모든 것을 화면에 그려주는 것도 단순히 objects 를 한 번 순회하면서 paint 를 불러주면 그만이다.
-<pre class="brush: java;">public void paintComponent(Graphics g) {
+[code lang="java"]public void paintComponent(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
     g.setColor(Color.white);
     g.fillRect(0, 0, getWidth(), getHeight());
     for (GameObject each: objects)
         each.paint(g2d);
-}</pre>
+}[/code]
 
 이 때 굳이 Graphics2D 객체로 Graphics 객체를 casting 한 이유는 나중에 여러가지 것들을 써먹기 위함이다.
 

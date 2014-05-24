@@ -8,7 +8,7 @@
 
 #
 RpcWork는 다음의 방법으로 쉽게 구현할 수 있다.
-<pre class="brush: csharp;">[Serializable]
+[code lang="csharp"][Serializable]
 public abstract class RpcWork<TReturn> : IWork
 {
     [Serializable]
@@ -37,7 +37,7 @@ public abstract class RpcWork<TReturn> : IWork
 
     protected abstract TReturn ExecuteWork(Socket endPoint);
     protected abstract void ExecuteReturn(TReturn returnValue, Socket endPoint);
-}</pre>
+}[/code]
 
 원격지에서 수행할 함수를 담는 클래스(<strong>RpcWork</strong>)와 그 수행 결과를 담아 다시 돌려줄 클래스(<strong>ReturnWork</strong>)로 구성되어 있다.
 RpcWork의 ExecuteWork() 함수가 원격지에서 수행될 함수이고, ExecuteReturn() 함수가 원격지에서 수행된 결과를 받아서 처리할 함수이다.
@@ -57,7 +57,7 @@ Execute() 함수는 ExecuteWork() 함수를 수행해서 그 결과를 받은 �
 
 #
 간단한 덧셈 Rpc를 구현해보면 다음과 같다.
-<pre class="brush: csharp;">[Serializable]
+[code lang="csharp"][Serializable]
 public class RemoteSumWork : RpcWork<int>
 {
     private readonly int _leftValue;
@@ -78,12 +78,12 @@ public class RemoteSumWork : RpcWork<int>
     {
         Console.WriteLine("Return from: " + returnValue);
     }
-}</pre>
+}[/code]
 
 두 인자를 생성자로 받아 멤버로 저장한다. ExecuteWork() 함수에서는 멤버의 두 값을 더해서 반환하고,
 ExecuteReturn() 함수에서는 인자로 그 결과를 받아서 화면에 출력한다.
 
-<pre class="brush: csharp;">master.DistributeWork(new RemoteSumWork(100, 200));</pre>
+[code lang="csharp"]master.DistributeWork(new RemoteSumWork(100, 200));[/code]
 
 RemoteSumWork의 ExecuteReturn() 함수가 수행될 때, _leftValue와 _rightValue 값은 master에서 slave로 요청할 때 한 번, slave에서 master로 ReturnWork 보낼 때 다시 묻어서 한 번, 총 두 번 network trip을 하게 된다.
 
@@ -102,7 +102,7 @@ Master에서 Slave에게 수행시키고 싶은 함수가 있는데 Slave에게�
 결국 DistFunctions로부터 만들어지는 DistFunctions.dll를 Slave에게 전달해주면, Master가 보내는 코드도 Slave가 잘 실행해줄 수 있다는 것이다.
 
 일단 파일을 보내기 위한 Work부터 만들어보자.
-<pre class="brush: csharp;">[Serializable]
+[code lang="csharp"][Serializable]
 public class FileSendWork : IWork
 {
     private readonly string _fileName;
@@ -126,18 +126,18 @@ public class FileSendWork : IWork
             stream.Write(_fileBytes, 0, _fileBytes.Length);
         }
     }
-}</pre>
+}[/code]
 
 파일 이름은 서버가 지정해준대로 사용한다. 만약 동일한 파일 이름이 이미 Slave에 있다면 파일을 저장하지 않는다<strong>(!)</strong>
 
 자세한 설명은 잠시 뒤에 하고, Master와 Slave가 어떤 코드를 갖는지 보자.
-<pre class="brush: csharp;">master.DistributeWork(new FileSendWork("DistFunctions.dll"));
-master.DistributeWork(new RemoteSumWork(100, 200));</pre>
-<pre class="brush: csharp;">var slave = new Slave("127.0.0.1", 12345);
+[code lang="csharp"]master.DistributeWork(new FileSendWork("DistFunctions.dll"));
+master.DistributeWork(new RemoteSumWork(100, 200));[/code]
+[code lang="csharp"]var slave = new Slave("127.0.0.1", 12345);
 Task.Factory.StartNew(slave.Start);
 
 Logger.Write("Slave Start!");
-Console.ReadKey();</pre>
+Console.ReadKey();[/code]
 Slave 프로젝트는 DistFunctions 프로젝트를 Reference로 등록해놓지 않았기 때문에 RemoteSumWork 클래스의 존재를 모른다. 따라서 Master가 RemoteSumWork 객체를 보내면 deserialize 과정에서 Type 객체를 찾을 수 없다고 예외가 발생해야 한다.
 하지만 그 RemoteSumWork 객체를 보내기 전에 DistFunctions.dll을 보냈다. Slave는 이 파일을 받아서 <strong>자신의 exe 파일이 있는 위치에 저장하게 된다.</strong> 덕분에 RemoteSumWork 객체를 전달받았을 때에는 <strong>exe 주변의 dll을 알아서 검색해서 알아서 deserialize를 해준다.</strong> 즉, dll만 보내주면 끝이라는 이야기이다.
 

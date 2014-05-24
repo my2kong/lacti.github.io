@@ -10,7 +10,7 @@ Java의 Annotation은 특정 지점(ElementType: Type, Method, Field, ...)에 �
 @interface keyword로 정의할 수 있고, 지정된 지점에 맞게 class, method, field, parameter 등에 선언될 수 있고, 이는 지정된 시점까지 유지됩니다.
 
 예를 들어, 위 문제를 해결하기 위해 새로 작성하는 IndexCategory 라는 annotation은 index를 발급할 category class를 지정합니다.
-<pre class="brush: java;">import java.lang.annotation.ElementType;
+[code lang="java"]import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -19,20 +19,20 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IndexCategory {
 	public Class<?> category();
-}</pre>
+}[/code]
 이 annotation은 Type에 선언될 수 있는데, 여기서 Type은 class를 뜻합니다.
 또한 Runtime까지 유지되는 정보인데, 그 이유는 객체가 "생성되는 시점"인 runtime에 해당 정보를 통해서 어떤 category의 class type으로 index를 발급받을지 얻어내야하기 때문입니다.
 
 annotation은 속성property를 갖는데, IndexCategory는 category()라는 속성을 갖습니다. 이는 Class<?>를 값으로 갖는 속성으로 그 이름은 category 가 됩니다.
 
 위와 같은 IndexCategory annotation을 다음과 같이 사용하고자 할 class에 적용합니다.
-<pre class="brush: java;">class Skill extends Thing {}
+[code lang="java"]class Skill extends Thing {}
 
 @IndexCategory(category=Skill.class)
 class Magic extends Skill {}
 
 @IndexCategory(category=Skill.class)
-class Mastery extends Skill {}</pre>
+class Mastery extends Skill {}[/code]
 Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따라 index를 발급받을지 code 상에 명시합니다.
 분명 이 annotation은 프로그램의 동작에 영향을 주지만, 어떠한 코드로써 그 정보를 제공한다기 보다는 metadata로 그 정보를 제공한다는 점에서 충분히 매력적입니다. 어떠한 class의 특성을 명시하기 위해 method나 field, 상속 등의 무거운 방법을 사용하지 않고, annotation을 통해 충분히 정보를 제공할 수 있습니다.
 
@@ -42,7 +42,7 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
 간단히 Override annotation만 설명하자면 이는 method에 선언 가능하며 source 시간까지 유지됩니다. 즉 compiler가 확인하고 버리는 시점까지 유지되는 annotation으로 override 되지 않은 method가 이 annotation을 가지고 있을 경우 compile error를 띄워주는 역할을 하여 compile time에 잘못된 override를 막아주는 역할을 합니다.
 
 위와 같이 IndexCategory annotation을 명시한 뒤, 객체를 생성하여 index를 발급하는 코드에서는 이를 반영하여 index를 발급해주어야 할 것입니다.
-<pre class="brush: java;">public static int generateNextIndex() {
+[code lang="java"]public static int generateNextIndex() {
 	String callerClassName = findCallerClassName();
 	try {
 		Class<?> callerClass = Class.forName(callerClassName);
@@ -55,7 +55,7 @@ Magic class와 Mastery class는 IndexCategory에 의해 어떤 category에 따�
 	} catch (Exception e) {
 	}
 	return generateNextIndex(callerClassName);
-}</pre>
+}[/code]
 이전의 코드와 비교해보면, callerClassName을 가져와서 그로부터 Class 정보를 가져온 뒤, 그 Class가 IndexCategory annotation이 존재present할 경우 해당 annotation에 명시된 category로부터 category class 정보를 가져와서 그 class로 index를 발급받겠다는 코드가 추가되었습니다.
 
 즉, 반드시 IndexCategory를 통해 index grouping을 수행하겠다는 것이 아니라 IndexCategory annotation이 present 된 경우에만 해당 class로 index를 발급받는 것이므로, annotation이 선언되지 않은 경우까지 완벽히 처리하게 됩니다.

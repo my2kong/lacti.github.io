@@ -1,6 +1,6 @@
 ﻿ClassLoader를 사용하여 Resource Stream 얻기
 2012-06-10 17:44:05
-<pre class="brush: java;">import java.util.Scanner;
+[code lang="java"]import java.util.Scanner;
 
 public class Loader {
 	public void printResourceList() {
@@ -13,7 +13,7 @@ public class Loader {
 	public static void main(String[] args) {
 		new Loader().printResourceList();
 	}
-}</pre>
+}[/code]
 
 class 파일이 있는 위치와 resource가 같다면,
 위처럼 간단히 getClass().getResourceAsStream() 으로 읽어올 수 있고,

@@ -6,7 +6,7 @@
 #
 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
 그냥 민철 선배님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.
-<pre class="brush: cpp;">class A {
+[code lang="cpp"]class A {
 public: void a(); void b(); void c();
 };
 class X {
@@ -21,7 +21,7 @@ public void c() = 0;
 
 A obj;
 X* x = /* 어떻게든 obj랑 연결 */;
-x->a(); // A::a() 함수가 호출됨</pre>
+x->a(); // A::a() 함수가 호출됨[/code]
 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다.
 하지만 암시적으로라도, 동일한 함수 signature가 존재한다면 interface로 지칭할 수 있게 해주는 것이 목적이다.
 (template 함수에서 암시적 interface를 요구하는 것을 객체화하여 접근할 수 있게 하였다고 봐도 되겠다)
@@ -44,7 +44,7 @@ java reflection 중에는 Proxy라고 하여 해당 interface에 대한 method�
 덕분에 어떤 interface를 넣어도 Proxy를 적절히 써서, 해당 interface의 함수가 호출될 때 이 정보를 대상 객체(target)의 함수로 잘 넘겨서 실행해주면 되겠다.
 
 이에 대한 코드는 다음과 같다.
-<pre class="brush: java;">import java.lang.reflect.InvocationHandler;
+[code lang="java"]import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -72,14 +72,14 @@ public class InfOp {
             return targetMethod.invoke(target, args);
         }
     }
-}</pre>
+}[/code]
 핵심은 InvocationHandler::Invoke() 내에 있는 코드인데,
 interface class에서 호출되는 method의 정보(name, parameter = 결국 signature)를 사용하여 target 객체의 method 정보를 찾는다.
 그리고 invoke를 하면서 argument도 넘겨주면 끝이다.
 
 #
 이제 다음과 같이 사용해볼 수 있다.
-<pre class="brush: java;">public class Test {
+[code lang="java"]public class Test {
     public static void main(String[] args) {
         Character ch = new Character();
         Drawable dr = InfOp.assign(Drawable.class, ch);
@@ -102,7 +102,7 @@ class Character {
     public void move() {
         System.out.println("move!");
     }
-}</pre>
+}[/code]
 Character class와 Drawable interface는 명시적인 구현 관계(implements)가 없지만, 어쨌든 draw()라는 동일한 함수 signature를 갖는다.
 따라서 Character 객체를 적절히 proxy로 감싸서 Drawable interface와 연결하여 위 코드처럼 실행시킬 수 있는 것이다.
 (뭐, 아직 잘 모르겠지만 이걸 이제 어디에 쓸 지에 대해서는 박민철 선배님께 물어보도록 하자.)
