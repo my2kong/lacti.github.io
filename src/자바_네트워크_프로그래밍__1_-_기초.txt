@@ -1,0 +1,41 @@
+﻿자바 네트워크 프로그래밍 #1 - 기초
+2010-05-01 오전 8:13:28
+<strong>#0 [서론]</strong>
+네트워크라는 것에 대해 깊게 설명할 생각은 없습니다. 단지 자바 언어에서 '어떻게 네트워크 프로그래밍을 할 수 있을까' 정도에 대해 간략하게 소개할 생각입니다.
+이 글을 보고 관심을 조금만 갖고 구글링해보시면 당연한 이야기이지만 훨씬 잘 설명된 좋은 글이 많을테니, 이 글에서 단순히 <strong>관심이라도 생기길 바라면서</strong> 글을 씁니다.
+
+<strong>#1 [기초]</strong>
+네트워크 프로그래밍은 두 원격지(HOST) 간의 데이터 통신을 위한 프로그래밍입니다.
+간단히 비유하자면,
+<pre class='brush: java'>1. 제가 안양(집)에서 풀씨 홈페이지(서버)를 여는 것이나
+2. 오덕질을 위해 OOO에 접속하여 파일을 내려받거나
+3. 과제를 위해 친구와 메신저로 대화를 한다는</pre>
+것 정도가 되겠습니다. 위의 상황을 네트워크의 원격지, 데이터로 구분해보면
+<pre class='brush: java'>1. 제 컴퓨터, 풀씨서버, HTML 데이터 등
+2. 제 컴퓨터, OOO서버, 애니메이션 데이터 등
+3. 제 컴퓨터, 친구 컴퓨터, 대화(String) 데이터 등</pre>
+이 될 수 있겠지요.
+
+통신을 한다는 건 두 HOST가 네트워크로<span style="color: #aaa;">(wired or wireless)</span> 연결되어있다는 것이고, 네트워크에 속한 HOST는 그 특정 주소를 갖는데, 흔히 생각하는 IP Address라고 보시면 됩니다. 흔히 우리는 네트워크를 사용하기 위해 TCP/IP Protocol을 사용하니까요.<strong>(점박이 3형제는 유명하죠?)</strong>
+<a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol">http://en.wikipedia.org/wiki/Transmission_Control_Protocol</a>
+<span style="color: #aaa;">(다른 곳에 더욱 설명이 잘 나와있는데 굳이 제가 설명할 필요는 없겠죠)</span>
+<span style="color: #aaa;">(기계적 주소인 MAC Address와 함께 같이 찾아보면서 공부해보는 것도 괜찮겠네요. 하지만 이 글은 자바 네트워크 프로그래밍이 주라서 이 부분은 빼겠습니다.)</span>
+
+두 HOST가 서로의 주소를 안다고 해서 TCP/IP 통신할 수 있는 것은 아닙니다. TCP/IP 통신에는 IP Address 말고 Port 라는 Unsigned Short Integer(16bit) 값이 하나 더 필요하기 때문이죠.
+<a href="http://en.wikipedia.org/wiki/TCP_and_UDP_port">http://en.wikipedia.org/wiki/TCP_and_UDP_port</a>
+
+간단히 설명해보면, 하나의 HOST 내에 실행되고 있는 수많은 네트워크 사용 프로그램들에 대해 데이터를 빠르고 명확하게 구분하기 위한 하나의 키 값이라고 보면 됩니다. <strong>SSH는 22번, HTTP는 80번</strong> 과 같이 사실상 고유의 값으로 지정된 것고 있지요.
+<a href="http://en.wikipedia.org/wiki/TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/TCP_and_UDP_port_numbers</a>
+
+TCP/IP 프로토콜에서는 데이터를 보낼 때 <strong>Packet</strong>으로 쪼개어 보내는데 이 쪽을 공부해두시면 장차 네트워크 프로그래밍할 때 도움되는게 많습니다.
+<a href="http://en.wikipedia.org/wiki/Packet_(information_technology)">http://en.wikipedia.org/wiki/Packet_(information_technology)</a>
+
+<strong>#2 [서버와 클라이언트]</strong>
+전화를 할 때도 거는 사람과 받는 사람이 있습니다. 전화라는 것은 전화선으로 연결된<span style="color: #aaa;">(네트워크에 속한)</span> 두 사람<span style="color: #aaa;">(HOST)</span> 간에서 대화<span style="color: #aaa;">(데이터 통신)</span>을 하는 것을 이야기하지요. 이 때 거는 사람<strong>(클라이언트)</strong>는 받을 사람<strong>(서버)</strong>의 전화번호<span style="color: #aaa;">(IP Address와 Port)</span>를 눌러 전화를 겁니다. 이 때 받을 사람<strong>(서버)</strong>은 전화가 걸려오기를 기다리고 있다가 전화가 오면 받는 것이지요.
+이것이 간략한 서버와 클라이언트의 개념입니다. 자세한 내용은 어차피 다음 글에서 코드로 볼 테니 그걸로 보면 되겠군요.
+
+<strong>#3 [결론]</strong>
+TCP와 UDP의 특성, IP Protocol, Packet 등 네트워크 프로그래밍 기초라고 해도 들먹일 개념이 무지하게 많지만
+그것들은 wiki 등 더욱 잘 나와있는 곳이나 풀씨 동아리 내의 유효 자원들에게 질문해보시면 더욱 확실하게 배우실 것 같고,
+(적어도 이제 더이상은 <strong>송유관</strong> 이야기하는 사람은 없겠지요)
+<strong>서버와 클라이언트의 개념, IP Address와 Port 번호가 무엇인지 정도만 알겠다 싶으시면 된겁니다.</strong>

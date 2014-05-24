@@ -1,0 +1,23 @@
+﻿HashSet과 ArrayList
+2010-03-20 오후 2:49:02
+시간이 없으니 일단 짧게.
+
+어떤 equals, hashCode가 구현된 Entity object에 대해 HashSet에 추가한 뒤,
+그 object에 대한 reference 변수를 사용하여 저 두 함수(e/h)의 결과에 영향을 주는 field 값을 변경할 경우,
+
+HashSet은 contains가 false를 반환하는 반면,
+ArrayList는 contains에서 true를 반환함.
+
+HashSet 내부에 hashCode 값을 caching하는지는 모르겠는데, 현재 잘 이해는 안가지만 시간이 없으므로 나중에 HashSet 코드를 봐야겠다. 끝.
+
+Entity entity = new Entity("lacti", "lactrious@gmail.com");
+
+#1
+set.add (entity);
+entity.setName ("choi");
+set.contains (entity); // false
+
+#2
+list.add (entity);
+entity.setName ("choi");
+list.contains (entity); // true
