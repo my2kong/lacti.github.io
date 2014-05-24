@@ -1,9 +1,8 @@
 ﻿java annotation과 reflection을 사용한 xml mapping
 2012-05-31 00:52:58
 #
-마침 요즘 spring을 쓰면서 자바를 공부한다는 준겸이를 채팅방에서 만나게 되어
+마침 요즘 spring을 쓰면서 자바를 공부한다는 친구를 채팅방에서 만나게 되어
 reflection과 annotation을 사용한 xml mapping에 대한 코드를 작성해보라고 이야기 하였다.
-<a href="http://board.poolc.org/generation07/2044">http://board.poolc.org/generation07/2044</a>
 
 준겸이가 언급한 DI까지는 아니더래도
 annotation을 사용한 metadata 사용과 reflection을 통한 설계적 유연성을 공부해보면 spring framework을 이해하는데 도움이 되지 않을까 해서 내주었던 것인데,
@@ -25,7 +24,7 @@ reflection으로 이를 적절히 읽어서 model과 xml의 상호 변환(mappin
     public int age;
     public String order;
 }</pre>
-(getter/setter의 필요성을 못 느끼므로 작성하지 않는다. 혹시 이에 대해 거부감이 느껴지는 분이 있다면 <a href="http://board.poolc.org/generation06/1266">java와 getter/setter</a>를 참조 바란다)
+(getter/setter의 필요성을 못 느끼므로 작성하지 않는다. 혹시 이에 대해 거부감이 느껴지는 분이 있다면 <a href="/a/Java_와_Getter___Setter.html">java와 getter/setter</a>를 참조 바란다)
 
 Customer class가 xml로 기록되어야 할 때에는 customer라는 노드 이름을 가져야할까?
 name이라는 field는 xml에 attribute로 기록되어야 할까? 아니면 child-element가 되어야할까. 그리고 그 이름은 꼭 name이어야 할까?
@@ -231,5 +230,5 @@ SQL의 각 table과 column에 대해 bind하기 위한 annotation을 작성하�
 
 #
 annotation, reflection 관련하여 혹시 다른 예제를 보고 싶으면 아래의 링크를 참고하면 된다.
-<a href="http://old1.poolc.org/pboard/article_view.php?board_id=generation06&article_uid=998">annotation을 사용한 InstanceObjectId 구현</a>
-<a href="http://board.poolc.org/generation06/1330">reflection을 사용한 간단한 Message 체계 구현</a>
+<a href="/a/java_annotation을_사용한_InstanceId_구현.html">java annotation을 사용한 InstanceId 구현</a>
+<a href="/a/간단한_Message_체계_구현_(Java).html">reflection을 사용한 간단한 Message 체계 구현</a>

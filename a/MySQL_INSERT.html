@@ -74,8 +74,8 @@
 난 항상 UPDATE를 먼저 시도하고 affected된 row의 수를 확인하거나 query의 성공여부를 확인해서 INSERT를 썼는데, 이게 생각보다 잘 안된다.<br />
 Memory Table이라서 그런건지 이유는 잘 모르겠는데 저 두 동작을 하나의 질의어로 합치고 싶었으나 내 지식선에서는 아는 바가 없었고,<br />
 <br />
-http://dev.mysql.com/doc/refman/5.5/en/insert.html<br />
-http://dev.mysql.com/doc/refman/5.5/en/insert-on-duplicate.html<br />
+<a href="http://dev.mysql.com/doc/refman/5.5/en/insert.html">http://dev.mysql.com/doc/refman/5.5/en/insert.html</a><br />
+<a href="http://dev.mysql.com/doc/refman/5.5/en/insert-on-duplicate.html">http://dev.mysql.com/doc/refman/5.5/en/insert-on-duplicate.html</a><br />
 <br />
 찾아보니까 ON DUPLICATE KEY UPDATE라는 재밌는 문법이 있다.<br />
 INSERT 를 실패했는데 그 이유가 DUPLICATE KEY라면 UPDATE를 수행하겠다는 것인데,<br />

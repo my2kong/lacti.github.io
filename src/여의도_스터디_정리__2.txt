@@ -83,11 +83,11 @@ hazard pointer
 
 #
 환형큐의 concurrency 문제
-<a href="http://board.poolc.org/generation06/1385">http://board.poolc.org/generation06/1385</a>
+<a href="/a/환형큐의_thread_unsafety_문제.html">환형큐의 thread unsafety 문제</a>
 
 객체별 수행 동기화 글 코드의 문제
-<a href="http://board.poolc.org/generation06/1201">http://board.poolc.org/generation06/1201</a>
-철주의 문제 해결법
+<a href="/a/객체별_함수_수행_동기화.html">객체별 함수 수행 동기화</a>
+angdev님의 문제 해결법
 <pre class="brush: cpp; html-script: true">mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));
 while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {
     for (RequestJobPtr job = nullptr; mJobQueue.try_pop(job); ) {

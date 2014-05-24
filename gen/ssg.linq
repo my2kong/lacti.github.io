@@ -100,7 +100,18 @@ string MakeContent(string original)
 		
 		if (line.Contains("</pre>")) isCode = false;
 	}
-	return resultBuffer.ToString();
+	var content = resultBuffer.ToString();
+	if (!content.Contains("<a"))
+	{
+		content = ConvertUrlsToLinks(content);
+	}
+	return content;
+}
+
+static readonly Regex UrlToLinkRegex = new Regex(@"((www\.|(http|https|ftp|news|file)+\:\/\/)[&#95;.a-z0-9-]+\.[a-z0-9\/&#95;:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])", RegexOptions.IgnoreCase);
+private string ConvertUrlsToLinks(string msg)
+{
+	return UrlToLinkRegex.Replace(msg, "<a href=\"$1\">$1</a>").Replace("href=\"www", "href=\"http://www");
 }
 
 const string RelatedTemplateBegin = @"

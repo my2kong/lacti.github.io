@@ -1,9 +1,6 @@
 ﻿비동기 프로그래밍 패턴 #2
 2013-11-19 01:45:54
 #
-<a href="http://board.poolc.org/generation06/1911">비동기 프로그래밍 패턴 #1</a>
-
-#
 위 이야기에 이어, async 작업과 then 작업 간의 상태 공유에 대해서 알아보자. 
 async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반환값을 사용하는 방법이다. 다른 방법으로는 lambda function에 의한 variable capture가 있겠다.
 <pre class="brush: cpp; html-script: true">std::async([] () { return 1; })
@@ -41,7 +38,7 @@ async_worker 개념은 단순하고 직관적이다. 마치 functor를 만들기
 
 약간의? 차이가 있다면 async는 그 자체가 오래 걸리는 작업인 경우가 많은데,
 async_worker의 work() 함수들은 다른 비동기 작업의 완료(completion)에 의해 callback으로 불리는 경우도 있고,
-각기 다른 <a href="http://board.poolc.org/generation06/1201">객체의 수행 흐름</a>에서 불리는 경우도 있다.
+각기 다른 <a href="/a/객체별_함수_수행_동기화.html">객체의 수행 흐름</a>에서 불리는 경우도 있다.
 
 #
 async_worker 패턴은 stackless coroutine 구현으로도 사용될 수 있다.

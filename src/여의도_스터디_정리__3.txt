@@ -14,7 +14,7 @@ packaged_task는 비동기 작업을 수행할 수 있는 task 객체를 만들�
 <a href="http://en.cppreference.com/w/cpp/thread/packaged_task">http://en.cppreference.com/w/cpp/thread/packaged_task</a>
 
 vs2012 기준으로 내부 구현 분석한 내용.
-<a href="http://board.poolc.org/generation06/1474">http://board.poolc.org/generation06/1474</a>
+<a href="http://board.poolc.org/generation06/1474">async, future, promise in c++</a>
 
 vs2012 쪽 문제인지 std::async를 수행할 때 std::launch enum 값을 주지 않으면 std::launch::any로 수행하게 되는데 이 때 deferred로 수행되면서 future를 통해 값을 가져오는데 문제가 발생하는 것 같다. 내가 개념을 잘못 이해하고 있는 것인지 모르겠는데 문제가 발생하지 않으려면 std::launch::async로 policy를 주고 실행해야 할 듯
 <a href="http://stackoverflow.com/questions/9389409/vs-11-with-stdfuture-is-this-a-bug>http://stackoverflow.com/questions/9389409/vs-11-with-stdfuture-is-this-a-bug</a>
@@ -98,8 +98,8 @@ user -&gt; kernel (kernel + device driver) -&gt; physical -&gt; kernel -&gt; use
 <a href="http://board.poolc.org/tips/33">http://board.poolc.org/tips/33</a>
 
 약간 거리가 있지만
-<a href="http://board.poolc.org/generation06/1198">http://board.poolc.org/generation06/1198</a>
-<a href="http://board.poolc.org/generation06/1204">http://board.poolc.org/generation06/1204</a>
+<a href="/a/비동기_IO_함수.html">비동기 IO 함수</a>
+<a href="/a/IO_와_메모리_복사.html">IO와 메모리 복사</a>
 
 어쨌든 io는 request 과정과 completion을 처리하는 과정 두 개로 나누어 생각해볼 수 있다.
 하나의 io 함수가 두 개를 모두 처리한다면 (보통은) blocking function이 될 것이고, 이 둘을 나누어서 처리한다면 non-blocing function이 될 것이다.
@@ -169,7 +169,7 @@ iocp를 만들고 열심히 profiling을 해보니 3가지 문제가 있댄다.
 2) GetQueuedCompletionStatus() 함수 등의 api를 부를 때 kernel mode switching 비용
 3) request/completion 마다 device handle에 mapping된 completion port handle을 찾는 비용(handle table lookup)</pre>
 1번의 경우는 zero-byte receive 기법으로 대충 우회가 된다. locked page가 뭔 소리인지는 대충 다음 링크에서 보자.
-<a href="http://board.poolc.org/generation06/1204">http://board.poolc.org/generation06/1204</a>
+<a href="/a/IO_와_메모리_복사.html">IO와 메모리 복사</a>
 
 rio는 각 문제를 다음과 같이 해결했다.
 1) 프로그램 시작 시 미리 buffer를 만들고 lock을 잡아놓고 쓰자. 그러면 그 이후 요청할 때에는 이미 lock된 memory를 쓰니까 매 요청마다 lock을 걸 필요가 없으니 비용문제 해결

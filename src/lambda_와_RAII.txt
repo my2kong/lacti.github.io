@@ -80,7 +80,7 @@ inventory_t::find() 함수가 종료되는 시점, 즉 scope_lock 객체가 소�
 
 생성자와 소멸자는 해당 객체의 생성/소멸 시점에 컴파일러가 알아서 불러주므로,
 위와 같이 scope_lock_t 를 만들어 쓰면 중간에 return 을 해도, goto 를 해도, 1년 뒤에 코드를 고쳐도! lock-unlock 쌍이 잘 맞게 된다.
-(<a href="http://board.poolc.org/generation06/1176">객체 생성/소멸자와 goto 에 대한 이야기</a>)
+(<a href="/a/객체의_생성,_소멸과_goto_이야기.html">객체 생성/소멸자와 goto 에 대한 이야기</a>)
 
 #
 C++11 은 lambda expression 을 지원해주니 좀 다르게 생각해볼 수 있다.

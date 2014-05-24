@@ -14,7 +14,7 @@ lock 을 걸면 당연히 속도가 떨어진다. 따라서 본 글에서는 loc
 상황적으로 볼 때, 하나의 객체에 여러 Thread 가 접근할 일은 많다. 본 예제에서 언급할 내용은, 만약 2명의 User 가 Party 를 맺고 사냥을 하다가, 각자 동시에 한 마리씩 몬스터를 잡았다. 그러면 그 Packet 이 동시에 Server 에 도착해서 동시에 경험치를 각 User 객체에 넣어준다고 하자.
 
 User 에는 AddExp 함수를 통해 내부에 경험치를 증가시킨다. 그런데 만약 두 Thread 가 경쟁적으로 AddExp 를 호출할 경우, 반드시 결과 값이 제대로 들어간다는 보장이 없다.
-<a href="http://board.poolc.org/generation06/1191">http://board.poolc.org/generation06/1191</a>
+<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>
 물론 이런 경우는 InterlockedAdd 함수를 써서 해결할 수도 있겠지만, 공유 객체에 요청되는 작업들을 Queue 에 모아 동기적으로 하나의 Thread 가 처리하는 방법으로 문제를 해결해보도록 하자
 
 #

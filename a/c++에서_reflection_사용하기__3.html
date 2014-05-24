@@ -66,11 +66,6 @@
                 <hr>
                 <div class="content">
 #<br />
-<a href="http://board.poolc.org/generation06/1493">c++에서 field reflection 사용하기 #1</a><br />
-<a href="http://board.poolc.org/generation06/1494">c++에서 field reflection 사용하기 #2</a><br />
-c++에서 reflection 사용하기 #3<br />
-<br />
-#<br />
 지난 #2에서는 class_t, field_t 자체가 가상 함수를 갖고, class_impl_t와 field_impl_t가 이 class를 상속 받아서 구현하는 방식을 사용하였다. 사실 굳이 이 impl_t class 들은 노출될 필요가 없으므로 이를 감추도록 해보자.<br />
 <br />
 그리고 다 완성된 type을 register함에 있어, 따로 register_class, register_field 함수를 직접 불러서 등록을 하였는데,<br />
@@ -219,7 +214,7 @@ reflection_register_helper_t class는 template으로 type 정보를 받고 이�
 #define REFLECTION_REGISTER_END()  \<br />
         } \<br />
     } __AUTO_NAME;</pre><br />
-(__AUTO_NAME은 __COUNTER__를 사용하여 겹치지 않는 아무 이름이나 만들어주는 매크로이다. <a href="http://board.poolc.org/generation06/1462">lambda 와 RAII #2</a>)<br />
+(__AUTO_NAME은 __COUNTER__를 사용하여 겹치지 않는 아무 이름이나 만들어주는 매크로이다. <a href="/a/lambda_와_RAII__2.html">lambda 와 RAII #2</a>)<br />
 <br />
 REFLECTION_REGISTER_BEGIN, FIELD, END 매크로를 사용하면 등록하고자 하는 class의 정보를 template argument로 갖는 reflection_register_helper_t에 대한 상속 class를 만든다.<br />
 그리고 생성자에서 class, field 정보를 등록하는 코드를 차례대로 만들어둔 뒤, END 매크로에서 이 register_class에 대한 변수를 하나 만들게 된다.<br />
@@ -234,7 +229,7 @@ REFLECTION_REGISTER_END()</pre><br />
 (reflection_register_helper_t class가 user_t에 대한 type 정보를 target_type이라고 지칭할 수 있게 해주어서, FIELD를 등록할 때 다시 user_t를 언급할 필요가 없어졌다!)<br />
 <br />
 #<br />
-이제 병후가 제시한 <strong>#include x 2</strong> 방법을 정의한 구조체에 대한 type 정보를 등록하는 것을 자동화해볼 것이다.<br />
+이제 libsora님이 제시한 <strong>#include x 2</strong> 방법을 정의한 구조체에 대한 type 정보를 등록하는 것을 자동화해볼 것이다.<br />
 (<a href="http://board.poolc.org/generation07/2055">http://board.poolc.org/generation07/2055</a>)<br />
 <br />
 이 방법의 핵심은 구조체 선언을 매크로로 하고,<br />

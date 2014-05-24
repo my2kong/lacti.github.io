@@ -1,9 +1,6 @@
 ﻿여의도 스터디 과제 풀이 #1
 2013-08-04 01:53:43
 #
-<a href="http://board.poolc.org/generation06/1837">여의도 스터디 과제 #1</a>
-
-#
 먼저 간단한 counter example을 만들어보자.
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.
 <pre class="brush: cpp; html-script: true">const int thread_count = 128;
@@ -58,7 +55,7 @@ void add_entry()
 수행시간이 굉장히(!) 오래 걸리고 cpu도 엄청 소모하지만 한참 기다리면 어쨌든 actual과 expect가 동일하게 나오는 것을 볼 수 있다.
 
 #
-두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="http://board.poolc.org/generation06/1191">http://board.poolc.org/generation06/1191</a>)
+두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>)
 <pre class="brush: cpp; html-script: true">std::atomic_int counter;
 
 void add_entry()

@@ -66,9 +66,6 @@
                 <hr>
                 <div class="content">
 #<br />
-<a href="http://board.poolc.org/generation06/1837">여의도 스터디 과제 #1</a><br />
-<br />
-#<br />
 먼저 간단한 counter example을 만들어보자.<br />
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.<br />
 <pre class="brush: cpp; html-script: true">const int thread_count = 128;<br />
@@ -123,7 +120,7 @@ void add_entry()<br />
 수행시간이 굉장히(!) 오래 걸리고 cpu도 엄청 소모하지만 한참 기다리면 어쨌든 actual과 expect가 동일하게 나오는 것을 볼 수 있다.<br />
 <br />
 #<br />
-두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="http://board.poolc.org/generation06/1191">http://board.poolc.org/generation06/1191</a>)<br />
+두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a>)<br />
 <pre class="brush: cpp; html-script: true">std::atomic_int counter;<br />
 <br />
 void add_entry()<br />

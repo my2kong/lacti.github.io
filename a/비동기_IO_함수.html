@@ -199,7 +199,7 @@ void async_callback (char *key) {<br />
     isIOCompletion = true;<br />
 }</pre><br />
 좋은 방법인 것 같다. 그런데 flag 를 사용할 경우 발생하는 문제가 있다. 여러 thread 에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 아래의 글을 보자.<br />
-<a href="http://board.poolc.org/generation06/1191">http://board.poolc.org/generation06/1191</a><br />
+<a href="/a/volatile_과_interlocked_operation.html">volatile과 interlocked operation</a><br />
 <br />
 보다 좋은 방법은 없을까? 다음을 보자.<br />
 <pre class="brush: cpp; html-script: true">async_read (stdin, async_callback);<br />

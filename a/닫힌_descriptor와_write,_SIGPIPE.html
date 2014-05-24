@@ -80,7 +80,7 @@ send/recv를 사용해서 옵션을 주면 깔끔하게 EPIPE를 반환하게 �
 stackoverflow에 나와있는걸 보면<br />
 <pre class="brush: c; html-script: true">int set = 1;<br />
 setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));</pre><br />
-http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly<br />
+<a href="http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly">http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly</a><br />
 와 같이 해결가능하다고 하는데 범용적이지는 않다.<br />
 <br />
 허허 그래서 결국 sigaction으로 handler 설치해주고 작업을 해야하는데<br />
