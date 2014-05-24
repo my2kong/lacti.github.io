@@ -6,7 +6,7 @@
 #
 먼저 간단한 counter example을 만들어보자.
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.
-<pre class='brush: cpp'>const int thread_count = 128;
+<pre class="brush: cpp; html-script: true">const int thread_count = 128;
 const int loop_count = 65536;
 
 volatile int counter;
@@ -44,7 +44,7 @@ counter += loop_counter 명령은 원자적이지 않지만, 다음 thread가 �
 
 #
 가장 손쉬운 해결법은 lock을 사용하는 것이다.
-<pre class='brush: cpp'>std::mutex m;
+<pre class="brush: cpp; html-script: true">std::mutex m;
 
 void add_entry()
 {
@@ -59,7 +59,7 @@ void add_entry()
 
 #
 두 번째 해결책은 atomic_int를 사용하는 것이다. (<a href="http://board.poolc.org/generation06/1191">http://board.poolc.org/generation06/1191</a>)
-<pre class='brush: cpp'>std::atomic_int counter;
+<pre class="brush: cpp; html-script: true">std::atomic_int counter;
 
 void add_entry()
 {
@@ -73,7 +73,7 @@ atomic_int::operator++()은 내부에서 atomic_fetch_add() 함수를 부르게 
 #
 세 번째 해결책으로 넘어가기 전에 두 번째 해결책에서 배운 atomic을 사용하여 첫 번째 해결책의 성능을 개선해보자.
 lock을 직접 만들어서 성능을 개선하는 것이다.(<http://en.cppreference.com/w/cpp/atomic/atomic_flag">http://en.cppreference.com/w/cpp/atomic/atomic_flag</a>)
-<pre class='brush: cpp'>volatile int counter;
+<pre class="brush: cpp; html-script: true">volatile int counter;
 std::atomic_flag lock = ATOMIC_FLAG_INIT;
 
 void add_entry()
@@ -91,7 +91,7 @@ void add_entry()
 
 #
 세 번째 방법은 actor 기반의 message passing을 사용하는 것이다.
-<pre class='brush: cpp'>enum message_t {
+<pre class="brush: cpp; html-script: true">enum message_t {
     msg_none,
     msg_add
 };

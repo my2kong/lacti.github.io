@@ -23,7 +23,7 @@ eax에다 반환할 값을 넣고 함수 코드를 ret하면 호출지점 코드
 이것이 문제였다
 (실제로 이건 내가 무슨 세미나인가를 할 때 거엽 선배님께서 질문해주신 건데, 모른다고 하셨으나 분명히 알고 계셨을것이라, 당시에는 대충 포인터로 넘겨서 어디선가 복사하겠죠, 라고 대답했는데 갑자기 생각나서 해당 코드를 만들어 disassemble)
 
-<pre class='brush: c'>#include &lt;stdio.h&gt;
+<pre class="brush: c; html-script: true">#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 
 struct Me
@@ -50,7 +50,7 @@ int main (void)
 요기서 main의 첫째줄 코드와 me() 함수의 값 반환 코드를 보면 될것이라
 
 gdb를 살랑살랑 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
-<pre class='brush: c'>0x08048420 &lt;me+44&gt;:     mov    -0x14(%ebp),%eax
+<pre class="brush: c; html-script: true">0x08048420 &lt;me+44&gt;:     mov    -0x14(%ebp),%eax
 0x08048423 &lt;me+47&gt;:     mov    %eax,(%ebx)
 0x08048425 &lt;me+49&gt;:     mov    -0x10(%ebp),%eax
 0x08048428 &lt;me+52&gt;:     mov    %eax,0x4(%ebx)
@@ -66,21 +66,21 @@ gdb를 살랑살랑 써줘서 disassemble 코드를 보자. [gdb, disassemble ma
 -0x14(%ebp) 부터 지역변수 struct Me m의 시작인데, 이게 -0x08(%ebp)까지해서 총 4byte(왜냐하면 struct Me는 char[12] + int이니까)를 차례대로 %ebx의 0x00부터 0x0c까지 집어넣는것이다.
 즉 memcpy.
 그리고 
-<pre class='brush: c'>0x08048437 &lt;me+67&gt;:     mov    %ebx,%eax</pre>
+<pre class="brush: c; html-script: true">0x08048437 &lt;me+67&gt;:     mov    %ebx,%eax</pre>
 그 ebx 값, 즉 메모리 주소인데 어떤 메모리 주소냐하면 지역변수 m에 담긴 정보가 "복사"된 곳의 메모리 주소가 eax에 담겨서 반환된다는 것이다.
 여기까지 한줄로 요약하면 "지역변수가 반환될 때 메모리에 복사되어 그 주소값이 eax로 넘어간다"가 되는 것이다.
 
 지역변수가 왜 지역변수냐? 하면 함수 호출이 끝나고 다 없어지기 때문이다. 어떻게 없어지나 하면
-<pre class='brush: c'>0x080483f5 &lt;me+1&gt;:      mov    %esp,%ebp
+<pre class="brush: c; html-script: true">0x080483f5 &lt;me+1&gt;:      mov    %esp,%ebp
 0x080483f8 &lt;me+4&gt;:      sub    $0x24,%esp</pre>
 처음에 쓸 만큼 stack pointer를 확 땡겨놓고, ebp에 stack 시작점을 담아서, ebp 부터 esp까지의 영역을 지역변수를 사용하는 공간으로 쓰다가,
-<pre class='brush: c'>0x08048439 &lt;me+69&gt;:     add    $0x24,%esp</pre>
+<pre class="brush: c; html-script: true">0x08048439 &lt;me+69&gt;:     add    $0x24,%esp</pre>
 함수가 끝날 때 stack pointer를 다시 복원하면서, 아까 사용하는 공간을 폐기하는 것이다.
 그래서 함수가 반환될 때 공간이 폐기되므로 반환 시 그 값을 "복사" 한 것이다.
 (여기서 적절한 그림이 하나 있으면 참 좋을텐데 말이다.)
 
 그렇다면 ebx는 어디를 가리키고 있단 말인가?
-<pre class='brush: c'>0x080483fb &lt;me+7&gt;:      mov    0x8(%ebp),%ebx</pre>
+<pre class="brush: c; html-script: true">0x080483fb &lt;me+7&gt;:      mov    0x8(%ebp),%ebx</pre>
 이 코드를 보면 ebx는 ebp의 +0x08 지점을 가리키고 있는데, 또 그럼 여기가 어디냐라는 문제가 있다만 간단히 생각해보면
 지역변수를 사용할 때는 보통 ebp에 -값을 더해서 썼다. 즉 -0x14(%ebp) 등과 같이 썼다는 것이다.
 즉, esp = ebp - 0x24였으므로 ebp부터 ebp - 0x24까지가 지역변수 영역이라 지역변수는 다 ebp 기준으로 - 영역에 있는 것이다. 근데 저건 + 이니까 지역변수가 아니란 말씀.
@@ -88,7 +88,7 @@ gdb를 살랑살랑 써줘서 disassemble 코드를 보자. [gdb, disassemble ma
 (여기서 적절한 그림이 하나 더 있으면 참 좋을텐데 말이다.)
 
 여기서 이제
-<pre class='brush: c'>0x08048452 &lt;main+17&gt;:   lea    -0x14(%ebp),%eax</pre>
+<pre class="brush: c; html-script: true">0x08048452 &lt;main+17&gt;:   lea    -0x14(%ebp),%eax</pre>
 이 코드를 통해
 me() 함수 내에서의 %ebx 값이 main() 함수에서 설정한 -0x14(%ebp)의 주소로 결국 main() 함수의 지역변수 영역이라는 것만 설명하면 될텐데
 집에서 점심먹으러 나간다고 빨리 준비하란다

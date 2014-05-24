@@ -108,17 +108,17 @@ c# async/await<br />
 요약하면, 비동기 logic을 동기적으로 작성하기 위한 async/await는 결과적으로 state machine code로 compiler에 의해 변환되어 .net thread-pool에 들어갔다 나왔다하면서 코드가 수행된다는 것.<br />
 <br />
 아래와 같이 코드가 작성되면 연결되는 모든 connection에 대해서 결과를 console에 출력해줄 수 있다.<br />
-<pre class='brush: csharp'>async void Listen() {
-    var serverSocket = new Socket(...);
-    Socket clientSocket;
-    while ((clientSocket = await serverSocket.AcceptAsync()) != null)
-        ProcessSocket(clientSocket);
-}
-async void ProcessSocket(Socket clientSocket) {
-    string line;
-    while ((line = await clientSocket.ReadLineAsync()) != null)
-        await Console.WriteLineAsync(line);
-}</pre>
+<pre class="brush: csharp; html-script: true">async void Listen() {<br />
+    var serverSocket = new Socket(...);<br />
+    Socket clientSocket;<br />
+    while ((clientSocket = await serverSocket.AcceptAsync()) != null)<br />
+        ProcessSocket(clientSocket);<br />
+}<br />
+async void ProcessSocket(Socket clientSocket) {<br />
+    string line;<br />
+    while ((line = await clientSocket.ReadLineAsync()) != null)<br />
+        await Console.WriteLineAsync(line);<br />
+}</pre><br />
 약간 설명을 추가하면, serverSocket.AcceptAsync() 함수를 await할 때 Listen StateMachine이 accept completion state를 대기. accept에 성공한 후 ProcessSocket StateMachine이 read line completion state를 대기. 그런데 Listen StateMachine과 ProcessSocket StateMachine은 await하는 관계가 없으므로 서로 다른 Task가 되어 동시에 Accept도 하고 ReadLine도 할 수 있는 것이다. (즉 작업 흐름 단위가 아니라 Task 단위)<br />
 <br />
 #<br />
@@ -130,27 +130,27 @@ coroutine<br />
 boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있게 한 다음 그것을 사용해서 boost coroutine을 만들었다. (windows에서는 fiber를 쓴다고 알고 있다)<br />
 <br />
 그런데 그런 구현 방법 뿐만 아니라 generator를 이용해서 대충 coroutine처럼 사용할 수 있도록 할 수도 있다. c#의 yield return이 그런 형태인데, 이건 그냥 compiler가 해당 코드를 state machine으로 만들어서 다시 부르면 다음 코드부터 이어서 실행될 수 있도록 만들어 주는 것.<br />
-<pre class='brush: csharp'>IEnumerable<int> MyGenerator() {
-    /* do something 1 */
-    yield return /* first value */;
-    /* do something 2 */
-    yield return /* second value */;
-    /* do something 3 */
-    yield return /* third value */;
-    /* do something 4 */
-    yield return /* forth value */;
-}</pre>
-<pre class='brush: csharp'>struct MyGeneratorStateMachine {
-    public int Current { get; set; }
-    public bool MoveNext() {
-        switch (_state) {
-        case 0: /* do something 1 */ Current = /* first value */; _state = 1; return true;
-        case 1: /* do something 2 */ Current = /* second value */; _state = 2; return true;
-        case 2: /* do something 3 */ Current = /* third value */; _state = 3; return true;
-        case 3: /* do something 4 */ Current = /* forth value */; _state = -1; return false;
-        }
-        return false;
-    }</pre>
+<pre class="brush: csharp; html-script: true">IEnumerable<int> MyGenerator() {<br />
+    /* do something 1 */<br />
+    yield return /* first value */;<br />
+    /* do something 2 */<br />
+    yield return /* second value */;<br />
+    /* do something 3 */<br />
+    yield return /* third value */;<br />
+    /* do something 4 */<br />
+    yield return /* forth value */;<br />
+}</pre><br />
+<pre class="brush: csharp; html-script: true">struct MyGeneratorStateMachine {<br />
+    public int Current { get; set; }<br />
+    public bool MoveNext() {<br />
+        switch (_state) {<br />
+        case 0: /* do something 1 */ Current = /* first value */; _state = 1; return true;<br />
+        case 1: /* do something 2 */ Current = /* second value */; _state = 2; return true;<br />
+        case 2: /* do something 3 */ Current = /* third value */; _state = 3; return true;<br />
+        case 3: /* do something 4 */ Current = /* forth value */; _state = -1; return false;<br />
+        }<br />
+        return false;<br />
+    }</pre><br />
 첫 번째 코드로 작성하면 compiler가 두 번째 코드로 알아서 만들어준다는 것.<br />
 그러면 함수 호출자에서는 MyGeneratorStateMachine 객체를 만들어서 MoveNext()가 false일 때까지 불러가며 Current 값을 접근하면 되는거다.<br />
 거엽 선배님께서 이야기하셨던 것 중 python의 range, xrange의 차이를 보는 것도 도움이 될 듯. (lazy evaluation)<br />
@@ -168,27 +168,27 @@ user -&gt; kernel (kernel + device driver) -&gt; physical -&gt; kernel -&gt; use
 <br />
 어쨌든 io는 request 과정과 completion을 처리하는 과정 두 개로 나누어 생각해볼 수 있다.<br />
 하나의 io 함수가 두 개를 모두 처리한다면 (보통은) blocking function이 될 것이고, 이 둘을 나누어서 처리한다면 non-blocing function이 될 것이다.<br />
-<pre class='brush: cpp'>ret sync_io(...) {
-    request(...);
-    wait_for_completion(infinite);
-    return result_from_completion();
-}</pre>
-<pre class='brush: cpp'>void async_io_req_callback(...) {
-    register_callback();
-    request(...);
-}
-ret async_io_callback(...) {
-    return result_from_completion();
-}</pre>
-<pre class='brush: cpp'>void async_io_req_completion_queue(...) {
-    request(...);
-}
-void worker_loop() {
-    while (true) {
-        var completion = dequeue_completion_from_queue();
-        // process completion
-    }
-}</pre>
+<pre class="brush: cpp; html-script: true">ret sync_io(...) {<br />
+    request(...);<br />
+    wait_for_completion(infinite);<br />
+    return result_from_completion();<br />
+}</pre><br />
+<pre class="brush: cpp; html-script: true">void async_io_req_callback(...) {<br />
+    register_callback();<br />
+    request(...);<br />
+}<br />
+ret async_io_callback(...) {<br />
+    return result_from_completion();<br />
+}</pre><br />
+<pre class="brush: cpp; html-script: true">void async_io_req_completion_queue(...) {<br />
+    request(...);<br />
+}<br />
+void worker_loop() {<br />
+    while (true) {<br />
+        var completion = dequeue_completion_from_queue();<br />
+        // process completion<br />
+    }<br />
+}</pre><br />
 async io 방식은 callback을 등록해서 완료 시 callback이 호출되는 방식과,<br />
 아니면 io가 완료된 시점에 completion이 어떤 queue에 들어가면, 그 queue로부터 하나씩 직접 꺼내서 처리하는 방법이 있다.<br />
 callback에 의한 io는 해당 callback이 언제 불러줄지 모른다. 때문에 callback이 불렸을 때 공유 자원을 보호해주는 방법도 좀 까다롭고 코드를 읽기도 쉽지 않다. 하지만 library 제작자 입장에서는 scheduling이 편하다는 장점이 있다.<br />
@@ -217,12 +217,12 @@ iocp <stroke>windows의 자랑(?)</stroke><br />
 request와 completion을 분리한 비동기 io 함수와 분리된 두 문맥을 연결해주기 위해 준비되는 overlapped 구조체는 iocp 이전부터 존재했던 windows api이다. (apc 포함)<br />
 다만 callback이 불리는 시점도 애매하고 흐름이 눈에 잘 띄지 않으니 completion queue를 api로 노출시켜 접근할 수 있게 만들어준 것.<br />
 요약하면,<br />
-<pre class='brush: cpp'>1) [user] completion port를 만든다.
-2) [user] completion port에 io device handle을 (socket 등) 연결(mapping)한다.
-3) [user] 해당 handle에 대해 비동기 io 요청을 한다.
-4) [user] thread를 만들어서 completion port에 대기시킨다. (GetQueuedCompletionStatus)
-5) [kernel] 해당 io 요청이 완료되면 completion port에 completion을 넣어준다.
-6) [user] completion port에 대기 중인 thread 중 하나가 깨어나서 해당 completion을 처리한다.</pre>
+<pre class="brush: cpp; html-script: true">1) [user] completion port를 만든다.<br />
+2) [user] completion port에 io device handle을 (socket 등) 연결(mapping)한다.<br />
+3) [user] 해당 handle에 대해 비동기 io 요청을 한다.<br />
+4) [user] thread를 만들어서 completion port에 대기시킨다. (GetQueuedCompletionStatus)<br />
+5) [kernel] 해당 io 요청이 완료되면 completion port에 completion을 넣어준다.<br />
+6) [user] completion port에 대기 중인 thread 중 하나가 깨어나서 해당 completion을 처리한다.</pre><br />
 수행 흐름을 명시적으로 관리할 수 있다는 점,<br />
 그리고 completion port에 대기 중인 thread를 kernel이 잘 관리하여 적절한 녀석(대충 FILO 방식)을 깨워서 작업을 시킨다는 점이 iocp의 장점이라 하겠다.<br />
 <br />
@@ -230,9 +230,9 @@ request와 completion을 분리한 비동기 io 함수와 분리된 두 문맥�
 <br />
 #<br />
 iocp를 만들고 열심히 profiling을 해보니 3가지 문제가 있댄다.<br />
-<pre class='brush: cpp'>1) async io 요청할 때 전달되는 memory를 non-paged-pool에 넣기 위해 lock거는 비용
-2) GetQueuedCompletionStatus() 함수 등의 api를 부를 때 kernel mode switching 비용
-3) request/completion 마다 device handle에 mapping된 completion port handle을 찾는 비용(handle table lookup)</pre>
+<pre class="brush: cpp; html-script: true">1) async io 요청할 때 전달되는 memory를 non-paged-pool에 넣기 위해 lock거는 비용<br />
+2) GetQueuedCompletionStatus() 함수 등의 api를 부를 때 kernel mode switching 비용<br />
+3) request/completion 마다 device handle에 mapping된 completion port handle을 찾는 비용(handle table lookup)</pre><br />
 1번의 경우는 zero-byte receive 기법으로 대충 우회가 된다. locked page가 뭔 소리인지는 대충 다음 링크에서 보자.<br />
 <a href="http://board.poolc.org/generation06/1204">http://board.poolc.org/generation06/1204</a><br />
 <br />

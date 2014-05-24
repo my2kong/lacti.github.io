@@ -12,7 +12,7 @@ synchronous 하게 호출하는 방법이 있고, asynchronous 하게 호출하�
 이 글에서는 간단하게 RPC(remote procedure call) 예제를 통해 위 내용을 살펴보겠다.
 
 #
-<pre class='brush: cpp'>call_result request_call(call_context ctx) {
+<pre class="brush: cpp; html-script: true">call_result request_call(call_context ctx) {
     sock_write(socket_, ctx.serialize());
 
     BYTE result_buffer[RESULT_SIZE];
@@ -32,7 +32,7 @@ RPC 함수 요청이 발생하면 그 요청 객체(call_context) 를 만들어�
 
 그리고 원격지로부터 데이터를 읽는 thread 들은 데이터가 도착하면 그 요청 결과(call_result) 가 어떤 요청(call_context) 에 대한 것인지 확인하여 그 요청을 기다리는 thread 에게 알려준다(asynchronous notification)
 
-<pre class='brush: cpp'>void request_call(call_context ctx) {
+<pre class="brush: cpp; html-script: true">void request_call(call_context ctx) {
     int request_id = register_request(thread_id());
     send_request(request_id, ctx);
 }
@@ -65,7 +65,7 @@ request_call 함수는 요청 객체를 보내기 전에 일단 자기 thread_id
 그 시간에 다른 작업이 있다면 그걸 꺼내서 하는거다.
 
 다시 위의 코드로 예시를 들면,
-<pre class='brush: cpp'>async call_result request_call(call_context ctx) {
+<pre class="brush: cpp; html-script: true">async call_result request_call(call_context ctx) {
     sock_write(socket_, ctx.serialize());
 
     BYTE result_buffer[RESULT_SIZE];

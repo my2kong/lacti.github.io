@@ -81,32 +81,32 @@ peterson's algorithm<br />
 <a href="http://en.wikipedia.org/wiki/Peterson's_algorithm">http://en.wikipedia.org/wiki/Peterson's_algorithm</a><br />
 그냥 눈에 보이는대로 코드가 수행되면 문제가 발생하지 않는데,<br />
 비순차 실행에 의해 flag[my_index] = true; turn = other_index; 대입의 순서가 뒤집히면 critical section에 두 thread가 진입할 수 있는 문제가 발생한다.<br />
-<pre class='brush: cpp'>P0: turn = 1;
-    flag[0] = true;
-    while (flag[1] == true && turn == 1)
-    {
-        // busy wait
-    }
-    // critical section
-    ...
-    // end of critical section
-    flag[0] = false;
-
-P1: turn = 0;
-    flag[1] = true;
-    while (flag[0] == true && turn == 0)
-    {
-        // busy wait
-    }
-    // critical section
-    ...
-    // end of critical section
-    flag[1] = false;</pre>
-<pre class='brush: cpp'>(turn, flag_0, flag_1) = (0, f, f)
-(1, f, f) // p0 turn = 1
-(0, f, f) // p1 turn = 0
-(0, f, t) // p1 = flag_1 = t -> p1 진입
-(0, t, t) // p2 = flag_0 = t -> p0 진입</pre>
+<pre class="brush: cpp; html-script: true">P0: turn = 1;<br />
+    flag[0] = true;<br />
+    while (flag[1] == true && turn == 1)<br />
+    {<br />
+        // busy wait<br />
+    }<br />
+    // critical section<br />
+    ...<br />
+    // end of critical section<br />
+    flag[0] = false;<br />
+<br />
+P1: turn = 0;<br />
+    flag[1] = true;<br />
+    while (flag[0] == true && turn == 0)<br />
+    {<br />
+        // busy wait<br />
+    }<br />
+    // critical section<br />
+    ...<br />
+    // end of critical section<br />
+    flag[1] = false;</pre><br />
+<pre class="brush: cpp; html-script: true">(turn, flag_0, flag_1) = (0, f, f)<br />
+(1, f, f) // p0 turn = 1<br />
+(0, f, f) // p1 turn = 0<br />
+(0, f, t) // p1 = flag_1 = t -> p1 진입<br />
+(0, t, t) // p2 = flag_0 = t -> p0 진입</pre><br />
 <br />
 #<br />
 비순차 실행에 의해 의존성이 없다고 판단되는 연산의 순서가 뒤집히는 것을 방지하기 위해 memory consistency model을 고민해야 한다.<br />
@@ -153,14 +153,14 @@ hazard pointer<br />
 객체별 수행 동기화 글 코드의 문제<br />
 <a href="http://board.poolc.org/generation06/1201">http://board.poolc.org/generation06/1201</a><br />
 철주의 문제 해결법<br />
-<pre class='brush: cpp'>mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));
-while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {
-    for (RequestJobPtr job = nullptr; mJobQueue.try_pop(job); ) {
-        (*job)();
-        delete job;
-    }
-    InterlockedExchange(&mExclusiveFlag, 0);
-}</pre>
+<pre class="brush: cpp; html-script: true">mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));<br />
+while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {<br />
+    for (RequestJobPtr job = nullptr; mJobQueue.try_pop(job); ) {<br />
+        (*job)();<br />
+        delete job;<br />
+    }<br />
+    InterlockedExchange(&mExclusiveFlag, 0);<br />
+}</pre><br />
 <br />
 #<br />
 과제 풀이법<br />

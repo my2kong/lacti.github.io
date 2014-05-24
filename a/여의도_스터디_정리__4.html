@@ -114,10 +114,10 @@ read/write를 허용하는 좋은 방법은 없다. 처음에 read lock을 획�
 #<br />
 잘 기억은 안 나는데 asynchronous method에 대해서 잠깐 이야기가 있었다.<br />
 async-method를 요청할 때의 코드 패턴에 대한 이야기였는데<br />
-<pre class='brush: cpp'>void request_async(request_context context, async_state state, callback_t callback) {
-    async_result result = magical_async_method(context);
-    callback(result, state);
-}</pre>
+<pre class="brush: cpp; html-script: true">void request_async(request_context context, async_state state, callback_t callback) {<br />
+    async_result result = magical_async_method(context);<br />
+    callback(result, state);<br />
+}</pre><br />
 비동기 함수 요청을 할 때, 요청자의 상태를 저장하기 위한 async_state를 callback과 함께 async_method에 넘기면,<br />
 async_method에서는 인자로 받은 async_state를 async 수행 결과 결과(async_result)와 함께 callback으로 넘겨준다는 이야기이다.<br />
 iocp의 경우 overlapped 구조체를 상속받아서 async_state와 async_result 역할을 하나의 구조체에서 수행하기도 한다. proactor pattern 중 이를 async token이라고 표현하기도 한다.<br />
@@ -156,49 +156,49 @@ availability은 장애 상황에서의 서비스 가용 상태를 뜻하고, lat
 지난 번에 구현한 actor model은 진정한 actor가 아니기 때문에 자원 접근 측면에서 문제가 발생할 수 있다.<br />
 진정한 actor model이라면 다른 actor의 정보에 접근할 때에도 정보 접근 요청 message 같은 것을 보내서 처리해야 할 텐데, 만약에 해당 정보에 lock을 걸고 접근할 수 있도록 코드를 작성하였다고 해보자.<br />
 즉, actor A, B가 있고, B가 A의 특정 데이터를 가져올 때 A의 lock을 걸고 데이터를 가져오게 된다는 것이다.<br />
-<pre class='brush: cpp'>class a_t : public actor_t {
-public:
-    some_struct_t get_some() const { auto _ = read_lock(); return _some_struct; }
-};
-class b_t : public actor_t {
-public:
-    void process(a_t* a) {
-        auto some_a = a->get_some();
-        // .. do anything
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">class a_t : public actor_t {<br />
+public:<br />
+    some_struct_t get_some() const { auto _ = read_lock(); return _some_struct; }<br />
+};<br />
+class b_t : public actor_t {<br />
+public:<br />
+    void process(a_t* a) {<br />
+        auto some_a = a->get_some();<br />
+        // .. do anything<br />
+    }<br />
+};</pre><br />
 actor model로 구현한 주제에 lock을 쓴다는 점부터가 마음에 안 들지만 일단 그 부분은 그냥 넘어가자. 기존에 구현한 actor model의 job scheduling 방식은 "해당 actor를 먼저 점유한 thread가 있으면 그 thread가 해당 actor의 job_queue가 빌 때까지 모두 처리한다"이다.<br />
 때문에 A에서 B로 함수를 호출할 때, A의 함수 수행이 끝나기 전에 B의 함수가 호출될 수 있다. 이는 A가 A에게 message를 보낼 때와 다른 수행 양상을 보인다.<br />
-<pre class='brush: cpp'>class a_t : public actor_t {
-public:
-    void proc1() {
-        post(&a_t::proc1);
-        _b->post(&b_t::pass1);
-        // do something 1
-    }
-    void proc2() {
-        // do something 2
-    }
-};
-class b_t : public actor_t {
-public:
-    void pass1() {
-        // do something 3
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">class a_t : public actor_t {<br />
+public:<br />
+    void proc1() {<br />
+        post(&a_t::proc1);<br />
+        _b->post(&b_t::pass1);<br />
+        // do something 1<br />
+    }<br />
+    void proc2() {<br />
+        // do something 2<br />
+    }<br />
+};<br />
+class b_t : public actor_t {<br />
+public:<br />
+    void pass1() {<br />
+        // do something 3<br />
+    }<br />
+};</pre><br />
 만약 단일 thread가 a_t::proc1() 함수로 진입했을 경우의 수행 흐름은 어떻게 될까?<br />
 <strong>do something 3, 1, 2 순으로 수행될 것이다.</strong><br />
 <br />
 때문에 위의 코드로 돌아가서 lock 문제를 다시 살펴보자.<br />
-<pre class='brush: cpp'>class a_t : public actor_t {
-public:
-    void update() {
-        auto _ = write_lock();
-        // update some_struct upper half
-        _b->post(&b_t::process, this);
-        // update some_struct bottom half
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">class a_t : public actor_t {<br />
+public:<br />
+    void update() {<br />
+        auto _ = write_lock();<br />
+        // update some_struct upper half<br />
+        _b->post(&b_t::process, this);<br />
+        // update some_struct bottom half<br />
+    }<br />
+};</pre><br />
 a_t::update() 함수가 호출된다. 일단 some_struct의 상위 반만 변경이 된다.<br />
 b_t::process() 함수가 호출된다. 이 때 a_t::_some_struct를 접근한다. lock이 걸려있지만 lock의 재진입 허용으로 인해 상위 반만 변경된 a_t::_some_struct를 가져가게 된다. 즉, invalid한 값으로 작업을 수행하게 된다.<br />
 <br />

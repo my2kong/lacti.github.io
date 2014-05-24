@@ -1,7 +1,7 @@
 ﻿환형큐의 thread unsafety 문제
 2012-02-23 08:32:49
 어떤 자원에 대한 환형큐가 있다고 해보자. size 는 2의 자승이다.
-<pre class='brush: cpp'>void push(resource_t res) {
+<pre class="brush: cpp; html-script: true">void push(resource_t res) {
     int index = atomic_inc32(&rear_) & size_;
     array[index] = res;
 }
@@ -12,7 +12,7 @@ resource_t pop() {
 
 위 코드는 당연히 thread safety 하지 않다.
 하지만, 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자.
-<pre class='brush: cpp'>void work(resource_t old) {
+<pre class="brush: cpp; html-script: true">void work(resource_t old) {
     push(old);  // release old resource
     resource_t newone = pop(); // acquire new on
     // do some work

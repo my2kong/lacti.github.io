@@ -43,7 +43,7 @@ c# async/await
 요약하면, 비동기 logic을 동기적으로 작성하기 위한 async/await는 결과적으로 state machine code로 compiler에 의해 변환되어 .net thread-pool에 들어갔다 나왔다하면서 코드가 수행된다는 것.
 
 아래와 같이 코드가 작성되면 연결되는 모든 connection에 대해서 결과를 console에 출력해줄 수 있다.
-<pre class='brush: csharp'>async void Listen() {
+<pre class="brush: csharp; html-script: true">async void Listen() {
     var serverSocket = new Socket(...);
     Socket clientSocket;
     while ((clientSocket = await serverSocket.AcceptAsync()) != null)
@@ -65,7 +65,7 @@ coroutine
 boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있게 한 다음 그것을 사용해서 boost coroutine을 만들었다. (windows에서는 fiber를 쓴다고 알고 있다)
 
 그런데 그런 구현 방법 뿐만 아니라 generator를 이용해서 대충 coroutine처럼 사용할 수 있도록 할 수도 있다. c#의 yield return이 그런 형태인데, 이건 그냥 compiler가 해당 코드를 state machine으로 만들어서 다시 부르면 다음 코드부터 이어서 실행될 수 있도록 만들어 주는 것.
-<pre class='brush: csharp'>IEnumerable<int> MyGenerator() {
+<pre class="brush: csharp; html-script: true">IEnumerable<int> MyGenerator() {
     /* do something 1 */
     yield return /* first value */;
     /* do something 2 */
@@ -75,7 +75,7 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
     /* do something 4 */
     yield return /* forth value */;
 }</pre>
-<pre class='brush: csharp'>struct MyGeneratorStateMachine {
+<pre class="brush: csharp; html-script: true">struct MyGeneratorStateMachine {
     public int Current { get; set; }
     public bool MoveNext() {
         switch (_state) {
@@ -103,19 +103,19 @@ user -&gt; kernel (kernel + device driver) -&gt; physical -&gt; kernel -&gt; use
 
 어쨌든 io는 request 과정과 completion을 처리하는 과정 두 개로 나누어 생각해볼 수 있다.
 하나의 io 함수가 두 개를 모두 처리한다면 (보통은) blocking function이 될 것이고, 이 둘을 나누어서 처리한다면 non-blocing function이 될 것이다.
-<pre class='brush: cpp'>ret sync_io(...) {
+<pre class="brush: cpp; html-script: true">ret sync_io(...) {
     request(...);
     wait_for_completion(infinite);
     return result_from_completion();
 }</pre>
-<pre class='brush: cpp'>void async_io_req_callback(...) {
+<pre class="brush: cpp; html-script: true">void async_io_req_callback(...) {
     register_callback();
     request(...);
 }
 ret async_io_callback(...) {
     return result_from_completion();
 }</pre>
-<pre class='brush: cpp'>void async_io_req_completion_queue(...) {
+<pre class="brush: cpp; html-script: true">void async_io_req_completion_queue(...) {
     request(...);
 }
 void worker_loop() {
@@ -152,7 +152,7 @@ iocp <stroke>windows의 자랑(?)</stroke>
 request와 completion을 분리한 비동기 io 함수와 분리된 두 문맥을 연결해주기 위해 준비되는 overlapped 구조체는 iocp 이전부터 존재했던 windows api이다. (apc 포함)
 다만 callback이 불리는 시점도 애매하고 흐름이 눈에 잘 띄지 않으니 completion queue를 api로 노출시켜 접근할 수 있게 만들어준 것.
 요약하면,
-<pre class='brush: cpp'>1) [user] completion port를 만든다.
+<pre class="brush: cpp; html-script: true">1) [user] completion port를 만든다.
 2) [user] completion port에 io device handle을 (socket 등) 연결(mapping)한다.
 3) [user] 해당 handle에 대해 비동기 io 요청을 한다.
 4) [user] thread를 만들어서 completion port에 대기시킨다. (GetQueuedCompletionStatus)
@@ -165,7 +165,7 @@ request와 completion을 분리한 비동기 io 함수와 분리된 두 문맥�
 
 #
 iocp를 만들고 열심히 profiling을 해보니 3가지 문제가 있댄다.
-<pre class='brush: cpp'>1) async io 요청할 때 전달되는 memory를 non-paged-pool에 넣기 위해 lock거는 비용
+<pre class="brush: cpp; html-script: true">1) async io 요청할 때 전달되는 memory를 non-paged-pool에 넣기 위해 lock거는 비용
 2) GetQueuedCompletionStatus() 함수 등의 api를 부를 때 kernel mode switching 비용
 3) request/completion 마다 device handle에 mapping된 completion port handle을 찾는 비용(handle table lookup)</pre>
 1번의 경우는 zero-byte receive 기법으로 대충 우회가 된다. locked page가 뭔 소리인지는 대충 다음 링크에서 보자.

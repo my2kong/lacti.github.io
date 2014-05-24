@@ -79,55 +79,55 @@ GridLayout 같은 LayoutManager를 쓸 경우 그 출력 Pane의 가로 길이�
 이를 해결하기 위한 가장 간단한 방법은 LayoutManager를 새로 만드는 것이다.<br />
 GridLayout을 상속받은 CustomLayout을 하나 만들고, layoutContainer method를 override해서 control의 boundary를 지정하는 곳에서 width 값을 고정으로 지정해버리면 해당 문제를 막을 수 있다.<br />
 <br />
-<pre class='brush: java'>@Override
-public void layoutContainer(Container parent) {
-	synchronized (parent.getTreeLock()) {
-		Insets insets = parent.getInsets();
-		int ncomponents = parent.getComponentCount();
-		int width = parent.getWidth();
-		int height = parent.getHeight();
-		int nrows = 1;
-		int ncols = paneCount;
-		int hgap = getHgap();
-		int vgap = getVgap();
-		boolean ltr = parent.getComponentOrientation().isLeftToRight();
-
-		if (ncomponents == 0) {
-			return;
-		}
-		if (nrows > 0) {
-			ncols = (ncomponents + nrows - 1) / nrows;
-		} else {
-			nrows = (ncomponents + ncols - 1) / ncols;
-		}
-		int w = DEFAULT_OUTPUT_WIDTH;
-		int h = height - (insets.top + insets.bottom);
-		h = (h - (nrows - 1) * vgap) / nrows;
-
-		if (ltr) {
-			for (int c = 0, x = insets.left; c < ncols; c++, x += w + hgap) {
-				for (int r = 0, y = insets.top; r < nrows; r++, y += h
-						+ vgap) {
-					int i = r * ncols + c;
-					if (i < ncomponents) {
-						parent.getComponent(i).setBounds(x, y, w, h);
-					}
-				}
-			}
-		} else {
-			for (int c = 0, x = width - insets.right - w; c < ncols; c++, x -= w
-					+ hgap) {
-				for (int r = 0, y = insets.top; r < nrows; r++, y += h
-						+ vgap) {
-					int i = r * ncols + c;
-					if (i < ncomponents) {
-						parent.getComponent(i).setBounds(x, y, w, h);
-					}
-				}
-			}
-		}
-	}
-}</pre>
+<pre class="brush: java; html-script: true">@Override<br />
+public void layoutContainer(Container parent) {<br />
+	synchronized (parent.getTreeLock()) {<br />
+		Insets insets = parent.getInsets();<br />
+		int ncomponents = parent.getComponentCount();<br />
+		int width = parent.getWidth();<br />
+		int height = parent.getHeight();<br />
+		int nrows = 1;<br />
+		int ncols = paneCount;<br />
+		int hgap = getHgap();<br />
+		int vgap = getVgap();<br />
+		boolean ltr = parent.getComponentOrientation().isLeftToRight();<br />
+<br />
+		if (ncomponents == 0) {<br />
+			return;<br />
+		}<br />
+		if (nrows > 0) {<br />
+			ncols = (ncomponents + nrows - 1) / nrows;<br />
+		} else {<br />
+			nrows = (ncomponents + ncols - 1) / ncols;<br />
+		}<br />
+		int w = DEFAULT_OUTPUT_WIDTH;<br />
+		int h = height - (insets.top + insets.bottom);<br />
+		h = (h - (nrows - 1) * vgap) / nrows;<br />
+<br />
+		if (ltr) {<br />
+			for (int c = 0, x = insets.left; c < ncols; c++, x += w + hgap) {<br />
+				for (int r = 0, y = insets.top; r < nrows; r++, y += h<br />
+						+ vgap) {<br />
+					int i = r * ncols + c;<br />
+					if (i < ncomponents) {<br />
+						parent.getComponent(i).setBounds(x, y, w, h);<br />
+					}<br />
+				}<br />
+			}<br />
+		} else {<br />
+			for (int c = 0, x = width - insets.right - w; c < ncols; c++, x -= w<br />
+					+ hgap) {<br />
+				for (int r = 0, y = insets.top; r < nrows; r++, y += h<br />
+						+ vgap) {<br />
+					int i = r * ncols + c;<br />
+					if (i < ncomponents) {<br />
+						parent.getComponent(i).setBounds(x, y, w, h);<br />
+					}<br />
+				}<br />
+			}<br />
+		}<br />
+	}<br />
+}</pre><br />
 <br />
 component 배치는 GridLayout과 동일하게 수행하되 22번째 줄에서 볼 수 있듯이 component의 width 값(w)만 고정으로 박아버리면 되겠다.<br />
 <br />

@@ -73,32 +73,32 @@
 그 스탯들은 여러 상황에서 버프에 의해 값이 변경될 수 있고,<br />
 때문에, <strong>스탯을 저장하는 자료구조</strong>와 그 <strong.스탯을 변경하기 위한 버프 종류 enum</strong>과, 각 버프 종류 enum에 따라 스탯을 어떻게 변경할지에 대한 <strong>연산식</strong>에 대해서 코딩을 해주어야 한다.<br />
 <br />
-<pre class='brush: cpp'>enum BuffType {
-    BUFF_HP,
-    BUFF_MP,
-    BUFF_ATTACK,
-    BUFF_DEFENCE,
-};</pre>
+<pre class="brush: cpp; html-script: true">enum BuffType {<br />
+    BUFF_HP,<br />
+    BUFF_MP,<br />
+    BUFF_ATTACK,<br />
+    BUFF_DEFENCE,<br />
+};</pre><br />
 <br />
-<pre class='brush: cpp'>struct Stat {
-    float hp;
-    float mp;
-    float attack;
-    float defence;
-};</pre>
+<pre class="brush: cpp; html-script: true">struct Stat {<br />
+    float hp;<br />
+    float mp;<br />
+    float attack;<br />
+    float defence;<br />
+};</pre><br />
 <br />
 다행히도(?) 각 스탯에 어떤 값을 어떻게 계산하면 되는지에 대해서는 다음의 3가지로 추상화가 가능했다.<br />
 <strong>SET, ADD, RATE</strong> 즉, 강제 지정, 더하기, 곱하기이다.<br />
 <br />
 그럼 대충 다음과 같은 코드가 나온다.<br />
-<pre class='brush: cpp'>switch (buffType) {
-case BUFF_HP:
-    switch (buffMethod) {
-    case SET: stat.hp = buffValue; break;
-    case ADD: stat.hp += buffValue; break;
-    case RATE: stat.hp *= buffValue; break;
-    }
-    break;</pre>
+<pre class="brush: cpp; html-script: true">switch (buffType) {<br />
+case BUFF_HP:<br />
+    switch (buffMethod) {<br />
+    case SET: stat.hp = buffValue; break;<br />
+    case ADD: stat.hp += buffValue; break;<br />
+    case RATE: stat.hp *= buffValue; break;<br />
+    }<br />
+    break;</pre><br />
 <br />
 BUFF_MP, BUFF_ATTACK, BUFF_DEFENCE 등, 버프 종류가 바뀌어도 연산하는 식은 똑같다.<br />
 다만 stat 구조체 내의 어떤 변수를 접근하는지만 바뀌는 것이다.<br />
@@ -108,18 +108,18 @@ BUFF_MP, BUFF_ATTACK, BUFF_DEFENCE 등, 버프 종류가 바뀌어도 연산하�
 <br />
 #<br />
 위 상황을 해결할 수 있는 가장 간단한 방법은 BuffType enum에 대응되는 Stat 자료구조의 멤버 데이터 포인터를 묶어주는 것이다.<br />
-<pre class='brush: cpp'>typedef float Stat::*StatDataPtr;
-StatDataPtr statDataPtr[BUFF_MAX];
-
-statDataPtr[BUFF_HP] = &Stat::hp;
-statDataPtr[BUFF_MP] = &Stat::mp;</pre>
+<pre class="brush: cpp; html-script: true">typedef float Stat::*StatDataPtr;<br />
+StatDataPtr statDataPtr[BUFF_MAX];<br />
+<br />
+statDataPtr[BUFF_HP] = &Stat::hp;<br />
+statDataPtr[BUFF_MP] = &Stat::mp;</pre><br />
 각 Buff의 종류별로 어떤 멤버를 접근할지 정보를 구성했으니, 아까의 코드가 한결 간편해진다.<br />
 <br />
-<pre class='brush: cpp'>StatDataPtr dataPtr = statDataPtr[buffType];
-switch (buffMethod) {
-case SET: stat.*dataPtr = buffValue; break;
-case ADD: stat.*dataPtr += buffValue; break;
-case RATE: stat.*dataPtr *= buffValue; break;</pre>
+<pre class="brush: cpp; html-script: true">StatDataPtr dataPtr = statDataPtr[buffType];<br />
+switch (buffMethod) {<br />
+case SET: stat.*dataPtr = buffValue; break;<br />
+case ADD: stat.*dataPtr += buffValue; break;<br />
+case RATE: stat.*dataPtr *= buffValue; break;</pre><br />
 <br />
 이제 BuffType이 추가될 때마다 해당 BuffType에 대응되는 Stat의 데이터 포인터를 배열에 추가해주기만 하면 된다.<br />
 그리고 Method가 추가되어도, 그러한 연산을 수행하는 코드가 한 곳에만 존재하기 때문에 Method를 확장하기도 좋다.<br />
@@ -128,21 +128,21 @@ case RATE: stat.*dataPtr *= buffValue; break;</pre>
 하지만 아무래도 enum을 정의하고 나서 데이터 포인터와의 연결을 위해 다시 한 번 enum을 언급하는 것은 귀찮다.<br />
 이를 해결하기 위해서 병후의 mp-inc를 써보자.<br />
 <br />
-<pre class='brush: cpp'>// buff_type.inl
-BUFF_ENUM(BUFF_HP, &Stat::hp);
-BUFF_ENUM(BUFF_MP, &Stat::mp);</pre>
+<pre class="brush: cpp; html-script: true">// buff_type.inl<br />
+BUFF_ENUM(BUFF_HP, &Stat::hp);<br />
+BUFF_ENUM(BUFF_MP, &Stat::mp);</pre><br />
 위와 같이 BUFF_ENUM이라는 매크로를 사용하여 enum 정의와 데이터 포인터 연결을 같이 할 수 있도록 묶어주고,<br />
 <br />
-<pre class='brush: cpp'>// buff_type.h
-#define BUFF_ENUM(name, ptr) name,
-enum BuffType {
-#include "buff_type.inl"
-};
-#undef BUFF_ENUM</pre>
-<pre class='brush: cpp'>// buff_bind.cpp
-#define BUFF_ENUM(name, ptr) statDataPtr[buff] = ptr;
-#include "buff_type.inl"
-#undef BUFF_ENUM</pre>
+<pre class="brush: cpp; html-script: true">// buff_type.h<br />
+#define BUFF_ENUM(name, ptr) name,<br />
+enum BuffType {<br />
+#include "buff_type.inl"<br />
+};<br />
+#undef BUFF_ENUM</pre><br />
+<pre class="brush: cpp; html-script: true">// buff_bind.cpp<br />
+#define BUFF_ENUM(name, ptr) statDataPtr[buff] = ptr;<br />
+#include "buff_type.inl"<br />
+#undef BUFF_ENUM</pre><br />
 <br />
 이제 새로운 버프가 추가되면, buff_type.inl 파일 하나에만 BUFF_ENUM으로 추가해두면, buff_type.h와 buff_bind.cpp 양 쪽에 코드가 적절히 치환되어 적절하게 추가될 것이다.<br />
 <br />

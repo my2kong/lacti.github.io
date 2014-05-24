@@ -81,7 +81,7 @@ C++ 보다 훨씬 객체지향적 개념에 근접했던 이 언어는, 덕분�
 자바 프로그래밍을 하면서 가장 많이 실수하는 것이 이 둘을 구분짓지 못하는 것인데 왜 그런지 보자.
 
 객체지향을 자바라는 언어로 공부하면서 가장 많이 배우는 잘못된 것은 아래와 같은 코드이다.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     private int age;
     private String name;
     public Person() {}
@@ -104,7 +104,7 @@ get, set 계열 함수를 Person 을 상속받는 자식에서 override 할건�
 자료구조는? 자료를 담는 것이다.
 
 무슨 소리냐하면, 어차피 Person class 를 사용해서 사람에 대한 정보를 처리하는 코드를 작성한다면, 그 코드가 Person 에 들어갈까, 아니면 Person 자료를 관리하는 곳에 들어갈까? 난 후자라고 생각한다.
-<pre class='brush: java'>class PeopleManager {
+<pre class="brush: java; html-script: true">class PeopleManager {
     private List<Person> people = new ArrayList<Person>();
     public int calcaulteAverageAge() {
         int averageAge = 0;
@@ -125,7 +125,7 @@ Person 객체들은 List 에 의해 관리되고 있고, 그걸 소유하는 Peo
 #
 Java 가 가장 많이 사용되는 시장은 Web 이다. J2EE 가 크게 성공하면서 EJB 가 대세! 인 세상이 있었다.
 EJB 는 Enterprise Java Bean 의 약자인데, 여기서 Bean 이 무엇이냐 하면,
-<pre class='brush: java'>class PersonBean {
+<pre class="brush: java; html-script: true">class PersonBean {
     public int age;
     public String name;
 }</pre>
@@ -176,7 +176,7 @@ public 으로 member 를 노출시키는건 미개한 C 언어나 하는 짓이�
 물론, Java 에서는 멤버의 Readonly 를 위해 Getter 만 존재하는 경우도 있다.
 이 경우에는 final keyword 를 사용해서 수정이 불가능하게 해줘도 되는데, 이게 객체 멤버를 반환할 경우에는 좀 애매해진다.
 final 은 객체 멤버의 reference 을 못 바꾸게 하는거지 반환된 객체를 수정하지 못하게하는건 아니니까.
-<pre class='brush: java'>class Program {
+<pre class="brush: java; html-script: true">class Program {
     private final List<Code> codes = new ArrayList<Code>();
     public List<Code> getCodes() {
         return codes;

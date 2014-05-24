@@ -11,7 +11,7 @@
 요즘 코드를 읽고 있는데 몇 개의 class 들이 저런 문제점을 지니고 있다.
 다음 예제를 보자.
 
-<pre class='brush: cpp'>class Worker
+<pre class="brush: cpp; html-script: true">class Worker
 {
 public:
     void DoWork();
@@ -38,7 +38,7 @@ Append와 Remove가 있으니 뭔가 Work 를 넣었다 뺐다도 할 수 있나
 여기까지 읽은 사람이라면 수도 없이 많은 문제를 떠올리겠지만, 다 생략하고 몇 개만 보겠다.
 
 1) class 의 역할을 파악하고 동작을 이해함에 있어 private 의 역할은 꽤나 중요하다. public method 는 외부에서 호출한다는 것이니까, 결국 이 class가 어떤 동작을 외부로 제공해줄지를 결정하는 것이기 때문이다. 위의 class를 제대로 적어보면,
-<pre class='brush: cpp'>class Worker
+<pre class="brush: cpp; html-script: true">class Worker
 {
 public:
     void Run();

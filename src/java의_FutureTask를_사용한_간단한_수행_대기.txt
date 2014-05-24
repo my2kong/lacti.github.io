@@ -27,7 +27,7 @@ java에서도 1.7부터 fork/join pool을 지원해주지만, 본 글에서는 �
 FutureTask는 이름 그대로 Future + Task인데, Task를 수행한 결과를 Future로 받아볼 수 있는 구조로,
 생성자로 Callable 객체를 받고, 수행을 위한 run() 함수와 결과 값을 받기 위한 get() 함수를 갖는다.
 
-<pre class='brush: java'>FutureTask<String> task = new FutureTask<String>(
+<pre class="brush: java; html-script: true">FutureTask<String> task = new FutureTask<String>(
     new Callable<String>() {
         public String call() throws Exception {
             return /* complicated crawling code */;
@@ -42,15 +42,15 @@ FutureTask는 이름 그대로 Future + Task인데, Task를 수행한 결과를 
 이제 열심히 만든 task 객체를 수행할 thread를 생성하도록 하자.
 하지만 thread를 매번 만드는 것은 매우 아깝고 귀찮은 일이므로 ExecutorService를 사용해보도록 하자.
 
-<pre class='brush: java'>ExecutorServicce threadPool = Executors.newCachedThreadPool();</pre>
+<pre class="brush: java; html-script: true">ExecutorServicce threadPool = Executors.newCachedThreadPool();</pre>
 다 만들었다-_-;
 
 이제 만든 ThreadPool을 사용하여 task를 실행해보자.
-<pre class='brush: java'>threadPool.execute(task);</pre>
+<pre class="brush: java; html-script: true">threadPool.execute(task);</pre>
 
 정말 간단하게 threadPool을 만들었고, 해당 ThreadPool 내에 cache된 thread에게 우리가 만든 task를 수행시켰다.
 이제 main thread에서는 적절히 timeout을 걸고 기다려보자.
-<pre class='brush: java'>try {
+<pre class="brush: java; html-script: true">try {
     String result = task.get(5 /* TIMEOUT */, TimeUnit.SECONDS);
     /* some codes for processing result */
 } catch (TimeoutException e) {

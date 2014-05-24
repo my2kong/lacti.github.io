@@ -15,7 +15,7 @@
 내 대답은 '그럴 것 같군요' 이었고, 문제를 내신 분께서는 '사실은 그렇지 않다' 라고 답변을 주셨다.
 
 그래서 그냥 그러려니 하다가, 마침 잠도 깼고 할 일도 없어서 ULK를 보다가 이상함을 느끼고 직접 실험을 해봤다.
-<pre class='brush: c'>#include <stdio.h>
+<pre class="brush: c; html-script: true">#include <stdio.h>
 
 #define PRINT_ADDR_AND_VALUE(var_name) \
   printf ("%40s (%16p -> %d)\n", #var_name, &var_name, var_name)
@@ -63,7 +63,7 @@ int main (int argc, char *argv[])
 실험 방법은 위의 코드를 사용하여 전역적(global), 정적(static), 그리고 초기화된(initialized), 초기화되지 않은(not initialized) 마지막으로 함수 stack 변수까지 메모리 주소와 그 값을 비교해보도록 하였다.
 
 실행 결과는 다음과 같고,
-<pre class='brush: c'>          _global_static_not_initialized (        0x601040 -> 0)
+<pre class="brush: c; html-script: true">          _global_static_not_initialized (        0x601040 -> 0)
                           _global_static (        0x601024 -> 100)
                  _global_not_initialized (        0x60104c -> 0)
                                  _global (        0x601020 -> 100)
@@ -77,7 +77,7 @@ int main (int argc, char *argv[])
                       _local_in_function (  0x7fffde739c38 -> 100)</pre>
 
 위 문제와 연결지어 정리하면 이와 같다. 위 쪽이 memory의 high address이고 아래 쪽이 low address이다. 세 개의 영역으로 구분지었는데, 위에서부터 <a href="http://en.wikipedia.org/wiki/Data_segment#Stack">스택(Stack)</a>, <a href="http://en.wikipedia.org/wiki/Data_segment#BSS">초기화되지 않은 영역(BSS)</a>, <a href="http://en.wikipedia.org/wiki/Data_segment#Data">초기화된 영역(Data)</a>이다.
-<pre class='brush: c'>          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)
+<pre class="brush: c; html-script: true">          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)
                           _local_in_main (  0x7fffde739c68 -> 100)
       _local_in_function_not_initialized (  0x7fffde739c3c -> 32705)
                       _local_in_function (  0x7fffde739c38 -> 100)

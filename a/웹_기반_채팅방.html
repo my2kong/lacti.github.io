@@ -83,22 +83,22 @@
 덕분에 전자의 방식에 대해, 클라이언트 FORM 페이지에서 웹 서버로 데이터를 보내는 POST 단계와, 서버의 스크립트 언어로 FORM DATA 를 처리한 후 다시 클라이언트에게 HTML 을 보내주는 BACK 단계를 합쳐서 POSTBACK 란 용어가 나오게 되었다.<br />
 <br />
 다시 요약하면, 페이지 전체가, 즉 브라우저의 현재 URL 값을 변경하여 데이터를 보내는 경우에는 딱히 고민하지 않아도 될 것이 메세지 구조였다. 어차피 서버에서는 HTML 을 반환시키면 그만이니까. 우리에게 친숙한 언어의 함수로보면 아래와 같다.<br />
-<pre class='brush: cpp'>HTML process_in_server (FORMDATA data) {
-    return make_html (process_formdata (data));
-}
-void request_in_client (void) {
-    render_in_client (process_in_server (get_form_data ()));
-}</pre>
+<pre class="brush: cpp; html-script: true">HTML process_in_server (FORMDATA data) {<br />
+    return make_html (process_formdata (data));<br />
+}<br />
+void request_in_client (void) {<br />
+    render_in_client (process_in_server (get_form_data ()));<br />
+}</pre><br />
 <br />
 그렇다면 비동기적인 방법으로 갱신하는 건 어떤 것일까?<br />
-<pre class='brush: cpp'>MESSAGE process_in_server_async (FORMDATA data) {
-    return make_message (process_formdata (data));
-}
-void request_in_client (UPDATEAREA area) {
-    MESSAGE msg = process_in_server (get_form_data ());
-    HTML html = translate_message_result (msg);
-    update_in_client_area (html);
-}</pre>
+<pre class="brush: cpp; html-script: true">MESSAGE process_in_server_async (FORMDATA data) {<br />
+    return make_message (process_formdata (data));<br />
+}<br />
+void request_in_client (UPDATEAREA area) {<br />
+    MESSAGE msg = process_in_server (get_form_data ());<br />
+    HTML html = translate_message_result (msg);<br />
+    update_in_client_area (html);<br />
+}</pre><br />
 <br />
 서버의 코드는 크게 변한게 없다. 다만 HTML 을 반환하는게 아니라 MESSAGE 형식으로 반환한다는 것이다.<br />
 Ajax (Asynchronous Javascript and XML) 를 예를 들어본다면 이름에서 알 수 있듯이 MESSAGE 형식을 XML 으로도 할 수 있는 것이다. 아니면 요즘 대세인 작고 가벼운 JSON (Javascript Object Notation) 을 쓰는 것도 하나의 방법이고,<br />

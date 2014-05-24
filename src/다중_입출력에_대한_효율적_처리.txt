@@ -13,20 +13,20 @@
 만약 채팅방을 만든다고 해보자. 채팅방에는 여러 사람이 접속해서 데이터를 주고 받는다. 따라서 n 명의 사람이 연결되어있다면, 채팅 서버는 적어도 n 개의 Socket 과 데이터를 주고 받아야할 것이다. 어떻게 처리해야 좋을까?
 
 1) 각 Socket 마다 처리하는 Thread 를 따로 만든다. 왜냐하면 Recv 함수가 blocking 이기 때문에, 이걸 단일 thread 에서 처리할 경우 하나의 socket 에서 데이터가 안 들어오면 다른 socket 은 데이터가 들어오건 말건 읽을 수가 없기 때문이다.
-<pre class='brush: cpp'>recv(hSocket1, lpBuffer, ...) // block !
+<pre class="brush: cpp; html-script: true">recv(hSocket1, lpBuffer, ...) // block !
 recv(hSocket2, lpBuffer, ...)
 recv(hSocket3, lpBuffer, ...)</pre>
 따라서 각각의 Recv 수행은 다른 Recv 에 의해 방해받으면 안되기 때문에 여러 개의 thread 를 사용한다.
 
 2) Recv 함수를 non blocking 으로 만든다. 그러면 하나의 thread 로도 처리가 가능하다.
-<pre class='brush: cpp'>for (int i = 0; i < socketCount; ++i) {
+<pre class="brush: cpp; html-script: true">for (int i = 0; i < socketCount; ++i) {
     if (nb_recv(hSocket[i], lpBuffer, ...) != -1) {
         // 데이터 처리</pre>
 동기적으로 처리되지만 함수 수행은 non blocking 이다. 코드 작성하기는 편하겠지만 매번 데이터가 있나없나 물어보는게 꽤나 고역이 될 것 같다. 특히 채팅 서버처럼 모든 사람이 대화를 하지 않을 때 아무 일도 하지 않아도 되는 서버라면 계속 입력이 있는지 검사하는 것은 쓸데없는 작업이 될 것이다
 <span style="color: #888;">(그나마 게임 서버는 남는 시간에 AI 를 돌리는 둥 로직이라도 수행하는데 말이다)</span>
 
 3) non blocking 에 asynchronous 한 Recv 를 사용해본다. 로직 작성하기는 어려워지지만 효율은 괜찮아진다.
-<pre class='brush: cpp'>// 클라이언트 연결을 수락하는 함수
+<pre class="brush: cpp; html-script: true">// 클라이언트 연결을 수락하는 함수
 void accept_client () {
     // 클라이언트의 연결을 수락함.
     // 이로써 클라이언트와 통신 가능한 Socket 을 얻을 수 있다.
@@ -41,7 +41,7 @@ void recv_callback (char *lpBuffer) {
     async_recv(hSocket, lpBuffer, recv_callback);
 }</pre>
 실제 thread 가 어떻게 돌아가는지 상관 없이 깔끔하게 코드가 작성된다. 물론 비동기적으로 돌아가기 때문에 데이터 처리하는 코드 작성이 좀 더러워진다. 채팅프로그램을 가정할 경우 어떤 클라이언트로부터 받은 데이터를 다른 클라이언트들에게 보내주어야 하므로, 클라이언트 연결 목록이라는 공유 자원이 생긴다.
-<pre class='brush: cpp'>// 클라이언트 연결을 수락하는 함수
+<pre class="brush: cpp; html-script: true">// 클라이언트 연결을 수락하는 함수
 void accept_client () {
     HANDLE hSocket = Accept (...);
     lock(&gClients);
@@ -68,7 +68,7 @@ void recv_callback (char *lpBuffer) {
 
 select 는 이 글에서 다루기는 좀 애매하니까 넘어가자. 간략히 설명하면 여러 IO 를 동시에 감시하고 그에 대해 통보 받을 수 있다는 것이다. 이는 asynchronous IO 함수를 쓰지 않고, non blocking IO 들을 무의미하게 loop 돌면서 검사하지 않아도 어느정도 효율적으로 IO 를 관리할 수 있고, 게다가 동기적으로(하나의 scope 내에서) 로직을 작성할 수 있으므로 코드를 작성하기도 편하다.
 동기적으로 작성되면 scope 에 의해 context(변수 등) 가 공유되고 실행 흐름을 파악하기 쉽기 때문에 문제가 발생할 확률이 적기 때문이다. 예를 들어 다음의 코드를 보자.
-<pre class='brush: cpp'>while (select (...) != -1) {
+<pre class="brush: cpp; html-script: true">while (select (...) != -1) {
     switch (ret) {
     case ACCEPT: clients.push_back (socket); break;
     case RECV:

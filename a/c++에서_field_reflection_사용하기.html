@@ -80,22 +80,22 @@ mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고
 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데,<br />
 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다.<br />
 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다.<br />
-<pre class='brush: cpp'>class field_t {
-public:
-    field_t(std::string _name) : field_name(_name) {}
-    template <typename _FieldTy, typename _ObjTy>
-    _FieldTy& ref(_ObjTy* obj) {
-        _FieldTy* address = reinterpret_cast<_FieldTy*>(ptr(obj));
-        return *address;
-    }
-    const char* name() const { return field_name.c_str(); }
-
-protected:
-    virtual void* ptr(void* obj) const = 0;
-
-protected:
-    std::string field_name;
-};</pre>
+<pre class="brush: cpp; html-script: true">class field_t {<br />
+public:<br />
+    field_t(std::string _name) : field_name(_name) {}<br />
+    template <typename _FieldTy, typename _ObjTy><br />
+    _FieldTy& ref(_ObjTy* obj) {<br />
+        _FieldTy* address = reinterpret_cast<_FieldTy*>(ptr(obj));<br />
+        return *address;<br />
+    }<br />
+    const char* name() const { return field_name.c_str(); }<br />
+<br />
+protected:<br />
+    virtual void* ptr(void* obj) const = 0;<br />
+<br />
+protected:<br />
+    std::string field_name;<br />
+};</pre><br />
 <br />
 핵심 함수가 ref() 인 것 같지만 잘 보면 저건 훼이크 함수다.<br />
 인자로 받은 object를 ptr()이라는 의미심장한 virtual 함수에게 넘겨주고 자신은 그냥 그걸 적절한 field type으로 casting해서 반환해줄 뿐이다.<br />
@@ -107,17 +107,17 @@ protected:
 (덕분에 실 사용 type 검증 로직은 하나도 없고, 잘못 사용하면 안드로메다를 보게 된다.)<br />
 <br />
 이제 저 ptr을 구현하는 구체 클래스를 만들면 되는데, 역시 대충 만들었다.<br />
-<pre class='brush: cpp'>template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)>
-class field_impl_t : public field_t {
-public:
-    field_impl_t(std::string _name) : field_t(_name) {}
-
-protected:
-    virtual void* ptr(void* obj_addr) const {
-        _ObjTy* obj = reinterpret_cast<_ObjTy*>(obj_addr);
-        return &(obj->*Field);
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)><br />
+class field_impl_t : public field_t {<br />
+public:<br />
+    field_impl_t(std::string _name) : field_t(_name) {}<br />
+<br />
+protected:<br />
+    virtual void* ptr(void* obj_addr) const {<br />
+        _ObjTy* obj = reinterpret_cast<_ObjTy*>(obj_addr);<br />
+        return &(obj->*Field);<br />
+    }<br />
+};</pre><br />
 <br />
 예전 글에서는 offset을 직접 계산해서 거길 다시 접근하는 무시무시하고 소름끼치는 방법을 썼는데,<br />
 템플릿의 힘을 빌어 멤버 변수 포인터를 써서 조금이나마 우아하고 안정적인 방법을 쓰려고 해봤다.<br />
@@ -131,29 +131,29 @@ field_t와 field_impl_t의 관계에서 볼 수 있듯이 둘은 object의 type�
 <br />
 #<br />
 이제 저 field_t를 관리하는 관리 class를 만들어보자. 귀찮으니까 코드를 먼저 보자.<br />
-<pre class='brush: cpp'>template <typename _Ty>
-struct field_info_map_t {
-protected:
-    typedef _Ty impl_type;
-    typedef std::map<std::string, field_t*> _info_map_t;
-    static _info_map_t _info_map;
-
-    template <typename _FieldTy, typename _FieldTy (_Ty::*Field)>
-    static void _register_field(std::string name) {
-        _info_map.insert(std::make_pair(name, new field_impl_t<_Ty, _FieldTy, Field>(name)));
-    }
-    
-public:
-    typedef std::map<std::string, field_t*>::iterator field_iterator_t;
-
-    static field_t* get_field(std::string name) {
-        return _info_map[name];
-    }
-    static field_iterator_t get_field_begin() { return _info_map.begin(); }
-    static field_iterator_t get_field_end() { return _info_map.end(); }
-};
-template <typename _Ty>
-typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</pre>
+<pre class="brush: cpp; html-script: true">template <typename _Ty><br />
+struct field_info_map_t {<br />
+protected:<br />
+    typedef _Ty impl_type;<br />
+    typedef std::map<std::string, field_t*> _info_map_t;<br />
+    static _info_map_t _info_map;<br />
+<br />
+    template <typename _FieldTy, typename _FieldTy (_Ty::*Field)><br />
+    static void _register_field(std::string name) {<br />
+        _info_map.insert(std::make_pair(name, new field_impl_t<_Ty, _FieldTy, Field>(name)));<br />
+    }<br />
+    <br />
+public:<br />
+    typedef std::map<std::string, field_t*>::iterator field_iterator_t;<br />
+<br />
+    static field_t* get_field(std::string name) {<br />
+        return _info_map[name];<br />
+    }<br />
+    static field_iterator_t get_field_begin() { return _info_map.begin(); }<br />
+    static field_iterator_t get_field_end() { return _info_map.end(); }<br />
+};<br />
+template <typename _Ty><br />
+typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</pre><br />
 <br />
 지난 글에서 했던 것처럼, 동일하게 map을 사용해서 이름과 field_t*에 대한 정보를 가지고 있다.<br />
 특이한건 모든 멤버가 다 static인데 template parameter를 가지고 있다는 것이다.<br />
@@ -161,18 +161,18 @@ typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</p
 (이는 실 사용 부분에서 자세히 보자.)<br />
 <br />
 이제 각 field를 어떻게 등록할 것인지, helper macro를 먼저 보자.<br />
-<pre class='brush: cpp'>#define REGISTER_FIELD_BEGIN() \
-    struct __register { \
-        __register() { \
-            static bool init = false; \
-            if (init) return;
-
-#define REGISTER_FIELD_END() \
-        } \
-    } _register_auto;
-
-#define REGISTER_FIELD(type, name) \
-            impl_type::_register_field<type, &impl_type::name>(#name);</pre>
+<pre class="brush: cpp; html-script: true">#define REGISTER_FIELD_BEGIN() \<br />
+    struct __register { \<br />
+        __register() { \<br />
+            static bool init = false; \<br />
+            if (init) return;<br />
+<br />
+#define REGISTER_FIELD_END() \<br />
+        } \<br />
+    } _register_auto;<br />
+<br />
+#define REGISTER_FIELD(type, name) \<br />
+            impl_type::_register_field<type, &impl_type::name>(#name);</pre><br />
 <br />
 역시 지난 글에서와 동일하게 struct 생성자 코드 + static 변수로 중복 실행 방지를 사용해서 해당 구조체에 접근할 때 바로 field 정보가 register 되도록 구성할 것이다.<br />
 <br />
@@ -184,15 +184,15 @@ typename field_info_map_t<_Ty>::_info_map_t field_info_map_t<_Ty>::_info_map;</p
 이제 다 만들었으니까 사용해보자.<br />
 <br />
 #<br />
-<pre class='brush: cpp'>struct user_t : field_info_map_t<user_t> {
-    int index;
-    std::string name;
-
-    REGISTER_FIELD_BEGIN()
-        REGISTER_FIELD(int, index)
-        REGISTER_FIELD(std::string, name)
-    REGISTER_FIELD_END()
-};</pre>
+<pre class="brush: cpp; html-script: true">struct user_t : field_info_map_t<user_t> {<br />
+    int index;<br />
+    std::string name;<br />
+<br />
+    REGISTER_FIELD_BEGIN()<br />
+        REGISTER_FIELD(int, index)<br />
+        REGISTER_FIELD(std::string, name)<br />
+    REGISTER_FIELD_END()<br />
+};</pre><br />
 <br />
 user_t라는 구조체는 index, name라는 변수를 갖는다.<br />
 그리고 REGISTER 매크로를 통해 두 변수 모두 field 정보를 등록했다.<br />
@@ -203,16 +203,16 @@ user_t라는 구조체는 index, name라는 변수를 갖는다.<br />
 좀 더 깔끔한 방법이 있을 것 같은데, 피곤하니 일단 저 정도에서 타협!<br />
 <br />
 이제 다음과 같이 사용할 수 있다.<br />
-<pre class='brush: cpp'>user_t user;
-user.index = 100;
-user.name = "choi";
-    
-assert(user_t::get_field("index")->ref<int>(&user) == user.index);
-assert(user_t::get_field("name")->ref<std::string>(&user) == user.name);
-
-std::for_each(user_t::get_field_begin(), user_t::get_field_end(), [&] (std::pair<std::string, field_t*> pair) {
-    printf("%s\n", pair.first.c_str());
-});</pre>
+<pre class="brush: cpp; html-script: true">user_t user;<br />
+user.index = 100;<br />
+user.name = "choi";<br />
+    <br />
+assert(user_t::get_field("index")->ref<int>(&user) == user.index);<br />
+assert(user_t::get_field("name")->ref<std::string>(&user) == user.name);<br />
+<br />
+std::for_each(user_t::get_field_begin(), user_t::get_field_end(), [&] (std::pair<std::string, field_t*> pair) {<br />
+    printf("%s\n", pair.first.c_str());<br />
+});</pre><br />
 <br />
 get_field() 함수를 사용해서 대응되는 field_t를 가져올 수 있고, 거기에 객체의 주소를 넣어 값을 가져올 수 있다.<br />
 그리고 등록된 모든 field를 열거할 수 있다.<br />

@@ -5,7 +5,7 @@ Client와 Server 양측에서 ObjectInputStream을 먼저 생성하면 프로그
 그 이유는 다음과 같다.
 
 ObjectInputStream의 initialize 코드
-<pre class='brush: java'>    public ObjectInputStream(InputStream in) throws IOException {
+<pre class="brush: java; html-script: true">    public ObjectInputStream(InputStream in) throws IOException {
         verifySubclass();
         bin = new BlockDataInputStream(in);
         handles = new HandleTable(10);
@@ -16,21 +16,21 @@ ObjectInputStream의 initialize 코드
     }</pre>
 
 보면, readStreamHeader(); 함수가 호출되는데,
-<pre class='brush: java'>    protected void readStreamHeader()
+<pre class="brush: java; html-script: true">    protected void readStreamHeader()
         throws IOException, StreamCorruptedException
     {
         short s0 = bin.readShort();
         short s1 = bin.readShort();</pre>
 
 다음과 같이 bin이라는 멤버 변수를 사용하여 short 값 2개를 읽는다. 이 bin이라는 녀석은,
-<pre class='brush: java'>    /** filter stream for handling block data conversion */
+<pre class="brush: java; html-script: true">    /** filter stream for handling block data conversion */
     private final BlockDataInputStream bin;</pre>
 와 같은데, 딱 봐도 뭔가 block 시킬 것 같이 무시무시한 이름을 가졌다.
 
 이 때문에 양측에서 먼저 InputStream을 생성하면 둘다 short 값 2개를 서로 기다리다가 프로그램이 진행이 안되는 것.
 
 이것을 해결하기 위해서 ObjectOutputStream을 먼저 생성하는데, 그 이유는 이와 같다.
-<pre class='brush: java'>    public ObjectOutputStream(OutputStream out) throws IOException {
+<pre class="brush: java; html-script: true">    public ObjectOutputStream(OutputStream out) throws IOException {
         verifySubclass();
         bout = new BlockDataOutputStream(out);
         handles = new HandleTable(10, (float) 3.00);
@@ -46,7 +46,7 @@ ObjectInputStream의 initialize 코드
     }</pre>
 ObjectOutputStream의 생성 코드를 보면, writeStreamHeader(); 를 호출한다.
 
-<pre class='brush: java'>    protected void writeStreamHeader() throws IOException {
+<pre class="brush: java; html-script: true">    protected void writeStreamHeader() throws IOException {
         bout.writeShort(STREAM_MAGIC);
         bout.writeShort(STREAM_VERSION);
     }</pre>

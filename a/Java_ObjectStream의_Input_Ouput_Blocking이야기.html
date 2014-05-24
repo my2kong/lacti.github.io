@@ -70,51 +70,51 @@ Client와 Server 양측에서 ObjectInputStream을 먼저 생성하면 프로그
 그 이유는 다음과 같다.<br />
 <br />
 ObjectInputStream의 initialize 코드<br />
-<pre class='brush: java'>    public ObjectInputStream(InputStream in) throws IOException {
-        verifySubclass();
-        bin = new BlockDataInputStream(in);
-        handles = new HandleTable(10);
-        vlist = new ValidationList();
-        enableOverride = false;
-        readStreamHeader();
-        bin.setBlockDataMode(true);
-    }</pre>
+<pre class="brush: java; html-script: true">    public ObjectInputStream(InputStream in) throws IOException {<br />
+        verifySubclass();<br />
+        bin = new BlockDataInputStream(in);<br />
+        handles = new HandleTable(10);<br />
+        vlist = new ValidationList();<br />
+        enableOverride = false;<br />
+        readStreamHeader();<br />
+        bin.setBlockDataMode(true);<br />
+    }</pre><br />
 <br />
 보면, readStreamHeader(); 함수가 호출되는데,<br />
-<pre class='brush: java'>    protected void readStreamHeader()
-        throws IOException, StreamCorruptedException
-    {
-        short s0 = bin.readShort();
-        short s1 = bin.readShort();</pre>
+<pre class="brush: java; html-script: true">    protected void readStreamHeader()<br />
+        throws IOException, StreamCorruptedException<br />
+    {<br />
+        short s0 = bin.readShort();<br />
+        short s1 = bin.readShort();</pre><br />
 <br />
 다음과 같이 bin이라는 멤버 변수를 사용하여 short 값 2개를 읽는다. 이 bin이라는 녀석은,<br />
-<pre class='brush: java'>    /** filter stream for handling block data conversion */
-    private final BlockDataInputStream bin;</pre>
+<pre class="brush: java; html-script: true">    /** filter stream for handling block data conversion */<br />
+    private final BlockDataInputStream bin;</pre><br />
 와 같은데, 딱 봐도 뭔가 block 시킬 것 같이 무시무시한 이름을 가졌다.<br />
 <br />
 이 때문에 양측에서 먼저 InputStream을 생성하면 둘다 short 값 2개를 서로 기다리다가 프로그램이 진행이 안되는 것.<br />
 <br />
 이것을 해결하기 위해서 ObjectOutputStream을 먼저 생성하는데, 그 이유는 이와 같다.<br />
-<pre class='brush: java'>    public ObjectOutputStream(OutputStream out) throws IOException {
-        verifySubclass();
-        bout = new BlockDataOutputStream(out);
-        handles = new HandleTable(10, (float) 3.00);
-        subs = new ReplaceTable(10, (float) 3.00);
-        enableOverride = false;
-        writeStreamHeader();
-        bout.setBlockDataMode(true);
-        if (extendedDebugInfo) {
-            debugInfoStack = new DebugTraceInfoStack();
-        } else {
-            debugInfoStack = null;
-        }   
-    }</pre>
+<pre class="brush: java; html-script: true">    public ObjectOutputStream(OutputStream out) throws IOException {<br />
+        verifySubclass();<br />
+        bout = new BlockDataOutputStream(out);<br />
+        handles = new HandleTable(10, (float) 3.00);<br />
+        subs = new ReplaceTable(10, (float) 3.00);<br />
+        enableOverride = false;<br />
+        writeStreamHeader();<br />
+        bout.setBlockDataMode(true);<br />
+        if (extendedDebugInfo) {<br />
+            debugInfoStack = new DebugTraceInfoStack();<br />
+        } else {<br />
+            debugInfoStack = null;<br />
+        }   <br />
+    }</pre><br />
 ObjectOutputStream의 생성 코드를 보면, writeStreamHeader(); 를 호출한다.<br />
 <br />
-<pre class='brush: java'>    protected void writeStreamHeader() throws IOException {
-        bout.writeShort(STREAM_MAGIC);
-        bout.writeShort(STREAM_VERSION);
-    }</pre>
+<pre class="brush: java; html-script: true">    protected void writeStreamHeader() throws IOException {<br />
+        bout.writeShort(STREAM_MAGIC);<br />
+        bout.writeShort(STREAM_VERSION);<br />
+    }</pre><br />
 여기서는 딱 에누리없이 정의된 short 값 2개를 보내는데, 이것이 바로 MAGIC_NUMBER였던 것이라<br />
 <br />
 이와 같은 작용으로 인해 ObjectStream은 서로 Object를 주고받을 준비가 되었는지(양쪽다 ObjectStream인지) 확인하고 데이터를 주고 받을 수 있는 것이다.<br />

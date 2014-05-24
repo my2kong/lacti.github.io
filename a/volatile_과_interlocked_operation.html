@@ -67,17 +67,17 @@
                 <div class="content">
 <strong># volatile</strong><br />
 다음과 같은 코드가 있다.<br />
-<pre class='brush: cpp'>// 공유되는 변수, static 이라든지 member 변수라든지 전역변수라든지
-int count = 0;
-++count;
-++count;
-++count;</pre>
+<pre class="brush: cpp; html-script: true">// 공유되는 변수, static 이라든지 member 변수라든지 전역변수라든지<br />
+int count = 0;<br />
+++count;<br />
+++count;<br />
+++count;</pre><br />
 세 번의 ++ 연산을 모두 a 라는 변수에 수행하므로, 컴파일러는 최적화를 통해 다음과 같은 코드를 만들어낼 수 있다.<br />
-<pre class='brush: cpp'>mov eax, dword ptr [count]
-add eax, 1
-add eax, 1
-add eax, 1
-mov dword ptr [count], eax</pre>
+<pre class="brush: cpp; html-script: true">mov eax, dword ptr [count]<br />
+add eax, 1<br />
+add eax, 1<br />
+add eax, 1<br />
+mov dword ptr [count], eax</pre><br />
 <br />
 만약 multi-thread 환경에서 저 코드가 여러 thread 에 의해 수행된다고 하면, add eax 를 수행하고 mov dword ptr [count], eax 를 수행하기 전에 switching 이 되면, 다른 코드에서는 아직 count 연산이 반영되지 않은 연산을 수행하게 될 것이다.<br />
 <br />
@@ -86,15 +86,15 @@ mov dword ptr [count], eax</pre>
 이럴 때 volatile 키워드를 사용한다. volatile 키워드를 붙이면 해당 변수의 값을 다른 무언가가 바꿀 수 있다는 의미, 즉 값이 보장되지 않음을 명시해주게 된다. 때문에 저렇게 최적화 과정을 통해 register 를 사용하여 연산을 진행하고 그 값을 바로 메모리에 반영을 안해주는 것을 막아준다.<br />
 <br />
 아래와 같이 바로바로 연산을 수행한 다음에 메모리에 넣어준다.<br />
-<pre class='brush: cpp'>mov eax, dword ptr [count]
-add eax, 1
-mov dword ptr [count], eax
-mov eax, dword ptr [count]
-add eax, 1
-mov dword ptr [count], eax
-mov eax, dword ptr [count]
-add eax, 1
-mov dword ptr [count], eax</pre>
+<pre class="brush: cpp; html-script: true">mov eax, dword ptr [count]<br />
+add eax, 1<br />
+mov dword ptr [count], eax<br />
+mov eax, dword ptr [count]<br />
+add eax, 1<br />
+mov dword ptr [count], eax<br />
+mov eax, dword ptr [count]<br />
+add eax, 1<br />
+mov dword ptr [count], eax</pre><br />
 <br />
 그래서 공유되는 변수에 volatile 을 쓰면 바로 연산 결과를 메모리에 바로 반영해주고, 값을 읽어올 때도 register 에 저장되어있는 것을 읽어오는게 아니라 바로 메모리에 있는 것을 읽어오니까 문제가 해결된다는 것 같은데<br />
 <br />
@@ -112,22 +112,22 @@ volatile 을 붙이면 메모리에 값을 바로 반영해주므로 여러 thre
 <br />
 <strong># interlocked</strong><br />
 연산의 원자성이란 해당 연산이 multi-thread 환경에서 중간에 switching 이 되어도 그 연산에 문제가 안 생기게 잘 수행된다는 이야기인데, 다음 예제를 보자<br />
-<pre class='brush: cpp'>class Object
-{
-public:
-    void Hit (void) { ++mCount; }
-    Object (void) : mCount (0) {}
-private:
-    int mCount;</pre>
+<pre class="brush: cpp; html-script: true">class Object<br />
+{<br />
+public:<br />
+    void Hit (void) { ++mCount; }<br />
+    Object (void) : mCount (0) {}<br />
+private:<br />
+    int mCount;</pre><br />
 <br />
 이 Object class 의 객체는 몇 개의 thread 에서 공유되는 변수이다. 그리고 Hit 이라는 함수를 통해 각 Thread 가 Object 에 접근하는 회수를 측정한다고 하자.<br />
 <br />
 이 연산에 대해 컴파일러는 대충 이런 기계어를 만들어낼거다.<br />
-<pre class='brush: cpp'>mov eax, dword ptr [this]
-mov ecx, dword ptr [eax]
-add ecx, 1
-mov edx, dword ptr [this]
-mov dword ptr [edx], ecx</pre>
+<pre class="brush: cpp; html-script: true">mov eax, dword ptr [this]<br />
+mov ecx, dword ptr [eax]<br />
+add ecx, 1<br />
+mov edx, dword ptr [this]<br />
+mov dword ptr [edx], ecx</pre><br />
 <br />
 먼저 this 의 주소의 주소 값을 가져와서 eax 에 넣는다. 그럼 거기가 this 의 주소가 될 것이다.<br />
 그 this 를 또 dword ptr, 즉 this 가 가리키는 첫 번째 지점이 첫 번째 멤버 변수인 mCount 가 되므로 ecx 는 mCount 의 값이 들어간다.<br />
@@ -145,12 +145,12 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 (하지만 kernel 단에서 관리해주는 세마포어는 꽤 큰 비용이 들고, spin lock 역시 cpu 소모를 피할 수 없다. 하지만 lock 을 사용했을 경우 가장 곤란한 문제는 dead lock 이다.)<br />
 <br />
 위와 같은 Hit 함수를 lock 으로 보호한다면 대충 이럴 것이다.<br />
-<pre class='brush: cpp'>void Object::Hit (void)
-{
-    lock();
-    ++mCount;
-    unlock();
-}</pre>
+<pre class="brush: cpp; html-script: true">void Object::Hit (void)<br />
+{<br />
+    lock();<br />
+    ++mCount;<br />
+    unlock();<br />
+}</pre><br />
 <br />
 하지만 lock 등으로 보호해야할 영역을 생각해보면 굉장히 그 영역이 축소된다.<br />
 위의 코드에서는 단순히 mCount  를 증가시키는 부분만 원자적으로 수행되면 되고,<br />
@@ -158,11 +158,11 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 즉 공유되는 변수, 즉 멤버 변수만 원자적인 연산을 사용하게 되면 lock 범위를 함수 전체가 아니라 한 명령 구문으로 줄일 수 있다는 것이다. (Compare And Swap 등)<br />
 <br />
 그래서 MS 에서는 Interlocked operation 을 지원해준다.<br />
-<pre class='brush: cpp'>void Object::Hit (void)
-{
-    // 함수 인자 type 맞춰주기 위해 mCount 는 LONG type 이 되어야한다.
-    InterlockedIncrement (&mCount);
-}</pre>
+<pre class="brush: cpp; html-script: true">void Object::Hit (void)<br />
+{<br />
+    // 함수 인자 type 맞춰주기 위해 mCount 는 LONG type 이 되어야한다.<br />
+    InterlockedIncrement (&mCount);<br />
+}</pre><br />
 <br />
 위와 같이 작성하면 내부에서 mCount 의 주소를 InterlockedIncrement 로 넘겨준다.<br />
 그러면 InterlockedIncrement 함수에서는 저 메모리 주소를 가지고 있다가 내부에 lock 붙은 operation 수행을 통해(?) 그 주소가 가리키는 값을 1 증가시켜주는 것을 원자적으로 수행시켜준다.<br />

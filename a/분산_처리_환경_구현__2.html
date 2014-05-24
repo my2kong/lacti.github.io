@@ -85,8 +85,8 @@ master에는 여러 slave가 연결한다. 각 연결된 slave는 master 내에 
 master에 command가 들어오면 수행할 work를 만든다. 연결된 slave의 info를 살펴보고 적절한 slave를 선택한 후 work를 보내준다. <strong>(distribute)</strong> 그러면 slave는 그 작업을 처리하고 결과를 master에게 보내주던가 한다.<br />
 <br />
 위 구현을 위해서는,<br />
-<pre class='brush: cpp'>1) c# network programming 기술
-2) c# object serialization 기술</pre>
+<pre class="brush: cpp; html-script: true">1) c# network programming 기술<br />
+2) c# object serialization 기술</pre><br />
 정도만 알면 된다.<br />
 <br />
 하지만 본 글에서 위 내용을 설명하는 것은 매우 무의미하기 때문에 이 부분에 대해서는 설명하지 않는다.<br />
@@ -94,10 +94,10 @@ master에 command가 들어오면 수행할 work를 만든다. 연결된 slave�
 <br />
 #<br />
 먼저 master와 slave가 주고 받을 작업의 추상 형태인 IWork interface부터 살펴보면 다음과 같다.<br />
-<pre class='brush: csharp'>public interface IWork
-{
-    void Execute(Socket endPoint);
-}</pre>
+<pre class="brush: csharp; html-script: true">public interface IWork<br />
+{<br />
+    void Execute(Socket endPoint);<br />
+}</pre><br />
 이 interface를 구현한 class가 Serializable하면 Master와 Slave간에 serialize/deserialize되어 전달될 수 있고,<br />
 전달된 후에 Execute를 호출해주면 되므로 사실상 RPC와 같은 형태가 된다.<br />
 이 때 endPoint의 Socket을 받는 이유는 수행한 결과에 대해 상대측으로 다시 결과를 전달하기 위함이다.<br />
@@ -109,43 +109,43 @@ Master class는 Slave의 통신을 위한 Socket과, 각 Slave의 상태에 대�
 Java같은 언어라면 interface로 해당 알고리즘을 분리하겠지만, C#이니 그냥 delegate로 빼서 관리한다.<br />
 <br />
 위 구현 사항을 분할해서 살펴보자. 먼저 Slave와 연결을 맺고 Slave가 전달하는 Work를 처리하기 위한 함수이다.<br />
-<pre class='brush: csharp'>// Master class
-public async void Start()
-{
-    var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-    var localEndPoint = new IPEndPoint(IPAddress.Any, _port);
-    try
-    {
-        listener.Bind(localEndPoint);
-        listener.Listen(100);
-        while (true)
-        {
-            var clientSocket = await listener.AcceptAsync();
-            ProcessSocket(clientSocket);
-        }
-    }
-    catch (Exception e) { Logger.Write(e); }
-}
-
-private async void ProcessSocket(Socket socket)
-{
-    _container.AddSocket(socket);
-
-    Logger.Write("Connected from: " + socket.RemoteEndPoint);
-    try
-    {
-        while (true)
-        {
-            var work = await socket.ReceiveWork();
-            work.Execute(socket);
-        }
-    }
-    catch (Exception e) { Logger.Write(e); }
-
-    try { socket.Shutdown(SocketShutdown.Both); }
-    catch { }
-    _container.RemoveSocket(socket);
-}</pre>
+<pre class="brush: csharp; html-script: true">// Master class<br />
+public async void Start()<br />
+{<br />
+    var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);<br />
+    var localEndPoint = new IPEndPoint(IPAddress.Any, _port);<br />
+    try<br />
+    {<br />
+        listener.Bind(localEndPoint);<br />
+        listener.Listen(100);<br />
+        while (true)<br />
+        {<br />
+            var clientSocket = await listener.AcceptAsync();<br />
+            ProcessSocket(clientSocket);<br />
+        }<br />
+    }<br />
+    catch (Exception e) { Logger.Write(e); }<br />
+}<br />
+<br />
+private async void ProcessSocket(Socket socket)<br />
+{<br />
+    _container.AddSocket(socket);<br />
+<br />
+    Logger.Write("Connected from: " + socket.RemoteEndPoint);<br />
+    try<br />
+    {<br />
+        while (true)<br />
+        {<br />
+            var work = await socket.ReceiveWork();<br />
+            work.Execute(socket);<br />
+        }<br />
+    }<br />
+    catch (Exception e) { Logger.Write(e); }<br />
+<br />
+    try { socket.Shutdown(SocketShutdown.Both); }<br />
+    catch { }<br />
+    _container.RemoveSocket(socket);<br />
+}</pre><br />
 지정된 port에 bind된 socket이 Slave와 연결되면 그 Socket으로부터 Work를 하나씩 받아서(deserialize) 처리하는 형태이다.<br />
 awaitable한 프로그램을 작성했기 때문에 managed thread pool이 적절히 잘 운영해준다.<br />
 <br />
@@ -155,69 +155,69 @@ SocketContainer에서 관리하는 Socket 집합은 추후 작업을 분산시�
 #<br />
 Slave는 Master에 연결한 뒤, 역시 동일하게 Master로부터 Work를 받아서 처리하는 구조로 작성하면 된다.<br />
 때문에 이 부분은 Master의 코드와 크게 차이가 없다.<br />
-<pre class='brush: csharp'>public class Slave
-{
-    public async void Start()
-    {
-        try
-        {
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream,
-                    ProtocolType.Tcp);
-            socket.Connect(_host, _port);
-            while (true)
-            {
-                var work = await socket.ReceiveWork();
-                work.Execute(socket);
-            }
-        }
-        catch (Exception e) { Logger.Write(e); }
-    }
-}</pre>
+<pre class="brush: csharp; html-script: true">public class Slave<br />
+{<br />
+    public async void Start()<br />
+    {<br />
+        try<br />
+        {<br />
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream,<br />
+                    ProtocolType.Tcp);<br />
+            socket.Connect(_host, _port);<br />
+            while (true)<br />
+            {<br />
+                var work = await socket.ReceiveWork();<br />
+                work.Execute(socket);<br />
+            }<br />
+        }<br />
+        catch (Exception e) { Logger.Write(e); }<br />
+    }<br />
+}</pre><br />
 <br />
 #<br />
 Slave의 Socket을 관리하는 SocketContainer는, Slave의 연결이 동시 다발적으로 일어나므로 내부에 Lock을 가지고 Container를 관리하는 객체이다.<br />
-<pre class='brush: csharp'>// SocketContainer class
-ReaderWriterLockSlim _lock =
-    new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-private readonly Dictionary<Socket, SocketInformation> _sockets =
-    new Dictionary<Socket, SocketInformation>();
-
-public void AddSocket(Socket socket)
-{
-    _lock.DoWriteLock(() => _sockets.Add(socket, SocketInformation.Invalid));
-}
-
-public void RemoveSocket(Socket socket)
-{
-    _lock.DoWriteLock(() => _sockets.Remove(socket));
-}
-
-public Socket SelectSocket(Func<List<KeyValuePair<Socket, SocketInformation>>, Socket> selector)
-{
-    return _lock.DoReadLock(() => selector(_sockets.ToList()));
-}</pre>
+<pre class="brush: csharp; html-script: true">// SocketContainer class<br />
+ReaderWriterLockSlim _lock =<br />
+    new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);<br />
+private readonly Dictionary<Socket, SocketInformation> _sockets =<br />
+    new Dictionary<Socket, SocketInformation>();<br />
+<br />
+public void AddSocket(Socket socket)<br />
+{<br />
+    _lock.DoWriteLock(() => _sockets.Add(socket, SocketInformation.Invalid));<br />
+}<br />
+<br />
+public void RemoveSocket(Socket socket)<br />
+{<br />
+    _lock.DoWriteLock(() => _sockets.Remove(socket));<br />
+}<br />
+<br />
+public Socket SelectSocket(Func<List<KeyValuePair<Socket, SocketInformation>>, Socket> selector)<br />
+{<br />
+    return _lock.DoReadLock(() => selector(_sockets.ToList()));<br />
+}</pre><br />
 약간이나마 효율을 높이기 위해 ReaderWriterLock을 사용했다.<br />
 재미있는 부분은 SelectSocket을 수행하는 부분인데, 이 과정에서는 모든 Socket과 그에 대한 Information을 순회하면서 적절한 Socket을 뽑아내야한다. 하지만 해당 자료구조를 순회하려면 자료구조가 Lock으로 보호된 상태이어야 하므로 Socket을 선택하는 selector를 delegator 형태로 받아서 ReadLock 구역 내에서 수행될 수 있도록 한다.<br />
 <br />
 그런데 작업을 분산시키기 위해 필요한 정보는 Socket, SocketInformation 뿐만 아니라 어떤 작업인지(IWork)의 정보도 필요하다. 때문에 Master에서는 이 정보까지 취합해서 적절한 Slave를 선택할 수 있도록 delegator를 제공한다.<br />
 <br />
-<pre class='brush: csharp'>public sealed class DistributeContext
-{
-    public readonly IList<KeyValuePair<Socket, SocketInformation>> Sockets;
-    public readonly IWork Work;
-    private readonly SocketContainer _container;</pre>
-<pre class='brush: csharp'>// Master class
-public delegate Socket SelectSocketDecl(DistributeContext context);
-private SelectSocketDecl _socketSelector;
-public void DistributeWork(IWork work)
-{
-    var socket = _container.SelectSocket(sockets =>
-            _socketSelector(new DistributeContext(_container, sockets.AsReadOnly(), work)));
-    if (socket == null)
-        throw new NullReferenceException();
-
-    socket.SendWork(work);
-}</pre>
+<pre class="brush: csharp; html-script: true">public sealed class DistributeContext<br />
+{<br />
+    public readonly IList<KeyValuePair<Socket, SocketInformation>> Sockets;<br />
+    public readonly IWork Work;<br />
+    private readonly SocketContainer _container;</pre><br />
+<pre class="brush: csharp; html-script: true">// Master class<br />
+public delegate Socket SelectSocketDecl(DistributeContext context);<br />
+private SelectSocketDecl _socketSelector;<br />
+public void DistributeWork(IWork work)<br />
+{<br />
+    var socket = _container.SelectSocket(sockets =><br />
+            _socketSelector(new DistributeContext(_container, sockets.AsReadOnly(), work)));<br />
+    if (socket == null)<br />
+        throw new NullReferenceException();<br />
+<br />
+    socket.SendWork(work);<br />
+}</pre><br />
 필요한 정보(Socket, SocketInformation, IWork)를 DistributeContext로 감싸서 SelectSocketDecl로 넘겨준다.<br />
 이 delegator는 _container의 SelectSocket() 내에서 수행되므로 _container의 ReadLock 내에서 수행된다.<br />
 이렇게 socket을 하나 선택하게 되면 해당 socket으로 work를 전달한다. 즉 해당 slave에게 work를 전달한다.<br />
@@ -228,71 +228,71 @@ Master는 Slave의 연결을 기다리고, Slave가 연결되면 각 상태를 �
 Slave는 Master에게 연결한 뒤, Master의 작업을 기다리고 있다가 받는 즉시 처리해준다.<br />
 <br />
 소스 코드에 첨부된 간단한 예제 코드를 직접 보면 다음과 같다.<br />
-<pre class='brush: csharp'>[Serializable]
-internal class SlaveWork : IWork
-{
-    public void Execute(Socket endPoint)
-    {
-        Console.WriteLine("Do my work: " + endPoint.RemoteEndPoint);
-        endPoint.SendWork(new MasterWork(new SlaveResult("TEST MESSAGE")));
-    }
-}
-
-[Serializable]
-internal class SlaveResult
-{
-    public readonly string SlaveGeneratedMessage;
-
-    public SlaveResult(string message)
-    {
-        SlaveGeneratedMessage = message;
-    }
-}
-
-[Serializable]
-internal class MasterWork : IWork
-{
-    private readonly SlaveResult _result;
-
-    public MasterWork(SlaveResult result)
-    {
-        _result = result;
-    }
-
-    public void Execute(Socket endPoint)
-    {
-        Console.WriteLine("Do master work: " + endPoint.RemoteEndPoint);
-        Console.WriteLine("Received from slave: " + _result.SlaveGeneratedMessage);
-    }
-}
-
-internal class Program
-{
-    private static void Main(string[] args)
-    {
-        var master = new Master(12345);
-        Task.Factory.StartNew(master.Start);
-
-        Thread.Sleep(1000);
-
-        const int slaveCount = 10;
-        foreach (var index in Enumerable.Range(0, slaveCount))
-        {
-            var slave = new Slave("127.0.0.1", 12345);
-            Task.Factory.StartNew(slave.Start);
-        }
-
-        while (master.ConnectedSlaveCount != slaveCount)
-            Thread.Sleep(0);
-
-        Logger.Write("Start!");
-        while (true)
-        {
-            master.DistributeWork(new SlaveWork());
-            Thread.Sleep(1000);
-        }
-    }
-}</pre>
+<pre class="brush: csharp; html-script: true">[Serializable]<br />
+internal class SlaveWork : IWork<br />
+{<br />
+    public void Execute(Socket endPoint)<br />
+    {<br />
+        Console.WriteLine("Do my work: " + endPoint.RemoteEndPoint);<br />
+        endPoint.SendWork(new MasterWork(new SlaveResult("TEST MESSAGE")));<br />
+    }<br />
+}<br />
+<br />
+[Serializable]<br />
+internal class SlaveResult<br />
+{<br />
+    public readonly string SlaveGeneratedMessage;<br />
+<br />
+    public SlaveResult(string message)<br />
+    {<br />
+        SlaveGeneratedMessage = message;<br />
+    }<br />
+}<br />
+<br />
+[Serializable]<br />
+internal class MasterWork : IWork<br />
+{<br />
+    private readonly SlaveResult _result;<br />
+<br />
+    public MasterWork(SlaveResult result)<br />
+    {<br />
+        _result = result;<br />
+    }<br />
+<br />
+    public void Execute(Socket endPoint)<br />
+    {<br />
+        Console.WriteLine("Do master work: " + endPoint.RemoteEndPoint);<br />
+        Console.WriteLine("Received from slave: " + _result.SlaveGeneratedMessage);<br />
+    }<br />
+}<br />
+<br />
+internal class Program<br />
+{<br />
+    private static void Main(string[] args)<br />
+    {<br />
+        var master = new Master(12345);<br />
+        Task.Factory.StartNew(master.Start);<br />
+<br />
+        Thread.Sleep(1000);<br />
+<br />
+        const int slaveCount = 10;<br />
+        foreach (var index in Enumerable.Range(0, slaveCount))<br />
+        {<br />
+            var slave = new Slave("127.0.0.1", 12345);<br />
+            Task.Factory.StartNew(slave.Start);<br />
+        }<br />
+<br />
+        while (master.ConnectedSlaveCount != slaveCount)<br />
+            Thread.Sleep(0);<br />
+<br />
+        Logger.Write("Start!");<br />
+        while (true)<br />
+        {<br />
+            master.DistributeWork(new SlaveWork());<br />
+            Thread.Sleep(1000);<br />
+        }<br />
+    }<br />
+}</pre><br />
 <br />
 Master를 시작하고, Slave를 10개 만들어서 Master에 연결한다.<br />
 Master는 SlaveWork 객체를 만들어서 적절히 Slave에게 넘겨준다. 기본 알고리즘은 RoundRobin이므로 첫 번째 Slave부터 차례대로 일을 받게 된다.<br />

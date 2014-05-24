@@ -146,15 +146,15 @@ C++ 보다 훨씬 객체지향적 개념에 근접했던 이 언어는, 덕분�
 자바 프로그래밍을 하면서 가장 많이 실수하는 것이 이 둘을 구분짓지 못하는 것인데 왜 그런지 보자.<br />
 <br />
 객체지향을 자바라는 언어로 공부하면서 가장 많이 배우는 잘못된 것은 아래와 같은 코드이다.<br />
-<pre class='brush: java'>class Person {
-    private int age;
-    private String name;
-    public Person() {}
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-}</pre>
+<pre class="brush: java; html-script: true">class Person {<br />
+    private int age;<br />
+    private String name;<br />
+    public Person() {}<br />
+    public int getAge() { return age; }<br />
+    public void setAge(int age) { this.age = age; }<br />
+    public String getName() { return name; }<br />
+    public void setName(String name) { this.name = name; }<br />
+}</pre><br />
 Person 이라는 객체는 상태를 갖는다. 나이와 이름이라는 상태를 갖는데 이를 제어할 수 있도록 age와 name 에 대한 getter, setter 를 만들어서 나는 객체지향에 맞는 좋은 프로그래밍을 했다?<br />
 <br />
 객체의 상태가 잘 은닉화 되었나? (어차피 public 으로 그냥 다 노출되었다.)<br />
@@ -169,18 +169,18 @@ get, set 계열 함수를 Person 을 상속받는 자식에서 override 할건�
 자료구조는? 자료를 담는 것이다.<br />
 <br />
 무슨 소리냐하면, 어차피 Person class 를 사용해서 사람에 대한 정보를 처리하는 코드를 작성한다면, 그 코드가 Person 에 들어갈까, 아니면 Person 자료를 관리하는 곳에 들어갈까? 난 후자라고 생각한다.<br />
-<pre class='brush: java'>class PeopleManager {
-    private List<Person> people = new ArrayList<Person>();
-    public int calcaulteAverageAge() {
-        int averageAge = 0;
-        for (Person p: people) averageAge += p.age;
-        return averageAge / people.size();
-    }
-}
-class Person {
-    public int age;
-    public String name;
-}</pre>
+<pre class="brush: java; html-script: true">class PeopleManager {<br />
+    private List<Person> people = new ArrayList<Person>();<br />
+    public int calcaulteAverageAge() {<br />
+        int averageAge = 0;<br />
+        for (Person p: people) averageAge += p.age;<br />
+        return averageAge / people.size();<br />
+    }<br />
+}<br />
+class Person {<br />
+    public int age;<br />
+    public String name;<br />
+}</pre><br />
 Person 객체들은 List 에 의해 관리되고 있고, 그걸 소유하는 PeopleManager 에서 접근, 계산하고 있다.<br />
 여기서 Person class 가 age 와 name 에 대해 getter / setter 를 가질 필요는 전혀 없다. 오히려 있으면 더럽다.<br />
 (안그래도 느린데, getter 접근하면 더 느려진다! 물론 javac 가 최적화해줄 수 있지만 그걸 바라고 getter 를 쓰는건 좀)<br />
@@ -190,10 +190,10 @@ Person 객체들은 List 에 의해 관리되고 있고, 그걸 소유하는 Peo
 #<br />
 Java 가 가장 많이 사용되는 시장은 Web 이다. J2EE 가 크게 성공하면서 EJB 가 대세! 인 세상이 있었다.<br />
 EJB 는 Enterprise Java Bean 의 약자인데, 여기서 Bean 이 무엇이냐 하면,<br />
-<pre class='brush: java'>class PersonBean {
-    public int age;
-    public String name;
-}</pre>
+<pre class="brush: java; html-script: true">class PersonBean {<br />
+    public int age;<br />
+    public String name;<br />
+}</pre><br />
 이와 같은, 데이터베이스, 서블릿 로직, 웹 프레젠테이션.<br />
 즉, DB 와 어떻게 보여줄 지 연산하는 부분이랑, 웹 페이지 만드는 부분에서 데이터를 공유하기 위해 정보를 담는 자료구조인 것이다.<br />
 <br />
@@ -241,15 +241,15 @@ public 으로 member 를 노출시키는건 미개한 C 언어나 하는 짓이�
 물론, Java 에서는 멤버의 Readonly 를 위해 Getter 만 존재하는 경우도 있다.<br />
 이 경우에는 final keyword 를 사용해서 수정이 불가능하게 해줘도 되는데, 이게 객체 멤버를 반환할 경우에는 좀 애매해진다.<br />
 final 은 객체 멤버의 reference 을 못 바꾸게 하는거지 반환된 객체를 수정하지 못하게하는건 아니니까.<br />
-<pre class='brush: java'>class Program {
-    private final List<Code> codes = new ArrayList<Code>();
-    public List<Code> getCodes() {
-        return codes;
-    }
-}
-// 중략
-Program program = new Program();
-program.getCodes().clear(); // 수정할 수 있다</pre>
+<pre class="brush: java; html-script: true">class Program {<br />
+    private final List<Code> codes = new ArrayList<Code>();<br />
+    public List<Code> getCodes() {<br />
+        return codes;<br />
+    }<br />
+}<br />
+// 중략<br />
+Program program = new Program();<br />
+program.getCodes().clear(); // 수정할 수 있다</pre><br />
 <br />
 이 때문에 @Readonly annotation 이 추가되려 하였으나 실패했다. 그리고 이제 망조의 길로 접어들었다. (오호통재라)<br />
 

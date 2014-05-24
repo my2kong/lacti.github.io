@@ -91,24 +91,24 @@ type을 확실히 알면 뭐하러 field를 찾으려 메모리에 뒤지고 있
 #<br />
 먼저 class 정보에 대응되는 class를 만들어보자.<br />
 요구사항에서 언급했듯이, 얘는 자신의 type정보로 객체를 생성 가능해야하며, 이름으로 특정 field를 찾을 수 있어야 한다.<br />
-<pre class='brush: cpp'>class class_t {
-public:
-    class_t(std::string _name);
-    const field_t* get_field(std::string name) const;
-    void add_field(std::string name, field_t* field);
-
-    template <typename _Class>
-    _Class* new_instance() const {
-        return reinterpret_cast<_Class*>(new_instance_impl());
-    }
-
-private:
-    virtual void* new_instance_impl() const = 0;
-
-private:
-    typedef std::map<std::string, field_t*> field_map_t;
-    field_map_t field_map;
-};</pre>
+<pre class="brush: cpp; html-script: true">class class_t {<br />
+public:<br />
+    class_t(std::string _name);<br />
+    const field_t* get_field(std::string name) const;<br />
+    void add_field(std::string name, field_t* field);<br />
+<br />
+    template <typename _Class><br />
+    _Class* new_instance() const {<br />
+        return reinterpret_cast<_Class*>(new_instance_impl());<br />
+    }<br />
+<br />
+private:<br />
+    virtual void* new_instance_impl() const = 0;<br />
+<br />
+private:<br />
+    typedef std::map<std::string, field_t*> field_map_t;<br />
+    field_map_t field_map;<br />
+};</pre><br />
 field_t*에 대한 map을 가지고 add/get 할 수 있는 간단한 class이다.<br />
 add와 get 함수 모두 public으로 공개되어 있으니 class 정보를 접근할 때 실행 도중에 field를 add할 수 있는 위험이 있지 않을까? 하는 생각이 들 수도 있는데, <br />
 일단 class_t 객체를 사용할 때는 무조건 const class_t*를 사용하게 하면 add_field() 함수는 const가 아니니까 적당히 괜찮지 않을까 싶다.<br />
@@ -118,16 +118,16 @@ add와 get 함수 모두 public으로 공개되어 있으니 class 정보를 접
 (field_t 때와 마찬가지로 new_instance() 함수에 type 인자를 잘못 주면 안드로메다를 보게 된다.)<br />
 <br />
 구체 class는 field_impl_t보다 훨씬 간단하다.<br />
-<pre class='brush: cpp'>template <typename _ObjTy>
-class class_impl_t : public class_t {
-public:
-    class_impl_t(std::string name);
-
-private:
-    virtual void* new_instance_impl() const {
-        return new _ObjTy;
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy><br />
+class class_impl_t : public class_t {<br />
+public:<br />
+    class_impl_t(std::string name);<br />
+<br />
+private:<br />
+    virtual void* new_instance_impl() const {<br />
+        return new _ObjTy;<br />
+    }<br />
+};</pre><br />
 구체 class는 어차피 자기가 어떤 class에 대한 것인지 type 정보를 template으로 받고 있으므로 그에 대해 new 해서 돌려주면 그만이다.<br />
 물론 기본 생성자가 없다면 컴파일 에러가 난다.<br />
 <br />
@@ -144,109 +144,109 @@ class의 이름은 std::type_info.name()을 쓰면 좋겠지만 이 이름이 �
 이 때 문제가 될 수 있는 것은, 어떤 객체에 대한 class_t를 가져올 때, 그 객체의 class의 이름을 뭐라고 등록했는지 찾아야 한다는 것이다.<br />
 때문에 관리자 class는 사용자 지정 이름과 class_t만을 관리하는 것이 아니라,<br />
 그 객체의 std::type_info* 와 사용자 지정 이름도 관리해야 각 객체들은 자신의 class_t를 적절히 찾아올 수 있게 될 것이다.<br />
-<pre class='brush: cpp'>class reflection_base {
-public:
-    static reflection_base& instance();
-    const class_t* get_class(std::string name) const;
-    const field_t* get_field(std::string class_name, std::string field_name) const;
-
-public:
-    void add_class(std::string name, class_t* class_impl);
-    void add_field(std::string class_name, std::string field_name, field_t* field_impl);
-
-    void add_class_name(const std::type_info* typeinfo, std::string class_name);
-    const char* class_name_from_typeinfo(const std::type_info* typeinfo) const;
-
-private:
-    reflection_base() {}
-    reflection_base(const reflection_base&);
-    reflection_base& operator= (const reflection_base&);
-
-private:
-    typedef std::map<const std::type_info*, std::string> class_name_map_t;
-    typedef std::map<std::string, class_t*> class_map_t;
-
-    class_name_map_t class_name_map;
-    class_map_t class_map;
-};</pre>
+<pre class="brush: cpp; html-script: true">class reflection_base {<br />
+public:<br />
+    static reflection_base& instance();<br />
+    const class_t* get_class(std::string name) const;<br />
+    const field_t* get_field(std::string class_name, std::string field_name) const;<br />
+<br />
+public:<br />
+    void add_class(std::string name, class_t* class_impl);<br />
+    void add_field(std::string class_name, std::string field_name, field_t* field_impl);<br />
+<br />
+    void add_class_name(const std::type_info* typeinfo, std::string class_name);<br />
+    const char* class_name_from_typeinfo(const std::type_info* typeinfo) const;<br />
+<br />
+private:<br />
+    reflection_base() {}<br />
+    reflection_base(const reflection_base&);<br />
+    reflection_base& operator= (const reflection_base&);<br />
+<br />
+private:<br />
+    typedef std::map<const std::type_info*, std::string> class_name_map_t;<br />
+    typedef std::map<std::string, class_t*> class_map_t;<br />
+<br />
+    class_name_map_t class_name_map;<br />
+    class_map_t class_map;<br />
+};</pre><br />
 singleton pattern의 reflection_base class는 type_info와 사용자 지정 이름, 사용자 지정 이름과 class_t에 대한 map을 갖는다.<br />
 그리고 이를 등록하고 찾아서 반환할 수 있도록 한다.<br />
 (어차피 내부 구현 코드는 map에 대한 insert, find이니 자세한 코드는 생략한다.)<br />
 <br />
 이제 class_t를 관리하고 찾을 수 있는 방법이 생겼으니, <br />
 특정 객체에 대해 다른 class들이 class_t를 얻을 수 있도록 helper격의 class를 하나 만들어보자.<br />
-<pre class='brush: cpp'>class reflection_class_t {
-public:
-    virtual ~reflection_class_t() {}
-
-    const char* type_name() const {
-        return typeid(*this).name();
-    }
-    const char* class_name() const {
-        return reflection_base::instance()
-            .class_name_from_typeinfo(&typeid(*this));
-    }
-    const class_t* get_class() const{
-        return class_t::from_name(class_name());
-    }
-};</pre>
+<pre class="brush: cpp; html-script: true">class reflection_class_t {<br />
+public:<br />
+    virtual ~reflection_class_t() {}<br />
+<br />
+    const char* type_name() const {<br />
+        return typeid(*this).name();<br />
+    }<br />
+    const char* class_name() const {<br />
+        return reflection_base::instance()<br />
+            .class_name_from_typeinfo(&typeid(*this));<br />
+    }<br />
+    const class_t* get_class() const{<br />
+        return class_t::from_name(class_name());<br />
+    }<br />
+};</pre><br />
 이제 reflection_class_t를 상속받는 class들은 get_class() 함수를 통해 자신의 class_t*를 가져올 수 있게 된다.<br />
 <br />
 #<br />
 마지막으로 reflection_base에 class_t와 field_t를 등록하는 함수를 만들어보자.<br />
 이는 지난 번 글에서 사용했던 매크로와 유사한 코드이다.<br />
-<pre class='brush: cpp'>template <typename _ObjTy>
-inline void register_class(std::string class_name) {
-    reflection_base::instance().add_class_name(&typeid(_ObjTy), class_name);
-    reflection_base::instance().add_class(class_name, 
-        new class_impl_t<_ObjTy>(class_name));
-}
-
-template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)>
-inline void register_field(std::string field_name) {
-    const char* class_name = reflection_base::instance()
-        .class_name_from_typeinfo(&typeid(_ObjTy));
-    assert(class_name);
-
-    reflection_base::instance().add_field(class_name, field_name, 
-        new field_impl_t<_ObjTy, _FieldTy, Field>(field_name));
-}</pre>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy><br />
+inline void register_class(std::string class_name) {<br />
+    reflection_base::instance().add_class_name(&typeid(_ObjTy), class_name);<br />
+    reflection_base::instance().add_class(class_name, <br />
+        new class_impl_t<_ObjTy>(class_name));<br />
+}<br />
+<br />
+template <typename _ObjTy, typename _FieldTy, typename _FieldTy (_ObjTy::*Field)><br />
+inline void register_field(std::string field_name) {<br />
+    const char* class_name = reflection_base::instance()<br />
+        .class_name_from_typeinfo(&typeid(_ObjTy));<br />
+    assert(class_name);<br />
+<br />
+    reflection_base::instance().add_field(class_name, field_name, <br />
+        new field_impl_t<_ObjTy, _FieldTy, Field>(field_name));<br />
+}</pre><br />
 register_class() 함수는 특정 class type에 대해 지정한 이름으로 class_impl_t 객체를 만들어서 등록한다. 이 때 해당 class의 type과 사용자 지정 이름을 class_name_map에 같이 등록해준다.<br />
 <br />
 register_field() 함수는 특정 class를 찾아서, 그 class_t가 관리하는 field_map에 field_impl_t 객체를 만들어서 등록한다.<br />
 <br />
 #<br />
 이제 위에서 작성한 코드는 다음과 같이 사용될 수 있다.<br />
-<pre class='brush: cpp'>using namespace reflection;
-
-class base_t : public reflection_class_t {
-public:
-    virtual ~base_t() {}
-};
-
-struct user_t : public base_t {
-    int index;
-    std::string name;
-};
-
-int _tmain(int argc, _TCHAR* argv[])
-{
-    register_class<user_t>("user_t");
-    register_field<user_t, int, &user_t::index>("index");
-    register_field<user_t, std::string, &user_t::name>("name");
-
-    const class_t* clazz = class_t::from_name("user_t");
-    std::cout << clazz->name() << std::endl;
-    clazz->enumerate_fields([&] (const field_t* field) {
-        std::cout << "\t" << field->name() << std::endl;
-    });
-
-    base_t* ptr = clazz->new_instance<base_t>();
-    assert(clazz == ptr->get_class());
-    delete ptr;
-
-    return 0;
-}</pre>
+<pre class="brush: cpp; html-script: true">using namespace reflection;<br />
+<br />
+class base_t : public reflection_class_t {<br />
+public:<br />
+    virtual ~base_t() {}<br />
+};<br />
+<br />
+struct user_t : public base_t {<br />
+    int index;<br />
+    std::string name;<br />
+};<br />
+<br />
+int _tmain(int argc, _TCHAR* argv[])<br />
+{<br />
+    register_class<user_t>("user_t");<br />
+    register_field<user_t, int, &user_t::index>("index");<br />
+    register_field<user_t, std::string, &user_t::name>("name");<br />
+<br />
+    const class_t* clazz = class_t::from_name("user_t");<br />
+    std::cout << clazz->name() << std::endl;<br />
+    clazz->enumerate_fields([&] (const field_t* field) {<br />
+        std::cout << "\t" << field->name() << std::endl;<br />
+    });<br />
+<br />
+    base_t* ptr = clazz->new_instance<base_t>();<br />
+    assert(clazz == ptr->get_class());<br />
+    delete ptr;<br />
+<br />
+    return 0;<br />
+}</pre><br />
 <br />
 user_t에 대해 reflection을 등록한다.<br />
 (이 부분은 딱히 답이 없는데, 편하게 하려면 code generator를 사용한다던가 하는 수 밖에 없어보인다.<br />

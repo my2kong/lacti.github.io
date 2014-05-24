@@ -77,13 +77,13 @@ synchronous 하게 호출하는 방법이 있고, asynchronous 하게 호출하�
 이 글에서는 간단하게 RPC(remote procedure call) 예제를 통해 위 내용을 살펴보겠다.<br />
 <br />
 #<br />
-<pre class='brush: cpp'>call_result request_call(call_context ctx) {
-    sock_write(socket_, ctx.serialize());
-
-    BYTE result_buffer[RESULT_SIZE];
-    sock_read(socket_, &result_buffer);
-    return call_result.parse(result_buffer);
-}</pre>
+<pre class="brush: cpp; html-script: true">call_result request_call(call_context ctx) {<br />
+    sock_write(socket_, ctx.serialize());<br />
+<br />
+    BYTE result_buffer[RESULT_SIZE];<br />
+    sock_read(socket_, &result_buffer);<br />
+    return call_result.parse(result_buffer);<br />
+}</pre><br />
 위 request_call 이라는 함수는 함수 호출 정보(call_context) 를 인자로 받아서, 원격지(remote) 와 연결된 소켓(socket_) 으로 해당 내용을 전송한다(sock_write)<br />
 그리고, 그에 대한 응답이 올 때까지 동기적(synchronous) 으로 기다려서 데이터를 읽고(sock_read) 그 결과(call_result) 를 반환한다.<br />
 <br />
@@ -97,15 +97,15 @@ RPC 함수 요청이 발생하면 그 요청 객체(call_context) 를 만들어�
 <br />
 그리고 원격지로부터 데이터를 읽는 thread 들은 데이터가 도착하면 그 요청 결과(call_result) 가 어떤 요청(call_context) 에 대한 것인지 확인하여 그 요청을 기다리는 thread 에게 알려준다(asynchronous notification)<br />
 <br />
-<pre class='brush: cpp'>void request_call(call_context ctx) {
-    int request_id = register_request(thread_id());
-    send_request(request_id, ctx);
-}
-
-void receive_result(call_result result) {
-    int thread_id = remove_request(result.request_id);
-    thread_post(thread_id, rpc_callback, result);
-}</pre>
+<pre class="brush: cpp; html-script: true">void request_call(call_context ctx) {<br />
+    int request_id = register_request(thread_id());<br />
+    send_request(request_id, ctx);<br />
+}<br />
+<br />
+void receive_result(call_result result) {<br />
+    int thread_id = remove_request(result.request_id);<br />
+    thread_post(thread_id, rpc_callback, result);<br />
+}</pre><br />
 <br />
 request_call 함수는 요청 객체를 보내기 전에 일단 자기 thread_id 에 대해 request_id 를 발급 받는다. 그리고 그걸 원격지로 보내기만 하고 바로 반환된다.<br />
 그에 대한 응답이 도착하면 read thread 가 그 결과(call_result) 를 읽어서 해당 결과가 어떤 thread 가 요청한 것인지 찾는다. 그리고 그 thread 에게 rpc_callback 함수를 수행하라고 요청(notification) 해준다.<br />
@@ -130,13 +130,13 @@ request_call 함수는 요청 객체를 보내기 전에 일단 자기 thread_id
 그 시간에 다른 작업이 있다면 그걸 꺼내서 하는거다.<br />
 <br />
 다시 위의 코드로 예시를 들면,<br />
-<pre class='brush: cpp'>async call_result request_call(call_context ctx) {
-    sock_write(socket_, ctx.serialize());
-
-    BYTE result_buffer[RESULT_SIZE];
-    await sock_read(socket_, &result_buffer);
-    return call_result.parse(result_buffer);
-}</pre>
+<pre class="brush: cpp; html-script: true">async call_result request_call(call_context ctx) {<br />
+    sock_write(socket_, ctx.serialize());<br />
+<br />
+    BYTE result_buffer[RESULT_SIZE];<br />
+    await sock_read(socket_, &result_buffer);<br />
+    return call_result.parse(result_buffer);<br />
+}</pre><br />
 <br />
 request_call 함수는 async 함수다. async 함수는 중간에 await 을 수행할 수 있는 함수이다.<br />
 위 코드에서는 sock_read 라는 blocking 작업이 완료될 때까지 await 을 한다는 것 외에는 동기적 코드와 다를 것이 없다.<br />

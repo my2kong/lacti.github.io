@@ -18,7 +18,7 @@
 덕분에 전자의 방식에 대해, 클라이언트 FORM 페이지에서 웹 서버로 데이터를 보내는 POST 단계와, 서버의 스크립트 언어로 FORM DATA 를 처리한 후 다시 클라이언트에게 HTML 을 보내주는 BACK 단계를 합쳐서 POSTBACK 란 용어가 나오게 되었다.
 
 다시 요약하면, 페이지 전체가, 즉 브라우저의 현재 URL 값을 변경하여 데이터를 보내는 경우에는 딱히 고민하지 않아도 될 것이 메세지 구조였다. 어차피 서버에서는 HTML 을 반환시키면 그만이니까. 우리에게 친숙한 언어의 함수로보면 아래와 같다.
-<pre class='brush: cpp'>HTML process_in_server (FORMDATA data) {
+<pre class="brush: cpp; html-script: true">HTML process_in_server (FORMDATA data) {
     return make_html (process_formdata (data));
 }
 void request_in_client (void) {
@@ -26,7 +26,7 @@ void request_in_client (void) {
 }</pre>
 
 그렇다면 비동기적인 방법으로 갱신하는 건 어떤 것일까?
-<pre class='brush: cpp'>MESSAGE process_in_server_async (FORMDATA data) {
+<pre class="brush: cpp; html-script: true">MESSAGE process_in_server_async (FORMDATA data) {
     return make_message (process_formdata (data));
 }
 void request_in_client (UPDATEAREA area) {

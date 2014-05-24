@@ -23,7 +23,7 @@ type 정보를 코드 하나하나에 다 열거하는 것은 쓸데없는 노�
 
 문제는 이렇게 type capture를 한 template class는 일반 type으로 지칭할 수 없다는 귀찮은 점이 있다.
 예를 들어서,
-<pre class='brush: cpp'>template <class _Ty>
+<pre class="brush: cpp; html-script: true">template <class _Ty>
 class class_t {};</pre>
 위와 같은 class_t에 대해, class_t<int> 와 같은 type 정보를 넣어 template class를 구체화했다면,
 이 class는 class_t가 아니고 class_t<int>이다. 좀 더 엄밀히 말하면 구체화되지 않은 class_t 라는 class는 없는 것이다.
@@ -34,7 +34,7 @@ class class_t {};</pre>
 
 #
 변경된 class_t는 다음과 같다. (class_impl_t는 삭제되었다, 그리고 지난 번과 중복되는 내용은 삭제한다.)
-<pre class='brush: cpp'>class class_t {
+<pre class="brush: cpp; html-script: true">class class_t {
 public:
     template <typename _Ty>
     class_t(const typeinfo<_Ty>&, std::string name)
@@ -63,7 +63,7 @@ interface_t는 impl_t를 일반적으로 접근하기 위한 interface class이�
 class_t의 생성자가 type 정보를 직접 받기 위해 template 함수로 작성되었다.
 재밌는 점은, 함수 template 생성자에 type 정보를 넘기기 위해 < >으로 명시해주는 것은 쓸 수가 없어서,
 이를 적당히 회피하기 위해 type 정보를 컴파일러에게 알려주기 위해 class 하나를 추가한다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 class typeinfo {};</pre>
 
 그래서 class_t 생성자는 typeinfo<_Ty> 객체를 인자로 받는 것이고, 
@@ -75,7 +75,7 @@ class typeinfo {};</pre>
 
 #
 field_t 역시 위와 동일한 방법으로 개선하였다.
-<pre class='brush: cpp'>class field_t {
+<pre class="brush: cpp; html-script: true">class field_t {
 public:
     template <typename _ObjTy, typename _FieldTy>
     field_t(_FieldTy (_ObjTy::*Field), std::string name)
@@ -107,7 +107,7 @@ private:
 기존에는 외부로 노출된 template 함수를 통해 직접 type 및 이름 정보를 입력하여 하나씩 정보를 등록하였다.
 
 하지만 각 field를 정의할 때마다 어떤 class에 대한 field인지 매번 써주는 것은 비효율적이므로, 이를 개선하기 위해 다음과 같이 register를 도와주면서 어떤 class에 대한 register인지 type 정보를 갖고 있는 class를 설계해보자.
-<pre class='brush: cpp'>template <typename _ObjTy>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy>
 struct reflection_register_helper_t {
     typedef _ObjTy target_type;
 
@@ -141,7 +141,7 @@ reflection_register_helper_t class는 template으로 type 정보를 받고 이�
 따라서 register_class() 함수나 register_field() 함수는 따로 어떤 class에 대한 정보인지 type 정보를 받을 필요가 없다.
 
 이제 매크로를 통해 다음과 같이 대신 등록해주는 코드를 만들어볼 수 있다.
-<pre class='brush: cpp'>#define REFLECTION_REGISTER_BEGIN(class_name)  \
+<pre class="brush: cpp; html-script: true">#define REFLECTION_REGISTER_BEGIN(class_name)  \
     static struct _register_##class_name :
             public reflection::reflection_register_helper_t<class_name> { \
        _register_##class_name() \
@@ -162,7 +162,7 @@ REFLECTION_REGISTER_BEGIN, FIELD, END 매크로를 사용하면 등록하고자 
 만약 이 변수가 전역 변수로 선언된다면 프로그램이 실행될 때 해당 객체가 초기화되면서 생성자의 코드가 실행될 것이고,
 그 때 해당 type에 대한 reflection 정보가 등록될 것이다.
 
-<pre class='brush: cpp'>REFLECTION_REGISTER_BEGIN(user_t)
+<pre class="brush: cpp; html-script: true">REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
 REFLECTION_REGISTER_END()</pre>
@@ -176,7 +176,7 @@ REFLECTION_REGISTER_END()</pre>
 선언된 header 파일을 여러 번 incldue하고, 그 때마다 선언 매크로를 다른 것으로 치환(undef/define)하여 사용하는 것이다.
 
 먼저 선언을 위한 매크로를 정의해보면 다음과 같다.
-<pre class='brush: cpp'>#ifndef __DECLARE_TYPE_MACRO_DEFINED__
+<pre class="brush: cpp; html-script: true">#ifndef __DECLARE_TYPE_MACRO_DEFINED__
 #define __DECLARE_TYPE_MACRO_DEFINED__
 #define DECLARE_BEGIN(class_name) \
     struct class_name; \
@@ -197,18 +197,18 @@ REFLECTION_REGISTER_END()</pre>
 
 STRUCT_BEGIN, FIELD, END 매크로는 선언(declare) 단계에서는 DECLARE_BEGIN, FIELD, END를 사용하도록 작성이 되어있다.
 이제 다음과 같이 user_t를 정의하면 (user.h)
-<pre class='brush: cpp'>STRUCT_BEGIN(user_t)
+<pre class="brush: cpp; html-script: true">STRUCT_BEGIN(user_t)
     STRUCT_FIELD(int, index)
     STRUCT_FIELD(std::string, name)
 STRUCT_END()</pre>
 위 매크로에 의해 다음과 같이 번역될 것이다. (STRUCT -> DECLARE)
-<pre class='brush: cpp'>struct user_t {
+<pre class="brush: cpp; html-script: true">struct user_t {
     int index;
     std::string name;
 };</pre>
 
 이제, STRUCT_BEGIN, FIELD, END를 reflection을 등록하기 위한 매크로로 치환한다. (type_register_macro.h)
-<pre class='brush: cpp'>#ifdef STRUCT_BEGIN
+<pre class="brush: cpp; html-script: true">#ifdef STRUCT_BEGIN
 #undef STRUCT_BEGIN
 #endif
 
@@ -225,13 +225,13 @@ STRUCT_END()</pre>
 #define STRUCT_END()                    REFLECTION_REGISTER_END()</pre>
 
 이제 다시 user.h 파일을 include하면, 이 때의 코드는 다음과 같이 번역될 것이다. (STRUCT -> REFLECTION_REGISTER)
-<pre class='brush: cpp'>REFLECTION_REGISTER_BEGIN(user_t)
+<pre class="brush: cpp; html-script: true">REFLECTION_REGISTER_BEGIN(user_t)
 	REFLECTION_REGISTER_FIELD(int, index)
 	REFLECTION_REGISTER_FIELD(std::string, name)
 REFLECTION_REGISTER_END()</pre>
 
 이에 대한 전체적인 코드 구조는 다음과 같다.
-<pre class='brush: cpp'>#include "object.h"
+<pre class="brush: cpp; html-script: true">#include "object.h"
 #include "user.h"
 
 #include "type_register_macro.h"

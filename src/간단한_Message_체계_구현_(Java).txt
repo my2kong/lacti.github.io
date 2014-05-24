@@ -12,11 +12,11 @@ MessageQueue 는 전역 객체이다. Message 를 받아서 이를 수신 Handle
 
 #
 Message 는 무슨 class 가 될지 모르니까 간단하게 mark interface 로 만든다.
-<pre class='brush: java'>public interface Message {
+<pre class="brush: java; html-script: true">public interface Message {
 }</pre>
 
 MessageQueue class 는 Message 를 공유하는 Queue 객체와 이를 처리할 수 있도록 내부 Thread 를 하나 돌린다.
-<pre class='brush: java'>private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); 
+<pre class="brush: java; html-script: true">private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); 
 
 private MessageQueue() {
     new Thread() {
@@ -52,13 +52,13 @@ private Message pop() {
 이에 대해서는 multiple-dispatch 를 사용하면 보다 깔끔한 구조의 Handler 를 작성할 수 있는데, Java 는 어차피 느리고 Reflection 을 통해 이 기능을 구현할 수 있으니 도전해보자.
 
 Handler 는 <em>handleMessage</em> 이라는 method 를 갖는다. 이 때 parameter 는 Message class 를 하나만 갖는다.
-<pre class='brush: java'>void handleMessage(StringMessage message) {
+<pre class="brush: java; html-script: true">void handleMessage(StringMessage message) {
 }
 void handleMessage(IntMessage message) {
 }</pre>
 이 때 MessageQueue 에 StringMessage 객체를 넣으면 첫 번째 함수가, IntMessage 객체를 넣으면 후자의 함수가 호출되도록 하겠다는 것이다.
 
-<pre class='brush: java'>private static final String HANDLER_NAME = "handleMessage";
+<pre class="brush: java; html-script: true">private static final String HANDLER_NAME = "handleMessage";
 private Map<Class<?>, List<Object>> handlerMap = new ConcurrentHashMap<Class<?>, List<Object>>();
 
 private void addHandler(Object handler) {
@@ -90,7 +90,7 @@ Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 �
 
 #
 이제 Message 가 들어오면 그 class type 에 해당하는 Handler 를 찾아서 invoke 를 해주면 된다.
-<pre class='brush: java'>private void delegate(Message message) {
+<pre class="brush: java; html-script: true">private void delegate(Message message) {
     Set<Object> invoked = new HashSet<Object>();
     
     Class<?> clazz = message.getClass();
@@ -127,7 +127,7 @@ private void invoke(Object handler, Class<?> messageClass, Message message) {
 
 다만, bubbling 을 막기 위해서 한 번 Invoke 된 Handler 는 다시 Invoke 되지 않도록 했다.
 예를 들어서,
-<pre class='brush: java'>class StringMessage implements Message {}
+<pre class="brush: java; html-script: true">class StringMessage implements Message {}
 class SpecialStringMessage extends StringMessage {}
 void handleMessage(StringMessage message) {}
 void handleMessage(SpecialStringMessage message) {}</pre>
@@ -141,7 +141,7 @@ invoke 를 할 때 굳이 setAccessible 을 true 해주는 이유는, message ha
 
 #
 작성된 MessageQueue 는 다음과 같이 사용될 수 있다.
-<pre class='brush: java'>void handleMessage(StringMessage message) {
+<pre class="brush: java; html-script: true">void handleMessage(StringMessage message) {
     System.out.println(message.getMessage());
 }
 

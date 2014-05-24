@@ -8,12 +8,12 @@
 #
 연속적인 비동기 작업을 처리할 때에는 동기적 프로그래밍과는 다르게 코드를 순차적으로 서술할 수 없다.
 만약 아래와 같이 작성된다면, async_work2나 async_work3는 그 위의 async_work1 혹은 2가 완료되기 전에 시작될 것이다.
-<pre class='brush: cpp'>async_work1();
+<pre class="brush: cpp; html-script: true">async_work1();
 async_work2();
 async_work3();</pre>
 
 간단하게 생각해볼 수 있는 방법은 하나의 작업이 끝난 후에 다음 작업을 호출하도록 하는 것이다.
-<pre class='brush: cpp'>void entry_point() {
+<pre class="brush: cpp; html-script: true">void entry_point() {
     async_work1();
 }
 void async_work1() {
@@ -21,7 +21,7 @@ void async_work1() {
     async_work2();
 }</pre>
 그런데 만약 async_work1이 끝난 후 async_work2가 아니라 다른 <em>일반적인 작업</em>을 수행하게 하고 싶을 경우에는 위와 같이 구현할 수 없다. 그래서 선택하는 방법이 callback이다.
-<pre class='brush: cpp'>void entry_point() {
+<pre class="brush: cpp; html-script: true">void entry_point() {
     async_work1(async_work2);
 }
 void async_work1(std::function&lt;void()&gt; callback) {
@@ -29,7 +29,7 @@ void async_work1(std::function&lt;void()&gt; callback) {
     callback();
 }</pre>
 위와 같이 코드를 작성하는 것은 꽤 타당해 보인다. 하지만 처음 문제로 돌아가서 1, 2, 3을 순서대로 실행하려면 코드가 좀 복잡해진다.
-<pre class='brush: cpp'>async_work1([] () {
+<pre class="brush: cpp; html-script: true">async_work1([] () {
     async_work2([] () {
         async_work3(callback_none);
     });
@@ -50,14 +50,14 @@ async/then 패턴은 task continuation을 생각하면 좋다. 비동기 작업�
 
 성수가 질문해준 것과 같이 async로 시작된 작업에 대해 then으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
 async로 시작된 작업에 then을 추가할 때, 다음의 상태 중 하나일 수 있다.
-<pre class='brush: cpp'>1) 다른 thread에 의해 작업이 시작된 상태
+<pre class="brush: cpp; html-script: true">1) 다른 thread에 의해 작업이 시작된 상태
 2) 작업이 완료된 상태
 3) 작업이 취소된 상태</pre>
 2번(완료)일 경우 이미 완료되었으니 동시성 문제가 발생하지 않는다. then()을 연결하는 순간 그 callback을 실행해도 되고, 아니면 그 작업을 threadpool에 던져서 아무 thread나 수행(async)하게 만들어도 된다.
 3번(취소)일 경우 then()을 연결하는 순간 예외를 발생시키는 등 추가할 수 없다고 적절히 알려주면 되겠다.
 
 1번(진행)일 경우 동시성 문제가 발생할 수 있다. 간단히 then() 코드를 생각해보자.
-<pre class='brush: cpp'>then(function_t next) {
+<pre class="brush: cpp; html-script: true">then(function_t next) {
     _next = next;
 }
 execute() {
@@ -69,7 +69,7 @@ execute() {
 
 #
 async/then 패턴은 stateless한 일련의 비동기 작업을 서술할 때 편하다.
-<pre class='brush: cpp'>req_async(case1).then(case1_1).then(case1_2);
+<pre class="brush: cpp; html-script: true">req_async(case1).then(case1_1).then(case1_2);
 req_async(case2).then(case2_1);
 req_async(case3).then(case3_1).then(case3_2).then(case3_3);</pre>
 req_async()에 의해 비동기로 수행되는 작업(task)들은 내부의 task-scheduler에 의해 적절한 thread를 할당받아 작업이 동시에 처리될 것이다(task-parallelism)

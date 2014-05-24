@@ -6,10 +6,10 @@
 #
 위 이야기에 이어, async 작업과 then 작업 간의 상태 공유에 대해서 알아보자. 
 async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반환값을 사용하는 방법이다. 다른 방법으로는 lambda function에 의한 variable capture가 있겠다.
-<pre class='brush: cpp'>std::async([] () { return 1; })
+<pre class="brush: cpp; html-script: true">std::async([] () { return 1; })
     .then([] (std::future&lt;int&gt; f) { return f.get() + 1; })
     .then([] (std::future&lt;int&gt; f) { return f.get() + 1; });</pre>
-<pre class='brush: cpp'>int result = 0;
+<pre class="brush: cpp; html-script: true">int result = 0;
 std::async([&result] () { result = 1; })
     .then([] () { ++result; })
     .then([] () { ++result; });</pre>
@@ -21,7 +21,7 @@ std::async([&result] () { result = 1; })
 
 #
 async_worker는 대충 context + async_work라고 생각하면 된다.
-<pre class='brush: cpp'>class my_async_worker {
+<pre class="brush: cpp; html-script: true">class my_async_worker {
 public:
     // async works
     void work1();
@@ -50,7 +50,7 @@ stackless coroutine은 말 그대로 stack을 갖지 않는 coroutine으로 c#�
 (자세한 이야기는 coroutine 이야기에서 다루도록 하겠다)
 
 쉬운 접근을 위해 async_worker 코드를 다음과 같이 고쳐보도록 하겠다.
-<pre class='brush: cpp'>class my_async_worker {
+<pre class="brush: cpp; html-script: true">class my_async_worker {
 public:
     bool execute() {
         if (_state == 0) { work1(); _state = 1; return true; }

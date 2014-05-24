@@ -26,7 +26,7 @@ type을 확실히 알면 뭐하러 field를 찾으려 메모리에 뒤지고 있
 #
 먼저 class 정보에 대응되는 class를 만들어보자.
 요구사항에서 언급했듯이, 얘는 자신의 type정보로 객체를 생성 가능해야하며, 이름으로 특정 field를 찾을 수 있어야 한다.
-<pre class='brush: cpp'>class class_t {
+<pre class="brush: cpp; html-script: true">class class_t {
 public:
     class_t(std::string _name);
     const field_t* get_field(std::string name) const;
@@ -53,7 +53,7 @@ add와 get 함수 모두 public으로 공개되어 있으니 class 정보를 접
 (field_t 때와 마찬가지로 new_instance() 함수에 type 인자를 잘못 주면 안드로메다를 보게 된다.)
 
 구체 class는 field_impl_t보다 훨씬 간단하다.
-<pre class='brush: cpp'>template <typename _ObjTy>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy>
 class class_impl_t : public class_t {
 public:
     class_impl_t(std::string name);
@@ -79,7 +79,7 @@ class의 이름은 std::type_info.name()을 쓰면 좋겠지만 이 이름이 �
 이 때 문제가 될 수 있는 것은, 어떤 객체에 대한 class_t를 가져올 때, 그 객체의 class의 이름을 뭐라고 등록했는지 찾아야 한다는 것이다.
 때문에 관리자 class는 사용자 지정 이름과 class_t만을 관리하는 것이 아니라,
 그 객체의 std::type_info* 와 사용자 지정 이름도 관리해야 각 객체들은 자신의 class_t를 적절히 찾아올 수 있게 될 것이다.
-<pre class='brush: cpp'>class reflection_base {
+<pre class="brush: cpp; html-script: true">class reflection_base {
 public:
     static reflection_base& instance();
     const class_t* get_class(std::string name) const;
@@ -110,7 +110,7 @@ singleton pattern의 reflection_base class는 type_info와 사용자 지정 이�
 
 이제 class_t를 관리하고 찾을 수 있는 방법이 생겼으니, 
 특정 객체에 대해 다른 class들이 class_t를 얻을 수 있도록 helper격의 class를 하나 만들어보자.
-<pre class='brush: cpp'>class reflection_class_t {
+<pre class="brush: cpp; html-script: true">class reflection_class_t {
 public:
     virtual ~reflection_class_t() {}
 
@@ -130,7 +130,7 @@ public:
 #
 마지막으로 reflection_base에 class_t와 field_t를 등록하는 함수를 만들어보자.
 이는 지난 번 글에서 사용했던 매크로와 유사한 코드이다.
-<pre class='brush: cpp'>template <typename _ObjTy>
+<pre class="brush: cpp; html-script: true">template <typename _ObjTy>
 inline void register_class(std::string class_name) {
     reflection_base::instance().add_class_name(&typeid(_ObjTy), class_name);
     reflection_base::instance().add_class(class_name, 
@@ -152,7 +152,7 @@ register_field() 함수는 특정 class를 찾아서, 그 class_t가 관리하�
 
 #
 이제 위에서 작성한 코드는 다음과 같이 사용될 수 있다.
-<pre class='brush: cpp'>using namespace reflection;
+<pre class="brush: cpp; html-script: true">using namespace reflection;
 
 class base_t : public reflection_class_t {
 public:

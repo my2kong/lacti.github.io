@@ -46,7 +46,7 @@ STL의 iterator 같은 걸 쓸 때 iterator는 object이다. 따라서 전항 ++
 
 for 문에서 int 변수를 i++ 하나 ++i 하나 컴파일러가 바보가 아닌 이상에야 INC instruction 넣어주면 된다.
 저게 iterator 같은 class라면?
-<pre class='brush: cpp'>#include <iostream>
+<pre class="brush: cpp; html-script: true">#include <iostream>
 class serial {
 public:
 	serial & operator ++ (void) {
@@ -69,7 +69,7 @@ int main (int argc, char* argv[])
 그런고로 전항(prefix) ++ 연산과 동일한 동작을 수행하게 하면 성능상 문제가 없다 할 수 있겠다.
 
 물론, 
-<pre class='brush: cpp'>serial & operator ++ (int dummy) { return ++(*this); }</pre>
+<pre class="brush: cpp; html-script: true">serial & operator ++ (int dummy) { return ++(*this); }</pre>
 와 같이 후항 연산에서 전항 연산을 호출해버려도 되고, (컴파일러가 함수 호출은 최적화시켜 줄거라 믿자)
 
 Visual Studio 2010에서 해본 결과 아예 후항 ++ 연산 함수를 정의하지 않으면 알아서 전항 ++ 함수를 호출해버린다-_-

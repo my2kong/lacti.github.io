@@ -21,7 +21,7 @@ __if_exists 는 해당 지점에서 그 symbol 이 존재하는지를 확인하�
 이 문서에서는 this symbol 여부를 확인하기 위해 쓸거다.
 
 Call Stack 을 쌓기 위해 먼저 StackElement 부터 만들어야한다. 가볍게, 파일명, 줄 수, this 주소 정도를 받아보자.
-<pre class='brush: cpp'>struct StackElement
+<pre class="brush: cpp; html-script: true">struct StackElement
 {
     LPCTSTR FileName;
     UINT    Line;
@@ -33,14 +33,14 @@ Call Stack 을 쌓기 위해 먼저 StackElement 부터 만들어야한다. 가�
 };</pre>
 
 그리고 Stack 을 구현해야하지만 귀찮으니까 std::deque 를 쓰자.
-<pre class='brush: cpp'>typedef std::deque<StackElement> CallStackType;
+<pre class="brush: cpp; html-script: true">typedef std::deque<StackElement> CallStackType;
 CallStackType CallStack;</pre>
 만약 Multi-Thread 환경에서 작업을 한다면 전역 변수로 Call Stack을 관리한다는건 미친 짓이다. 적절히 Thread 별로 자료구조를 구현하거나(index 를 발급한다던지), Tls 를 써주는게 좋겠다. 이 내용은 다음에 다루자.
 
 그러면 이제 해당 logging 을 위한 매크로를 작성하는 일만 남았다.
 왜 매크로를 작성해야하냐 하면은, __FILE__, __LINE__, __FUNCSIG__ 와 __if_exits 를 문맥이 변경되지 않게 사용해야하기 때문이다. inline function 을 쓰면 해당 function 이 호출되어버리니까 함수 문맥이 바뀌어버려서 안된다.
 고로 매크로를 써야한다.
-<pre class='brush: cpp'>#define START_TRACE() \
+<pre class="brush: cpp; html-script: true">#define START_TRACE() \
     do { \
         PVOID __this = NULL; \
         __if_exists (this) { \
@@ -59,7 +59,7 @@ CallStackType CallStack;</pre>
 신통하게 뭔가 매크로만 하나 맨 위에 선언해두면 알아서 CallStack 이 쌓이는 줄 알았는데, 이거 매크로를 각 함수마다 덕지덕지 발라야할 조짐을 느꼈기 때문일 것이다. 맞는 이야기이다.
 
 간단한 예제를 보자.
-<pre class='brush: cpp'>class Pot
+<pre class="brush: cpp; html-script: true">class Pot
 {
 public:
     Pot(void) : size(rand()) 
@@ -100,7 +100,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 그런고로 이전 글에서 이야기한 생성자, 소멸자의 가호를 받아 위 문제를 RAII 방식으로 접근해서 풀어보도록 하자.
 StackElement 의 생존을 관리하는, 즉 CallStack 변수에 생성할 때 push_front 를 했다가 소멸할 때 pop_front 를 하는 Functor 를 하나 만들자.
-<pre class='brush: cpp'>struct StackElementPushFunctor
+<pre class="brush: cpp; html-script: true">struct StackElementPushFunctor
 {
     StackElementPushFunctor(const StackElement& element)
     {
@@ -114,7 +114,7 @@ StackElement 의 생존을 관리하는, 즉 CallStack 변수에 생성할 때 p
 이 Functor 는 생성시 StackElement를 받아서 CallStack에 push_front 로 앞에 넣어주고, 소멸될 때 pop_front 로 빼준다. 그러면 함수가 시작할 때 이 객체를 만들었다가, 함수가 끝날 때 소멸시키면 되겠구나!
 
 그래서 매크로가 다음과 같이 수정되어야 한다.
-<pre class='brush: cpp'>#define TRACE() \
+<pre class="brush: cpp; html-script: true">#define TRACE() \
     PVOID __this = NULL; \
     __if_exists (this) { \
         __this = this; \
@@ -124,14 +124,14 @@ StackElement 의 생존을 관리하는, 즉 CallStack 변수에 생성할 때 p
 직접 CallStack 변수에다가 StackElement 를 넣었던 것과 달리 StackElementPushFunctor 에 대한 객체를 하나 만든다. 이 때 Functor 객체가 함수 내에서 지역 변수로 존재하기 때문에 함수가 끝나면 알아서 소멸자가 호출되어 CallStack 에서 현재 함수에 대한 StackElement 가 빠져나간다.
 
 덕분에 위의 Object::size 함수나 _tmain 함수에서 END_TRACE 가 있었어야만 했던 것에 반해, 여기서는 아예 안 넣어도 되기 때문에 코드 작성하기도 한결 간단하다
-<pre class='brush: cpp'>int _tmain(int argc, _TCHAR* argv[])
+<pre class="brush: cpp; html-script: true">int _tmain(int argc, _TCHAR* argv[])
 {
     TRACE();
     // 로직 코드
     return 0;
 }</pre>
 매크로 함수 형태로 들어가있으니까 상당히 어색한데, 그냥 함수 취급 안하고 () 를 빼버리도록 매크로를 만드는 것도 하나의 방법이겠다. 아무튼 위의 코드는 전처리기에 의해 다음처럼 변한다.
-<pre class='brush: cpp'>int _tmain(int argc, _TCHAR* argv[])
+<pre class="brush: cpp; html-script: true">int _tmain(int argc, _TCHAR* argv[])
 {
     // this 얻기
     StackElementPushFunctor __push__ (/* 생략 */);

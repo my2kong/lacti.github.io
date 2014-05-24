@@ -27,7 +27,7 @@ User 에는 AddExp 함수를 통해 내부에 경험치를 증가시킨다. 그�
 
 Lock 을 생각해보자. Lock 이라는 것은 여러 Thread 가 접근해서 수행하는 영역의 시작과 끝에서 Lock, Unlock 을 수행하여 그 구간을 상호 배타적 구간(Mutual Exclusion)으로 설정하여 Thread 가 동시에 접근하지 못하도록 보호하는 장치이다.
 즉, AcquireLock Logic 은 여러 Thread 가 동시에 접근하여 수행할 수 있지만, 실제로 그 routine 을 벗어나 Mutex 에 진입하여 코드를 실행하는 Thread 는 하나로 보장이 된다. 아래의 간단한 SpinLock 예제를 보자 (Windows via C/C++)
-<pre class='brush: cpp'>void SpinLock::Lock(void) {
+<pre class="brush: cpp; html-script: true">void SpinLock::Lock(void) {
     while (InterlockedExchange (&mLockFlag, 1) == 1)
         Sleep (0);
 }
@@ -45,7 +45,7 @@ InterlockedExchange 는 원자적으로 해당 변수에 값을 대입하고 그
 
 함수는 각기 다른 형태(signature)을 갖고 있고, 수행에 필요한 인자가 각기 다르다. 따라서 모든 함수의 요청을 객체화(functor) 하기 위해서는 동일한 interface 로 함수 요청을 통일시켜줄 필요가 있다. 이러기 위해 사용하는 것이 std::bind 이다.
 아래의 예제는 각 함수의 요청을 무항 함수 객체(nullary functor)로 변환하는 코드이다.
-<pre class='brush: cpp'>int add(int a, int b) { return a + b; }
+<pre class="brush: cpp; html-script: true">int add(int a, int b) { return a + b; }
 struct Adder {
     int add(int a, int b) { return a + b; }
 };
@@ -59,13 +59,13 @@ functor2();</pre>
 
 #
 하지만 이건 compile time 에 가능한 일이고, 저것들을 runtime 에 한군데 모아놓고 수행하기는 어렵다. runtime 에 객체들을 모아놓는다는 것은 하나의 Container 에 객체들을 담아두고 iterating 을 한다는 것인데 저것들의 type 은 모두 다르기 때문이다. 따라서 type 을 맞춰주기 위해 interface 를 작성한다.
-<pre class='brush: cpp'>struct RequestJob
+<pre class="brush: cpp; html-script: true">struct RequestJob
 {
     virtual void operator () (void) = 0;
     virtual ~RequestJob() {}
 };</pre>
 그리고 간단한 template 함수를 통해 함수 호출 요청 객체를 받아 저 interface 를 상속받은 struct 를 생성하도록 한다. 함수 내에서 template struct 를 갖을 수는 없지만 함수 자체가 template 이면 문제가 해결된다.
-<pre class='brush: cpp'>template <typename _Functor>
+<pre class="brush: cpp; html-script: true">template <typename _Functor>
 void Request(const _Functor& functor)
 {
     struct _RequestJobImpl : public RequestJob
@@ -83,12 +83,12 @@ void Request(const _Functor& functor)
 
 아무튼 저렇게 inner struct 로 _RequestJobImpl struct 를 만들어서 template type인 _Functor 객체를 멤버로 갖고, operator () 에서 그 함수를 호출해줄 수 있도록 한다. 그렇게 만든 RequestJob 객체를 JobQueue 에 넣는다.
 물론 JobQueue 는 여러 Thread 에서 동시에 Push 를 수행하고, 다른 Thread 에서 Pop 을 수행해야하므로 thread safe 해야한다. 따라서 concurrent_queue.h 에 정의된 Concurrency::concurrent_queue 를 사용한다.
-<pre class='brush: cpp'>typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
+<pre class="brush: cpp; html-script: true">typedef Concurrency::concurrent_queue<RequestJobPtr> JobQueue;
 JobQueue mJobQueue;</pre>
 
 #
 마지막으로 JoqQueue 에 들어간 작업을 처리할 Thread 1개만 통과시켜서 Queue 에 들어있는 작업을 처리하게 해야한다. SpinLock 에서 공부했던 내용을 Request 함수 뒤에 끼얹어보자.
-<pre class='brush: cpp'>    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)
+<pre class="brush: cpp; html-script: true">    if (InterlockedExchange (&mExclusiveFlag, 1) == 1)
         return;
         
     for (RequestJobPtr job = NULL; mJobQueue.try_pop(job) && job != NULL;)
@@ -107,7 +107,7 @@ InterlockedExchange 함수를 사용해서 mExclusiveFlag 값을 통해 한 개�
 #
 이제 모든 준비가 끝났다. 공유되어 여러 Thread 로부터 처리가 동시에 일어날 수 있는 class 는 위 class 를 상속받으면 된다.
 User class 가 위 class 를 상속받았고, User 객체가 AddExp 함수를 가질 때, 다음과 같은 방법으로 요청할 수 있다.
-<pre class='brush: cpp'>typedef std::shared_ptr<User> UserRef;
+<pre class="brush: cpp; html-script: true">typedef std::shared_ptr<User> UserRef;
 UserRef user = UserRef (new User);
 user->Request (std::bind (&User::AddExp, user, 100));</pre>
 User 객체에게 멤버 함수 수행 요청을 Request 함수를 통해 전달한다. 수행에 필요한 정보는 std::bind 로 묶어줬다. 한 가지 아쉬운 점은 Request 를 부르는 대상이 이미 user 객체로 정해졌으므로 User::AddExp 를 수행할 대상도 Request 를 요청한 user 객체인데, std::bind 를 묶어줄 때 두 번째 인자로 이 AddExp 함수를 수행할 객체인 user 객체를 한 번 더 넣어줘야한다는 것이다.
@@ -116,7 +116,7 @@ User 객체에게 멤버 함수 수행 요청을 Request 함수를 통해 전달
 
 #
 예제 코드 전문을 보자.
-<pre class='brush: cpp'>#include <windows.h>
+<pre class="brush: cpp; html-script: true">#include <windows.h>
 #include <functional> 
 #include <algorithm> 
 #include <iostream>

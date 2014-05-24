@@ -12,7 +12,7 @@
 명부(List) 는 내부에 사람(Person) 을 포함한다. 사람은 이름(name) 이라는 속성(property) 을 갖고, 이 값은 외부에서 변경될 수 있다(mutator method). 명부는 사람의 이름이 변경되는 것을 감지해야한다.
 
 이를 위한 가장 간단한 방법은 아래와 같다.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     private List observer;
     private String name;
     public Person() {}
@@ -36,12 +36,12 @@ class List {
 
 #
 두 객체 간의 강결합을 피하기 위해 이를 분리하기 위한 중간 interface 를 도입한다.
-<pre class='brush: java'>interface NameObserver {
+<pre class="brush: java; html-script: true">interface NameObserver {
     public void nameChanged(String oldName, String newName);
 }</pre>
 
 이제 Person 과 List 의 관계는 NameObserver 를 통해서 약간은 분리되었다.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     NameObserver observer;
     public void attach(NameObserver observer) {
         this.observer = observer;
@@ -55,7 +55,7 @@ Person 은 자신의 이름이 변경될 때 그 사실을 알려주어야 할 �
 #
 하나의 Person 이 여러 NameObserver 에게 사실을 알려주어야 한다면?
 NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있으면 된다.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     List<NameObserver> observers = new ArrayList<NameObserver>();
     public void attach(NameObserver observer) {
         this.observers.add(observer);
@@ -74,7 +74,7 @@ NameObserver 객체에 대한 reference 를 Collection 형태로 가지고 있�
 interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통지해야할 속성 값의 개수가 늘어나거나, 그 내용이 변경되거나 하면 이 interface 의 수정은 불가피하다.
 
 예를 들어, Person class 에 나이(age) 속성이 추가된다고 하자.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     private String name;
     private int age;
 }</pre>
@@ -88,7 +88,7 @@ interface 쪽으로 분리되었다고 해도, Person 의 변경에 대해 통�
 Person class 는 자신의 상태(속성)가 변화될 때의 정보를 적절히 capsulation 하여 객체로 구성하고, 이를 통지받는 쪽에서는 그 정보 객체를 받아 적절히 처리하는 것이다.
 
 즉, 정보를 담기 위한 중간 객체가 등장한다.
-<pre class='brush: java'>class PropertyChangeEvent {
+<pre class="brush: java; html-script: true">class PropertyChangeEvent {
     String propertyName;
     Object oldValue;
     Object newValue;
@@ -99,7 +99,7 @@ interface PropertyListener {
 
 이제 Person 은 자신의 정보가 변경될 때마다 PropertyChangeEvent 객체를 자신에게 등록되어있는(subscribe) PropertyListener 객체들에게 던진다.
 그러면 그 PropertyListener 의 구현체들은(implements or concrete) PropertyChangeEvent 객체를 받았을 때 자신이 원하는 이벤트에 대해서만 처리하는 것이다.
-<pre class='brush: java'>class Person {
+<pre class="brush: java; html-script: true">class Person {
     List<PropertyChangeListener> listeners = new ArrayList<>();
     public void setName(String newName) {
         for (PropertyChangeListener each: listeners) {
@@ -108,7 +108,7 @@ interface PropertyListener {
         this.name = newName;
     }</pre>
 
-<pre class='brush: java'>class List implements PropertyChangeListener {
+<pre class="brush: java; html-script: true">class List implements PropertyChangeListener {
     public void propertyChanged(PropertyChangeEvent event) {
         if (event.propertyName.equals("name") {
             // name changed</pre>

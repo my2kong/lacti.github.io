@@ -92,12 +92,12 @@ java에서도 1.7부터 fork/join pool을 지원해주지만, 본 글에서는 �
 FutureTask는 이름 그대로 Future + Task인데, Task를 수행한 결과를 Future로 받아볼 수 있는 구조로,<br />
 생성자로 Callable 객체를 받고, 수행을 위한 run() 함수와 결과 값을 받기 위한 get() 함수를 갖는다.<br />
 <br />
-<pre class='brush: java'>FutureTask<String> task = new FutureTask<String>(
-    new Callable<String>() {
-        public String call() throws Exception {
-            return /* complicated crawling code */;
-        }
-    });</pre>
+<pre class="brush: java; html-script: true">FutureTask<String> task = new FutureTask<String>(<br />
+    new Callable<String>() {<br />
+        public String call() throws Exception {<br />
+            return /* complicated crawling code */;<br />
+        }<br />
+    });</pre><br />
 <br />
 뭔가 내부에서 복잡한 작업을 수행하는 callable object를 생성자로 받는 task 객체를 생성했다.<br />
 이제 task의 멤버 함수인 run()을 호출하게 되면 저 callable object가 실행되고, 그 수행 결과가 task 내부에 저장되는 것이다.<br />
@@ -107,20 +107,20 @@ FutureTask는 이름 그대로 Future + Task인데, Task를 수행한 결과를 
 이제 열심히 만든 task 객체를 수행할 thread를 생성하도록 하자.<br />
 하지만 thread를 매번 만드는 것은 매우 아깝고 귀찮은 일이므로 ExecutorService를 사용해보도록 하자.<br />
 <br />
-<pre class='brush: java'>ExecutorServicce threadPool = Executors.newCachedThreadPool();</pre>
+<pre class="brush: java; html-script: true">ExecutorServicce threadPool = Executors.newCachedThreadPool();</pre><br />
 다 만들었다-_-;<br />
 <br />
 이제 만든 ThreadPool을 사용하여 task를 실행해보자.<br />
-<pre class='brush: java'>threadPool.execute(task);</pre>
+<pre class="brush: java; html-script: true">threadPool.execute(task);</pre><br />
 <br />
 정말 간단하게 threadPool을 만들었고, 해당 ThreadPool 내에 cache된 thread에게 우리가 만든 task를 수행시켰다.<br />
 이제 main thread에서는 적절히 timeout을 걸고 기다려보자.<br />
-<pre class='brush: java'>try {
-    String result = task.get(5 /* TIMEOUT */, TimeUnit.SECONDS);
-    /* some codes for processing result */
-} catch (TimeoutException e) {
-    // timeout occurred!
-}</pre>
+<pre class="brush: java; html-script: true">try {<br />
+    String result = task.get(5 /* TIMEOUT */, TimeUnit.SECONDS);<br />
+    /* some codes for processing result */<br />
+} catch (TimeoutException e) {<br />
+    // timeout occurred!<br />
+}</pre><br />
 <br />
 결과값을 가져오는 get() 함수는 해당 task가 완료될 때까지 기다리는 함수이다 (blocking)<br />
 이 함수는 timeout 시간을 인자로 받는 함수가 overload되어있는데, 위 예시처럼 해당 함수를 쓰면 해당 수행이 5초내로 끝나지 않으면 TimeoutException을 던지게 되는 것이다.<br />

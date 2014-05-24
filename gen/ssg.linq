@@ -122,4 +122,3 @@ const string ListItemTemplate = @"
                 <p>
                     <span class=""glyphicon glyphicon-time""></span> Posted on {1}</p>
                 <hr>";
-						

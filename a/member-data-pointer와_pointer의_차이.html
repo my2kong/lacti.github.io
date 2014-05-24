@@ -67,26 +67,26 @@
                 <div class="content">
 #<br />
 pointer는 메모리의 특정 공간의 주소를 지칭하기 위해 사용된다.<br />
-<pre class='brush: cpp'>float some_var = 1.0f;
-float* float_ptr = &some_var;</pre>
+<pre class="brush: cpp; html-script: true">float some_var = 1.0f;<br />
+float* float_ptr = &some_var;</pre><br />
 <br />
 member data pointer는 구조체나 클래스의 특정 멤버 변수의 위치를 상대적으로 지칭하기 위해 쓰인다.<br />
 따라서 메모리 주소 값을 가지는 것이 아니라, 구조체나 클래스 객체에서 어디에 접근을 해야하는지의 정보를 담고 있다고 생각하면 된다.<br />
-<pre class='brush: cpp'>struct tuple_t {
-    float first;
-};
-typedef float tuple_t::*member_t;</pre>
+<pre class="brush: cpp; html-script: true">struct tuple_t {<br />
+    float first;<br />
+};<br />
+typedef float tuple_t::*member_t;</pre><br />
 <br />
 때문에, 실제 메모리에 접근하기 위해서는 구조체나 클래스 객체가 있어야 하고,<br />
 접근할 때에도 dereference operator를 써주어야 한다.<br />
-<pre class='brush: cpp'>member_t member = &tuple_t::first;
-tuple_t tuple;
-tuple.*member = 100.0f;</pre>
+<pre class="brush: cpp; html-script: true">member_t member = &tuple_t::first;<br />
+tuple_t tuple;<br />
+tuple.*member = 100.0f;</pre><br />
 <br />
 위와 같이 tuple.*member를 통해 member가 가리키는 first 변수에 접근할 수 있었다.<br />
 이것은 tuple 객체 내에서 member가 가리키는 위치이고, tuple이라는 메모리 공간의 특정 지점에 접근을 하였으니 이제 float 값을 대입할 수 있는 것이다.<br />
 이제 float*로 저것을 가리킬 수 있다.<br />
-<pre class='brush: cpp'>float* float_ptr = &(tuple.*member);</pre>
+<pre class="brush: cpp; html-script: true">float* float_ptr = &(tuple.*member);</pre><br />
 <br />
 요약하면,<br />
 메모리 주소 값을 갖는 float*와는 다르게 member-data-pointer는 객체 내의 상대적 위치 정보를 갖기 때문에 바로 float*로 casting할 수는 없고,<br />

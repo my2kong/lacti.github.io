@@ -6,17 +6,17 @@
 
 #
 어떤 class 2개가 있다.
-<pre class='brush: cpp'>class big_class {};
+<pre class="brush: cpp; html-script: true">class big_class {};
 class huge_class {};</pre>
 
 이 class 들은 기본 생성자에서 굉장히 복잡한 작업을 하는 객체들 혹은 생성 자체가 복잡한 class 들이다.
 이러한 class 에 대해 어떠한 작업을 수행하는 generic 한 함수가 있다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void operation() {}</pre>
 
 이 함수는 객체의 type 을 받아서 내부에서 모종의 작업을 수행하게 된다.
 따라서 메인 함수에서는 다음과 같이 각 class 에 대해 operation 을 요청하게 된다.
-<pre class='brush: cpp'>int _tmain(int argc, _TCHAR* argv[]) {
+<pre class="brush: cpp; html-script: true">int _tmain(int argc, _TCHAR* argv[]) {
     operation<big_class>();
     operation<huge_class>();
     return 0;
@@ -25,7 +25,7 @@ void operation() {}</pre>
 
 operation 내에서는 각 type 별로 type 의 이름을 출력해주는 print 라는 함수를 호출한다고 하자.
 그러면 간단하게 template 의 specialization 을 사용하여, print 함수는 다음과 같다고 생각할 수 있다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void print(Ty&) {}
 
 template <typename _Ty>
@@ -39,7 +39,7 @@ void print(huge_class&) {
 }</pre>
 
 specialization 을 하기 위해 함수 interface 에 인자로 받을 객체를 추가했다. 덕분에 각 type 별로 함수가 구분되기는 했지만, 저 함수를 부르려면 일단 객체를 만들어야하는 부담이 생긴다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void operation() {
     print(_Ty());
 }</pre>
@@ -51,14 +51,14 @@ big_class 와 huge_class 는 기본 생성자에서 굉장히 많은 일을 하�
 c++ template meta programming 책에서는 이에 대해서, <strong>간접층을 도입하여 문제를 해결할 수 있다</strong> 라고 소개한다.
 
 먼저 type 정보를 위한 template class 를 도입한다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 class type_t {
     typedef _Ty type;
 };</pre>
 
 단순히 저 class 를 사용하는 것만으로 위 문제가 깔끔하게 해결된다.
 이제 print 함수는 실제 객체의 type 을 인자로 넣는 것이 아니라 type_t 를 인자로 받는다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void print(type_t<_Ty>&) {}
 
 template <>
@@ -74,14 +74,14 @@ print 함수의 인자는 이제 type_t 의 객체이지 실제 big_class 와 hu
 (typedef 정보만 갖기 때문에 컴파일러가 최적화하여 아무런 임시 객체를 만들지 않고 바로 함수를 호출하도록 linking 을 할 것이다)
 
 이제 operation 함수는 무거운 big_class 와 huge_class 에 대한 임시 객체를 만드는 대신, 각 type 에 대한 type_t 객체를 만들어서 print 함수에게 넘겨주면 된다.
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void operation() {
     print(type_t<_Ty>());
 }</pre>
 
 #
 다음은 코드 전문이다.
-<pre class='brush: cpp'>class big_class {};
+<pre class="brush: cpp; html-script: true">class big_class {};
 class huge_class {};
 
 template <typename _Ty>
@@ -118,10 +118,10 @@ template 의 specialization 이 들어가면 컴파일 순서에 따라 문제�
 
 operation<big_class> 가 컴파일 될 때 big_class type 에 대한 operation 함수의 코드가 만들어진다고 보면 되고, 이 때 print(type_t<big_class>()); 구문을 생성하게 된다.
 이 시점에서
-<pre class='brush: cpp'>template <>
+<pre class="brush: cpp; html-script: true">template <>
 void print(type_t<big_class>&)</pre>
 함수를 컴파일러가 알지 못한다면, 컴파일러는
-<pre class='brush: cpp'>template <typename _Ty>
+<pre class="brush: cpp; html-script: true">template <typename _Ty>
 void print(type_t<_Ty>&)</pre>
 의 코드만 보고 직접 big_class 에 대한 print 함수 또한 만들어버릴 것이다.
 

@@ -80,82 +80,82 @@
 내 대답은 '그럴 것 같군요' 이었고, 문제를 내신 분께서는 '사실은 그렇지 않다' 라고 답변을 주셨다.<br />
 <br />
 그래서 그냥 그러려니 하다가, 마침 잠도 깼고 할 일도 없어서 ULK를 보다가 이상함을 느끼고 직접 실험을 해봤다.<br />
-<pre class='brush: c'>#include <stdio.h>
-
-#define PRINT_ADDR_AND_VALUE(var_name) \
-  printf ("%40s (%16p -> %d)\n", #var_name, &var_name, var_name)
-
-int _global_not_initialized;
-int _global = 100;
-
-static int _global_static_not_initialized;
-static int _global_static = 100;
-
-void function (void)
-{
-  static int _static_in_function_not_initialized;
-  static int _static_in_function = 100;
-  int _local_in_function_not_initialized;
-  int _local_in_function = 100;
-
-  PRINT_ADDR_AND_VALUE (_static_in_function_not_initialized);
-  PRINT_ADDR_AND_VALUE (_static_in_function);
-  PRINT_ADDR_AND_VALUE (_local_in_function_not_initialized);
-  PRINT_ADDR_AND_VALUE (_local_in_function);
-}
-
-int main (int argc, char *argv[])
-{
-  static int _static_in_main_not_initialized;
-  static int _static_in_main = 100;
-  int _local_in_main_not_initialized;
-  int _local_in_main = 100;
-
-  PRINT_ADDR_AND_VALUE (_global_static_not_initialized);
-  PRINT_ADDR_AND_VALUE (_global_static);
-  PRINT_ADDR_AND_VALUE (_global_not_initialized);
-  PRINT_ADDR_AND_VALUE (_global);
-
-  PRINT_ADDR_AND_VALUE (_static_in_main_not_initialized);
-  PRINT_ADDR_AND_VALUE (_static_in_main);
-  PRINT_ADDR_AND_VALUE (_local_in_main_not_initialized);
-  PRINT_ADDR_AND_VALUE (_local_in_main);
-
-  function ();
-  return 0;
-}</pre>
+<pre class="brush: c; html-script: true">#include <stdio.h><br />
+<br />
+#define PRINT_ADDR_AND_VALUE(var_name) \<br />
+  printf ("%40s (%16p -> %d)\n", #var_name, &var_name, var_name)<br />
+<br />
+int _global_not_initialized;<br />
+int _global = 100;<br />
+<br />
+static int _global_static_not_initialized;<br />
+static int _global_static = 100;<br />
+<br />
+void function (void)<br />
+{<br />
+  static int _static_in_function_not_initialized;<br />
+  static int _static_in_function = 100;<br />
+  int _local_in_function_not_initialized;<br />
+  int _local_in_function = 100;<br />
+<br />
+  PRINT_ADDR_AND_VALUE (_static_in_function_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_static_in_function);<br />
+  PRINT_ADDR_AND_VALUE (_local_in_function_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_local_in_function);<br />
+}<br />
+<br />
+int main (int argc, char *argv[])<br />
+{<br />
+  static int _static_in_main_not_initialized;<br />
+  static int _static_in_main = 100;<br />
+  int _local_in_main_not_initialized;<br />
+  int _local_in_main = 100;<br />
+<br />
+  PRINT_ADDR_AND_VALUE (_global_static_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_global_static);<br />
+  PRINT_ADDR_AND_VALUE (_global_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_global);<br />
+<br />
+  PRINT_ADDR_AND_VALUE (_static_in_main_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_static_in_main);<br />
+  PRINT_ADDR_AND_VALUE (_local_in_main_not_initialized);<br />
+  PRINT_ADDR_AND_VALUE (_local_in_main);<br />
+<br />
+  function ();<br />
+  return 0;<br />
+}</pre><br />
 <br />
 실험 방법은 위의 코드를 사용하여 전역적(global), 정적(static), 그리고 초기화된(initialized), 초기화되지 않은(not initialized) 마지막으로 함수 stack 변수까지 메모리 주소와 그 값을 비교해보도록 하였다.<br />
 <br />
 실행 결과는 다음과 같고,<br />
-<pre class='brush: c'>          _global_static_not_initialized (        0x601040 -> 0)
-                          _global_static (        0x601024 -> 100)
-                 _global_not_initialized (        0x60104c -> 0)
-                                 _global (        0x601020 -> 100)
-         _static_in_main_not_initialized (        0x601044 -> 0)
-                         _static_in_main (        0x601028 -> 100)
-          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)
-                          _local_in_main (  0x7fffde739c68 -> 100)
-     _static_in_function_not_initialized (        0x601048 -> 0)
-                     _static_in_function (        0x60102c -> 100)
-      _local_in_function_not_initialized (  0x7fffde739c3c -> 32705)
-                      _local_in_function (  0x7fffde739c38 -> 100)</pre>
+<pre class="brush: c; html-script: true">          _global_static_not_initialized (        0x601040 -> 0)<br />
+                          _global_static (        0x601024 -> 100)<br />
+                 _global_not_initialized (        0x60104c -> 0)<br />
+                                 _global (        0x601020 -> 100)<br />
+         _static_in_main_not_initialized (        0x601044 -> 0)<br />
+                         _static_in_main (        0x601028 -> 100)<br />
+          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)<br />
+                          _local_in_main (  0x7fffde739c68 -> 100)<br />
+     _static_in_function_not_initialized (        0x601048 -> 0)<br />
+                     _static_in_function (        0x60102c -> 100)<br />
+      _local_in_function_not_initialized (  0x7fffde739c3c -> 32705)<br />
+                      _local_in_function (  0x7fffde739c38 -> 100)</pre><br />
 <br />
 위 문제와 연결지어 정리하면 이와 같다. 위 쪽이 memory의 high address이고 아래 쪽이 low address이다. 세 개의 영역으로 구분지었는데, 위에서부터 <a href="http://en.wikipedia.org/wiki/Data_segment#Stack">스택(Stack)</a>, <a href="http://en.wikipedia.org/wiki/Data_segment#BSS">초기화되지 않은 영역(BSS)</a>, <a href="http://en.wikipedia.org/wiki/Data_segment#Data">초기화된 영역(Data)</a>이다.<br />
-<pre class='brush: c'>          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)
-                          _local_in_main (  0x7fffde739c68 -> 100)
-      _local_in_function_not_initialized (  0x7fffde739c3c -> 32705)
-                      _local_in_function (  0x7fffde739c38 -> 100)
-
-                 _global_not_initialized (        0x60104c -> 0)
-     _static_in_function_not_initialized (        0x601048 -> 0)
-         _static_in_main_not_initialized (        0x601044 -> 0)
-          _global_static_not_initialized (        0x601040 -> 0)
-
-                     _static_in_function (        0x60102c -> 100)
-                         _static_in_main (        0x601028 -> 100)
-                          _global_static (        0x601024 -> 100)
-                                 _global (        0x601020 -> 100)</pre>
+<pre class="brush: c; html-script: true">          _local_in_main_not_initialized (  0x7fffde739c6c -> 0)<br />
+                          _local_in_main (  0x7fffde739c68 -> 100)<br />
+      _local_in_function_not_initialized (  0x7fffde739c3c -> 32705)<br />
+                      _local_in_function (  0x7fffde739c38 -> 100)<br />
+<br />
+                 _global_not_initialized (        0x60104c -> 0)<br />
+     _static_in_function_not_initialized (        0x601048 -> 0)<br />
+         _static_in_main_not_initialized (        0x601044 -> 0)<br />
+          _global_static_not_initialized (        0x601040 -> 0)<br />
+<br />
+                     _static_in_function (        0x60102c -> 100)<br />
+                         _static_in_main (        0x601028 -> 100)<br />
+                          _global_static (        0x601024 -> 100)<br />
+                                 _global (        0x601020 -> 100)</pre><br />
 <br />
 이 결과로 볼 때 세 가지 영역으로 구분할 수 있다.<br />
 첫 번째는 <strong>스택 공간</strong>으로 지역 변수, 함수 인자, 반환 주소 등이 들어가는 공간이다. 본 실험과 크게 상관없는 부분으로 <a href="http://en.wikipedia.org/wiki/Call_Stack">call stack</a>에 따라 아래(low address)로 증가하는 것을 확인할 수 있다.<br />

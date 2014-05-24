@@ -78,36 +78,36 @@
 <br />
 #<br />
 RpcWork는 다음의 방법으로 쉽게 구현할 수 있다.<br />
-<pre class='brush: csharp'>[Serializable]
-public abstract class RpcWork<TReturn> : IWork
-{
-    [Serializable]
-    private class ReturnWork : IWork
-    {
-        private readonly RpcWork<TReturn> _parentWork;
-        private readonly TReturn _returnValue;
-
-        public ReturnWork(RpcWork<TReturn> parentWork, TReturn returnValue)
-        {
-            _parentWork = parentWork;
-            _returnValue = returnValue;
-        }
-
-        public void Execute(Socket endPoint)
-        {
-            _parentWork.ExecuteReturn(_returnValue, endPoint);
-        }
-    }
-
-    public void Execute(Socket endPoint)
-    {
-        var returnValue = ExecuteWork(endPoint);
-        endPoint.SendWork(new ReturnWork(this, returnValue));
-    }
-
-    protected abstract TReturn ExecuteWork(Socket endPoint);
-    protected abstract void ExecuteReturn(TReturn returnValue, Socket endPoint);
-}</pre>
+<pre class="brush: csharp; html-script: true">[Serializable]<br />
+public abstract class RpcWork<TReturn> : IWork<br />
+{<br />
+    [Serializable]<br />
+    private class ReturnWork : IWork<br />
+    {<br />
+        private readonly RpcWork<TReturn> _parentWork;<br />
+        private readonly TReturn _returnValue;<br />
+<br />
+        public ReturnWork(RpcWork<TReturn> parentWork, TReturn returnValue)<br />
+        {<br />
+            _parentWork = parentWork;<br />
+            _returnValue = returnValue;<br />
+        }<br />
+<br />
+        public void Execute(Socket endPoint)<br />
+        {<br />
+            _parentWork.ExecuteReturn(_returnValue, endPoint);<br />
+        }<br />
+    }<br />
+<br />
+    public void Execute(Socket endPoint)<br />
+    {<br />
+        var returnValue = ExecuteWork(endPoint);<br />
+        endPoint.SendWork(new ReturnWork(this, returnValue));<br />
+    }<br />
+<br />
+    protected abstract TReturn ExecuteWork(Socket endPoint);<br />
+    protected abstract void ExecuteReturn(TReturn returnValue, Socket endPoint);<br />
+}</pre><br />
 <br />
 원격지에서 수행할 함수를 담는 클래스(<strong>RpcWork</strong>)와 그 수행 결과를 담아 다시 돌려줄 클래스(<strong>ReturnWork</strong>)로 구성되어 있다.<br />
 RpcWork의 ExecuteWork() 함수가 원격지에서 수행될 함수이고, ExecuteReturn() 함수가 원격지에서 수행된 결과를 받아서 처리할 함수이다.<br />
@@ -127,33 +127,33 @@ Execute() 함수는 ExecuteWork() 함수를 수행해서 그 결과를 받은 �
 <br />
 #<br />
 간단한 덧셈 Rpc를 구현해보면 다음과 같다.<br />
-<pre class='brush: csharp'>[Serializable]
-public class RemoteSumWork : RpcWork<int>
-{
-    private readonly int _leftValue;
-    private readonly int _rightValue;
-
-    public RemoteSumWork(int left, int right)
-    {
-        _leftValue = left;
-        _rightValue = right;
-    }
-
-    protected override int ExecuteWork(Socket endPoint)
-    {
-        return _leftValue + _rightValue;
-    }
-
-    protected override void ExecuteReturn(int returnValue, Socket endPoint)
-    {
-        Console.WriteLine("Return from: " + returnValue);
-    }
-}</pre>
+<pre class="brush: csharp; html-script: true">[Serializable]<br />
+public class RemoteSumWork : RpcWork<int><br />
+{<br />
+    private readonly int _leftValue;<br />
+    private readonly int _rightValue;<br />
+<br />
+    public RemoteSumWork(int left, int right)<br />
+    {<br />
+        _leftValue = left;<br />
+        _rightValue = right;<br />
+    }<br />
+<br />
+    protected override int ExecuteWork(Socket endPoint)<br />
+    {<br />
+        return _leftValue + _rightValue;<br />
+    }<br />
+<br />
+    protected override void ExecuteReturn(int returnValue, Socket endPoint)<br />
+    {<br />
+        Console.WriteLine("Return from: " + returnValue);<br />
+    }<br />
+}</pre><br />
 <br />
 두 인자를 생성자로 받아 멤버로 저장한다. ExecuteWork() 함수에서는 멤버의 두 값을 더해서 반환하고,<br />
 ExecuteReturn() 함수에서는 인자로 그 결과를 받아서 화면에 출력한다.<br />
 <br />
-<pre class='brush: csharp'>master.DistributeWork(new RemoteSumWork(100, 200));</pre>
+<pre class="brush: csharp; html-script: true">master.DistributeWork(new RemoteSumWork(100, 200));</pre><br />
 <br />
 RemoteSumWork의 ExecuteReturn() 함수가 수행될 때, _leftValue와 _rightValue 값은 master에서 slave로 요청할 때 한 번, slave에서 master로 ReturnWork 보낼 때 다시 묻어서 한 번, 총 두 번 network trip을 하게 된다.<br />
 <br />
@@ -172,42 +172,42 @@ Master에서 Slave에게 수행시키고 싶은 함수가 있는데 Slave에게�
 결국 DistFunctions로부터 만들어지는 DistFunctions.dll를 Slave에게 전달해주면, Master가 보내는 코드도 Slave가 잘 실행해줄 수 있다는 것이다.<br />
 <br />
 일단 파일을 보내기 위한 Work부터 만들어보자.<br />
-<pre class='brush: csharp'>[Serializable]
-public class FileSendWork : IWork
-{
-    private readonly string _fileName;
-    private readonly byte[] _fileBytes;
-
-    public FileSendWork(string filePath)
-    {
-        _fileName = Path.GetFileName(filePath);
-        _fileBytes = File.ReadAllBytes(filePath);
-    }
-
-    public void Execute(Socket endPoint)
-    {
-        if (File.Exists(_fileName))
-            return;
-
-        using (
-            var stream = new FileStream(_fileName, FileMode.CreateNew,
-                                        FileAccess.Write, FileShare.Write))
-        {
-            stream.Write(_fileBytes, 0, _fileBytes.Length);
-        }
-    }
-}</pre>
+<pre class="brush: csharp; html-script: true">[Serializable]<br />
+public class FileSendWork : IWork<br />
+{<br />
+    private readonly string _fileName;<br />
+    private readonly byte[] _fileBytes;<br />
+<br />
+    public FileSendWork(string filePath)<br />
+    {<br />
+        _fileName = Path.GetFileName(filePath);<br />
+        _fileBytes = File.ReadAllBytes(filePath);<br />
+    }<br />
+<br />
+    public void Execute(Socket endPoint)<br />
+    {<br />
+        if (File.Exists(_fileName))<br />
+            return;<br />
+<br />
+        using (<br />
+            var stream = new FileStream(_fileName, FileMode.CreateNew,<br />
+                                        FileAccess.Write, FileShare.Write))<br />
+        {<br />
+            stream.Write(_fileBytes, 0, _fileBytes.Length);<br />
+        }<br />
+    }<br />
+}</pre><br />
 <br />
 파일 이름은 서버가 지정해준대로 사용한다. 만약 동일한 파일 이름이 이미 Slave에 있다면 파일을 저장하지 않는다<strong>(!)</strong><br />
 <br />
 자세한 설명은 잠시 뒤에 하고, Master와 Slave가 어떤 코드를 갖는지 보자.<br />
-<pre class='brush: csharp'>master.DistributeWork(new FileSendWork("DistFunctions.dll"));
-master.DistributeWork(new RemoteSumWork(100, 200));</pre>
-<pre class='brush: csharp'>var slave = new Slave("127.0.0.1", 12345);
-Task.Factory.StartNew(slave.Start);
-
-Logger.Write("Slave Start!");
-Console.ReadKey();</pre>
+<pre class="brush: csharp; html-script: true">master.DistributeWork(new FileSendWork("DistFunctions.dll"));<br />
+master.DistributeWork(new RemoteSumWork(100, 200));</pre><br />
+<pre class="brush: csharp; html-script: true">var slave = new Slave("127.0.0.1", 12345);<br />
+Task.Factory.StartNew(slave.Start);<br />
+<br />
+Logger.Write("Slave Start!");<br />
+Console.ReadKey();</pre><br />
 Slave 프로젝트는 DistFunctions 프로젝트를 Reference로 등록해놓지 않았기 때문에 RemoteSumWork 클래스의 존재를 모른다. 따라서 Master가 RemoteSumWork 객체를 보내면 deserialize 과정에서 Type 객체를 찾을 수 없다고 예외가 발생해야 한다.<br />
 하지만 그 RemoteSumWork 객체를 보내기 전에 DistFunctions.dll을 보냈다. Slave는 이 파일을 받아서 <strong>자신의 exe 파일이 있는 위치에 저장하게 된다.</strong> 덕분에 RemoteSumWork 객체를 전달받았을 때에는 <strong>exe 주변의 dll을 알아서 검색해서 알아서 deserialize를 해준다.</strong> 즉, dll만 보내주면 끝이라는 이야기이다.<br />
 <br />

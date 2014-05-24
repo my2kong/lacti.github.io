@@ -25,7 +25,7 @@ c++에서 reflection 사용하기 #4
 두 번째는 선언된 구조체의 reflection 정보를 등록하는 단계로 REGISTER_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 REFLECTION_REGISTER 매크로가 사용되어야 하므로, 이 시점에서는 type_register_macro.h가 include된 상태이어야 한다.
 
 두 macro.h 파일이 처음 참조하게 되는 초기화 파일인 reset_type_macro.h 파일에서 각 상태를 먼저 초기화해줄 수 있도록 한다.
-<pre class='brush: cpp'>#ifdef STRUCT_BEGIN
+<pre class="brush: cpp; html-script: true">#ifdef STRUCT_BEGIN
 #undef STRUCT_BEGIN
 #endif
 
@@ -49,7 +49,7 @@ c++에서 reflection 사용하기 #4
 
 #
 구조체를 선언하기 위한 매크로가 정의된 type_declare_macro.h 파일을 보면 다음과 같다.
-<pre class='brush: cpp'>#include "reset_type_macro.h"
+<pre class="brush: cpp; html-script: true">#include "reset_type_macro.h"
 
 #ifndef __DECLARE_TYPE_MACRO_DEFINED__
 #define __DECLARE_TYPE_MACRO_DEFINED__
@@ -74,7 +74,7 @@ DECLARE 계열 매크로의 중복 정의를 막고, STRUCT가 DECLARE 매크로
 현재 상태를 DECLARE_PHASE로 만든다.
 
 선언된 구조체의 reflection 정보를 등록하기 위한 매크로가 정의된 type_register_macro.h 파일을 보면 다음과 같다.
-<pre class='brush: cpp'>#include "reflection_macro.h"
+<pre class="brush: cpp; html-script: true">#include "reflection_macro.h"
 #include "reset_type_macro.h"
 
 #define STRUCT_BEGIN(class_name)        REFLECTION_REGISTER_BEGIN(class_name)
@@ -86,7 +86,7 @@ STRUCT가 REFLECTION_REGISTER 매크로를 가리키게 한 다음, 현재 상�
 
 #
 이제 모든 준비가 완료되었으니, user.h 파일에서 각 상태 별로 한 번씩만 include가 되도록 만들어주자.
-<pre class='brush: cpp'>#if (defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)) \
+<pre class="brush: cpp; html-script: true">#if (defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)) \
     || (defined(__REGISTER_PHASE__) && !defined(__USER_REGISTERED__))
 
 #if defined(__DECLARE_PHASE__) && !defined(__USER_DECLARED__)
