@@ -25,3 +25,20 @@ footer {
 	font-weight: bold;
 	color: #777;
 }
+
+@media print {
+	body {
+		margin-top: 0px;
+	}
+	
+	footer {
+		margin: 0px;
+		display: none;
+	}
+	
+	#disqus_container,
+	.sides,
+	hr {
+		display: none;
+	}
+}

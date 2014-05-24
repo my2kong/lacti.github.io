@@ -160,21 +160,22 @@ while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {
                 <hr>
 
                 <!-- the comments -->
-				<div id="disqus_thread"></div>
-				<script type="text/javascript">
-					var disqus_shortname = 'lacti';
-					(function() {
-						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					})();
-				</script>
-				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 sides">
 
                 <div class="well">
 					<h4>Related</h4>
@@ -204,9 +205,8 @@ while (!mJobQueue.empty() && InterlockedExchange(&mExclusiveFlag, 1) == 0) {
             </div>
         </div>
 
-        <hr>
-
         <footer>
+			<hr>
             <div class="row">
                 <div class="col-lg-12">
                     <p>Copyright &copy; lacti 2014</p>
