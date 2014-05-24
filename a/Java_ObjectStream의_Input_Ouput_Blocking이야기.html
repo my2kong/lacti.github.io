@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>Java ObjectStream의 Input/Ouput Blocking이야기</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,71 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>Java ObjectStream의 Input/Ouput Blocking이야기</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on April 29, 2010 at 8:52 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+Java의 ObjectInputStream / ObjectOutputStream을 사용하여 데이터 통신을 할 때,<br />
+Client와 Server 양측에서 ObjectInputStream을 먼저 생성하면 프로그램이 더이상 진행되지 않는 경우가 있는데,<br />
+그 이유는 다음과 같다.<br />
+<br />
+ObjectInputStream의 initialize 코드<br />
+<pre class='brush: java'>    public ObjectInputStream(InputStream in) throws IOException {
+        verifySubclass();
+        bin = new BlockDataInputStream(in);
+        handles = new HandleTable(10);
+        vlist = new ValidationList();
+        enableOverride = false;
+        readStreamHeader();
+        bin.setBlockDataMode(true);
+    }</pre>
+<br />
+보면, readStreamHeader(); 함수가 호출되는데,<br />
+<pre class='brush: java'>    protected void readStreamHeader()
+        throws IOException, StreamCorruptedException
+    {
+        short s0 = bin.readShort();
+        short s1 = bin.readShort();</pre>
+<br />
+다음과 같이 bin이라는 멤버 변수를 사용하여 short 값 2개를 읽는다. 이 bin이라는 녀석은,<br />
+<pre class='brush: java'>    /** filter stream for handling block data conversion */
+    private final BlockDataInputStream bin;</pre>
+와 같은데, 딱 봐도 뭔가 block 시킬 것 같이 무시무시한 이름을 가졌다.<br />
+<br />
+이 때문에 양측에서 먼저 InputStream을 생성하면 둘다 short 값 2개를 서로 기다리다가 프로그램이 진행이 안되는 것.<br />
+<br />
+이것을 해결하기 위해서 ObjectOutputStream을 먼저 생성하는데, 그 이유는 이와 같다.<br />
+<pre class='brush: java'>    public ObjectOutputStream(OutputStream out) throws IOException {
+        verifySubclass();
+        bout = new BlockDataOutputStream(out);
+        handles = new HandleTable(10, (float) 3.00);
+        subs = new ReplaceTable(10, (float) 3.00);
+        enableOverride = false;
+        writeStreamHeader();
+        bout.setBlockDataMode(true);
+        if (extendedDebugInfo) {
+            debugInfoStack = new DebugTraceInfoStack();
+        } else {
+            debugInfoStack = null;
+        }   
+    }</pre>
+ObjectOutputStream의 생성 코드를 보면, writeStreamHeader(); 를 호출한다.<br />
+<br />
+<pre class='brush: java'>    protected void writeStreamHeader() throws IOException {
+        bout.writeShort(STREAM_MAGIC);
+        bout.writeShort(STREAM_VERSION);
+    }</pre>
+여기서는 딱 에누리없이 정의된 short 값 2개를 보내는데, 이것이 바로 MAGIC_NUMBER였던 것이라<br />
+<br />
+이와 같은 작용으로 인해 ObjectStream은 서로 Object를 주고받을 준비가 되었는지(양쪽다 ObjectStream인지) 확인하고 데이터를 주고 받을 수 있는 것이다.<br />
+<br />
+결론.<br />
+ObjectInputStream을 양쪽에서 먼저 생성하면 blocking,<br />
+따라서 ObjectOutputStream을 먼저 생성해줘야 stream에 값을 write 후, InputStream에서 읽을 수 있으므로 제대로 돌아간다.<br />
+<br />
+끝.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +147,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

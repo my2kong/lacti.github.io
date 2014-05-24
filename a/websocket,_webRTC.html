@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>websocket, webRTC</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,36 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>websocket, webRTC</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on September 07, 2013 at 10:34 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+#<br />
+http://www.websocket.org/<br />
+http://en.wikipedia.org/wiki/WebSocket<br />
+http://tools.ietf.org/html/rfc6455<br />
+http://www.w3.org/TR/websockets/<br />
+WebSocket 표준이 확정되지 않은 줄 알았는데 2011년 10월에 확정되었다.<br />
+그리고 W3C API는 2012년 9월에 CR단계가 되었나보다.<br />
+그럼 이제 써도 되나?<br />
+<br />
+IE는 10부터 지원한다-_-<br />
+http://msdn.microsoft.com/en-us/library/ie/hh673567(v=vs.85).aspx<br />
+<br />
+#<br />
+약간 다르지만 WebRTC라는 것도 있다.<br />
+http://en.wikipedia.org/wiki/WebRTC<br />
+http://www.webrtc.org/<br />
+<br />
+대충 위키에 써있는 설명을 가져오면 다음과 같다. browser-to-browser applications for voice calling, video chat, and P2P file sharing without plugins.<br />
+browser-to-browser, 즉 peer connection이 가능하다.<br />
+<br />
+http://io13webrtc.appspot.com/<br />
+http://www.simpl.info/rtcdatachannel/<br />
+DataChannel API가 존재하며, WebSocket에 비해 좋은 점이 있다고 소개하고 있다.<br />
+지금은 표준화 작업 진행 중임<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +112,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

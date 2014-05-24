@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>LockWindowUpdate</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,31 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>LockWindowUpdate</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on December 18, 2010 at 11:43 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+Win32 혹은 MFC를 하다보면<br />
+어떤 창 내에 여러 Child Window가 존재하고,<br />
+또, 해당 DC를 얻어서 그림?을 그려야하는 경우가 생기는데<br />
+<br />
+이들이 모두 변경되는 경우,<br />
+즉 그림도 변경되고 Child Window도 SetWindowPos 등의 함수를 통해 변경될 경우에<br />
+그림은 InvalidateRect 등의 함수에 의해 다시 그려질 것이나<br />
+Child Window는 SetWindowPos 나 ShowWindow 함수가 호출되는 즉시 변경이 되기 때문에<br />
+UI 가 한번에 갱신되지 않고 지역별로 갱신되는 문제가 발생한다.<br />
+<br />
+이를 동기화하려면, 부모 Window의 WM_PAINT 메시지와 Child Window의 WM_PAINT가 동기적으로 일어나야하는데<br />
+어차피 부모 Window WM_PAINT 수행되면 Child도 다 수행되니까(invalid rect 내에 있으면)<br />
+<br />
+결론은, LockWindowUpdate 함수를 통해 부모 Window에 Lock을 걸어<br />
+Child Window가 수정되어도 WM_PAINT 가 수행되는 것을 막고<br />
+<br />
+모든 작업이 끝난 후에 LockWindowUpdate (NULL) 을 호출하고 UpdateWindow를 수행해줌으로써 화면을 갱신해준다.<br />
+<br />
+끝.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +107,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

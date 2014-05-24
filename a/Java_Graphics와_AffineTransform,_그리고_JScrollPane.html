@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>Java Graphics와 AffineTransform, 그리고 JScrollPane</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>Java Graphics와 AffineTransform, 그리고 JScrollPane</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on January 04, 2009 at 4:04 PM</p>
+                <hr>
+                <div class="content">
+#1<br />
+예전에 디비랩 알바를 할 때,<br />
+어떤 이미지에 대해 확대, 축소, 이동을 해야할 일이 생겼다.<br />
+MouseEvent 처리 시 좌표 계산 등, 몇 가지 계산을 해서 Image를 확대, 축소, 이동해서 볼 수 있도록 하였다.<br />
+<br />
+#2<br />
+Applepie(YPE2)를 만들 때 역시 이미지에 대해 확대, 축소, 이동을 할 일이 있었는데<br />
+이 때는 이미지가 하나가 아니라, 여러 이미지를 그려야하는 상황이었다.<br />
+각각에 대해 동일한 비율로 확대, 축소, 이동을 도무지 못 해서<br />
+결국 이미지를 BufferedImage에 다 그려놓고, 그걸 화면에 확대해서 그리는 방식으로 했었다.<br />
+덕분에 메모리가 더 많이 사용되었고, 더 느렸다.<br />
+EventHandling은 역시 별도로 계산해주어야 했다.<br />
+<br />
+#3<br />
+Game Programming 시간에 AffineTransform을 배웠다.<br />
+전에 Gepard를 만들 때, 거엽 선배님께서 이를 써서 지형을 그려주셨는데,<br />
+그 때만 해도 이게 무슨 역할을 하는지 몰랐었다.<br />
+이번에, 또, 확대, 축소, 이동을 하는 부분을 짜야하는데<br />
+이번에는 여러 이미지 뿐만 아니라 그 위에 여러 shape도 그려야 했다.<br />
+그리고 현재 편집모드에 따라 다른 것들이 그려지게 될텐데, 이걸 어찌해야하나 고민을 했는데,<br />
+AffineTransform을 쓰니까 한번에 끝난다-_-<br />
+AffineTransform oldTransform = g2d.getTransform();<br />
+AffineTransform newTransform = new AffineTransform(oldTransform);<br />
+newTransform.scale(factor, factor);<br />
+newTransform.translate(-viewport.x, -viewport.y);<br />
+scale와 translate를 해서 Graphics에 지정해주고 그냥 전체를 화면에 다 그리게 하면, 지정된 viewport 영역에 대해 scale되어 나오게 된다.<br />
+물론 EventHandling은 자체 계산ㄱ-<br />
+<br />
+#4<br />
+clipping을 해주어야 겠는데,<br />
+viewport 영역으로 clipping을 해주면 되겠구나, 라는 생각을 해냈다.<br />
+JScrollPane으로 감싸고, 그 안에 Graphics를 수행하는 Panel 객체를 넣어서 Clipping을 했는데,<br />
+JScrollPane의 ScrollBar가 안 그려지는 것이었다.<br />
+찾아보니까,<br />
+JScrollPane는 자신이 현재 보여주고 있는 viewport만을 그리기 위해 이미 자기가 알아서 clipping을 수행한다는 것.<br />
+그래서 JScrollPane의 viewport보다 작은 영역을 clipping하는 것은 상관 없지만, 더 큰 영역을 clipping하면 오히려 JScrollPane이 망가지게 된다는 것이다.<br />
+오호, JScrollPane 쓴 덕분에 Clipping까지 그냥 끝<br />
+<br />
+#5<br />
+JScrollPane 안에 들어있는 JPanel 등의 객체들은<br />
+아무리 내가 원하는 크기를 PreferredSize로 지정을 해도, viewport의 크기게 맞게 맞춰져버리는 성질이 있다.<br />
+(이게 바로 clipping 효과 때문이 아닐까 하는데, 그리는건 둘째치고 Event 영역 한정지어줘야 하는게 귀찮다.)<br />
+그래서 쓰는 방법이,<br />
+final JPanel container = new JPanel(new GridBagLayout());<br />
+final JScrollPane scrollPane = new JScrollPane(container);<br />
+this.setPreferredSize(new Dimension(600, 480));<br />
+container.add(this);<br />
+바로 이것이다. (물론 다른 Container에 이 덩어리를 추가할 때는 scrollPane 객체로 추가해줘야 한다. 그래야 scroll 생기지.)<br />
+Graphics를 수행하는 Component가 this일 때, 자신의 크기를 setPrefferedSize로 정하고, 자기를 바로 JScrollPane에 추가하는 것이 아니라 중간에 container 객체를 하나 두는데, 이 container의 LayoutManager로 GridBagLayout을 사용하는 것이다.<br />
+그러면 this는 container 객체의 가운데에 위치하게 되고, container가 this의 크기보다 작아지면 JScrollPane에 의해 ScrollBar가 생기게 된다.<br />
+물론 this의 PreferredSize를 변경해준 뒤에는 revalidate를 호출해서 JScrollPane이 크기가 변경되었음을 감지할 수 있도록 해주어야 한다.<br />
+<br />
+#6<br />
+결론,<br />
+Viewport와 Magnification을 이용한 Graphics, 그리고 JScrollPane을 통한 Scrolling을 수행하려면 AffineTransform과 GridBagLayout container를 이용하는 것이 좋다.<br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>

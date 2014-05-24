@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>C# UI Cross thread problem 해결</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,26 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>C# UI Cross thread problem 해결</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on March 01, 2012 at 7:45 AM</p>
                 <hr>
                 <div class="content">
-{{content}}
+다른 Thread 에서 UI component 에 접근하려면 문제가 발생한다. (cross thread)<br />
+동기화 이슈에서보면 당연한 이야기니 바로 해결책을 보자.<br />
+<br />
+System.Windows.Forms.Control 에는 Invoke 라는 UI Thread 로 작업을 delegate 하는 method 가 있다.<br />
+이녀석은 Delegate 를 받아서 그걸 내부에서 수행해주는데, <br />
+C# 에서는 어차피 외부 변수 capture 를 자동으로 해주므로 간단히 다음과 같이 쓰면 된다.<br />
+<pre class='brush: csharp'>Invoke(new MethodInvoker(delegate()
+{
+    // code for running in ui thread
+}));</pre>
+<br />
+그러면 delegate 내부의 내용은 UI thread 에서 수행되므로 문제가 없다.<br />
+(더 예전 버전의 C# 은 직접 method 를 만들어서 등록해주어야했지만 2.0 이후부터는 delegate 로 익명 함수자 생성이 가능하므로 문법이 좀 간단해졌다.)<br />
+(C# 4.0 부터는 lambda 를 지원하니까 문법이 더 간단해지지 않았나?)<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +102,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

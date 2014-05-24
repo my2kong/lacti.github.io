@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>간단한 Message 체계 구현 (Java)</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>간단한 Message 체계 구현 (Java)</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on November 27, 2011 at 3:14 AM</p>
+                <hr>
+                <div class="content">
+#<br />
+본 글을 객체 간의 메시지 통신이 아니라 모듈 간의 메시지 통신에 대해 다룬다.<br />
+즉, 특정 대상 객체를 지정하여 메시지를 보내는 내용이 아니라 전역 MessageQueue 에 대해 어떤 Message 를 수신할지를 등록하는 Handler 객체에 대한 내용이다.<br />
+<br />
+#<br />
+MessageQueue 는 전역 객체이다. Message 를 받아서 이를 수신 Handler 객체에게 전달한다.<br />
+여러 Thread 에서 접근할 수 있으므로 Concurrent DataStructure 를 사용한다.<br />
+내부적으로 각 Message 에 대해 여러 Worker Thread 를 두어 처리할 수도 있겠지만, 일단 Message 처리의 순서를 보장하기 위해 공유 Queue 를 갖고 단일 Thread 가 처리하는 방식으로 구현한다.<br />
+(글 쓰면서 생각해보니 이 지점에서 성능 병목이 생길텐데, 고민을 더 해봐야겠다)<br />
+<br />
+#<br />
+Message 는 무슨 class 가 될지 모르니까 간단하게 mark interface 로 만든다.<br />
+<pre class='brush: java'>public interface Message {
+}</pre>
+<br />
+MessageQueue class 는 Message 를 공유하는 Queue 객체와 이를 처리할 수 있도록 내부 Thread 를 하나 돌린다.<br />
+<pre class='brush: java'>private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>(); 
+
+private MessageQueue() {
+    new Thread() {
+        /* public this() */ {
+            setDaemon(true);
+        }
+        
+        @Override
+        public void run() {
+            process();
+        }
+    }.start();
+}
+
+private void process() {
+    Message message = null;
+    while ((message = pop()) != null) {
+        delegate(message);
+    }
+}
+
+private Message pop() {
+    try {
+        return queue.take();
+    } catch (InterruptedException e) {
+        Logger.error(e);
+    }
+    return null;
+}</pre>
+<br />
+#<br />
+보통의 단순한 Message Handler 라면, Message 에 MessageType 이나 id 값을 넣어서 그 내부적으로 switch case 로 분기하여 처리하는 구조가 될 것이다.<br />
+이에 대해서는 multiple-dispatch 를 사용하면 보다 깔끔한 구조의 Handler 를 작성할 수 있는데, Java 는 어차피 느리고 Reflection 을 통해 이 기능을 구현할 수 있으니 도전해보자.<br />
+<br />
+Handler 는 <em>handleMessage</em> 이라는 method 를 갖는다. 이 때 parameter 는 Message class 를 하나만 갖는다.<br />
+<pre class='brush: java'>void handleMessage(StringMessage message) {
+}
+void handleMessage(IntMessage message) {
+}</pre>
+이 때 MessageQueue 에 StringMessage 객체를 넣으면 첫 번째 함수가, IntMessage 객체를 넣으면 후자의 함수가 호출되도록 하겠다는 것이다.<br />
+<br />
+<pre class='brush: java'>private static final String HANDLER_NAME = "handleMessage";
+private Map<Class<?>, List<Object>> handlerMap = new ConcurrentHashMap<Class<?>, List<Object>>();
+
+private void addHandler(Object handler) {
+    Class<?> handlerClass = handler.getClass();
+    for (Method method: handlerClass.getDeclaredMethods()) {
+        if (!method.getName().equals(HANDLER_NAME))
+            continue;
+        
+        Class<?>[] paramTypes = method.getParameterTypes();
+        Class<?> messageClass = paramTypes[0];
+        if (!Message.class.isAssignableFrom(messageClass) || paramTypes.length > 1) {
+            Logger.error(new MessageQueueException("Invalid Handler in " + handlerClass.getSimpleName() 
+                    + "/" + method.toGenericString()));
+            
+            continue;
+        }
+        
+        if (!handlerMap.containsKey(messageClass)) {
+            handlerMap.put(messageClass, new CopyOnWriteArrayList<Object>());
+        }
+        handlerMap.get(messageClass).add(handler);
+    }
+}</pre>
+Handler 객체를 등록할 때, Handler 객체에 선언된 모든 Method 를 가져온다.<br />
+그 Method 중 이름이 handleMessage 인 것들을 찾는다. 이 때 parameter 는 반드시 한 개이어야 하고, 그 type 은 Message class 를 상속받는 class 이어야(assignableFrom) 한다.<br />
+<br />
+그러한 method 들을 찾았다면, 그 Message class 에 대응되는 Handler 들의 목록을 저장해둔다.<br />
+(여기서 Method 도 같이 저장해둔다면, 나중에 invoke 할 때 또 Method 를 찾는 부담을 덜 수 있을 것이다.)<br />
+<br />
+#<br />
+이제 Message 가 들어오면 그 class type 에 해당하는 Handler 를 찾아서 invoke 를 해주면 된다.<br />
+<pre class='brush: java'>private void delegate(Message message) {
+    Set<Object> invoked = new HashSet<Object>();
+    
+    Class<?> clazz = message.getClass();
+    while (!clazz.equals(Object.class)) {
+        if (handlerMap.containsKey(clazz)) {
+            for (Object handler: handlerMap.get(clazz)) {
+                // prevent bubbling
+                if (!invoked.contains(handler)) {
+                    invoke(handler, clazz, message);
+                    invoked.add(handler);
+                }
+            }
+        }
+        
+        clazz = clazz.getSuperclass();
+    }
+    
+    if (invoked.isEmpty()) {
+        Logger.error(new MessageQueueException("Cannot Find MessageHandler(" + message.getClass().getName() + ")"));
+    }
+}
+
+private void invoke(Object handler, Class<?> messageClass, Message message) {
+    Class<?> handlerClass = handler.getClass();
+    try {
+        Method method = handlerClass.getDeclaredMethod(HANDLER_NAME, messageClass);
+        method.setAccessible(true);
+        method.invoke(handler, message);
+        
+    } catch (Exception e) {
+        Logger.error(e);
+    }
+}</pre>
+<br />
+다만, bubbling 을 막기 위해서 한 번 Invoke 된 Handler 는 다시 Invoke 되지 않도록 했다.<br />
+예를 들어서,<br />
+<pre class='brush: java'>class StringMessage implements Message {}
+class SpecialStringMessage extends StringMessage {}
+void handleMessage(StringMessage message) {}
+void handleMessage(SpecialStringMessage message) {}</pre>
+SpecialStringMessage 객체를 전달했을 때 원하는 상황은 두 번째 함수가 호출되는 것이겠지만,<br />
+사실 SpecialStringMessage class 는 StringMessage class 로 assignable 하기 때문에 첫 번째 함수도 호출될 수 있다.<br />
+<br />
+따라서 delegate 함수에서는 처리할 Message type 을 가장 구체화된(derived) type 부터 역순으로 올라가면서, 그 type 에 대응되는 Handler 를 호출해준 뒤, 더 이상 호출되지 않도록 invoked set 을 유지하는 것이다.<br />
+<br />
+invoke 를 할 때 굳이 setAccessible 을 true 해주는 이유는, message handler 함수가 굳이 객체 외부에서 불릴 필요가 없는데 public 으로만 선언되어야 하는 것을 막기 위함이다.<br />
+(물론 그렇다고 private 으로 선언하면 해당 handler 는 not read locally warning 이 발생하게 되므로, 안타깝지만 default 정도로 선언해주는게 적당한 것 같다)<br />
+<br />
+#<br />
+작성된 MessageQueue 는 다음과 같이 사용될 수 있다.<br />
+<pre class='brush: java'>void handleMessage(StringMessage message) {
+    System.out.println(message.getMessage());
+}
+
+void handleMessage(IntMessage message) {
+    System.out.println(message.getValue());
+}
+
+public static void main(String[] args) {
+    MessageQueue.listen(new ExampleHandler());
+    MessageQueue.push(new StringMessage("hello world"));
+    MessageQueue.push(new IntMessage(12345));
+    
+    try {
+        Thread.sleep(1000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+}</pre>
+<br />
+IntMessage class 는 int 를 생성자로 받고 StringMessage class 는 String 을 생성자로 받는 단순한 wrapper class 이다. MessageQueue 에 ExampleHandler 객체를 등록하고 각 type 의 message 객체를 넣으면,<br />
+첫 번째는 StringMessage parameter type 을 갖는 handler 가, 두 번째는 IntMessage parameter type 을 갖는 handler 가 호출된다.<br />
+<br />
+(마지막의 Thread.sleep 은 daemon Thread 로 Message 를 처리하는 MessageQueue 가 Queue 에 있는 Message 를 처리하기 전에 main 함수가 끝나 프로그램이 종료되어 Message 처리가 되지 못하는 것을 막기 위함이다)<br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>

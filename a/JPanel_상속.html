@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>JPanel 상속</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,52 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>JPanel 상속</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on February 15, 2011 at 10:46 AM</p>
                 <hr>
                 <div class="content">
-{{content}}
+Java에서 UI 코드를 작성할 때, 가장 많이 하는 코딩 방식이<br />
+UI Pane class를 만들고 이 class가 JPanel을 상속받는 것이다.<br />
+<br />
+하지만 생각해보면,<br />
+MVC 설계 방식에 의해, 그 class는 전혀 JPanel을 상속받을 필요가 없고,<br />
+그냥 JPanel 객체를 멤버 변수로 하나 만들어서 contain pane으로 사용하면 되겠지.<br />
+<br />
+그러면 그 class는 정확히 controller 역할을 수행할 것이고(event handling을 포함하여)<br />
+controller가 view(JPanel, JLabel... 등) 객체들의 reference 변수를 알고 변경시키는<br />
+깔끔한 MVC 구조가 성립된다.<br />
+<br />
+하지만 JPanel을 상속받은 객체 내에서 controller일을 수행하면,<br />
+JPanel을 상속받은 시점에서 그 class가 view class화 되기 때문에 V랑 C가 합쳐지는 듯한 해석이 가능해지는데<br />
+어차피 코드 입장에서는 크게 달라지는게 없으므로 이런 해석은 사실상 의미가 없기는 하지만<br />
+생각해보면 굳이 상속을 받아야할 필요는 없으므로 상당히 애매한 위치에 놓인다.<br />
+<br />
+요약하면<br />
+1. 상속을 받아서 UI를 구성해도 되고<br />
+2. 상속을 받지 않고 변수로 UI를 구성해도 된다.<br />
+<br />
+다만, 자주 사용되는 UI class의 경우에는 고민을 좀 해봐야하는 것이<br />
+1)의 방법은 상속을 통한 객체 기능 확장, 2)의 방법은 합성을 통한 객체 구성이니까 사용에 있어서 약간의 차이가 있겠다.<br />
+내부 method를 직접 공개(public)할 것이냐 아니면 위임(delegation)할 것이냐 말이지<br />
+<br />
+아무튼 생각해보면 별 것도 아닌데<br />
+원래 별 것 아닌 것에 대해서 의미를 읽어서 명확히 하는 설계 짓을 하는 것이기 때문에-_- 한 번쯤은 고민해볼 가치가 있다고 생각한다.<br />
+<br />
+하지만 대부분의 UI 설계는 JPanel을 상속받으면서부터 시작하는데<br />
+이러한 습관이 들어버린건 다 NetBeans 때문이다-_-<br />
+<br />
+확실히 View와 Controller가 섞이면 코드가 좀 더러워지고<br />
+coupling이 심해지니까 중간에 interface를 두고 나눌 수도 있고.<br />
+(이걸 심하게 해주시는 분이 로버드 C. 마틴 이란 분인데 http://www.yes24.com/24/goods/4492519 책이 재밌다)<br />
+<br />
+부조리하게도? DB 랩에서 그래디 부치 책을 구했으니 좀 더 공부를 해봐야겠음-_-<br />
+DB랩에 그래디 부치 책이라니!<br />
+<br />
+http://en.wikipedia.org/wiki/Robert_Cecil_Martin<br />
+http://en.wikipedia.org/wiki/Grady_Booch<br />
+유명하신 분들이다.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +128,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

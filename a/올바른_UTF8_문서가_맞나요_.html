@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>올바른 UTF8 문서가 맞나요?</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,24 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>올바른 UTF8 문서가 맞나요?</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on September 08, 2011 at 2:08 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+<pre class='brush: cpp'>{
+    { 0x00, 0x7F }
+    { 0xC2, 0xDF, 0x80, 0xBF, },
+    { 0xE0, 0xE0, 0xA0, 0xBF, 0x80, 0xBF },
+    { 0xE1, 0xEF, 0x80, 0xBF, 0x80, 0xBF },
+    { 0xF0, 0xF0, 0x90, 0xBF, 0x80, 0xBF, 0x80, 0xBF },
+    { 0xF1, 0xF3, 0x80, 0xBF, 0x80, 0xBF, 0x80, 0xBF },
+    { 0xF4, 0xF4, 0x80, 0x8F, 0x80, 0xBF, 0x80, 0xBF },
+}</pre>
+<br />
+참 쉽죠?<br />
+직접 검증하시면 됩니다. ㄳ<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +100,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

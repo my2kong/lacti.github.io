@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>lambda 와 RAII</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>lambda 와 RAII</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on April 01, 2012 at 1:04 AM</p>
+                <hr>
+                <div class="content">
+#<br />
+C++11 에서 도입된 lambda expression 을 통한 RAII 구현 방식의 한 예와,<br />
+단위 전략을 통한 RAII 구현을 통해 장단점을 비교해보자.<br />
+<br />
+#<br />
+RAII 는 scope 내의 정적으로 할당되는 객체의 생존 주기로 생성자와 소멸자가 쌍으로 호출되는 것을 사용하는 자원 관리 기법이다. <a href="http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization">http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization</a><br />
+보통<br />
+IO (열었으면 닫아야하니까),<br />
+메모리 (할당했으면 해제해야하니까, shared_ptr 도 AddReference 했으면 ReleaseReference)<br />
+Lock (Lock 걸었으면 Unlock 해줘야하니까)<br />
+등에서 사용된다.<br />
+<br />
+본 글에서는 Lock 을 사용하여 예를 들어보자.<br />
+<br />
+#<br />
+<pre class='brush: cpp'>class lock_t {
+public:
+    void lock();
+    void unlock();
+};</pre>
+<br />
+위와 같은 Lock class 가 정의되어 있다.<br />
+어떤 class 에서 저 객체를 쓴다고 해보자.<br />
+<pre class='brush: cpp'>class item_t;
+typedef __int64 item_id_t;
+typedef std::shared_ptr<item_t> item_ref;
+
+class inventory_t {
+public:
+    item_ref find(item_id_t item_id);
+private:
+    lock_t lock;
+    std::vector<item_ref> items;
+};
+
+item_ref inventory_t::find(item_id_t item_id) {
+    lock.lock();
+    auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id));
+    if (iter != items.end())
+        return (*iter);
+    lock.unlock();
+    return item_ref(NULL);
+}</pre>
+inventory 가 가지고 있는 item 에 대한 정보는 item 의 vector 로 관리하고 있다.<br />
+저 inventory 객체를 여러 Thread 에서 접근한다고 하면, std::find 에 의해 vector 를 순회하다가 접근 위반이 발생할 가능성이 있다.<br />
+(한 thread 는 순회하고, 한 thread 는 vector 에 삽입/삭제할 경우)<br />
+따라서 lock 을 사용하여 해당 container 를 보호해준다.<br />
+<br />
+하지만 위 코드는 문제가 있다.<br />
+lock 을 사용하여 items 로의 접근을 보호하지만, 실제 item 을 찾은 다음 return 문을 수행하기 전에 unlock 을 수행하지 않았기 때문이다.<br />
+이러한 문제는 find 함수가 좀만 길어지면, 그리고 조그만 신경을 쓰지 않게 되면 흔히 발생할 수 있는 문제이다.<br />
+<br />
+따라서 이러한 문제를 해결하기 위해 정적 객체의 생존 주기를 활용한다.<br />
+<br />
+#<br />
+<pre class='brush: cpp'>class scope_lock_t {
+public:
+    scope_lock_t(lock_t* _lock) : lock(_lock) { lock->lock(); }
+    ~scope_lock_t() { lock->unlock(); }
+private:
+    lock_t* lock;
+};</pre>
+<br />
+멤버로 lock 에 대한 pointer 를 갖고, 생성자에서 lock 을 부르고 소멸자에서 unlock 을 부르도록 하는 scope_lock_t class 를 설계한다.<br />
+그러면, 코드가 아래와 같이 바뀐다.<br />
+<pre class='brush: cpp'>item_ref inventory_t::find(item_id_t item_id) {
+    scope_lock_t scope_lock(&lock);
+    auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id));
+    if (iter != items.end())
+        return (*iter);
+    return item_ref(NULL);
+}</pre>
+<br />
+scope_lock_t 객체가 멤버 변수인 lock 을 가지고 생성된다.<br />
+생성될 때 scope_lock_t 의 생성자에서 lock() 함수가 불린다.<br />
+그리고 실제 로직이 아래에서 수행되고,<br />
+inventory_t::find() 함수가 종료되는 시점, 즉 scope_lock 객체가 소멸되는 시점에 unlock() 함수가 불린다.<br />
+<br />
+생성자와 소멸자는 해당 객체의 생성/소멸 시점에 컴파일러가 알아서 불러주므로,<br />
+위와 같이 scope_lock_t 를 만들어 쓰면 중간에 return 을 해도, goto 를 해도, 1년 뒤에 코드를 고쳐도! lock-unlock 쌍이 잘 맞게 된다.<br />
+(<a href="http://board.poolc.org/generation06/1176">객체 생성/소멸자와 goto 에 대한 이야기</a>)<br />
+<br />
+#<br />
+C++11 은 lambda expression 을 지원해주니 좀 다르게 생각해볼 수 있다.<br />
+<pre class='brush: cpp'>class lock_t {
+public:
+    template <typename functor>
+    void scoped(functor& func) {
+        lock();
+        func();
+        unlock();
+    }
+};</pre>
+<br />
+lock_t class 자체에 위와 같이 functor 를 받아 실행할 수 있는 함수를 만든다.<br />
+그리고 그 앞 뒤로 lock-unlock 을 불러준다.<br />
+<br />
+이렇게 하면,<br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>HashSet과 ArrayList</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,33 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>HashSet과 ArrayList</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on March 20, 2010 at 2:49 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+시간이 없으니 일단 짧게.<br />
+<br />
+어떤 equals, hashCode가 구현된 Entity object에 대해 HashSet에 추가한 뒤,<br />
+그 object에 대한 reference 변수를 사용하여 저 두 함수(e/h)의 결과에 영향을 주는 field 값을 변경할 경우,<br />
+<br />
+HashSet은 contains가 false를 반환하는 반면,<br />
+ArrayList는 contains에서 true를 반환함.<br />
+<br />
+HashSet 내부에 hashCode 값을 caching하는지는 모르겠는데, 현재 잘 이해는 안가지만 시간이 없으므로 나중에 HashSet 코드를 봐야겠다. 끝.<br />
+<br />
+Entity entity = new Entity("lacti", "lactrious@gmail.com");<br />
+<br />
+#1<br />
+set.add (entity);<br />
+entity.setName ("choi");<br />
+set.contains (entity); // false<br />
+<br />
+#2<br />
+list.add (entity);<br />
+entity.setName ("choi");<br />
+list.contains (entity); // true<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +109,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

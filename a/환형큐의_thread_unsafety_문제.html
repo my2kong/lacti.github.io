@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>환형큐의 thread unsafety 문제</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,47 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>환형큐의 thread unsafety 문제</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on February 23, 2012 at 8:32 AM</p>
                 <hr>
                 <div class="content">
-{{content}}
+어떤 자원에 대한 환형큐가 있다고 해보자. size 는 2의 자승이다.<br />
+<pre class='brush: cpp'>void push(resource_t res) {
+    int index = atomic_inc32(&rear_) & size_;
+    array[index] = res;
+}
+resource_t pop() {
+    int index = atomic_inc32(&front_) & size_;
+    return array[index];
+}</pre>
+<br />
+위 코드는 당연히 thread safety 하지 않다.<br />
+하지만, 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자.<br />
+<pre class='brush: cpp'>void work(resource_t old) {
+    push(old);  // release old resource
+    resource_t newone = pop(); // acquire new on
+    // do some work
+}</pre>
+<br />
+예전 자원을 반환하고, 새로운 자원을 할당받아 그것으로 무슨 작업을 하는 것이다.<br />
+이렇게 되면 pop 을 부르는 시점의 thread 는 적어도 자신이 push 한 자원 1개가 반드시 존재함을 보장할 수 있으니까<br />
+문제가 생기지 않는다<br />
+<br />
+라고 생각하면 함정.<br />
+<br />
+thread 4개가 동시에 work 함수를 수행한다고 해보자.<br />
+push 를 수행했으니까 rear_ 는 4만큼 증가하겠지<br />
+<br />
+가장 마지막으로 rear_ 를 증가시킨 thread 만 array 에 resource_t 를 대입하였고,<br />
+나머지 thread 들은 아직 array 에 대입하기 전이다.<br />
+그러면 index 만 증가해있고, 실제 배열은 비어있겠지.<br />
+그래서 마지막 thread 가 pop 을 할 때 null pointer access 로 프로그램이 사망한다.<br />
+<br />
+즉, index 의 증가는 atomic 함을 보장하지만 그것이 배열에 자원이 대입되었음을 보장해주지 못하므로 사망.<br />
+척 봐도 당연한 소리를 여기에 쓰고 있는 이유는,<br />
+이걸 직접 당해보고도 몇 달 지나니까 다시 이 사실을 까먹기 때문이다.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +123,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

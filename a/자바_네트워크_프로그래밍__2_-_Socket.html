@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>자바 네트워크 프로그래밍 #2 - Socket</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>자바 네트워크 프로그래밍 #2 - Socket</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on May 01, 2010 at 9:34 AM</p>
+                <hr>
+                <div class="content">
+<strong>#0 [서론]</strong><br />
+자바 네트워크 프로그래밍을 설명하려면 당연히 IO 부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려봅시다.<br />
+<br />
+<strong>#1 [Socket]</strong><br />
+전 글에서 네트워크 통신을 사람 간의 전화로 비유했었습니다.<br />
+네트워크 통신을 한다는 것은 <a href="http://en.wikipedia.org/wiki/Network_Interface_Controller">NIC(Network Interface Controller)</a>를 사용하여 데이터를 주고 받겠다는 것이고 이는 엄연히 <strong>하드웨어를 제어해야합니다.</strong> 하드웨어라는 것은 <strong>운영체제가 관리하고 있는 자원</strong>이기 때문에 일반 프로그램들이 접근할 수 없죠.<br />
+<br />
+생각해보면, 공학전자계산 때 배웠던 파일 읽기, 쓰기도 <strong>하드디스크</strong>라는 하드웨어 자원을 쓰는데 용케 프로그램이 제어를 했습니다. 그 이유는 open, read, write와 같은 <strong>운영체제가 제공하는 API</strong>를 사용했기 때문입니다. 요약하자면, <strong>하드웨어 자원은 운영체제가 관리하니 운영체제가 제공하는 API를 사용하여 프로그래밍을 해야한다</strong>입니다.<br />
+<br />
+고로 네트워크 프로그래밍을 하기 위해 운영체제가 우리에게 주는 API가 있는데 그것이 바로 <strong>소켓:Socket</strong>이라고 보시면 됩니다.<br />
+<span style="color: #aaa;">제 짧은 지식으로는 다 설명할 재간이 없네요, 아시는 분들은 그냥 그렇다고 넘어갑시다.</span><br />
+<br />
+코드 한 줄 없이 이렇게 장문을 쓰는 것도 괴로운 일이므로 바로 코드로 넘어갑시다.<br />
+<br />
+<strong>#2 [클라이언트:Client]</strong><br />
+클라이언트는 고객입니다. 고객은 요청하는 쪽이죠. 서버를 끊임없이 괴롭혀서 자신이 원하는 정보를 받아가는 녀석입니다. 대표적인 예로 웹이 그렇지요. 지금도 풀씨 웹 서버에게 풀씨 홈페이지 데이터를 받아서 읽고 계십니다.<br />
+<br />
+클라이언트가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같습니다.<br />
+<pre class='brush: java'>1. Socket을 만든다.
+2. 생성된 Socket으로 서버와 연결한다
+3. 신나게 데이터 통신을 한다.
+4. 연결을 종료한다.</pre>
+<br />
+말은 길고 코드는 짧으니 바로 코드로 넘어가봅시다.<br />
+<pre class='brush: java'>import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class Client {
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		Socket socket = new Socket("127.0.0.1", 3112); // 소켓 생성과 동시에 연결
+		InputStream inStream = socket.getInputStream(); // 데이터 수신을 위한 InputStream 가져오기
+		byte[] chunk = new byte[4096]; // 데이터를 받을 byte 배열 생성
+		int receiveLength = inStream.read(chunk); // 데이터를 읽고, 얼마나 가져왔는지를 반환받음
+		System.out.println(new String(chunk, 0, receiveLength)); // 수신받은 데이터를 콘솔에 출력
+		inStream.close(); // InputStream을 닫음
+		socket.close(); // 소켓을 닫음
+	}
+}</pre>
+<br />
+소켓 생성과 동시에 연결(connect)를 할 수 있습니다. 물론 소켓 생성 후에 connect 함수를 통해 접속 가능합니다. 이 때 첫번째 인자가 연결할 서버의 <strong>hostname 혹은 ip address</strong>이고 두번째 인자가 <strong>port 번호</strong>입니다.<br />
+연결 후 데이터 통신을 위한 <strong>InputStream</strong>과 <strong>OutputStream</strong>을 가져와 통신할 수 있습니다. 통신이 끝난 후 스트림과 소켓을 <strong>닫아주면</strong> 됩니다. 효율적인 자원관리를 위해 <strong>다 쓴 자원은 꼭 닫아줍시다.</strong><br />
+그리고 예외처리를 제대로 하지 않고 밖으로 다 던져<strong>throws</strong>버렸는데 실전?에서는 반드시 수행하는 하나하나에 대해 적절한 예외처리를 해주어야 합니다.<br />
+<br />
+<strong>#3 [서버:Server]</strong><br />
+서버는 응답자라고 보시면 됩니다. 클라이언트의 요청에 대한 결과물을 회신하는 쪽이죠. 이는 풀씨 웹서버가 열심히 여러분들께 웹페이지를 보내주고 있는 것으로 생각하시면 됩니다.<br />
+<br />
+서버가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같습니다.<br />
+<pre class='brush: java'>1. ServerSocket을 만든다.
+2. 클라이언트의 연결 요청에 대해 accept를 하여 클라이언트와 데이터 통신을 수행할 Socket 객체를 만든다.
+3. 신나게 데이터 통신을 한다.
+4. 연결을 종료한다.</pre>
+<br />
+역시 말은 길고 코드는 짧으니 바로 코드로 넘어가봅시다.<br />
+<br />
+서버는 클라이언트로부터의 연결을 계속 기다리고 있습니다. 단, 클라이언트가 어떤 <strong>PORT 번호</strong>로 접속해야할지를 알고 그 PORT에 달라붙어서(<strong>bind</strong>) 기다리고(<strong>listen</strong>) 있으면 됩니다. 그리고 클라이언트가 접속하면, 해당 클라이언트에 대한 소켓을 낚으면(<strong>accpet</strong>) 됩니다.<br />
+<br />
+<pre class='brush: java'>import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	public static void main(String[] args) throws IOException {
+		ServerSocket server = new ServerSocket(3112); // PORT를 열고 접속을 대기
+		Socket socket = server.accept(); // 클라이언트의 연결로부터 소켓을 만듬
+		OutputStream outStream = socket.getOutputStream(); // OuputStream을 얻음
+		outStream.write("Hello Java Network Programming World!".getBytes()); // 클라이언트에게 환영 인사를 보냄
+		outStream.close(); // OutputStream을 닫음
+		socket.close(); // 클라이언트와의 연결 소켓을 닫음
+		server.close(); // 클라이언트 접속 대기 소켓을 닫음
+	}
+}</pre>
+<br />
+서버는 클라이언트와 다르게 두 개의 소켓 개념이 존재합니다. 하나는 <strong>서버소켓</strong>이고, 하나는 <strong>클라이언트와 데이터 통신을 수행하기 위한 소켓</strong>입니다.<br />
+<br />
+<strong>서버소켓</strong>은 <strong>클라이언트가 접속하는 것을 대기하는 소켓</strong>입니다. 따라서 클라이언트가 접속할 PORT 번호에서 <strong>대기(bind, listen)</strong>하고, 클라이언트가 연결을 요청할 때 <strong>수락(accept)</strong>하여 해당 클라이언트와 데이터 통신을 하기 위한 소켓을 작성해줍니다.<br />
+<br />
+그렇게 작성된 소켓을 사용하여 방금 연결된 클라이언트와 데이터 통신을 할 수 있는데, 이 때 소켓의 사용 방법은 클라이언트 때와 동일합니다.<br />
+<br />
+위의 두 예제를 실행하면, 서버가 클라이언트의 접속을 기다리고 있다가 클라이언트가 접속하면 "Hello Java Network Programming World!"라는 문자열을 보내고, 클라이언트가 이를 받아 console에 출력한 뒤 끝나는 결과를 볼 수 있습니다.<br />
+<br />
+<strong>#4 [결론]</strong><br />
+쓰다가보니 대충대충 넘어갔는데 이는 blocking 개념 등을 설명하지 않다보니 피상적으로 코드를 읽어주는 격이 되어버려서입니다. 다음 글에서는 소켓의 blocking 특성과 이를 해결하기 위한 multi-thread programming에 대해 간략히 알아보도록 하겠습니다.<br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Related</h4>
+					<ul>
+						<li><a href="/a/자바_네트워크_프로그래밍__1_-_기초.html">자바 네트워크 프로그래밍 #1 - 기초</a> <span class="date">5. 1.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>

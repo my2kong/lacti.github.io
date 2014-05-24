@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>자바 네트워크 프로그래밍 #1 - 기초</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>자바 네트워크 프로그래밍 #1 - 기초</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on May 01, 2010 at 8:13 AM</p>
+                <hr>
+                <div class="content">
+<strong>#0 [서론]</strong><br />
+네트워크라는 것에 대해 깊게 설명할 생각은 없습니다. 단지 자바 언어에서 '어떻게 네트워크 프로그래밍을 할 수 있을까' 정도에 대해 간략하게 소개할 생각입니다.<br />
+이 글을 보고 관심을 조금만 갖고 구글링해보시면 당연한 이야기이지만 훨씬 잘 설명된 좋은 글이 많을테니, 이 글에서 단순히 <strong>관심이라도 생기길 바라면서</strong> 글을 씁니다.<br />
+<br />
+<strong>#1 [기초]</strong><br />
+네트워크 프로그래밍은 두 원격지(HOST) 간의 데이터 통신을 위한 프로그래밍입니다.<br />
+간단히 비유하자면,<br />
+<pre class='brush: java'>1. 제가 안양(집)에서 풀씨 홈페이지(서버)를 여는 것이나
+2. 오덕질을 위해 OOO에 접속하여 파일을 내려받거나
+3. 과제를 위해 친구와 메신저로 대화를 한다는</pre>
+것 정도가 되겠습니다. 위의 상황을 네트워크의 원격지, 데이터로 구분해보면<br />
+<pre class='brush: java'>1. 제 컴퓨터, 풀씨서버, HTML 데이터 등
+2. 제 컴퓨터, OOO서버, 애니메이션 데이터 등
+3. 제 컴퓨터, 친구 컴퓨터, 대화(String) 데이터 등</pre>
+이 될 수 있겠지요.<br />
+<br />
+통신을 한다는 건 두 HOST가 네트워크로<span style="color: #aaa;">(wired or wireless)</span> 연결되어있다는 것이고, 네트워크에 속한 HOST는 그 특정 주소를 갖는데, 흔히 생각하는 IP Address라고 보시면 됩니다. 흔히 우리는 네트워크를 사용하기 위해 TCP/IP Protocol을 사용하니까요.<strong>(점박이 3형제는 유명하죠?)</strong><br />
+<a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol">http://en.wikipedia.org/wiki/Transmission_Control_Protocol</a><br />
+<span style="color: #aaa;">(다른 곳에 더욱 설명이 잘 나와있는데 굳이 제가 설명할 필요는 없겠죠)</span><br />
+<span style="color: #aaa;">(기계적 주소인 MAC Address와 함께 같이 찾아보면서 공부해보는 것도 괜찮겠네요. 하지만 이 글은 자바 네트워크 프로그래밍이 주라서 이 부분은 빼겠습니다.)</span><br />
+<br />
+두 HOST가 서로의 주소를 안다고 해서 TCP/IP 통신할 수 있는 것은 아닙니다. TCP/IP 통신에는 IP Address 말고 Port 라는 Unsigned Short Integer(16bit) 값이 하나 더 필요하기 때문이죠.<br />
+<a href="http://en.wikipedia.org/wiki/TCP_and_UDP_port">http://en.wikipedia.org/wiki/TCP_and_UDP_port</a><br />
+<br />
+간단히 설명해보면, 하나의 HOST 내에 실행되고 있는 수많은 네트워크 사용 프로그램들에 대해 데이터를 빠르고 명확하게 구분하기 위한 하나의 키 값이라고 보면 됩니다. <strong>SSH는 22번, HTTP는 80번</strong> 과 같이 사실상 고유의 값으로 지정된 것고 있지요.<br />
+<a href="http://en.wikipedia.org/wiki/TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/TCP_and_UDP_port_numbers</a><br />
+<br />
+TCP/IP 프로토콜에서는 데이터를 보낼 때 <strong>Packet</strong>으로 쪼개어 보내는데 이 쪽을 공부해두시면 장차 네트워크 프로그래밍할 때 도움되는게 많습니다.<br />
+<a href="http://en.wikipedia.org/wiki/Packet_(information_technology)">http://en.wikipedia.org/wiki/Packet_(information_technology)</a><br />
+<br />
+<strong>#2 [서버와 클라이언트]</strong><br />
+전화를 할 때도 거는 사람과 받는 사람이 있습니다. 전화라는 것은 전화선으로 연결된<span style="color: #aaa;">(네트워크에 속한)</span> 두 사람<span style="color: #aaa;">(HOST)</span> 간에서 대화<span style="color: #aaa;">(데이터 통신)</span>을 하는 것을 이야기하지요. 이 때 거는 사람<strong>(클라이언트)</strong>는 받을 사람<strong>(서버)</strong>의 전화번호<span style="color: #aaa;">(IP Address와 Port)</span>를 눌러 전화를 겁니다. 이 때 받을 사람<strong>(서버)</strong>은 전화가 걸려오기를 기다리고 있다가 전화가 오면 받는 것이지요.<br />
+이것이 간략한 서버와 클라이언트의 개념입니다. 자세한 내용은 어차피 다음 글에서 코드로 볼 테니 그걸로 보면 되겠군요.<br />
+<br />
+<strong>#3 [결론]</strong><br />
+TCP와 UDP의 특성, IP Protocol, Packet 등 네트워크 프로그래밍 기초라고 해도 들먹일 개념이 무지하게 많지만<br />
+그것들은 wiki 등 더욱 잘 나와있는 곳이나 풀씨 동아리 내의 유효 자원들에게 질문해보시면 더욱 확실하게 배우실 것 같고,<br />
+(적어도 이제 더이상은 <strong>송유관</strong> 이야기하는 사람은 없겠지요)<br />
+<strong>서버와 클라이언트의 개념, IP Address와 Port 번호가 무엇인지 정도만 알겠다 싶으시면 된겁니다.</strong><br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Related</h4>
+					<ul>
+						<li><a href="/a/자바_네트워크_프로그래밍__2_-_Socket.html">자바 네트워크 프로그래밍 #2 - Socket</a> <span class="date">5. 1.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>닫힌 descriptor와 write, SIGPIPE</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,34 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>닫힌 descriptor와 write, SIGPIPE</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on January 08, 2011 at 8:04 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+예전에도 엄청 고생했던 것인데, socket이나 pipe 등에서<br />
+read와 write로 IO를 수행할 때 상대쪽(opposite endpoint)가 닫혔다면 어떤 현상이 벌어질까<br />
+뭐 벌어지긴 뭐가 벌어져 안되는거지-_-<br />
+<br />
+read는 -1을 반환한다<br />
+write는 SIGPIPE를 받는다.<br />
+<br />
+하지만 프로그램이 signal handler를 처리하지 않았다면 그 프로그램은 죽는다.<br />
+SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 조용히^^ 죽는다.<br />
+<br />
+send/recv를 사용해서 옵션을 주면 깔끔하게 EPIPE를 반환하게 할 수 있는데 write, read는 그런 옵션이 생략된 '범용적' 함수라서 signal handler를 설치하는 수 밖에 없다.<br />
+<br />
+stackoverflow에 나와있는걸 보면<br />
+<pre class='brush: c'>int set = 1;
+setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));</pre>
+http://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly<br />
+와 같이 해결가능하다고 하는데 범용적이지는 않다.<br />
+<br />
+허허 그래서 결국 sigaction으로 handler 설치해주고 작업을 해야하는데<br />
+단지 signal 함수를 써서 handler를 지정했다가는 os에 따라서 한번밖에 handler가 설정 안되는 경우가 있으므로 주의<br />
+<br />
+이래저래 쉽지 않구나<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +110,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

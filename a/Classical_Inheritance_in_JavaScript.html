@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>Classical Inheritance in JavaScript</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,24 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>Classical Inheritance in JavaScript</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on March 20, 2011 at 6:29 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+Classical Inheritance in JavaScript<br />
+http://javascript.crockford.com/inheritance.html<br />
+<br />
+JavaScript: The World's Most Misunderstood Programming Language 을 쓴 Douglas Crockford란 분이 쓴 글인데 지난 번에 귀찮아서 안 읽었다가 요번에 읽어보니까 꽤 좋은 내용이다.<br />
+<br />
+javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있지만 재사용성을 고려해볼 때 생각해볼만한 주제이므로 알아두는 것도 좋겠다.<br />
+하지만 기본적으로 여타 객체지향적 언어와 같은 문법으로 지원하지는 않으니<br />
+보통 prototypejs나 jquery 등을 사용한 뒤 class를 정의해서 쓰는 방법을 쓰거나<br />
+아니면 아예 javascript 고유의 문법으로 수행하지만<br />
+<br />
+이 사람이 만든대로 몇가지 간단한 sugar function을 사용하면 더욱 간단한 문법으로 표현 가능하니 다른 라이브러리에 의존하지 않고 상속 구조를 구현하려면 이것도 괜찮겠다 싶다.<br />
+물론 다른 라이브러리를 쓰게 된다면 어차피 그 라이브러리에 유사한 기능이 있을테니 그걸 쓰면 되겠지만 알이지.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +100,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

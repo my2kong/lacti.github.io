@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>typeof, container_of</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,23 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>typeof, container_of</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on January 09, 2011 at 12:26 PM</p>
                 <hr>
                 <div class="content">
-{{content}}
+gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있겠구나 ㄷㄷ<br />
+http://gcc.gnu.org/onlinedocs/gcc/Typeof.html<br />
+<br />
+저번에 용태씨께 말씀드렸던 어떤 struct 내부 변수의 주소와, 그 struct의 typename을 알 때, struct 변수의 시작 주소를 알아내는 container_of라는 매크로가 커널 내에 선언되어있죠.<br />
+http://forum.falinux.com/zbxe/?document_srl=531954<br />
+<br />
+간단히 설명하면 ((type *) NULL)->var 는 분명히 access violation이 나겠지만, 주소를 얻어내는 & 연산자가 붙으면<br />
+컴파일러에서 실행 전(!)에 주소 값을 구해주기 때문에 &((type *) NULL)->var 는 해당 struct 변수에서 멤버 변수의 주소가 얼마나 떨어져있나를 알 수 있죠.<br />
+<br />
+덕분에 역으로, 해당 멤버 변수의 주소를 알게 되면 저 "떨어진 길이"를 역으로 빼서 struct 변수의 주소를 구할 수 있다.<br />
+가 되겠습니다.<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +99,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

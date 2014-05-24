@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="blog">
     <meta name="author" content="lacti">
 
-    <title>{{title}}</title>
+    <title>오묘한 Java의 equals의 세계</title>
 	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
@@ -60,12 +60,60 @@
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1>{{title}}</h1>
+                <h1>오묘한 Java의 equals의 세계</h1>
                 <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{datetime}}</p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on August 31, 2008 at 5:24 AM</p>
                 <hr>
                 <div class="content">
-{{content}}
+boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 equals와 == 연산자는 과연 어떻게 동작할 것인가!?<br />
+class 주제에 primitives라고 우기는(?) String class의 equals와 == 연산자는 과연 어떻게 동작할 것인가!?<br />
+<br />
+그리고, 만약 위의 객체들이 Vector&lt;Object&gt;에 들어가서 Object로 pointing될 때, equals와 == 연산자는 과연 어떻게 동작할 것인가!!!<br />
+<br />
+Compare Object<br />
+Long(123) equals 123? false<br />
+Long(123) equals new Long(123)? true<br />
+Long(123) == 123? true<br />
+String("hell") equals "hell"? true<br />
+String("hell") == "hell"? true<br />
+<br />
+Compare Object with pointed Object.<br />
+Long:Object(123) equals 123? false<br />
+Long:Object(123) equals new Long(123)? true<br />
+Long:Object(123) == 123? true<br />
+Long:Object(123) == new Long(123)? false<br />
+String:Object("hell") equals "hell"? true<br />
+String:Object("hell") == "hell"? true<br />
+<br />
+오묘한 Java의 세계!<br />
+<br />
+결론.<br />
+숫자형이 Wrapper Class로 싸여있을 때는 == 로 비교해야 원하는 결과가 나온다.<br />
+(좀 의외였는데, boxing되어 Long 객체로 넘어가니까 equals에서 제대로 동작할 줄 알았는데-_-)<br />
+String 객체는 친절하게도 ==나 equals 모두 가능하다. 하지만 나는 equals로 외워버려서 ==는 헤깔린다-_-<br />
+(아마 예전 Java에서인가 ==으로 String을 못 비교했던가, 아니면 c++에서 ==으로 못 비교했던가, 둘 다 아닌데 혼자 헤깔렸던 건가 ㄷㄷ)<br />
+<br />
+추가.<br />
+디버깅을 통해 원인을 찾았다 ㄷㄷㄷㄷ<br />
+Long l = new Long(123);<br />
+l.equals(123);<br />
+이라는 코드에서 l.equals 함수의 인자로 들어가는 123은 boxing될 때 Integer로 boxing된다.<br />
+Long#equals에서는 비교하는 대상의 객체가 Long의 instance가 아니면 바로 false를 내뱉는데, 그래서 false가 나온 것이다!<br />
+<br />
+정리.<br />
+boxing을 수행할 때는 해당 primitives의 변수형에 따라서 boxing을 수행하게 된다.<br />
+따라서 literal 숫자형은 Integer형으로 boxing이 되고, long 형의 변수라면 Long형으로 boxing되는 것이다.<br />
+즉,<br />
+Long l = new Long(123);<br />
+l.equals((long) 123);<br />
+이처럼, 명시적으로 123을 long형으로 casting해주면 boxing될 때 Long으로 boxing되어 equals에서 참으로 나온다.<br />
+생각해보니까 당연하잖아!<br />
+<br />
+다시 결론.<br />
+Java의 equals는 별로 오묘하지 않았다.<br />
+Java의 boxing도 별로 요묘하지 않았다.<br />
+단지 내가 바보였다. 낄낄 602 error by imbecility<br />
+
 				</div>
                 <hr>
 
@@ -88,11 +136,18 @@
             </div>
 
             <div class="col-lg-4">
-{{related}}
+
                 <div class="well">
 					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
 					<ul>
-{{recent}}
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
 					</ul>
                 </div>
                 <!-- /well -->

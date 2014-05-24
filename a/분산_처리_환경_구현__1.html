@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="blog">
+    <meta name="author" content="lacti">
+
+    <title>분산 처리 환경 구현 #1</title>
+	<link href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css" rel="stylesheet">
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css' />
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css' />
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js' type='text/javascript'></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">#</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>분산 처리 환경 구현 #1</h1>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on April 22, 2013 at 1:08 AM</p>
+                <hr>
+                <div class="content">
+#<br />
+잉여 컴퓨팅 자원을 십분 활용하여 처리량을 늘리기 위한 분산 처리 환경을 구축해보자.<br />
+(hadoop, incredibuild 같은 프로그램을 만드려면 어떤 고민이 필요한지 생각해볼 수 있겠다.)<br />
+<br />
+자세하게 파고들면 밑도 끝도 없을테니 간단하게 살펴보자.<br />
+<br />
+#<br />
+분산 처리 환경을 구축할 때 적어도 다음의 항목에 대한 고민이 필요하다.<br />
+<pre class='brush: cpp'>1) 플랫폼은 무엇을 사용할 것인가?
+2) 언어는 무엇을 사용할 것인가?
+3) p2p로 만들 것인가, master-slave로 만들 것인가?</pre>
+물론 더 고민할 것이 많겠지만 일단 위 정도만 고민해도 간단한 체계는 만들 수 있다.<br />
+<br />
+다양한 플랫폼을 고려할 때 jvm같이 밑단이 있는 녀석을 사용하거나 script 언어를 사용할 경우 이득을 볼 수 있다.<br />
+적어도 native 언어를 사용할 때 target별로 cross-compile해줄 수고는 덜 수 있으니까.<br />
+하지만 native 언어를 사용하면 속도 향상이 있으니 잘 고려해서 선택해야 한다.<br />
+<br />
+귀찮으니 windows, c#, master-slave로 작성하자.<br />
+<br />
+#<br />
+가장 간단한 master-slave 구조를 보면 다음과 같다.<br />
+<p style="text-align: center;"><a rel="lightbox[분산 처리 환경 구현 #1]" href="file/generation06/mdf_basic.png"><img src="file/generation06/mdf_basic.png" border="0" style="border: 1px solid black;" /></a></p><br />
+master는 여러 slave들을 관리하고, 실제 작업들은 slave가 처리한다고 보면 된다.<br />
+master는 작업 요청을 받아서, <strong>적절히 쪼개서</strong>, <strong>적절히 slave에게 넘겨서 처리시키고</strong>, <strong>결과를 적절히 받아서 합친다</strong><br />
+<br />
+즉, master는 job을 쪼개고(<strong>map</strong>), slave들을 잘 scheduling해서 처리시킨 결과를 받고, 그 결과를 취합한다(<strong>reduce</strong>)<br />
+분산 framework의 성능을 결정하는건 결국 얼마나 잘 쪼개고, 잘 스케쥴링 해주냐에 달렸다는 것이다.<br />
+(물론 각 job이 어떤 특성을 지니냐에 따라서 최적화 방법은 천차만별일 것이다)<br />
+<br />
+#<br />
+master-slave는 job/result 이외에도 주고 받아야 할 정보가 있다. 대표적인 정보가 slave의 상태(state) 정보이다.<br />
+master는 각 slave가 어떤 상태인지(on/off-line, cpu usage, memory/disk available, io scheduling 등) 잘 알고 있어야 job을 더욱 적절하게 분배하여 전체적인 성능을 높힐 수 있다.<br />
+<br />
+이 때 slave가 주기적으로 master에게 해당 정보를 알려줘야 한다.<br />
+(원격으로 slave의 상태를 가져갈 수 있도록 설정해도 되지만 논외로 친다.)<br />
+<br />
+그런데 만약 result를 master가 취합할 필요가 없는 형태,<br />
+즉, function 형태의 job이 아닌 <strong>action 형태의 job</strong>일 경우에는 master가 굳이 slave와 connection을 유지할 필요가 없다. 이렇게 될 경우 master는 여러 connection을 관리하지 않아도 되기 때문에 복잡도가 현저히 줄게 된다.<br />
+(분산 웹 크롤러를 예로 들 수 있다. master는 slave에게 수집할 url만 넘기고 slave는 master에게 결과를 전달하기 않고 db에 직접 저장할 수 있다.)<br />
+<br />
+이 때 slave의 상태를 master에게 보고하기 위해 connection을 유지하거나 다시 connection을 맺는 것은 귀찮은 일이므로 다음과 같은 구조를 생각해볼 수 있다.<br />
+<p style="text-align: center;"><a rel="lightbox[분산 처리 환경 구현 #1]" href="file/generation06/mdf_sync_db.png"><img src="file/generation06/mdf_sync_db.png" border="0" style="border: 1px solid black;" /></a></p><br />
+slave들은 자신의 상태를 주기적으로 state db에 기록하고, master는 state db에 기록된 정보를 참고해서 slave에게 명령을 내린다.<br />
+<br />
+이 경우 master는 slave와 connection을 유지할 필요가 없게 되고 이는 master의 구현 부담을 줄일 수 있을 뿐더러 connectivity가 좋지 않은 master-slave 환경에서 보다 유연하게 동작할 수 있다.<br />
+<br />
+#<br />
+약간 다른 관점이지만 다음과 같은 모델도 생각해볼 수 있다.<br />
+<p style="text-align: center;"><a rel="lightbox[분산 처리 환경 구현 #1]" href="file/generation06/mdf_stated.png"><img src="file/generation06/mdf_stated.png" border="0" style="border: 1px solid black;" /></a></p><br />
+slave 프로그램이 해야할 일은 두 가지이다. master로부터 받은 job 처리와 master에게 state를 보고하는 것.<br />
+이 둘을 나눈 구조라고 생각하면 된다.<br />
+<br />
+이 때 얻는 장점은 (간단한 구조에서는) 데이터의 방향성이 정해져서 프로그램 구현이 쉬워진다는 것이다.<br />
+master는 state로부터 데이터를 받기만 하면 되고,<br />
+slave는 master로부터 job을 받아서 처리만 하면 된다.<br />
+<br />
+그리고 만에 하나 slave 프로그램이 오동작하여 사망할 경우 state가 이를 감지하여 master에게 보고할 수 있다. 그 후 상태에 따라 slave 프로그램을 다시 시작해줄 수 있다.<br />
+이러한 구조는 보다 견고한 분산 처리 환경을 구축하는데 도움이 될 것이다.<br />
+<br />
+#<br />
+훨씬 더 다양한 방법이 있을테지만 생각나는 구조를 간략히 살펴봤고,<br />
+다음 글에서는 C#을 사용하여 간단한 분산 처리 환경을 구축하는 방법을 소개할 예정이다.<br />
+<br />
+중요한 것은, <strong>어떻게 job을 쪼개고, 분산시키고, 취합할 것인가</strong> 이다.<br />
+<br />
+<script type="text/javascript">$('article_content_area').previous().hide();$('article_content_area').previous(1).hide();</script><br />
+
+				</div>
+                <hr>
+
+                <!-- the comments -->
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'lacti'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="well">
+					<h4>Related</h4>
+					<ul>
+						<li><a href="/a/분산_처리_환경_구현__2.html">분산 처리 환경 구현 #2</a> <span class="date">5. 7.</span></li>
+						<li><a href="/a/분산_처리_환경_구현__3.html">분산 처리 환경 구현 #3</a> <span class="date">6. 8.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+                <div class="well">
+					<h4>Recents <a href="/list.html" class="show-all">(all)</a></h4>
+					<ul>
+
+						<li><a href="/a/패킷_enum에_따른_packet_콜백_함수_자동생성.html">패킷 enum에 따른 packet 콜백 함수 자동생성</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴__2.html">비동기 프로그래밍 패턴 #2</a> <span class="date">11. 19.</span></li>
+						<li><a href="/a/비동기_프로그래밍_패턴.html">비동기 프로그래밍 패턴</a> <span class="date">10. 9.</span></li>
+						<li><a href="/a/websocket,_webRTC.html">websocket, webRTC</a> <span class="date">9. 7.</span></li>
+						<li><a href="/a/여의도_스터디_정리__4.html">여의도 스터디 정리 #4</a> <span class="date">8. 26.</span></li>
+						<li><a href="/a/여의도_스터디_정리__3.html">여의도 스터디 정리 #3</a> <span class="date">8. 18.</span></li>
+						<li><a href="/a/여의도_스터디_과제_풀이__2.html">여의도 스터디 과제 풀이 #2</a> <span class="date">8. 12.</span></li>
+					</ul>
+                </div>
+                <!-- /well -->
+				<gcse:search></gcse:search>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; lacti 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
+	<script type='text/javascript'>
+		SyntaxHighlighter.all();
+	</script>
+
+	<script>
+	  (function() {
+		var cx = '001870890642618183212:k8iqprsstre';
+		var gcse = document.createElement('script');
+		gcse.type = 'text/javascript';
+		gcse.async = true;
+		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+			'//www.google.com/cse/cse.js?cx=' + cx;
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+</body>
+
+</html>
