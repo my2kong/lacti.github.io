@@ -12,16 +12,20 @@ void Main()
 	var savePath = Path.Combine(basePath, "a");
 	var articles = LoadArticle(Path.Combine(basePath, "src"));
 	var recent = string.Join("",
-		articles.OrderByDescending(e => e.WriteDate).Take(7).Select(e => string.Format(RelatedTemplateItem, e.Title, e.WriteDate.ToString("M. d."), e.Url)));
+		articles.OrderByDescending(e => e.WriteDate).Take(7).Select(e => 
+			string.Format(RecentTemplateItem, e.Title, e.WriteDate.ToString("M. d."), e.Url)));
 	foreach (var article in articles)
 	{
 		Console.WriteLine(article.Url);
 		// title, datetime, content, related, recent
 		var related = "";
-		if (article.Related.Count > 0)
+		if (article.Related.Count > 1)
 		{
 			related = RelatedTemplateBegin 
-				+ string.Join("", article.Related.Select(e => string.Format(RelatedTemplateItem, e.Title, e.WriteDate.ToString("M. d."), e.Url)))
+				+ string.Join("", article.Related.Select(e => 
+					e == article
+						? string.Format(RelatedTemplateNoLinkItem, e.Title, e.WriteDate.ToString("M. d."))
+						: string.Format(RelatedTemplateItem, e.Title, e.WriteDate.ToString("M. d."), e.Url)))
 				+ RelatedTemplateEnd;
 		}
 		
@@ -71,13 +75,14 @@ List<Article> LoadArticle(string path)
 			Content = string.Join(Environment.NewLine, lines.Skip(2))
 		});
 	}
+	articles.Sort((left, right) => left.WriteDate.CompareTo(right.WriteDate));
 	
 	// make related
 	foreach (var tuple in articles.Select(e => Tuple.Create(e.Title.Contains("#") ? e.Title.Substring(0, e.Title.IndexOf("#")).Trim() : e.Title.Trim(), e)).GroupBy(e => e.Item1))
 	{
 		var groupedArticles = tuple.Select(e => e.Item2).ToArray();
 		foreach (var each in groupedArticles)
-			each.Related.AddRange(groupedArticles.Where(e => e != each));
+			each.Related.AddRange(groupedArticles);
 	}
 	return articles;
 }
@@ -123,6 +128,8 @@ const string RelatedTemplateBegin = @"
 					<ul>";
 const string RelatedTemplateItem = @"
 						<li><a href=""{2}"">{0}</a> <span class=""date"">{1}</span></li>";
+const string RelatedTemplateNoLinkItem = @"
+						<li>{0} <span class=""date"">{1}</span></li>";
 const string RelatedTemplateEnd = @"
 					</ul>
                 </div>
