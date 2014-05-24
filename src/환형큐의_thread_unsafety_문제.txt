@@ -1,5 +1,5 @@
 ﻿환형큐의 thread unsafety 문제
-2012-02-23 오전 8:32:49
+2012-02-23 08:32:49
 어떤 자원에 대한 환형큐가 있다고 해보자. size 는 2의 자승이다.
 <pre class='brush: cpp'>void push(resource_t res) {
     int index = atomic_inc32(&rear_) & size_;
