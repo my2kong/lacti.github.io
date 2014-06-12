@@ -3,7 +3,7 @@ layout: default
 ---
 		<div class="row">
 			<div class="col-lg-8">
-				<h2>{{ page.title }}</h2>
+				<h1 class="page-title">{{ page.title }}</h1>
 				<p><span class="glyphicon glyphicon-time"></span> Posted on {{ page.date | date_to_string }}</p>
 				<hr>
 				<div class="content">
@@ -30,7 +30,7 @@ layout: default
 			<div class="col-lg-4 sides">
 			{% if site.related_posts != empty %}
 				<div class="well">
-					<h4>Related Posts</a></h4>
+					<h4 class="well-title">Related Posts</a></h4>
 					<ul>
 					{% for post in site.related_posts limit:6 %}
 						<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="date">{{ post.date | date_to_string }}</span></li>
@@ -40,14 +40,12 @@ layout: default
 			{% endif %}
 
 				<div class="well">
-					<h4>Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
 					<ul>
 					{% for post in site.posts limit:6 %}
 						<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="date">{{ post.date | date_to_string }}</span></li>
 					{% endfor %}
 					</ul>
 				</div>
-				<!-- /well -->
-				<gcse:search></gcse:search>
 			</div>
 		</div>
