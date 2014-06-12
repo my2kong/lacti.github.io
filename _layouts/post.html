@@ -9,6 +9,19 @@ layout: default
 				<div class="content">
 				{{ content }}
 				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					{% if page.previous.url %}
+						<a href="{{ page.previous.url }}" title="{{ page.previous.title }}">&laquo; {{ page.previous.title }}</a>
+					{% endif %}
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					{% if page.next.url %}
+						<a href="{{ page.next.url }}" title="{{ page.next.title }}">&raquo; {{ page.next.title }}</a>
+				{% endif %}
+					</div>
+				</div>
 				<hr>
 
 				<!-- the comments -->
