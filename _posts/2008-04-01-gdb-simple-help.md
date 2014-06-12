@@ -1,4 +1,11 @@
+---
+layout: post
+title: gdb 간단 사용법 정리
+tags: gdb
+---
+
 GDB는 GNU Debugger의 약자로 console 디버거이다. console 디버거이므로 gdb는 gdb shell을 제공하고, 사용자는 그 shell에 명령을 입력함으로써 디버깅을 수행할 수 있다.
+
 먼저 디버깅을 수행하기 위해서는 소스 코드를 컴파일할 때 디버깅 정보를 포함하도록 해야한다. gcc에서 이에 해당하는 옵션은 -g이다. 예를 들어 test.c라는 파일이 있다면 다음과 같이 수행하면 된다.
 
 ```bash

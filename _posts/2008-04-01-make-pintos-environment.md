@@ -1,3 +1,9 @@
+---
+layout: post
+title: pintos 환경 구축
+tags: pintos
+---
+
 Pintos를 구동시키기 위해서는 먼저 가상 에뮬레이터가 필요하다. Open source 중에 대표적으로 Bochs와 QEMU가 있는데, 설치법이 과제 문서에 기술되어있는 Bochs를 선택하여 설치하였다.
 
 * Bochs는 Open Source 프로젝트로 Sourceforge에서 그 소스를 다운받아 컴파일하여 설치할 수 있다. 파일을 받기 위해서 Sourceforge에 lynx로 접속하여 bochs-2.3.tar.gz를 다운 받았다.

@@ -1,3 +1,9 @@
+---
+layout: post
+title: pintos 기본 구조와 동작 원리
+tags: pintos
+---
+
 ## Pintos의 기본 구조 ##
 
 Pintos는 가장 기본 기능인 threads를 중심으로 user program, virtual memory, 그리고 file system을 추가하는 구조를 갖는다. 그래서 소스 코드의 분포 역시 기본적인 것들은 threads 디렉토리에 다 있고, 그 밖의 것들은 각각의 디렉토리에 존재하면서 threads에 있는 소스 코드를 참조하는 식으로 되어있다. 그리고 Pintos를 구성하는 데는 필요하지만 과제 항목에는 포함되어있지 않은 기본 library나 device는 별도의 디렉토리에 존재한다.

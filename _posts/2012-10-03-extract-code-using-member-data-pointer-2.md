@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 멤버 데이터 포인터를 사용하여 연산식 묶어내기 #2
+title: 멤버 데이터 포인터를 사용하여 연산식 묶어내기 2
 tags: data member pointer c++
 ---
 
