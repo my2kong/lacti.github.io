@@ -1,12 +1,9 @@
-require 'fileutils'
-require 'redcarpet'
-
 =begin
   Jekyll tag to include Markdown text from _includes directory preprocessing with Liquid.
   Usage:
     {% markdown <filename> %}
   Dependency:
-    - redcarpet
+    - kramdown
 =end
 module Jekyll
   class MarkdownTag < Liquid::Tag
@@ -14,13 +11,12 @@ module Jekyll
       super
       @text = text.strip
     end
+    require "kramdown"
     def render(context)
       tmpl = File.read File.join Dir.pwd, "_includes", @text
       site = context.registers[:site]
       tmpl = (Liquid::Template.parse tmpl).render site.site_payload
-
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new, { autolink: true, space_after_headers: true })
-      html = markdown.render(tmpl)
+      html = Kramdown::Document.new(tmpl).to_html
     end
   end
 end
