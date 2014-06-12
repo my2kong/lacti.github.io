@@ -200,7 +200,7 @@ lacti    11941  3985  0 02:20 pts/0    00:00:00 grep bochs
 
 다음 과정인 gdb를 수행하기 위해 gdb를 설치하였다.
 
-```gdb
+```bash
 ~$ sudo apt-get install gdb
 ```
 

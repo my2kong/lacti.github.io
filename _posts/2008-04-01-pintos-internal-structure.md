@@ -128,7 +128,7 @@ pintos/src/utils/pintos
 
 커널에서 인자를 받는 부분은 loader.S에서 다음과 같이 정의되어있다.
 
-```assembly
+```asm
 loader.S
 336 #### Command-line arguments and their count.
 337 #### This is written by the `pintos' utility and read by the kernel.
