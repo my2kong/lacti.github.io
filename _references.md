@@ -3,3 +3,4 @@
 [angdev]: http://blog.fegs.kr/  "blog.fegs.kr"
 [if1live]: http://libsora.so/  "libsora.so"
 [summerlight]: https://twitter.com/summerlight00  "summerlight00"
+[doodoori2]: http://doodoori2.tistory.com/  "Doodoori2's Blog"
