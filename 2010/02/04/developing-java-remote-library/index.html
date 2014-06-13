@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>개발중인 Remote Library 중간보고</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">개발중인 Remote Library 중간보고</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 04 Feb 2010</p>
+				<hr>
+				<div class="content">
+				<h3>서론</h3>
+
+<p>PHP의 <code>__call method</code>는 해당 object의 member를 호출했을 때, 그 member가 not implement 상태이면 <code>__call method</code>로 method name과 arguments를 넘겨주는 그런 신비한 method이다.<br>
+예외처리도 아니고 없는 method에 대해 해당 method 호출 정보를 넘겨받을 수 있는 함수라니! 이건 진정한 proxy class를 제작하기 위한 필수 method라 할 수 있겠다.</p>
+
+<h3>본론</h3>
+
+<p>java에는 이런 것이 없을까.</p>
+
+<p>이에 대해 고민하다가 <code>proxy</code>를 만들 <code>interface</code>에 대해 class information(?)을 읽어들여서 proxy class code를 generate하고, 그 code로 bytecode를 만들어서, 그 bytecode로부터 class를 생성하는 방식을 생각해냈다.<br>
+하지만 code -&gt; bytecode -&gt; class -&gt; object 이게 그리 쉽지만은 않아 javacompiler를 고민하고 있었는데, 의외의 것을 찾았다. 그것은 바로 <code>java.lang.reflect.Proxy</code></p>
+
+<p>이런 말도 안되는 class가 있었다<br>
+내가 하려는게 구현되어있는(native라서 코드를 못 보고 있다.) class인데, <code>getProxyClass</code>와 <code>newProxyInstnace</code> method를 통해 proxy class나 instance를 얻을 수 있다!</p>
+
+<p>그러면 해당 <code>interface</code>로 casting해서 함수를 호출했을 경우, 저 <code>proxy class</code>에 bind된 <code>InvocationHandler</code>의 함수가 호출되는 것이다. 이로써 remote library 1차 완성</p>
+
+<h3>결론</h3>
+
+<p>RMI를 사용하다가 <code>RemoteException</code>이 발생할 때 보면, stack trace에서 <code>$Proxy0.class</code>와 같이 inner class로 구성된 Proxy라는 이름의 class파일이 존재하게 되는데, 이것이 바로 위에 설명한 저 <code>Proxy</code> class를 이용하여 RMI를 구현했다는 것이 되겠다.</p>
+
+<p>이제 보다 효율적인 communication을 위해 단순 Socket을 사용하는 것이 아니라 <code>SocketChannel</code>을 사용, 비동기 IO를 적용시켜 진정한 Remote Library를 만드는 일이 남았다. 공부하러 가야겠다.</p>
+
+<h3>참고</h3>
+
+<ul>
+<li><a href="http://java.sun.com/j2se/1.4.2/docs/guide/reflection/proxy.html">http://java.sun.com/j2se/1.4.2/docs/guide/reflection/proxy.html</a></li>
+<li><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/reflect/Proxy.html">http://java.sun.com/j2se/1.4.2/docs/api/java/lang/reflect/Proxy.html</a></li>
+<li><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/reflect/InvocationHandler.html">http://java.sun.com/j2se/1.4.2/docs/api/java/lang/reflect/InvocationHandler.html</a></li>
+</ul>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2009/10/18/how-to-function-returning-value-with-assembly/" title="함수 값 반환 방법[어셈블리]">&laquo; 함수 값 반환 방법[어셈블리]</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2010/02/07/recommend-java-decompiler/" title="꽤 쓸만한 Java Decompiler">&raquo; 꽤 쓸만한 Java Decompiler</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

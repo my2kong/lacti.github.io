@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>template을 사용한 type간 동등성, 대입가능성</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">template을 사용한 type간 동등성, 대입가능성</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 19 Jul 2011</p>
+				<hr>
+				<div class="content">
+				<ul>
+<li>runtime에 <code>typeid</code>를 써서 객체 type의 동등성(Same)을 확인하고,</li>
+<li><code>dynamic_cast</code>를 써서 객체간의 대입가능성(Assignable)을 확인할 수 있다.</li>
+</ul>
+
+<p>하지만 이런 것을 확인하기 위해 runtime을 소모하는 것은 너무 아까운 일이다. 고로 template을 써보자.<br>
+아래의 예제는 두 class, C1과 C2를 통해 진행된다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">C1</span> <span class="p">{};</span>
+<span class="k">class</span> <span class="nc">C2</span> <span class="o">:</span> <span class="k">public</span> <span class="n">C1</span> <span class="p">{};</span>
+</code></pre></div>
+<h3>동등성 확인</h3>
+
+<p>type 간의 동등성을 확인하는 것은 매우 간단하다. template의 specialization을 쓰면 된다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">_Type1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">_Type2</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">IsSame</span>
+<span class="p">{</span>
+    <span class="k">enum</span>
+    <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">_Type1</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">IsSame</span><span class="o">&lt;</span><span class="n">_Type1</span><span class="p">,</span> <span class="n">_Type1</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="k">enum</span> 
+    <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">true</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<p><code>IsSame</code>을 사용할 때, 비교하는 두 class의 type이 다르다면 위 template이 사용될 것이다. 여기의 value 값은 false다.<br>
+만약 두 type이 같다면, type이 같은 경우로 specialization 된 아래의 template이 사용된다. 따라서 value는 true이다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d %d %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">IsSame</span><span class="o">&lt;</span><span class="n">C1</span><span class="p">,</span> <span class="n">C1</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">IsSame</span><span class="o">&lt;</span><span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">IsSame</span><span class="o">&lt;</span><span class="n">C2</span><span class="p">,</span> <span class="n">C2</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">IsSame</span><span class="o">&lt;</span><span class="n">C2</span><span class="p">,</span> <span class="n">C1</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">);</span>
+<span class="c1">// 수행 결과: 1 0 1 0</span>
+</code></pre></div>
+<p>이 모든 것이 compile time에 compiler가 판단해주므로 runtime 부담이 없다.</p>
+
+<h3>대입 가능성 확인</h3>
+
+<p>대입 가능성(assignable)을 판단할 때는, 두 type을 from과 to로 나누어 생각하는게 편하다.<br>
+FROM is assignable TO 라는 개념으로 생각해볼 때, TO가 base class, FROM이 derive class가 되는 것이다.</p>
+
+<p>이걸 compiler가 판단해주려면 함수의 overloading 판정을 사용하면 된다.
+compiler는 최대한 근접한 type의 인자를 갖는 함수를 호출해준다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">_From</span><span class="p">,</span> <span class="k">class</span> <span class="nc">_To</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">IsAssignable</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="k">typedef</span> <span class="kt">char</span> <span class="n">IncorrectSize</span><span class="p">;</span>
+    <span class="k">typedef</span> <span class="kt">int</span>  <span class="n">CorrectSize</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">_From</span>         <span class="nf">Instantiate</span><span class="p">();</span>
+    <span class="k">static</span> <span class="n">CorrectSize</span>   <span class="nf">Check</span><span class="p">(</span><span class="k">const</span> <span class="n">_To</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="k">static</span> <span class="n">IncorrectSize</span> <span class="nf">Check</span><span class="p">(...);</span>
+
+<span class="nl">public:</span>
+    <span class="k">enum</span>
+    <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">CorrectSize</span><span class="p">)</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Check</span><span class="p">(</span><span class="n">Instantiate</span><span class="p">()))</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>compiler가 compile time에 비교를 해야하므로 가장 만만한건 <code>sizeof</code> 연산자이다.<br>
+크기가 다른 두 type을 반환하도록 적절히 typedef를 걸어두고, From type이 <code>const To&amp;</code> 를 인자로 받는 Check와 그게 아닌 경우 <code>...</code> 중 어느 것이 호출되어 반환 값이 결정되는가를 보는 것이다. 그 반환 값의 type, 그리고 그 type에 대한 <code>sizeof</code> 는 모두 compile time에 결정될 수 있기 때문에 대입 가능한 경우에는 적절히 value가 설정될 것이다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d %d %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">IsAssignable</span><span class="o">&lt;</span><span class="n">C1</span><span class="p">,</span> <span class="n">C1</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">IsAssignable</span><span class="o">&lt;</span><span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">IsAssignable</span><span class="o">&lt;</span><span class="n">C2</span><span class="p">,</span> <span class="n">C2</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">IsAssignable</span><span class="o">&lt;</span><span class="n">C2</span><span class="p">,</span> <span class="n">C1</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">);</span>
+<span class="c1">// 수행 결과: 1 0 1 1</span>
+</code></pre></div>
+<p>재밌는 것은 위 방법으로 Assignable을 판단할 경우 만능 <code>void*</code> 에 대해서는 모든 pointer type이 다 통과해버린다는 것인데, 그런 것은 위에서 구현한 <code>IsSame</code>과 적절히 섞어서 가려낼 수 있다.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2011/07/13/tls-initializer/" title="Tls 초기화">&laquo; Tls 초기화</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2011/07/20/implement-call-stack-trace-at-c%2B%2B/" title="C++에서 Call Stack Trace를 만들어보자.">&raquo; C++에서 Call Stack Trace를 만들어보자.</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2011/11/15/type-dispatching-by-type-trait-class/">type_t class 도입을 통한 임시 객체 없는 type 분기</a> <span class="date">15 Nov 2011</span></li>
+					
+						<li><a href="/2012/01/10/implicit-interface-by-template/">template의 암시적 interface 요구</a> <span class="date">10 Jan 2012</span></li>
+					
+						<li><a href="/2012/01/09/inherits-template-argument/">template 인자를 상속 받기</a> <span class="date">09 Jan 2012</span></li>
+					
+						<li><a href="/2011/07/13/generic-interface-implemented-by-template/">template에 의한 generic interface 정의</a> <span class="date">13 Jul 2011</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

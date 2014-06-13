@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>template의 암시적 interface 요구</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">template의 암시적 interface 요구</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 10 Jan 2012</p>
+				<hr>
+				<div class="content">
+				<p>상속을 통한 동적 다형성을 이용하려면, 명시적인 interface가 형성되어야 한다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">game_object</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">character</span> <span class="o">:</span> <span class="k">public</span> <span class="n">game_object</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">item</span> <span class="o">:</span> <span class="k">public</span> <span class="n">game_object</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>와 같이 interface와 이를 구현(implements)하는 구체 class를 작성하고</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">game_object</span><span class="o">*&gt;</span> <span class="n">objects</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">objects</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">objects</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="o">=</span><span class="p">]</span> <span class="p">(</span><span class="n">game_object</span><span class="o">*</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">obj</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>이처럼 동일한 interface로 취급할 수 있도록 하나의 container에 각 구체 class들의 객체를 담고
+iterating하면서 <code>update</code> 함수를 불러준다. 이 때 type은 <code>game_object *</code>이므로 <code>update</code>라는 함수가 있다는 것을 명시적으로 보장해 줄 수 있다.</p>
+
+<p>template을 쓰면 좀 더 유연해지는데, 굳이 <code>game_object</code>라는 interface를 명시적으로 두지 않아도 <code>update</code>라는 함수만 있으면 된다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">character</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">item</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+<p><code>character</code>와 <code>item</code> 자체는 어쨌든 <code>update</code>라는 함수를 갖는다. 하지만 그 둘이 같은 interface를 갖는다는 명시적인 보장은 없다. (적어도 코드를 작성하는 사람이 눈으로 보고는 알 수 있겠다)</p>
+
+<p>이에 하지만 만약 둘을 처리하는 로직이 공통될 경우 (둘 다 <code>update</code>을 불러줘야할 경우)가 있을 것이다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">character</span><span class="o">&gt;</span> <span class="n">characters</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span> <span class="n">items</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">characters</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">characters</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="o">=</span><span class="p">]</span> <span class="p">(</span><span class="n">character</span><span class="o">&amp;</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ch</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">items</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">items</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="o">=</span><span class="p">]</span> <span class="p">(</span><span class="n">item</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">it</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>그럼 위처럼 코드가 중복된다. 하지만 하는 동작이 동일하다면, (코드 형태가 유사하다면) 명시적인 interface 규약이 없어도 암시적으로 코드의 틀이 비슷하다는 것이니까 이 때 template을 쓴다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">_contTy</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">update_all</span><span class="p">(</span><span class="n">_contTy</span><span class="o">&amp;</span> <span class="n">cont</span><span class="p">,</span> <span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">cont</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">cont</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="o">=</span><span class="p">]</span> <span class="p">(</span><span class="k">typename</span> <span class="n">_contTy</span><span class="o">::</span><span class="n">value_type</span><span class="o">&amp;</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">val</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>위 template 함수는 어떤 container를 인자로 받아서, 그 내부를 순회하며 각 element들의 <code>update</code> method를 불러준다.</p>
+
+<p>이 때 위 함수는</p>
+
+<ul>
+<li>container가 <code>begin</code>, <code>end</code> method를 갖고 있고,</li>
+<li>그 반환 값이 forward iterator 이고,</li>
+<li>container의 type이 <code>value_type</code>이라는 typename을 갖고,</li>
+<li>그 <code>value_type</code>은 <code>update</code>라는 method를 갖는다는</li>
+</ul>
+
+<p>암시적인 규약을 내포한다.</p>
+
+<p>이걸 왜 암시적이라고 부르냐하면, <code>update_all</code> 함수는 실제 사용되기 전까지 컴파일 대상이 아니며 사용되었을 때 해당 type으로 코드가 instantiate되면서 올바른 코드인지 검사하기 때문이다.</p>
+
+<p>즉 <code>std::vector&lt;character&gt;</code>라는 type으로 위 함수를 부르게 되면,</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">update_all</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">character</span><span class="o">&gt;&amp;</span> <span class="n">cont</span><span class="p">,</span> <span class="kt">float</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">cont</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">cont</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="o">=</span><span class="p">]</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">character</span><span class="o">&gt;::</span><span class="n">value_type</span><span class="o">&amp;</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">val</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>와 같은 적법한 코드가 생성되어, 이 때 <code>std::vector</code>가 <code>begin</code>, <code>end</code>, <code>value_type</code>을 가지고 있고, <code>value_type</code>인 <code>character</code>가 <code>update</code> 함수를 가지고 있으니 문제 없이 컴파일 되는 것이다.</p>
+
+<p>즉 사용되는 시점에 코드를 찍어내는 것이고 실행 중(runtime) 에 모종의 작업이 필요한 것이 아니므로 interface나 abstract class같은 vfptr을 생성하는 명시적인 interface가 필요없다는 것이다. (이렇게 생각해보면 명시적/암시적 interface 라고 이름 붙이는 것도 웃긴 일이다)</p>
+
+<p>template 함수의 또 하나의 장점은, 무시무시한 type inference와 코드 찍어내기로 인해 template 함수 내에서 요구하는 명세를 지키는 대상에 대해서는 모두 사용할 수 있게 해준다는 것이다.</p>
+
+<p>예를 들어,
+위 <code>update_all</code> 함수는 <code>vector</code>, <code>list</code>, <code>deque</code>, <code>set</code> 등 여러 stl container에 대해 사용 가능하기 때문에 굉장히 일반적인 함수라 할 수 있다. (generic 하다)</p>
+
+<p>생각해보니 단순히 프로그래밍 측면에서 위의 두 내용을 비교하는 것은 바람직하지 못한 것 같다. 다음 글에서는 vfptr과 template instantiate의 세부적 내용을 통해 둘이 어떻게 다르고 어떤 장단점이 있는지 자세히 보도록 하자.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2012/01/09/inherits-template-argument/" title="template 인자를 상속 받기">&laquo; template 인자를 상속 받기</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2012/02/23/thread-unsafety-problem-in-circular-queue/" title="환형큐의 thread unsafety 문제">&raquo; 환형큐의 thread unsafety 문제</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2011/07/13/generic-interface-implemented-by-template/">template에 의한 generic interface 정의</a> <span class="date">13 Jul 2011</span></li>
+					
+						<li><a href="/2012/01/09/inherits-template-argument/">template 인자를 상속 받기</a> <span class="date">09 Jan 2012</span></li>
+					
+						<li><a href="/2011/11/15/type-dispatching-by-type-trait-class/">type_t class 도입을 통한 임시 객체 없는 type 분기</a> <span class="date">15 Nov 2011</span></li>
+					
+						<li><a href="/2011/07/19/check-type-equality-and-assignablity-by-template/">template을 사용한 type간 동등성, 대입가능성</a> <span class="date">19 Jul 2011</span></li>
+					
+						<li><a href="/2012/06/21/implement-go-interface-like-at-java/">go interface 구현하기</a> <span class="date">21 Jun 2012</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>Java의 equals의 세계</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">Java의 equals의 세계</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 31 Aug 2008</p>
+				<hr>
+				<div class="content">
+				<ul>
+<li>boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 <code>equals</code>와 == 연산자는 과연 어떻게 동작할 것인가</li>
+<li>class 주제에 primitives라고 이야기하는 <code>String class</code>의 <code>equals</code>와 == 연산자는 과연 어떻게 동작할 것인가</li>
+<li>그리고, 만약 위의 객체들이 <code>Vector&lt;Object&gt;</code>에 들어가서 <code>Object</code>로 pointing될 때, <code>equals</code>와 == 연산자는 과연 어떻게 동작할 것인가!!!</li>
+</ul>
+
+<h3>Compare Object</h3>
+
+<ul>
+<li>Long(123) equals 123? <code>false</code></li>
+<li>Long(123) equals new Long(123)? <code>true</code></li>
+<li>Long(123) == 123? <code>true</code></li>
+<li>String(&quot;hell&quot;) equals &quot;hell&quot;? <code>true</code></li>
+<li>String(&quot;hell&quot;) == &quot;hell&quot;? <code>true</code></li>
+</ul>
+
+<h3>Compare Object with pointed Object.</h3>
+
+<ul>
+<li>Long:Object(123) equals 123? <code>false</code></li>
+<li>Long:Object(123) equals new Long(123)? <code>true</code></li>
+<li>Long:Object(123) == 123? <code>true</code></li>
+<li>Long:Object(123) == new Long(123)? <code>false</code></li>
+<li>String:Object(&quot;hell&quot;) equals &quot;hell&quot;? <code>true</code></li>
+<li>String:Object(&quot;hell&quot;) == &quot;hell&quot;? <code>true</code></li>
+</ul>
+
+<h3>결론</h3>
+
+<p>숫자형이 Wrapper Class로 싸여있을 때는 == 로 비교해야 원하는 결과가 나온다.<br>
+<em>(boxing되어 Long 객체로 넘어가니까 equals에서 제대로 동작할 줄 알았는데 좀 의외였다.)</em></p>
+
+<p>String 객체는 친절하게도 ==나 equals 모두 가능하다.</p>
+
+<p><strong>추가</strong></p>
+
+<p>디버깅을 통해 원인을 찾았다</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Long</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">(</span><span class="mi">123</span><span class="o">);</span>
+<span class="n">l</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="mi">123</span><span class="o">);</span>
+</code></pre></div>
+<p>이라는 코드에서 <code>l.equals</code> 함수의 인자로 들어가는 123은 boxing될 때 Integer로 boxing된다.
+<code>Long#equals</code>에서는 비교하는 대상의 객체가 <code>Long</code>의 instance가 아니니 <code>false</code>를 반환하는 것이다.</p>
+
+<p><strong>정리</strong></p>
+
+<p>boxing을 수행할 때는 해당 primitives의 변수형에 따라서 boxing을 수행하게 된다.
+따라서 literal 숫자형은 <code>Integer</code>형으로 boxing이 되고, long 형의 변수라면 Long형으로 boxing되는 것이다.</p>
+
+<p>즉,</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Long</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">(</span><span class="mi">123</span><span class="o">);</span>
+<span class="n">l</span><span class="o">.</span><span class="na">equals</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span> <span class="mi">123</span><span class="o">);</span>
+</code></pre></div>
+<p>이처럼, 명시적으로 123을 <code>long</code>형으로 casting해주면 boxing될 때 <code>Long</code>으로 boxing되어 equals에서 참으로 나온다.</p>
+
+<p>생각해보니 당연한 이야기.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2008/07/28/ConsoleHandler-System-in-out-error-closing/" title="ConsoleHandler와 System.in/out/error의 closing">&laquo; ConsoleHandler와 System.in/out/error의 closing</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2008/10/18/django-and-encoding/" title="django와 encoding">&raquo; django와 encoding</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2012/06/21/implement-go-interface-like-at-java/">go interface 구현하기</a> <span class="date">21 Jun 2012</span></li>
+					
+						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
+					
+						<li><a href="/2012/05/28/simply-wait-using-FutureTask-at-java/">java의 FutureTask를 사용한 간단한 수행 대기</a> <span class="date">28 May 2012</span></li>
+					
+						<li><a href="/2011/11/27/java-message-dispatcher/">간단한 Message 체계 구현 (Java)</a> <span class="date">27 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/13/flight-game-with-java-4/">자바로 만드는 비행기 게임 4</a> <span class="date">13 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/06/flight-game-with-java-3/">자바로 만드는 비행기 게임 3</a> <span class="date">06 Nov 2011</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

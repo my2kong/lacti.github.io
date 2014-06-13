@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>java의 FutureTask를 사용한 간단한 수행 대기</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">java의 FutureTask를 사용한 간단한 수행 대기</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 28 May 2012</p>
+				<hr>
+				<div class="content">
+				<p>어떤 작업에 timeout을 주고 실행하고 싶은 경우가 있다. 예를 들어 web crawler를 만들 때에는 해당 페이지에 대한 응답이 10초정도 없을 경우에 그냥 그 페이지를 읽지 않도록 예외처리 하는 것이다.</p>
+
+<p>이 글에서는 <code>ExecutorService</code>와 <code>FutureTask</code>를 사용하여 timeout 처리를 하는 간단한 예제를 소개한다.</p>
+
+<ul>
+<li><code>ExecutorService</code>는 java 1.5 때 Doug Lea 아저씨가 추가한 좋은 Library이다. 이 글에서는 ThreadPool을 사용하기 위한 용도로 쓴다.</li>
+<li><code>FutureTask</code> 역시 Doug Lea 아저씨가 추가한 class로 javadoc에서 그 설명을 간략히 따오면 cancellable asynchronous computation이다. 즉, 수행 Thread와 결과를 받는 Thread가 분리되고, 취소 가능하다. 이 class는 <code>RunnableFuture</code>를 구현하는데, 이는 <code>Runnable</code>와 <code>Future</code> 두 interface의 합성체이다.</li>
+</ul>
+
+<p>어떤 작업에 timeout을 걸기 위해서는 적어도 수행 thread과 timeout을 걸어주는 thread가 분리되어야 한다. 간단하게 fork-join model을 생각해보자면 수행할 task는 fork된 thread에게 맡기고, join하는 main thread에서 join을 얼마나 기다려줄지 timeout을 지정해준다고 생각하면 되겠다.</p>
+
+<p>java에서도 1.7부터 <a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ForkJoinPool.html">fork/join pool</a>을 지원해주지만, 본 글에서는 안 다룬다.</p>
+
+<p>일단 무엇을 작업해서 반환할지에 대한 <code>FutureTask</code>를 구현한다. <code>FutureTask</code>는 이름 그대로 Future + Task이다. 즉 Task를 수행한 결과를 Future로 받아볼 수 있는 구조로, 생성자로 <code>Callable</code> 객체를 받고 수행을 위한 <code>run()</code> 함수와 결과 값을 받기 위한 <code>get()</code> 함수를 갖는다.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">FutureTask</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span>
+    <span class="k">new</span> <span class="n">Callable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="cm">/* complicated crawling code */</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+</code></pre></div>
+<p>뭔가 내부에서 복잡한 작업을 수행하는 callable object를 생성자로 받는 task 객체를 생성했다. 이제 task의 멤버 함수인 <code>run()</code>을 호출하게 되면 저 callable object가 실행되고, 그 수행 결과가 task 내부에 저장되는 것이다. 그러면 저 task의 상태가 completed(<code>isDone()</code>으로 확인) 인지 보고, <code>get()</code> 함수로 결과를 가져오면 되는 것이다.</p>
+
+<p>이제 열심히 만든 task 객체를 수행할 thread를 생성하도록 하자. 하지만 thread를 매번 만드는 것은 매우 아깝고 귀찮은 일이므로 <code>ExecutorService</code>를 사용해보도록 하자.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">ExecutorServicce</span> <span class="n">threadPool</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">();</span>
+</code></pre></div>
+<p>다 만들었다-_-; 이제 만든 ThreadPool을 사용하여 task를 실행해보자.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">threadPool</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">task</span><span class="o">);</span>
+</code></pre></div>
+<p>정말 간단하게 ThreadPool을 만들었고, 해당 ThreadPool 내에 cache된 thread에게 우리가 만든 task를 수행시켰다. 이제 main thread에서는 적절히 timeout을 걸고 기다려보자.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="k">try</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">5</span> <span class="cm">/* TIMEOUT */</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+    <span class="cm">/* some codes for processing result */</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">TimeoutException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// timeout occurred!</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>결과값을 가져오는 <code>get()</code> 함수는 해당 task가 완료될 때까지 기다리는 함수이다(blocking). 이 함수는 timeout 시간을 인자로 받는 함수가 overload되어있는데, 위 예시처럼 해당 함수를 쓰면 해당 수행이 5초내로 끝나지 않으면 <code>TimeoutException</code>을 던지게 되는 것이다. 따라서 <code>TimeoutException</code>을 적절히 catch해서 적절하게 처리해주면 된다.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2012/05/12/lambda-and-raii-2/" title="lambda와 RAII 2">&laquo; lambda와 RAII 2</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/" title="java annotation과 reflection을 사용한 xml mapping">&raquo; java annotation과 reflection을 사용한 xml mapping</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2012/06/21/implement-go-interface-like-at-java/">go interface 구현하기</a> <span class="date">21 Jun 2012</span></li>
+					
+						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
+					
+						<li><a href="/2011/11/27/java-message-dispatcher/">간단한 Message 체계 구현 (Java)</a> <span class="date">27 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/13/flight-game-with-java-4/">자바로 만드는 비행기 게임 4</a> <span class="date">13 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/06/flight-game-with-java-3/">자바로 만드는 비행기 게임 3</a> <span class="date">06 Nov 2011</span></li>
+					
+						<li><a href="/2011/10/03/getter-and-setter-at-java/">Java와 Getter/Setter</a> <span class="date">03 Oct 2011</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

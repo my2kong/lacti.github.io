@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>자바 네트워크 프로그래밍 2 - Socket</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">자바 네트워크 프로그래밍 2 - Socket</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 01 May 2010</p>
+				<hr>
+				<div class="content">
+				<h2>서론</h2>
+
+<p>자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자.</p>
+
+<h2>Socket</h2>
+
+<p>전 글에서 네트워크 통신을 사람 간의 전화로 비유했었다.<br>
+네트워크 통신을 한다는 것은 <a href="http://en.wikipedia.org/wiki/Network_Interface_Controller">NIC(Network Interface Controller)</a>를 사용하여 데이터를 주고 받겠다는 것이고 이는 <strong>하드웨어를 제어해야 한다는 뜻이다.</strong> 하드웨어는  <strong>운영체제가 관리하고 있는 자원</strong>이기 때문에 일반 프로그램들이 접근할 수 없다.</p>
+
+<p>처음 c/c++ 배울 때 사용했떤 파일 읽기/쓰기도 <strong>하드디스크</strong>라는 하드웨어 자원을 쓰는데 잘은 몰랐지만 프로그램이 제어를 했었다. 그 이유는 <del>모르는 사이에</del> open, read, write와 같은 <strong>운영체제가 제공하는 API</strong>를 사용했기 때문이다. 요약하자면, <strong>하드웨어 자원은 운영체제가 관리하니 운영체제가 제공하는 API를 사용하여 프로그래밍을 해야 한다</strong>는 것이다.</p>
+
+<p>고로 네트워크 프로그래밍을 하기 위해 운영체제가 주는 API가 있는데 그것이 바로 <strong>소켓:Socket</strong>이라고 보면 되겠다.<br>
+<span style="color: #aaa;">짧은 지식으로는 더 잘 설명할 재간이 없으니 [...] 그냥 그렇다고 넘어가자.</span></p>
+
+<p>코드 한 줄 없이 이렇게 장문을 쓰는 것도 괴로운 일이므로 바로 코드로 넘어가보자.</p>
+
+<h2>Client</h2>
+
+<p>클라이언트는 요청하는 쪽이다. 서버를 끊임없이 괴롭혀서 자신이 원하는 정보를 받아가는 녀석이다.<br>
+대표적인 예로 웹이 있다. 지금도 웹 서버에게 웹 페이지 데이터를 받아서 읽고 있는 것이다.</p>
+
+<p>클라이언트가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같다.</p>
+
+<ol>
+<li>Socket을 만든다.</li>
+<li>생성된 Socket으로 서버와 연결한다</li>
+<li>신나게 데이터 통신을 한다.</li>
+<li>연결을 종료한다.</li>
+</ol>
+
+<p>말은 길고 코드는 짧으니 바로 코드로 넘어가보자.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.UnknownHostException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">UnknownHostException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="s">&quot;127.0.0.1&quot;</span><span class="o">,</span> <span class="mi">3112</span><span class="o">);</span> <span class="c1">// 소켓 생성과 동시에 연결</span>
+        <span class="n">InputStream</span> <span class="n">inStream</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span> <span class="c1">// 데이터 수신을 위한 InputStream 가져오기</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">chunk</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">4096</span><span class="o">];</span> <span class="c1">// 데이터를 받을 byte 배열 생성</span>
+        <span class="kt">int</span> <span class="n">receiveLength</span> <span class="o">=</span> <span class="n">inStream</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">chunk</span><span class="o">);</span> <span class="c1">// 데이터를 읽고, 얼마나 가져왔는지를 반환받음</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">chunk</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">receiveLength</span><span class="o">));</span> <span class="c1">// 수신받은 데이터를 콘솔에 출력</span>
+        <span class="n">inStream</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// InputStream을 닫음</span>
+        <span class="n">socket</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// 소켓을 닫음</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<ul>
+<li>소켓 생성과 동시에 연결(connect)를 할 수 있다.
+
+<ul>
+<li>물론 소켓 생성 후에 connect 함수를 통해서도 접속 가능하다.</li>
+<li>이 때 첫 번째 인자가 연결할 서버의 <strong>hostname 혹은 ip address</strong>이고 두 번째 인자가 <strong>port 번호</strong>이다.</li>
+</ul></li>
+<li>연결 후 데이터 통신을 위한 <strong>InputStream</strong>과 <strong>OutputStream</strong>을 가져와 통신할 수 있다.</li>
+<li>통신이 끝난 후 스트림과 소켓을 <strong>닫아주면</strong> 된다.
+
+<ul>
+<li>효율적인 자원관리를 위해 <strong>다 쓴 자원은 꼭 주자.</strong></li>
+</ul></li>
+</ul>
+
+<p>위 예제에서는 예외처리를 제대로 하지 않고 밖으로 다 던져**throws**버렸는데 실제 코드를 작성할 때에는 반드시 수행하는 하나하나에 대해 적절한 예외처리를 해주어야 한다.</p>
+
+<h2>Server</h2>
+
+<p>서버는 응답자라고 보시면 되겠다. 클라이언트의 요청에 대한 결과물을 회신하는 쪽이다.<br>
+이는 웹 서버가 열심히 웹 페이지를 보내주고 있는 것으로 생각하시면 되겠다.</p>
+
+<p>서버가 <strong>TCP/IP</strong> 데이터 통신을 하기 위한 순서는 다음과 같다.</p>
+
+<ol>
+<li>ServerSocket을 만든다.</li>
+<li>클라이언트의 연결 요청에 대해 accept를 하여 클라이언트와 데이터 통신을 수행할 Socket 객체를 만든다.</li>
+<li>신나게 데이터 통신을 한다.</li>
+<li>연결을 종료한다.</li>
+</ol>
+
+<p>바로 코드로 넘어가보자.</p>
+
+<p>서버는 클라이언트로부터의 연결을 계속 기다리고 있다. 단, 클라이언트가 어떤 <strong>PORT 번호</strong>로 접속해야 할지를 알고 그 PORT에 달라붙어서(**bind**) 기다리고(**listen**) 있으면 된다. 그리고 클라이언트가 접속하면, 해당 클라이언트에 대한 소켓을 낚으면(**accpet**) 된다.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.OutputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.ServerSocket</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Server</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">ServerSocket</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="o">(</span><span class="mi">3112</span><span class="o">);</span> <span class="c1">// PORT를 열고 접속을 대기</span>
+        <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span> <span class="c1">// 클라이언트의 연결로부터 소켓을 만듬</span>
+        <span class="n">OutputStream</span> <span class="n">outStream</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span> <span class="c1">// OuputStream을 얻음</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;Hello Java Network Programming World!&quot;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span> <span class="c1">// 클라이언트에게 환영 인사를 보냄</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// OutputStream을 닫음</span>
+        <span class="n">socket</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// 클라이언트와의 연결 소켓을 닫음</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// 클라이언트 접속 대기 소켓을 닫음</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>서버는 클라이언트와 다르게 두 개의 소켓 개념이 존재한다. 하나는 <strong>서버소켓</strong>이고, 하나는 <strong>클라이언트와 데이터 통신을 수행하기 위한 소켓</strong>이다.</p>
+
+<ul>
+<li><strong>서버소켓</strong>은 <strong>클라이언트가 접속하는 것을 대기하는 소켓</strong>이다. 따라서 클라이언트가 접속할 PORT 번호에서 <strong>대기(bind, listen)</strong>하고, 클라이언트가 연결을 요청할 때 <strong>수락(accept)</strong>하여 해당 클라이언트와 데이터 통신을 하기 위한 소켓을 만들어준다.</li>
+<li>그렇게 만든 소켓을 사용하여 방금 연결된 클라이언트와 데이터 통신을 할 수 있는데, 이 때 소켓의 사용 방법은 클라이언트 때와 동일합니다.</li>
+</ul>
+
+<p>위의 두 예제를 실행하면, 서버가 클라이언트의 접속을 기다리고 있다가 클라이언트가 접속하면 &quot;Hello Java Network Programming World!&quot;라는 문자열을 보내고, 클라이언트가 이를 받아 console에 출력한 뒤 끝나는 결과를 볼 수 있다.</p>
+
+<h2>결론</h2>
+
+<p>쓰다보니 필요한 많은 개념들을 대충대충 넘어갔다.<br>
+특히 중요한 blocking 개념을 설명하지 않고 넘어가다 보니 피상적으로 코드를 읽어주는 글이 되어버려서 아쉽다.</p>
+
+<p>따라서 다음 글에서는 io의 blocking과 이를 해결하기 위한 multi-thread programming에 대해 간략히 알아보도록 하자.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2010/05/01/java-network-programming-1-basic/" title="자바 네트워크 프로그래밍 1 - 기초">&laquo; 자바 네트워크 프로그래밍 1 - 기초</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2010/10/31/http-serialize-object/" title="hso">&raquo; hso</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2010/05/01/java-network-programming-1-basic/">자바 네트워크 프로그래밍 1 - 기초</a> <span class="date">01 May 2010</span></li>
+					
+						<li><a href="/2012/06/21/implement-go-interface-like-at-java/">go interface 구현하기</a> <span class="date">21 Jun 2012</span></li>
+					
+						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
+					
+						<li><a href="/2012/05/28/simply-wait-using-FutureTask-at-java/">java의 FutureTask를 사용한 간단한 수행 대기</a> <span class="date">28 May 2012</span></li>
+					
+						<li><a href="/2011/11/27/java-message-dispatcher/">간단한 Message 체계 구현 (Java)</a> <span class="date">27 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/13/flight-game-with-java-4/">자바로 만드는 비행기 게임 4</a> <span class="date">13 Nov 2011</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

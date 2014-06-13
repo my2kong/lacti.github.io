@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>go interface 구현하기</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">go interface 구현하기</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 21 Jun 2012</p>
+				<hr>
+				<div class="content">
+				<p><em>(예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.)</em></p>
+
+<p>사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
+그냥 summerlight00님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+<span class="nl">public:</span> <span class="kt">void</span> <span class="n">a</span><span class="p">();</span> <span class="kt">void</span> <span class="nf">b</span><span class="p">();</span> <span class="kt">void</span> <span class="nf">c</span><span class="p">();</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">X</span> <span class="p">{</span>
+<span class="nl">public:</span> <span class="kt">void</span> <span class="n">a</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">Y</span> <span class="p">{</span>
+<span class="nl">public:</span> <span class="kt">void</span> <span class="n">b</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">Z</span> <span class="p">{</span>
+<span class="k">public</span> <span class="kt">void</span> <span class="n">c</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">A</span> <span class="n">obj</span><span class="p">;</span>
+<span class="n">X</span><span class="o">*</span> <span class="n">x</span> <span class="o">=</span> <span class="cm">/* 어떻게든 obj랑 연결 */</span><span class="p">;</span>
+<span class="n">x</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">();</span> <span class="c1">// A::a() 함수가 호출됨</span>
+</code></pre></div>
+<p>A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다. 하지만 암시적으로라도, 동일한 함수 signature가 존재한다면 interface로 지칭할 수 있게 해주는 것이 목적이다. (template 함수에서 암시적 interface를 요구하는 것을 객체화하여 접근할 수 있게 하였다고 봐도 되겠다)</p>
+
+<p>reflection을 사용하면 저걸 구현하는건 쉽다. 그렇지만 컴파일 시점에 대입 가능성을 보장해주려면 metaprogramming을 해야 한다.</p>
+
+<p>이 때 함수 signature를 비교하여 대입가능성을 검사해야 하는데, 문제는 함수 signature에 함수 이름이 포함된다는 것이다. 이름은 string literal이 될 것이고, 이를 compile time에 비교하려면 적어도 constexpr을 쓰거나 char typelist(variadic template)를 써야하는데, constexpr와 variadic template 모두 vs2012에서 지원 안하니 <del>(그렇다고 gcc를 쓸 생각은 없으니)</del> 일단 무시한다.</p>
+
+<p>결국 reflection을 써서 저 기능을 구현하면 되는데 c++로 reflection부터 만드려면 귀찮으니 java로 예제를 만들어 보자.</p>
+
+<p>안타깝게도 (혹은 다행스럽게도) java에서는 연산자 overloading이 없으므로, interface 객체에 대상 객체를 대입하기 위한 static 함수를 하나 만들 것이다.</p>
+
+<p>java reflection 중에는 <code>Proxy</code>라고 하여 해당 interface에 대한 method가 호출될 때, 그 method와 argument 정보를 하나의 함수로 모아주는(<code>InvocationHandler</code>) 좋은 class가 있다. (마치 ruby의 missing method나 php의 <code>__call</code>처럼)</p>
+
+<p>덕분에 어떤 interface를 넣어도 <code>Proxy</code>를 적절히 써서, 해당 interface의 함수가 호출될 때 이 정보를 대상 객체(target)의 함수로 잘 넘겨서 실행해주면 되겠다.</p>
+
+<p>이에 대한 코드는 다음과 같다.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.lang.reflect.InvocationHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.reflect.Method</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.reflect.Proxy</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InfOp</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">assign</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">infClazz</span><span class="o">,</span> <span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">infClazz</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">infClazz</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span> 
+                <span class="k">new</span> <span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="o">{</span> <span class="n">infClazz</span> <span class="o">},</span> <span class="k">new</span> <span class="n">InvocImpl</span><span class="o">(</span><span class="n">target</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">InvocImpl</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">targetClazz</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">InvocImpl</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">();</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">targetClazz</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>
+                <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+            <span class="n">Method</span> <span class="n">targetMethod</span> <span class="o">=</span> <span class="n">targetClazz</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> 
+                    <span class="n">method</span><span class="o">.</span><span class="na">getParameterTypes</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">targetMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>핵심은 <code>InvocationHandler::Invoke()</code> 내에 있는 코드이다. interface class에서 호출되는 method의 정보(name, parameter = 결국 signature)를 사용하여 target 객체의 method 정보를 찾는다. 그리고 invoke를 하면서 argument도 넘겨주면 끝이다.</p>
+
+<p>이제 다음과 같이 사용해볼 수 있다.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Character</span> <span class="n">ch</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Character</span><span class="o">();</span>
+        <span class="n">Drawable</span> <span class="n">dr</span> <span class="o">=</span> <span class="n">InfOp</span><span class="o">.</span><span class="na">assign</span><span class="o">(</span><span class="n">Drawable</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">ch</span><span class="o">);</span>
+        <span class="n">dr</span><span class="o">.</span><span class="na">draw</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">interface</span> <span class="nc">Drawable</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">draw</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">interface</span> <span class="nc">Movable</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">move</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Character</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;draw!&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">move</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;move!&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><code>Character</code> class와 <code>Drawable</code> interface는 명시적인 구현 관계(implements)가 없지만, 어쨌든 <code>draw()</code>라는 동일한 함수 signature를 갖는다. 따라서 <code>Character</code> 객체를 적절히 proxy로 감싸서 <code>Drawable</code> interface와 연결하여 위 코드처럼 실행시킬 수 있는 것이다.</p>
+
+<p><em>(조만간 compile time check를 포기한 c++ 버전도 올리도록 하겠다.)</em></p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2012/06/10/get-resource-stream-using-ClassLoader/" title="ClassLoader를 사용하여 Resource Stream 얻기">&laquo; ClassLoader를 사용하여 Resource Stream 얻기</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2012/10/01/extract-code-using-member-data-pointer-1/" title="멤버 데이터 포인터를 사용하여 연산식 묶어내기 1">&raquo; 멤버 데이터 포인터를 사용하여 연산식 묶어내기 1</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2012/01/10/implicit-interface-by-template/">template의 암시적 interface 요구</a> <span class="date">10 Jan 2012</span></li>
+					
+						<li><a href="/2011/07/13/generic-interface-implemented-by-template/">template에 의한 generic interface 정의</a> <span class="date">13 Jul 2011</span></li>
+					
+						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
+					
+						<li><a href="/2012/05/28/simply-wait-using-FutureTask-at-java/">java의 FutureTask를 사용한 간단한 수행 대기</a> <span class="date">28 May 2012</span></li>
+					
+						<li><a href="/2011/11/27/java-message-dispatcher/">간단한 Message 체계 구현 (Java)</a> <span class="date">27 Nov 2011</span></li>
+					
+						<li><a href="/2011/11/13/flight-game-with-java-4/">자바로 만드는 비행기 게임 4</a> <span class="date">13 Nov 2011</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,25 +1,1050 @@
----
-layout: default
-title: lacti's blog
----
-		<div class="row">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>lacti's blog</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
 			<div class="col-lg-8">
 				<ul id="indexes">
-				{% for post in site.posts %}
-					{% unless post.next %}
-						<h3>{{ post.date | date: '%b %Y' }}</h3>
-					{% else %}
-						{% capture year %}{{ post.date | date: '%b %Y' }}{% endcapture %}
-						{% capture nyear %}{{ post.next.date | date: '%b %Y' }}{% endcapture %}
-						{% if year != nyear %}
-							<h3>{{ post.date | date: '%b %Y' }}</h3>
-						{% endif %}
-					{% endunless %}
+				
+					
+						<h3>Nov 2013</h3>
+					
 					<li>
-						<span>{{ post.date | date: '%d.' }}</span>
-						<a href="{{ post.url }}">{{ post.title }}</a>
+						<span>19.</span>
+						<a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a>
 					</li>
-				{% endfor %}
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>19.</span>
+						<a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2013</h3>
+						
+					
+					<li>
+						<span>09.</span>
+						<a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Sep 2013</h3>
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Aug 2013</h3>
+						
+					
+					<li>
+						<span>26.</span>
+						<a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>12.</span>
+						<a href="/2013/08/12/yeouido-study-homework-2/">여의도 스터디 과제 풀이 2</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>10.</span>
+						<a href="/2013/08/10/yeouido-study-summary-2/">여의도 스터디 정리 2</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>04.</span>
+						<a href="/2013/08/04/yeouido-study-homework-1/">여의도 스터디 과제 풀이 1</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2013/08/03/yeouido-study-summary-1/">여의도 스터디 정리 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jun 2013</h3>
+						
+					
+					<li>
+						<span>08.</span>
+						<a href="/2013/06/08/simple-distributed-system-implementation-3/">분산 처리 환경 구현 3</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>May 2013</h3>
+						
+					
+					<li>
+						<span>19.</span>
+						<a href="/2013/05/19/how-much-faster-is-c%2B%2B-than-c-sharp/">How much faster is C++ than C#?</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2013/05/07/simple-distributed-system-implementation-2/">분산 처리 환경 구현 2</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Apr 2013</h3>
+						
+					
+					<li>
+						<span>22.</span>
+						<a href="/2013/04/22/simple-distributed-system-implementation-1/">분산 처리 환경 구현 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Nov 2012</h3>
+						
+					
+					<li>
+						<span>30.</span>
+						<a href="/2012/11/30/ctags-cscope-with-vim/">ctags, cscope 설정 등 vim을 잘 써보자</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2012/11/18/fiddler-web-debugger/">Fiddler Web Debugger</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2012</h3>
+						
+					
+					<li>
+						<span>13.</span>
+						<a href="/2012/10/13/different-between-member-data-pointer-and-pointer/">member-data-pointer와 pointer의 차이</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2012/10/07/extract-code-using-member-data-pointer-3/">멤버 데이터 포인터를 사용하여 연산식 묶어내기 3</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2012/10/03/extract-code-using-member-data-pointer-2/">멤버 데이터 포인터를 사용하여 연산식 묶어내기 2</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2012/10/01/extract-code-using-member-data-pointer-1/">멤버 데이터 포인터를 사용하여 연산식 묶어내기 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jun 2012</h3>
+						
+					
+					<li>
+						<span>21.</span>
+						<a href="/2012/06/21/implement-go-interface-like-at-java/">go interface 구현하기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>10.</span>
+						<a href="/2012/06/10/get-resource-stream-using-ClassLoader/">ClassLoader를 사용하여 Resource Stream 얻기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>09.</span>
+						<a href="/2012/06/09/using-reflection-at-c%2B%2B-4/">c++에서 reflection 사용하기 4</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>09.</span>
+						<a href="/2012/06/09/using-reflection-at-c%2B%2B-3/">c++에서 reflection 사용하기 3</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>04.</span>
+						<a href="/2012/06/04/using-reflection-at-c%2B%2B-2/">c++에서 reflection 사용하기 2</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2012/06/03/using-reflection-at-c%2B%2B-1/">c++에서 reflection 사용하기 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>May 2012</h3>
+						
+					
+					<li>
+						<span>31.</span>
+						<a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>28.</span>
+						<a href="/2012/05/28/simply-wait-using-FutureTask-at-java/">java의 FutureTask를 사용한 간단한 수행 대기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>12.</span>
+						<a href="/2012/05/12/lambda-and-raii-2/">lambda와 RAII 2</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Apr 2012</h3>
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2012/04/01/lambda-and-raii-1/">lambda와 RAII 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Mar 2012</h3>
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2012/03/18/asynchronous-programming-and-async-await/">asynchronous programming과 async, await</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2012/03/01/c-sharp-ui-cross-thread-problem/">C# UI Cross thread problem 해결</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Feb 2012</h3>
+						
+					
+					<li>
+						<span>23.</span>
+						<a href="/2012/02/23/thread-unsafety-problem-in-circular-queue/">환형큐의 thread unsafety 문제</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jan 2012</h3>
+						
+					
+					<li>
+						<span>10.</span>
+						<a href="/2012/01/10/implicit-interface-by-template/">template의 암시적 interface 요구</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>09.</span>
+						<a href="/2012/01/09/inherits-template-argument/">template 인자를 상속 받기</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Dec 2011</h3>
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2011/12/20/event-handler-and-message-passing/">EventHandler와 Message Passing</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Nov 2011</h3>
+						
+					
+					<li>
+						<span>27.</span>
+						<a href="/2011/11/27/java-message-dispatcher/">간단한 Message 체계 구현 (Java)</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>15.</span>
+						<a href="/2011/11/15/type-dispatching-by-type-trait-class/">type_t class 도입을 통한 임시 객체 없는 type 분기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>13.</span>
+						<a href="/2011/11/13/flight-game-with-java-4/">자바로 만드는 비행기 게임 4</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>06.</span>
+						<a href="/2011/11/06/flight-game-with-java-3/">자바로 만드는 비행기 게임 3</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2011</h3>
+						
+					
+					<li>
+						<span>08.</span>
+						<a href="/2011/10/08/design-database/">데이터베이스 설계</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2011/10/03/getter-and-setter-at-java/">Java와 Getter/Setter</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Sep 2011</h3>
+						
+					
+					<li>
+						<span>30.</span>
+						<a href="/2011/09/30/using-rtti-at-c%2B%2B/">c++ 에서 구조체 RTTI 정보 남기기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>22.</span>
+						<a href="/2011/09/22/flight-game-with-java-2/">자바로 만드는 비행기 게임 2</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>21.</span>
+						<a href="/2011/09/21/flight-game-with-java-1/">자바로 만드는 비행기 게임 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Aug 2011</h3>
+						
+					
+					<li>
+						<span>22.</span>
+						<a href="/2011/08/22/static-sized-concurrent-pool/">Concurrent Pool (Static Size)</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>14.</span>
+						<a href="/2011/08/14/web-based-chat-site/">웹 기반 채팅방</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>14.</span>
+						<a href="/2011/08/14/io-and-memory-copy/">IO와 메모리 복사</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>11.</span>
+						<a href="/2011/08/11/synchronize-function-execution-in-each-object/">객체별 함수 수행 동기화</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2011/08/07/efficient-processing-for-multiplexing-io/">다중 입출력에 대한 효율적 처리</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2011/08/07/asynchronous-io/">비동기 IO 함수</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2011/08/03/interlocked-singly-linked-lists/">Interlocked Singly Linked Lists</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>02.</span>
+						<a href="/2011/08/02/volatile-interlocked-operation/">volatile과 interlocked operation</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>02.</span>
+						<a href="/2011/08/02/context-switching-and-simultaneously/">context switching과 simultaneously 실행</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jul 2011</h3>
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2011/07/20/public-private-at-c%2B%2B/">class의 public과 private</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2011/07/20/object-ctor-dtor-with-goto/">객체의 생성, 소멸과 goto 이야기</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2011/07/20/implement-call-stack-trace-at-c%2B%2B/">C++에서 Call Stack Trace를 만들어보자.</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>19.</span>
+						<a href="/2011/07/19/check-type-equality-and-assignablity-by-template/">template을 사용한 type간 동등성, 대입가능성</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>13.</span>
+						<a href="/2011/07/13/tls-initializer/">Tls 초기화</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>13.</span>
+						<a href="/2011/07/13/generic-interface-implemented-by-template/">template에 의한 generic interface 정의</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2011/07/01/nonsense-of-iterator-incremental-operator/">반복자 i++과 ++i에 대한 헛소리</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>May 2011</h3>
+						
+					
+					<li>
+						<span>21.</span>
+						<a href="/2011/05/21/program-segment/">프로그램 세그먼트</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>19.</span>
+						<a href="/2011/05/19/http-message-header/">Http Message header</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>15.</span>
+						<a href="/2011/05/15/how-to-control-width-in-java-due-to-LayoutManager/">Java에서 LayoutManager로 인해 width가 뜻대로 안될 때</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2011/05/01/mysql-insert/">MySQL INSERT</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Mar 2011</h3>
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2011/03/20/classical-inheritance-in-javascript/">Classical Inheritance in JavaScript</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>02.</span>
+						<a href="/2011/03/02/implementation-instance-id-with-java-annotation/">java annotation을 사용한 InstanceId 구현</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Feb 2011</h3>
+						
+					
+					<li>
+						<span>22.</span>
+						<a href="/2011/02/22/object-database-and-value-object/">Object Database와 Value Object</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>15.</span>
+						<a href="/2011/02/15/JPanel-inheritence/">JPanel 상속</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jan 2011</h3>
+						
+					
+					<li>
+						<span>16.</span>
+						<a href="/2011/01/16/reference-sites-of-bash/">bash 참조 사이트</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>09.</span>
+						<a href="/2011/01/09/typeof-and-container-of/">typeof, container_of</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>08.</span>
+						<a href="/2011/01/08/different-between-size-t-ssize-t/">당연하지만 간과하는 size_t ssize_t</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>08.</span>
+						<a href="/2011/01/08/closed-descriptor-and-write-when-SIGPIPE/">닫힌 descriptor와 write, SIGPIPE</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Dec 2010</h3>
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2010/12/18/LockWindowUpdate/">LockWindowUpdate</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2010/12/03/as-you-know-utf8-unicode-ci/">as you know, utf8_unicode_ci</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2010</h3>
+						
+					
+					<li>
+						<span>31.</span>
+						<a href="/2010/10/31/http-serialize-object/">hso</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>May 2010</h3>
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2010/05/01/java-network-programming-2-socket/">자바 네트워크 프로그래밍 2 - Socket</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2010/05/01/java-network-programming-1-basic/">자바 네트워크 프로그래밍 1 - 기초</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Apr 2010</h3>
+						
+					
+					<li>
+						<span>29.</span>
+						<a href="/2010/04/29/why-java-ObjectStream-is-blocked/">Java ObjectStream의 Input/Ouput Blocking이야기</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Mar 2010</h3>
+						
+					
+					<li>
+						<span>20.</span>
+						<a href="/2010/03/20/HashSet-and-ArrayList/">HashSet과 ArrayList</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Feb 2010</h3>
+						
+					
+					<li>
+						<span>17.</span>
+						<a href="/2010/02/17/java-remotelib/">개발중인 remotelib 중간보고</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>07.</span>
+						<a href="/2010/02/07/recommend-java-decompiler/">꽤 쓸만한 Java Decompiler</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>04.</span>
+						<a href="/2010/02/04/developing-java-remote-library/">개발중인 Remote Library 중간보고</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2009</h3>
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2009/10/18/how-to-function-returning-value-with-assembly/">함수 값 반환 방법[어셈블리]</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jan 2009</h3>
+						
+					
+					<li>
+						<span>04.</span>
+						<a href="/2009/01/04/Java-Graphics-AffineTransform-and-JScrollPane/">Java Graphics와 AffineTransform, 그리고 JScrollPane</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>03.</span>
+						<a href="/2009/01/03/java-swing-1/">Java Swing을 한다면 1</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Dec 2008</h3>
+						
+					
+					<li>
+						<span>25.</span>
+						<a href="/2008/12/25/eclipse-with-subversive/">eclipse + subversive</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Oct 2008</h3>
+						
+					
+					<li>
+						<span>18.</span>
+						<a href="/2008/10/18/django-and-encoding/">django와 encoding</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Aug 2008</h3>
+						
+					
+					<li>
+						<span>31.</span>
+						<a href="/2008/08/31/Java-equals/">Java의 equals의 세계</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Jul 2008</h3>
+						
+					
+					<li>
+						<span>28.</span>
+						<a href="/2008/07/28/ConsoleHandler-System-in-out-error-closing/">ConsoleHandler와 System.in/out/error의 closing</a>
+					</li>
+				
+					
+						
+						
+						
+							<h3>Apr 2008</h3>
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2008/04/01/pintos-internal-structure/">pintos 기본 구조와 동작 원리</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2008/04/01/make-pintos-environment/">pintos 환경 구축</a>
+					</li>
+				
+					
+						
+						
+						
+					
+					<li>
+						<span>01.</span>
+						<a href="/2008/04/01/gdb-simple-help/">gdb 간단 사용법 정리</a>
+					</li>
+				
 				</ul>
 			</div>
 
@@ -27,8 +1052,36 @@ title: lacti's blog
 				<div class="well">
 					<h4 class="well-title">Recent Posts</h4>
 					<ul>
-					{% for post in site.posts limit:6 %}
-						<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="date">{{ post.date | date_to_string }}</span></li>
-					{% endfor %}
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/10/09/asynchronous-programming-pattern-1/">비동기 프로그래밍 패턴 1</a> <span class="date">09 Oct 2013</span></li>
+					
+						<li><a href="/2013/09/07/websocket-webrtc/">websocket, webRTC</a> <span class="date">07 Sep 2013</span></li>
+					
+						<li><a href="/2013/08/26/yeouido-study-summary-4/">여의도 스터디 정리 4</a> <span class="date">26 Aug 2013</span></li>
+					
+						<li><a href="/2013/08/18/yeouido-study-summary-3/">여의도 스터디 정리 3</a> <span class="date">18 Aug 2013</span></li>
+					
 					</ul>
 				</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>
