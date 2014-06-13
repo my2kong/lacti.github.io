@@ -44,7 +44,7 @@ tags: concurrency volatile actor oooe
 
 ### memory consistency model ###
 
-우리가 작성한 대로 수행을 보장해준다면(Sequentially-consistent ordering) 프로그램의 흐름을 이해하기가 쉽지만 최적화 가능성이 줄어듬. 이를 완화(relaxed)해주어서 최적화가 잘 되게 해보자. 그런데 intel x86-64는 그런 것 신경 안 써줘도 빠르게 돌아감*(summerlight00님 수정)*
+우리가 작성한 대로 수행을 보장해준다면(Sequentially-consistent ordering) 프로그램의 흐름을 이해하기가 쉽지만 최적화 가능성이 줄어듬. 이를 완화(relaxed)해주어서 최적화가 잘 되게 해보자. 그런데 intel x86-64는 그런 것 신경 안 써줘도 빠르게 돌아감*([summerlight]님 수정)*
 
 * [WRL-RR: Shared Memory Consistency Models: A Tutorial](http://www.hpl.hp.com/techreports/Compaq-DEC/WRL-95-7.pdf)
 
@@ -72,7 +72,7 @@ c++11에 memory order로 추가됨.
 
 ### thread safe한 singleton ###
 
-* [PoolC: C++ 싱글턴 (summerlight00)](http://board.poolc.org/generation03/512)
+* [PoolC: C++ 싱글턴 (summerlight)](http://board.poolc.org/generation03/512)
 
 근데 intel x86-64에서는 memory barrier 안 쳐줘도 문제가 없다-_-; 하지만 c++11부터는 함수 내 static 변수를 반환하는 것만으로도 대충 thread-safe한 singleton이 구현 가능해졌다.
 

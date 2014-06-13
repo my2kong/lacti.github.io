@@ -69,7 +69,7 @@ P1: turn = 0;
 표준에서 설명하는 `memory_order_consume`, `memory_order_acquire`의 차이를 잘 모르겠음.
 그리고 boost thread_coordination 문서의 마지막 예제 내용을 잘 모르겠음.
 
-위 질문에 대한 summerlight00님의 답변
+위 질문에 대한 [summerlight]님의 답변
 
 > consume와 acquire 시멘틱에 대한 차이: DEC alpha에서 작업할거 아니면 그냥 acquire로 통일하면 됨.
 
@@ -99,7 +99,7 @@ P1: turn = 0;
 
 ### [객체별 수행 동기화]({% post_url 2011-08-11-synchronize-function-execution-in-each-object %}) 글 코드의 문제 ###
 
-angdev님의 문제 해결법
+[angdev]님의 문제 해결법
 
 ```cpp
 mJobQueue.push(RequestJobPtr(new _RequestJobImpl(functor)));

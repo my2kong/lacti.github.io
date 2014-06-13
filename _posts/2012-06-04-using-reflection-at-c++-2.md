@@ -190,7 +190,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 `user_t`에 대해 reflection을 등록한다.  
 (이 부분은 딱히 답이 없는데, 편하게 하려면 code generator를 사용한다던가 하는 수 밖에 없어보인다.
-아니면 libsora님이 했던 것처럼 매크로로 구조체를 만들도록 하든가.)
+아니면 [if1live]님이 했던 것처럼 매크로로 구조체를 만들도록 하든가.)
 
 `class_t::from_name()` 함수를 사용해 이름으로 `class_t` 객체를 가져왔다. 그리고 `enumerate_fields()` 함수(본 문에서는 생략됨)를 사용하여 `class_t`가 가지고 있는 모든 field에 대한 이름을 출력해볼 수 있다.
 

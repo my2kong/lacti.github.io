@@ -1,0 +1,5 @@
+[google]: http://www.google.com  "Google it!"
+[wiki]: http://wikipedia.org  "Online Encyclopedia"
+[angdev]: http://blog.fegs.kr/  "blog.fegs.kr"
+[if1live]: http://libsora.so/  "libsora.so"
+[summerlight]: https://twitter.com/summerlight00  "summerlight00"

@@ -98,7 +98,7 @@ rtti_t rtti;
 ### DSEL ###
 
 이제 구조체를 정의하는 매크로를 만들어야 한다.
-이게 약간 문제가 있는데, 본 문제를 출제한 libsora님의 요구 사항은 아래와 같다.
+이게 약간 문제가 있는데, 본 문제를 출제한 [if1live]님의 요구 사항은 아래와 같다.
 
 ```cpp
 STRUCT_BEGIN(SampleStruct)
@@ -178,7 +178,7 @@ struct Sample {
 구조체를 등록하는 매크로는 전역 `rtti_map` 객체에 `struct_info`를 넣어준다.
 구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 `varmap` 객체에 `var_info`를 넣어준다.
 
-구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 `struct_info`를 얻어와서 거기에 변수 정보(`var_info`)를 등록할 수 있다는 것이다. 이 때문에 libsora님의 매크로의 변수 선언부를 보면, `STRUCT_VAR_FLOAT(SampleStruct, a)`와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.
+구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 `struct_info`를 얻어와서 거기에 변수 정보(`var_info`)를 등록할 수 있다는 것이다. 이 때문에 [if1live]님의 매크로의 변수 선언부를 보면, `STRUCT_VAR_FLOAT(SampleStruct, a)`와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.
 
 
 ### declaration DSEL ###
