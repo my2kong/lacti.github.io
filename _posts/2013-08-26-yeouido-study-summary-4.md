@@ -6,7 +6,7 @@ tags: concurrency pattern reader-writer-lock pacelc actor-model fault-tolerant
 
 Concurrency Pattern부터 Distributed System까지! 근데 대충함-_-
 
-## [Concurrency pattern](http://en.wikipedia.org/wiki/Concurrency_pattern) ##
+### [Concurrency pattern](http://en.wikipedia.org/wiki/Concurrency_pattern) ###
 
 대충 정리해보자.
 

@@ -19,7 +19,7 @@ svn은 2학년 여름 방학 때 동아리 선배님들과 아르바이트를 �
 
 그 후 마침 [마소](http://imaso.co.kr)에서 svn 관련 기사를 다루면서 `eclipse` 플러그인으로 `subversive`가 있다는 것을 소개해주었고, 이것을 2학년 2학기 인터넷 프로그래밍 수업 시간에 프로젝트를 진행하면서 주로 사용하게 되었다.
 
-### eclipse ##
+### eclipse ###
 
 `eclipse`는 IBM에서 만든 통합 개발 환경(IDE)이다. 시작은 Java IDE로 시작한 것 같지만 요즘은 C/C++, Web, PHP, Modeling, Python, nesC 등등 별별 언어를 다 지원한다. *(FLEX builder도 eclipse 기반이다)*
 
@@ -48,7 +48,7 @@ subversive는 앞서 말했듯이 eclipse 내에서 svn 기능을 (정확히 말
 
 끝
 
-### 요약 ##
+### 요약 ###
 
 Java 개발자를 위한 Subversive 플러그인 설치
 
