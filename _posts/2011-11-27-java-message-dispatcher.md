@@ -9,8 +9,8 @@ tags: message java dispatcher
 
 * `MessageQueue`는 전역 객체이다. `Message`를 받아서 이를 수신 Handler 객체에게 전달한다.
 * 여러 Thread에서 접근할 수 있으므로 Concurrent DataStructure를 사용한다.
-* 내부적으로 각 Message 에 대해 여러 Worker Thread 를 두어 처리할 수도 있겠지만, 일단 Message 처리의 순서를 보장하기 위해 공유 Queue 를 갖고 단일 Thread 가 처리하는 방식으로 구현한다.
-(글 쓰면서 생각해보니 이 지점에서 성능 병목이 생길텐데, 고민을 더 해봐야겠다)
+* 내부적으로 각 Message 에 대해 여러 Worker Thread 를 두어 처리할 수도 있겠지만, 일단 Message 처리의 순서를 보장하기 위해 공유 Queue 를 갖고 단일 Thread 가 처리하는 방식으로 구현한다.  
+  (글 쓰면서 생각해보니 이 지점에서 성능 병목이 생길텐데, 고민을 더 해봐야겠다)
 
 `Message`는 무슨 class 가 될지 모르니까 간단하게 mark interface로 만든다.
 

@@ -4,8 +4,6 @@ title: Java Graphics와 AffineTransform, 그리고 JScrollPane
 tags: java graphics affinetransform jscrollpane
 ---
 
-### 옛날 이야기 ###
-
 예전에 디비랩 알바를 할 때, 어떤 이미지에 대해 확대, 축소, 이동을 해야할 일이 생겼다.
 `MouseEvent` 처리 시 좌표 계산 등, 몇 가지 계산을 해서 Image를 확대, 축소, 이동해서 볼 수 있도록 하였다.
 

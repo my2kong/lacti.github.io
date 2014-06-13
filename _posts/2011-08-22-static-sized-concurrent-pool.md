@@ -4,8 +4,6 @@ title: Concurrent Pool (Static Size)
 tags: static size concurrent pool
 ---
 
-### 도입 ###
-
 정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자.  
 핵심은 배열을 사용한다는 것. 왜냐하면 여러 thread가 접근해도 자신만의 index 지점을 접근하면 한 지점에 동시에 thread가 접근하면서 발생하는 문제가 없기 때문.
 

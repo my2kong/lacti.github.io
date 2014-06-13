@@ -27,6 +27,7 @@ SLIST는 단방향(singly) Linked List로 구성된 Stack이다. MSDN 을 보면
 ### 왜 Memory Alignment 이야기가 나올까? ###
 
 MSDN을 보면 모든 항목들은 `MEMORY_ALLOCATION_ALIGNMENT`로 정렬되어있어야 한다고 써있다.
+
 > All list items must be aligned on a MEMORY_ALLOCATION_ALIGNMENT boundary
 
 그 이유는 아마도 CPU가 해당 메모리 값을 가져와서 lock operation을 수행할 때 이게 적절치 못하게 메모리에 걸쳐 있으면 한 번에 Fetch를 할 수가 없기 때문일 것이다.
@@ -77,7 +78,6 @@ typedef struct _SINGLE_LIST_ENTRY {
 
 아무튼 다 MSDN 에 예제까지 친절히 나와있으므로 자세한 설명은 생략한다.
 
-#
 `SLIST_ENTRY` 항목들의 메모리 주소는 정렬되어야 한다. 이를 일단 SLIST로 관리해야할 Node들이 `SLIST_ENTRY` 객체를 멤버로 가져야하고, SLIST_ENTRY 멤버 변수들의 주소는 `MEMORY_ALLOCATION_ALIGNMENT` 값으로 정렬 되어있어야 한다.
 
 가장 간단한 방법은 다음과 같다.
@@ -102,9 +102,7 @@ struct MyItem
 MyItem* item = (MyItem*) InterlockedPopEntryList (listHead);
 ```
 
-#
-궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자.
-예제는 MSDN: [Using Singly Linked List](http://msdn.microsoft.com/en-us/library/ms686962.aspx)에 있다.
+궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자. 예제는 [MSDN: Using Singly Linked List](http://msdn.microsoft.com/en-us/library/ms686962.aspx)에 있다.
 
 먼저 `LIST_HEADER`를 만들어줘야한다. 이는 사용할 SLIST의 Head 포인터이다. 당연한 이야기이지만 이것도 메모리 정렬이 되어야 한다.
 
@@ -130,6 +128,7 @@ pProgramItem = (PPROGRAM_ITEM)pListEntry;
 ### 정리 ###
 
 이러한 구조가 어디에서 쓰일까. multi thread 에서 접근해야하는 자료구조일 경우 쓰이겠다. 예를 들면,
+
 * 작업 queue
 * log queue
 * 메모리 관리자
@@ -139,7 +138,6 @@ queue 시리즈야 예제에서 이미 봤고, 메모리 관리자 이야기를 
 재활용이 가능한 메모리들이 있다. 이런 것들을 pool 형태로 관리하여 할당 부담을 줄이고 단편화를 줄이기 위한 관리자를 만든다고 하자. 자원 할당은 여러 thread에서 접근해야하니까 병목 지점이고, 이 때문에 lock은 최대한 적게 썼으면 좋겠다.  
 그러니까 미리 지정된 크기만큼 메모리를 다 할당해서(보통 크게 할당해서 쪼개놓고) SLIST에 다 넣어둔다. 그리고 요청할 때마다 하나씩 Pop해서 쓰게 해준다.
 
-뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고,
-그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.
+뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고, 그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.
 
 결론이 좀 이상해졌는데 아무튼 Windows API가 제공해주는 SLIST를 사용하여 multi thread 환경에서 보다 빠른 프로그램을 작성할 수 있다니까 믿고 써보자.

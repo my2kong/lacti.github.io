@@ -52,7 +52,7 @@ item_ref inventory_t::find(item_id_t item_id) {
 inventory가 가지고 있는 item에 대한 정보는 item의 `vector`로 관리하고 있다. 저 inventory 객체를 여러 Thread에서 접근한다고 하면, `std::find()`에 의해 `vector`를 순회하다가 접근 위반이 발생할 가능성이 있다. (한 thread 는 순회하고, 한 thread 는 vector 에 삽입/삭제할 경우)
 따라서 lock을 사용하여 해당 container 를 보호해준다.
 
-하지만 위 코드는 문제가 있다.
+하지만 위 코드는 문제가 있다.  
 `lock`을 사용하여 `items`로의 접근을 보호하지만, 실제 item을 찾은 다음 return 문을 수행하기 전에 `unlock`을 수행하지 않았기 때문이다. 이러한 문제는 `find` 함수가 좀만 길어지면, 혹은 조금만 신경을 쓰지 않게 되면 흔히 발생할 수 있는 문제이다.
 
 따라서 이러한 문제를 해결하기 위해 정적 객체의 생존 주기를 활용한다.

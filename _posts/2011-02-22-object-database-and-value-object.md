@@ -4,11 +4,7 @@ title: Object Database와 Value Object
 tags: object database value object
 ---
 
-## 개요 ##
-
 프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자.
-
-## 설계 ##
 
 ### 설계 1 ###
 
@@ -36,13 +32,13 @@ db.read(p);
 db.delete(p);
 ```
 
-## 문제점 ##
+### 문제점 ###
 
 해당 Database Adapter는 Relation Database를 Object Database로 adapting해버리므로 JOIN 등의 Select query를 처리할만한 좋은 방법이 없다. 즉, 객체 단위의 데이터베이스 작업에 대해서는 간단한 작업을 보장하지만 각 Table의 Relation을 고려해야할 경우에 문제가 생긴다.
 
 또한, 특정 값을 Update하거나, Where 조건이 복잡해지거나, 특정 항목만 Select할 경우에 대해서는 설계적으로 명확히 제공해주지 않기 때문에 구현이 복잡해지거나 자원 낭비가 발생한다.
 
-## 문제점 원인 분석 ##
+### 문제점 원인 분석 ###
 
 본 모델은 Mysql J/Connector의 QueryAdapter를 기반으로 설계된 모델로, Query를 직접 작성하지 않고 객체의 class 정보를 reflection으로 읽어서 자동으로 Query를 구성해주어 작업의 편의를 도모하고자 설계한 것이다.
 
@@ -50,7 +46,7 @@ db.delete(p);
 
 따라서 위의 Object Database Adapter는 MySQL 등의 RDB에 붙여서 사용하는 것보다는 테스트를 위해 Memory Model을 사용할 때 더 적합하며, Relation이 적게 고려되는 간단한 Database 프로그래밍을 해야할 때 사용될 수 있겠다.
 
-## 문제점 해결 ##
+### 문제점 해결 ###
 
 이러한 Adapter를 통해 Query를 직접 작성하지 않고 Database로부터의 결합을 분리시키기 위해서는, Query를 Modeling하여 이에 대해 각 Database별 구현을 가질 수 있도록 한다.
 
@@ -76,7 +72,7 @@ jdbc를 사용하여 MySQL에 접속하여 Connection 객체를 얻을 것이다
 
 아무튼 이러한 객체를 `ValueObject`라고 해서 DAO 패턴에서 볼 수 있게 된다. 따라서 Server는 Client의 요청에 대해 Database에 필요한 정보를 요청하여 그 정보를 담는 VO 객체를 반환하면 된다.
 
-## 결론 ##
+### 결론 ###
 
 프로그래밍을 함에 있어 Data의 Persistence를 고려하지 않는 프로그램은 없을 정도로 이는 기본 요소라고 할 수 있겠다. 하지만 프로그램에서 어떤 수준을 요구하냐에 따라서 그에 적합한 설계를 해야할 것이고,
 

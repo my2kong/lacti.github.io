@@ -4,11 +4,7 @@ title: java annotation을 사용한 InstanceId 구현
 tags: java annotation instanceid
 ---
 
-## 문제 ##
-
 Java에서 생성하는 `Object`마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자.
-
-## 해결 ##
 
 Index 발급 Group 관련해서 파일을 하나 작성하여 `IndexGeneratingManager`를 구성해서 발급해도 되고, 아니면 발급 받는 시점을 적절히 조절하거나 발급 함수의 인자로 Group할 Class 정보를 넣어줘도 되겠다.  
 하지만 본 글에서는 Java 1.5부터 추가된 `Annotation`을 사용하여 source code에 metadata를 추가하여 문제를 해결하는 방법을 써 보겠다.

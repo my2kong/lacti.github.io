@@ -137,7 +137,7 @@ breakpoint number는 gdb 구동시 0부터 시작하여 breakpoints나 watchpoin
 | r     	| [실행 인자]                          	| 프로그램을 실행한다.                                            	|
 | b     	| 함수, 줄 번호                        	| breakpoints를 설정한다.                                         	|
 | l     	| [줄 번호]                            	| source 코드를 본다.                                             	|
-| c     	| break 상태에서 다시 진행을 재개한다. 	|                                                                 	|
+| c     	| break                               	| 상태에서 다시 진행을 재개한다.                                    	|
 | s     	| [진행할 행 수]                       	| step into하며 진행한다.                                         	|
 | n     	| [진행할 행 수]                       	| step over하며 진행한다.                                         	|
 | p     	| 변수, 함수 등                        	| 지정된 변수의 값이나 함수의 주소를 출력한다.                    	|

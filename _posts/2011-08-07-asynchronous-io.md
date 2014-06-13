@@ -157,10 +157,9 @@ void async_callback (char *key) {
 }
 ```
 
-좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 아래의 글을 보자.  
-[volatile-interlocked-operation]({% post_url 2011-08-02-volatile-interlocked-operation %})
+좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 다음의 글을 보자. [volatile-interlocked-operation]({% post_url 2011-08-02-volatile-interlocked-operation %})
 
-보다 좋은 방법은 없을까? 다음을 보자.
+보다 좋은 방법은 없을까?
 
 ```cpp
 async_read (stdin, async_callback);

@@ -166,6 +166,7 @@ struct Sample {
 이 코드는 구조체와 구조체의 변수를 각각 RTTI에 등록할 때 사용될 것이다.
 
 이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.
+
 ```cpp
 #define REGISTER_RTTI_STRUCT(_name) \
     REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))

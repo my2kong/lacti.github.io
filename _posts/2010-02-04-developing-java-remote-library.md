@@ -4,8 +4,6 @@ title: 개발중인 Remote Library 중간보고
 tags: remote library
 ---
 
-### 서론 ###
-
 PHP의 `__call method`는 해당 object의 member를 호출했을 때, 그 member가 not implement 상태이면 `__call method`로 method name과 arguments를 넘겨주는 그런 신비한 method이다.  
 예외처리도 아니고 없는 method에 대해 해당 method 호출 정보를 넘겨받을 수 있는 함수라니! 이건 진정한 proxy class를 제작하기 위한 필수 method라 할 수 있겠다.
 

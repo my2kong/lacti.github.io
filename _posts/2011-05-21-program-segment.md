@@ -117,7 +117,8 @@ int main (int argc, char *argv[])
 파생되는 이야기가 많아졌는데, 결론을 내리자면  
 static 변수나 global 변수가 **같은 공간**에 할당된다는 것이다. 물론 **초기화된 변수와 초기화되지 않은 변수**는 다른 공간에 분리되어 선언된다.
 
+[http://en.wikipedia.org/wiki/Data_segment#Data](http://en.wikipedia.org/wiki/Data_segment#Data)
+
 > static int i = 10; will be stored in data segment and global int i = 10; will be stored in data segment
-> [http://en.wikipedia.org/wiki/Data_segment#Data](http://en.wikipedia.org/wiki/Data_segment#Data)
 
 물론 메모리 할당 순서가 컴파일러 의존적일 것이라고는 생각되고, 본 실험이 철저히 gcc 기반으로 수행되었기 때문에 다른 컴파일러에서도 그럴 것이다라고 단정 지을 수는 없을 것이다.
