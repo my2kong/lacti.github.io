@@ -98,7 +98,7 @@
 <li><strong>c++</strong>의 경우 (표준이 의도한 바에 따르면) <code>std::async()</code>을 통해 비동기 요청을 수행하는데 이 때의 반환값은 <code>std::future</code>이다. 따라서 <code>future</code>에 <code>then()</code> method를 통해 다음 할 비동기 작업을 잇는다는 것이다.</li>
 </ul>
 
-<p>[doodoori2]님께서 질문해준 것과 같이 <code>async()</code>로 시작된 작업에 대해 <code>then()</code>으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
+<p><a href="http://doodoori2.tistory.com/" title="Doodoori2&#39;s Blog">doodoori2</a>님께서 질문해준 것과 같이 <code>async()</code>로 시작된 작업에 대해 <code>then()</code>으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
 <code>async()</code>로 시작된 작업에 <code>then()</code>을 추가할 때, 다음의 상태 중 하나일 수 있다.</p>
 
 <ol>

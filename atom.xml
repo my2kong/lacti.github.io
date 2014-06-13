@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-13T03:41:06+00:00</updated>
+ <updated>2014-06-13T03:44:56+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -231,7 +231,7 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 &lt;li&gt;&lt;strong&gt;c++&lt;/strong&gt;의 경우 (표준이 의도한 바에 따르면) &lt;code&gt;std::async()&lt;/code&gt;을 통해 비동기 요청을 수행하는데 이 때의 반환값은 &lt;code&gt;std::future&lt;/code&gt;이다. 따라서 &lt;code&gt;future&lt;/code&gt;에 &lt;code&gt;then()&lt;/code&gt; method를 통해 다음 할 비동기 작업을 잇는다는 것이다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;[doodoori2]님께서 질문해준 것과 같이 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 대해 &lt;code&gt;then()&lt;/code&gt;으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
+&lt;p&gt;&lt;a href=&quot;http://doodoori2.tistory.com/&quot; title=&quot;Doodoori2&amp;#39;s Blog&quot;&gt;doodoori2&lt;/a&gt;님께서 질문해준 것과 같이 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 대해 &lt;code&gt;then()&lt;/code&gt;으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 &lt;code&gt;then()&lt;/code&gt;을 추가할 때, 다음의 상태 중 하나일 수 있다.&lt;/p&gt;
 
 &lt;ol&gt;
@@ -6528,7 +6528,7 @@ Space키를 누르면서 방향 키를 누르면, 분명 총알도 나가면서 
 당연히 WebSocket으로 개발하는게 맞겠지만 일부 브라우저 (특히 군대) 에서는 WebSocket 이 지원되지 않을 수 있기 때문에 WebSocket과 Ajax 방식 둘 다 유지해야한다는 이야기가 있어서 귀찮아서 그만 두었다.&lt;/p&gt;
 
 &lt;p&gt;게다가 WebSocket으로 작성하려면 WebSocket 서버와 웹 서버간의 SESSION 공유도 해주어야 하잖아?&lt;br&gt;
-[doodoori2]님의 이야기로는 데이터베이스에 SESSION을 넣어두고 WebSocket 서버에게 DB 접근 권한을 주어서 공유하라고 하는데, 그렇게되면 SESSION의 갱신에 대해 WebSocket이 능동적으로 알아챌 수 있는 방법이 없기 때문에 결국 DB Polling을 해야하는 사태가 벌어질 수도 있을 것 같다.&lt;/p&gt;
+&lt;a href=&quot;http://doodoori2.tistory.com/&quot; title=&quot;Doodoori2&amp;#39;s Blog&quot;&gt;doodoori2&lt;/a&gt;님의 이야기로는 데이터베이스에 SESSION을 넣어두고 WebSocket 서버에게 DB 접근 권한을 주어서 공유하라고 하는데, 그렇게되면 SESSION의 갱신에 대해 WebSocket이 능동적으로 알아챌 수 있는 방법이 없기 때문에 결국 DB Polling을 해야하는 사태가 벌어질 수도 있을 것 같다.&lt;/p&gt;
 
 &lt;p&gt;여러가지 해결책이 있겠지만 귀찮다는 핑계로 고민 중이다.&lt;/p&gt;
 
