@@ -1,0 +1,14 @@
+<hr>
+
+<p>layout: post
+title: debian 계열 db 덮어쓸 때 주의점</p>
+
+<h2>tags: debian db recovery</h2>
+
+<p>debian-sys-maint 계정 암호가 바뀌면 안된다</p>
+
+<p>이 암호는 <code>/etc/mysql/debian.cnf</code>에서 볼 수 있으니 여기서 암호를 찾아서,</p>
+<div class="highlight"><pre><code class="sql language-sql" data-lang="sql"><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;debian-sys-maint&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;YOUR-PASSWORD&#39;</span> <span class="k">WITH</span> <span class="k">GRANT</span> <span class="k">OPTION</span>
+<span class="k">GRANT</span> <span class="n">RELOAD</span><span class="p">,</span> <span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">PROCESS</span><span class="p">,</span> <span class="k">SHOW</span> <span class="n">DATABASES</span><span class="p">,</span> <span class="n">SUPER</span><span class="p">,</span> <span class="k">LOCK</span> <span class="n">TABLES</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;debian-sys-maint&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;YOUR-PASSWORD&#39;</span>
+</code></pre></div>
+<p>한번 해줘서 계정 암호 갱신하면 된다.</p>
