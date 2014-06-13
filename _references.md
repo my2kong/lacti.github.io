@@ -4,3 +4,5 @@
 [if1live]: http://libsora.so/  "libsora.so"
 [summerlight]: https://twitter.com/summerlight00  "summerlight00"
 [doodoori2]: http://doodoori2.tistory.com/  "Doodoori2's Blog"
+[LTeaRain]: https://twitter.com/ltearain "TeaRain (LTeaRain) on Twitter"
+[kjkpoi]: https://twitter.com/kjkpoi "kjkpoi on Twitter"
