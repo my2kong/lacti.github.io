@@ -6,7 +6,7 @@
 
 * [github](https://github.com/lacti)
 * [twitter](https://twitter.com/lacti)
-* [linkedin](http://kr.linkedin.com/pub/%EC%9E%AC%EC%98%81-%EC%B5%9C/99/243/861/)
+* [linkedin](http://www.linkedin.com/pub/jaeyoung-choi/99/243/861)
 
 # career
 
