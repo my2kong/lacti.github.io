@@ -43,8 +43,7 @@ class를 설계할 때 상속을 고려한다면, 다른건 몰라도 꼭 virtua
 2. 그리고 이걸 사용할 class가 본 struct를 protected로 상속받는다-_- 
 3. 행여나 member를 private로 만들고 싶다면 private으로 상속받는다.
 
-자, 이제 memset으로 변수도 초기화했고 class의 vfptr도 안전하다
-이렇게 주구장창 생성되는 struct의 이름만 잘 관리하면 [...........]
+자, 이제 memset으로 변수도 초기화했고 class의 vfptr도 안전하다. 이렇게 주구장창 생성되는 struct의 이름만 잘 관리하면 [...........]
 
 이를 보여주는 간단한 예제 코드는 다음과 같다
 

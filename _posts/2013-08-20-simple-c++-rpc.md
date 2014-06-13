@@ -54,7 +54,8 @@ public:
     buffer_ref buffer() { return _buffer; }
 private:
     buffer_ref _buffer;
-};```
+};
+```
 
 `buffer_writer_t` 객체는 여기저기 복사되어 전달될 수 있다. 그 때마다 buffer가 복사되면 자원이 아까우니 `shared_ptr` 형태인 buffer_ref를 사용하도록 하였다.
 
