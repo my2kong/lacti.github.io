@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: class와 memset
 tags: c++ memory memset fault

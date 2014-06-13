@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: stl operator 실수
 tags: c++ stl fault

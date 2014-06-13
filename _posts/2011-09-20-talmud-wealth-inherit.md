@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: 탈무드 이야기
 tags: c++ fun

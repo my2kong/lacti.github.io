@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: 멤버 데이터 포인터의 casting과 안정성 1
 tags: c++ member data pointer casting type safety

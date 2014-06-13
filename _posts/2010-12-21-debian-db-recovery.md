@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: debian 계열 db 덮어쓸 때 주의점
 tags: debian db recovery

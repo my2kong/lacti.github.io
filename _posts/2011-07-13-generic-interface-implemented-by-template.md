@@ -115,6 +115,6 @@ public:
 즉, 명시적인 Interface가 없다면 Java 의 Generics에서는 불가능할 일이 C++에서는 어차피 컴파일러가 해당 코드를 만들어내면서 그 코드에 대해 다시 컴파일을 수행하니 가능하다는 것.  
 따라서 굳이 명시적인 interface class (pure abstract class)를 만들지 않아도 template을 통해 generic이 보장될 수 있다는 것. 다만 어떤 interface 가 필요한지에 대한 명확한 문서 or 주석 or 설명이 없다면 template 컴파일 에러를 해석해서 해당 함수를 구현해야하는 지옥을 맛보겠지만 [....]
 
-----
+---
 template이나 define에 대해서는 가끔 script 언어같이 느껴지는 것이,  
 script 언어가 실행 중에 코드를 동적으로 해석하여 실행하는 것과 template이나 define macro가 컴파일 타임에 코드를 찍어내서 그걸 컴파일하여 코드를 다시 만들어내는 것이 비슷하게 느껴지기 때문이 아닐까 한다.

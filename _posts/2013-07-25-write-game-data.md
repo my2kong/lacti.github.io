@@ -1,4 +1,4 @@
-----
+---
 layout: post
 title: 게임 데이터 작성하기 1
 tags: game data
