@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-13T08:02:05+00:00</updated>
+ <updated>2014-06-13T16:08:13+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -523,16 +523,14 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
     &lt;span class=&quot;n&quot;&gt;buffer_ref&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;buffer_ref&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;```&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;buffer_writer_t&lt;/code&gt; 객체는 여기저기 복사되어 전달될 수 있다. 그 때마다 buffer가 복사되면 자원이 아까우니 &lt;code&gt;shared_ptr&lt;/code&gt; 형태인 buffer_ref를 사용하도록 하였다.&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;buffer_writer_t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;객체는&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;여기저기&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;복사되어&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;전달될&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;수&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;있다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;그&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;때마다&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;가&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;복사되면&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;자원이&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;아까우니&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared_ptr&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;형태인&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffer_ref&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;를&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;사용하도록&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;하였다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;h3&gt;handler&lt;/h3&gt;
 
-&lt;span class=&quot;cp&quot;&gt;### handler ###&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;buffer_reader_t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`와&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;buffer_writer_t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`가&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;정의되었으니&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;는&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;다음과&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;같이&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;정의할&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;수&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;있다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;```&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cpp&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;buffer_reader_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;buffer_writer_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;p&gt;&lt;code&gt;buffer_reader_t&lt;/code&gt;와 &lt;code&gt;buffer_writer_t&lt;/code&gt;가 정의되었으니 handler는 다음과 같이 정의할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;buffer_reader_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;buffer_writer_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_array_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;rpc 함수는 필요한 인자(argument)를 buffer로부터 읽어서(&lt;code&gt;buffer_reader_t&lt;/code&gt;) 그 결과를 다시 buffer로 써야한다(&lt;code&gt;buffer_writer_t&lt;/code&gt;). 따라서 함수 signature가 reader와 writer를 인자로 받도록 구성된 것이다. 이 때 &lt;code&gt;buffer_writer_t&lt;/code&gt; 객체가 reference가 아닌 이유는 writer가 갖고 있는 buffer 자체가 이미 &lt;code&gt;buffer_ref&lt;/code&gt;이기 때문이다. 반환 값이 bool인 이유는 handler가 false를 반환할 경우 writer에 의해 작성된 buffer를 network로 전달하지 않기 위함이다.&lt;/p&gt;
@@ -2131,10 +2129,13 @@ xml parsing 시간이 오래 걸리니 이를 해결하려면 parsing을 하지 
 
 &lt;p&gt;물론 TypeDefine을 BinaryXml으로 기록하기 위해서는 &lt;code&gt;TypeDefine에 대한 TypeDefine&lt;/code&gt;이 필요하다. 그래야 &lt;code&gt;NodeIndex&lt;/code&gt;와 &lt;code&gt;AttributeIndex&lt;/code&gt;를 얻을 수 있으니까. 그 내용을 서버에서는 &lt;code&gt;DefineDefine.xml&lt;/code&gt; 이라는 것으로 기술해놨는데 사실 이 부분은 그냥 코드에 박아넣어도 문제가 없었을 것이다.&lt;/p&gt;
 
-&lt;p&gt;BinaryXml을 도입함으로써 처음 성능 저하의 원인으로 꼽았던 문제가 모두 해결되었다.
-* XML Parsing 비용이 BinaryXml으로 인해 기존처럼 text processing을 안해도 되니 크게 감소하였으며,
-* XML Model 객체에 parsing한 결과를 담을 때 이미 개수를 알고 있으니 STL을 사용할 필요도 없어졌다.
-* 그리고 필요한 데이터가 BinaryXml로 표현되어 하나의 파일에 모였으니 파일 접근에 의한 IO 시간도 감소하였다.&lt;/p&gt;
+&lt;p&gt;BinaryXml을 도입함으로써 처음 성능 저하의 원인으로 꼽았던 문제가 모두 해결되었다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;XML Parsing 비용이 BinaryXml으로 인해 기존처럼 text processing을 안해도 되니 크게 감소하였으며,&lt;/li&gt;
+&lt;li&gt;XML Model 객체에 parsing한 결과를 담을 때 이미 개수를 알고 있으니 STL을 사용할 필요도 없어졌다.&lt;/li&gt;
+&lt;li&gt;그리고 필요한 데이터가 BinaryXml로 표현되어 하나의 파일에 모였으니 파일 접근에 의한 IO 시간도 감소하였다.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;BinaryXml 데이터 집합을 &lt;strong&gt;DataChunk&lt;/strong&gt;라고 표현했다.&lt;br&gt;
 DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlTypeDefine을 만들어내고, DataChunk를 생성해야 한다) 그래도 서버 시작 시간은 많이 단축되었다. 그리고 위 과정은 CI에 포함하면 되니까 각 개발자들에게 그리 큰 부담이 되는 것은 아니다.&lt;/p&gt;
@@ -7270,7 +7271,7 @@ Space키를 누르면서 방향 키를 누르면, 분명 총알도 나가면서 
 &lt;p&gt;현명한 아버지의 아들답게, 아들은 &lt;code&gt;choose&lt;/code&gt; 함수를 통해 &lt;code&gt;wholeWealth&lt;/code&gt; 목록 중에서 노예를 선택한다. 그게 가능한 이유는 &lt;code&gt;wholeWealth&lt;/code&gt; 라는 것이 capture된 시점 자체가 &lt;strong&gt;아버지의 유서를 작성한 시점이기 때문에&lt;/strong&gt; 비록 그 내부 원소들의 소유권은 노예에게 돌아갔지만, 아직 &lt;strong&gt;그 목록에는 노예가 포함&lt;/strong&gt; 되어있기 때문인 것이다.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;만약 아버지의 유서가, 그럴리는 없겠지만, &lt;em&gt;&amp;quot;전 재산을 한 노예에게 줄 것, *&lt;/em&gt;그의 재산** 중에서&amp;quot;* 라고 유서를 작성했으면 &lt;code&gt;wholeWealth&lt;/code&gt; 목록을 갱신해야하므로 아들은 망했을 것이다.&lt;/li&gt;
+&lt;li&gt;만약 아버지의 유서가, 그럴리는 없겠지만, &amp;quot;전 재산을 한 노예에게 줄 것, &lt;strong&gt;그의 재산&lt;/strong&gt; 중에서&amp;quot; 라고 유서를 작성했으면 &lt;code&gt;wholeWealth&lt;/code&gt; 목록을 갱신해야하므로 아들은 망했을 것이다.&lt;/li&gt;
 &lt;li&gt;하지만 프로그래밍을 하다보면 이런 실수는 꽤 있다&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -9942,7 +9943,7 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
 &lt;p&gt;&lt;code&gt;GetKey()&lt;/code&gt; 접근 위반 에러를 먼저 봤다면 괜찮았을텐데, &lt;code&gt;std::list&lt;/code&gt; 쪽에서 &lt;code&gt;CMyData&lt;/code&gt;의 소멸자를 호출하지 못한다는 에러만 보고 &lt;em&gt;소멸자 제대로 선언했는데!&lt;/em&gt;를 외쳤으나 &lt;code&gt;public:&lt;/code&gt;이 빠진건 보지 못했다-_-&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;stl container의 iterator를 사용할 때는 &lt;code&gt;begin&lt;/code&gt;으로부터 시작해서 **&lt;code&gt;end&lt;/code&gt;가 아닐 때까지** 반복하는거다. 그래서 당연히 &lt;code&gt;iterator != list.end();&lt;/code&gt;으로 써야하는데 대체 무슨 정신으로 저기에다가 &lt;code&gt;operator &amp;lt;&lt;/code&gt;를 써놨는지 모르겠다.&lt;/li&gt;
+&lt;li&gt;stl container의 iterator를 사용할 때는 &lt;code&gt;begin&lt;/code&gt;으로부터 시작해서 &lt;code&gt;end&lt;/code&gt;가 아닐 때까지 반복하는거다. 그래서 당연히 &lt;code&gt;iterator != list.end();&lt;/code&gt;으로 써야하는데 대체 무슨 정신으로 저기에다가 &lt;code&gt;operator &amp;lt;&lt;/code&gt;를 써놨는지 모르겠다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;결론은 술먹고 코딩하는 것보다 졸면서 코딩하는게 100만배는 더 해롭다는 사실.&lt;br&gt;
@@ -9990,8 +9991,7 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
 &lt;li&gt;행여나 member를 private로 만들고 싶다면 private으로 상속받는다.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;자, 이제 memset으로 변수도 초기화했고 class의 vfptr도 안전하다
-이렇게 주구장창 생성되는 struct의 이름만 잘 관리하면 [...........]&lt;/p&gt;
+&lt;p&gt;자, 이제 memset으로 변수도 초기화했고 class의 vfptr도 안전하다. 이렇게 주구장창 생성되는 struct의 이름만 잘 관리하면 [...........]&lt;/p&gt;
 
 &lt;p&gt;이를 보여주는 간단한 예제 코드는 다음과 같다&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -11011,8 +11011,7 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code&gt;oa1[4] = 10;&lt;/code&gt; 구문에서는 값의 변경이 필요하기 때문에 당연히 int&amp;amp;를 반환하는 non-constness 함수를 호출할 것이다.&lt;/p&gt;
 
-&lt;p&gt;하지만 &lt;code&gt;std::cout &amp;lt;&amp;lt; oa1 &amp;lt;&amp;lt; std::endl;&lt;/code&gt; 구문에서는 &lt;code&gt;oa1&lt;/code&gt;을 &lt;code&gt;ostream&lt;/code&gt;으로 출력하는 함수의 원형을 봐야한다.
-&lt;code&gt;std::ostream&amp;amp; operator &amp;lt;&amp;lt; (std::ostream&amp;amp; out, const odarray&amp;amp; array)&lt;/code&gt;
+&lt;p&gt;하지만 &lt;code&gt;std::cout &amp;lt;&amp;lt; oa1 &amp;lt;&amp;lt; std::endl;&lt;/code&gt; 구문에서는 &lt;code&gt;oa1&lt;/code&gt;을 &lt;code&gt;ostream&lt;/code&gt;으로 출력하는 함수의 원형을 봐야한다. &lt;code&gt;std::ostream&amp;amp; operator &amp;lt;&amp;lt; (std::ostream&amp;amp; out, const odarray&amp;amp; array)&lt;/code&gt;&lt;br&gt;
 즉 이 함수는 인자로 &lt;code&gt;const odarray&lt;/code&gt;를 받기 때문에 &lt;code&gt;odarray&lt;/code&gt; 객체의 const를 보장하기 위해서 이 함수 내에서 호출되는 &lt;code&gt;odarray&lt;/code&gt;의 멤버 함수는 모두 const 함수가 되는 것이다. 따라서 위 구문에서는 int를 반환하는 const 함수가 호출된다.&lt;/p&gt;
 
 &lt;h3&gt;결론&lt;/h3&gt;

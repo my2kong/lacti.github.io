@@ -75,7 +75,7 @@
 <p><code>GetKey()</code> 접근 위반 에러를 먼저 봤다면 괜찮았을텐데, <code>std::list</code> 쪽에서 <code>CMyData</code>의 소멸자를 호출하지 못한다는 에러만 보고 <em>소멸자 제대로 선언했는데!</em>를 외쳤으나 <code>public:</code>이 빠진건 보지 못했다-_-</p>
 
 <ul>
-<li>stl container의 iterator를 사용할 때는 <code>begin</code>으로부터 시작해서 **<code>end</code>가 아닐 때까지** 반복하는거다. 그래서 당연히 <code>iterator != list.end();</code>으로 써야하는데 대체 무슨 정신으로 저기에다가 <code>operator &lt;</code>를 써놨는지 모르겠다.</li>
+<li>stl container의 iterator를 사용할 때는 <code>begin</code>으로부터 시작해서 <code>end</code>가 아닐 때까지 반복하는거다. 그래서 당연히 <code>iterator != list.end();</code>으로 써야하는데 대체 무슨 정신으로 저기에다가 <code>operator &lt;</code>를 써놨는지 모르겠다.</li>
 </ul>
 
 <p>결론은 술먹고 코딩하는 것보다 졸면서 코딩하는게 100만배는 더 해롭다는 사실.<br>

@@ -92,16 +92,14 @@
     <span class="n">buffer_ref</span> <span class="n">buffer</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_buffer</span><span class="p">;</span> <span class="p">}</span>
 <span class="nl">private:</span>
     <span class="n">buffer_ref</span> <span class="n">_buffer</span><span class="p">;</span>
-<span class="p">};</span><span class="err">```</span>
+<span class="p">};</span>
+</code></pre></div>
+<p><code>buffer_writer_t</code> 객체는 여기저기 복사되어 전달될 수 있다. 그 때마다 buffer가 복사되면 자원이 아까우니 <code>shared_ptr</code> 형태인 buffer_ref를 사용하도록 하였다.</p>
 
-<span class="err">`</span><span class="kt">buffer_writer_t</span><span class="err">`</span> <span class="err">객체는</span> <span class="err">여기저기</span> <span class="err">복사되어</span> <span class="err">전달될</span> <span class="err">수</span> <span class="err">있다</span><span class="p">.</span> <span class="err">그</span> <span class="err">때마다</span> <span class="n">buffer</span><span class="err">가</span> <span class="err">복사되면</span> <span class="err">자원이</span> <span class="err">아까우니</span> <span class="err">`</span><span class="n">shared_ptr</span><span class="err">`</span> <span class="err">형태인</span> <span class="n">buffer_ref</span><span class="err">를</span> <span class="err">사용하도록</span> <span class="err">하였다</span><span class="p">.</span>
+<h3>handler</h3>
 
-<span class="cp">### handler ###</span>
-
-<span class="err">`</span><span class="kt">buffer_reader_t</span><span class="err">`와</span> <span class="err">`</span><span class="kt">buffer_writer_t</span><span class="err">`가</span> <span class="err">정의되었으니</span> <span class="n">handler</span><span class="err">는</span> <span class="err">다음과</span> <span class="err">같이</span> <span class="err">정의할</span> <span class="err">수</span> <span class="err">있다</span><span class="p">.</span>
-
-<span class="err">```</span><span class="n">cpp</span>
-<span class="k">typedef</span> <span class="n">boost</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span> <span class="p">(</span><span class="kt">buffer_reader_t</span><span class="p">,</span> <span class="kt">buffer_writer_t</span><span class="p">)</span><span class="o">&gt;</span> <span class="kt">handler_t</span><span class="p">;</span>
+<p><code>buffer_reader_t</code>와 <code>buffer_writer_t</code>가 정의되었으니 handler는 다음과 같이 정의할 수 있다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">typedef</span> <span class="n">boost</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span> <span class="p">(</span><span class="kt">buffer_reader_t</span><span class="p">,</span> <span class="kt">buffer_writer_t</span><span class="p">)</span><span class="o">&gt;</span> <span class="kt">handler_t</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">handler_t</span><span class="p">,</span> <span class="mi">128</span><span class="o">&gt;</span> <span class="kt">handler_array_t</span><span class="p">;</span>
 </code></pre></div>
 <p>rpc 함수는 필요한 인자(argument)를 buffer로부터 읽어서(<code>buffer_reader_t</code>) 그 결과를 다시 buffer로 써야한다(<code>buffer_writer_t</code>). 따라서 함수 signature가 reader와 writer를 인자로 받도록 구성된 것이다. 이 때 <code>buffer_writer_t</code> 객체가 reference가 아닌 이유는 writer가 갖고 있는 buffer 자체가 이미 <code>buffer_ref</code>이기 때문이다. 반환 값이 bool인 이유는 handler가 false를 반환할 경우 writer에 의해 작성된 buffer를 network로 전달하지 않기 위함이다.</p>
