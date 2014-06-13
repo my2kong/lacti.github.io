@@ -190,10 +190,9 @@ blocking 모드는 프로그램의 수행을 멈추는 것으로 간단한 예�
     <span class="n">isIOCompletion</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 아래의 글을 보자.<br>
-<a href="/2011/08/02/volatile-interlocked-operation/">volatile-interlocked-operation</a></p>
+<p>좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 다음의 글을 보자. <a href="/2011/08/02/volatile-interlocked-operation/">volatile-interlocked-operation</a></p>
 
-<p>보다 좋은 방법은 없을까? 다음을 보자.</p>
+<p>보다 좋은 방법은 없을까?</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">async_read</span> <span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">async_callback</span><span class="p">);</span>
 <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// 로직 처리</span>

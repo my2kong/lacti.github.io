@@ -267,10 +267,13 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 
 <p>1번의 경우는 zero-byte receive 기법으로 대충 우회가 된다. locked page가 뭔 소리인지는 대충 다음 링크에서 보자. <a href="/2011/08/14/io-and-memory-copy/">IO와 메모리 복사</a></p>
 
-<p>rio는 각 문제를 다음과 같이 해결했다.
-1. 프로그램 시작 시 미리 buffer를 만들고 lock을 잡아놓고 쓰자. 그러면 그 이후 요청할 때에는 이미 lock된 memory를 쓰니까 매 요청마다 lock을 걸 필요가 없으니 비용문제 해결
-2. request/completion queue를 user mode에 노출시켜 user mode에 존재하는 queue만 보고도 작업이 될 수 있도록 한다. 그런데 user mode로 노출된 queue는 thread-safe하게 보호해주지 않으니 알아서 잘 보호해서 써라. (그런데 이 queue들이 어떻게 kernel 자료구조와 mapping되는지는 아직 잘 모르겠음-_-)
-3. iocp는 device handle로 요청하고 completion port로 completion이 와야하기 때문에 handle lookup이 일어나는데, rio에서는 이걸 미리 queue를 각자 다 따로 만들어서 연결해두기 때문에 handle lookup 과정이 없다는 것</p>
+<p>rio는 각 문제를 다음과 같이 해결했다.</p>
+
+<ol>
+<li>프로그램 시작 시 미리 buffer를 만들고 lock을 잡아놓고 쓰자. 그러면 그 이후 요청할 때에는 이미 lock된 memory를 쓰니까 매 요청마다 lock을 걸 필요가 없으니 비용문제 해결</li>
+<li>request/completion queue를 user mode에 노출시켜 user mode에 존재하는 queue만 보고도 작업이 될 수 있도록 한다. 그런데 user mode로 노출된 queue는 thread-safe하게 보호해주지 않으니 알아서 잘 보호해서 써라. (그런데 이 queue들이 어떻게 kernel 자료구조와 mapping되는지는 아직 잘 모르겠음-_-)</li>
+<li>iocp는 device handle로 요청하고 completion port로 completion이 와야하기 때문에 handle lookup이 일어나는데, rio에서는 이걸 미리 queue를 각자 다 따로 만들어서 연결해두기 때문에 handle lookup 과정이 없다는 것</li>
+</ol>
 
 <ul>
 <li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms740642.aspx">MSDN: What&#39;s New for Windows Sockets</a></li>

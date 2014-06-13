@@ -45,11 +45,9 @@
 				<p><span class="glyphicon glyphicon-time"></span> Posted on 17 Feb 2010</p>
 				<hr>
 				<div class="content">
-				<h2>개발 동기</h2>
+				<p>심심한 상황에서 뭘 코딩할까 고민중에 java rmi app를 만들다가 고생한 기억이 있어서 이걸 좀 쉽게 사용할 수 있는 remote lib를 만들어보자는 생각에 시작하였다.</p>
 
-<p>심심한 상황에서 뭘 코딩할까 고민중에 java rmi app를 만들다가 고생한 기억이 있어서 이걸 좀 쉽게 사용할 수 있는 remote lib를 만들어보자는 생각에 시작하였다.</p>
-
-<h2>개발 목표</h2>
+<h3>개발 목표</h3>
 
 <ol>
 <li>기존의 java rmi와 유사한 code로 remote method interface call을 구현할 수 있어야하고,</li>
@@ -63,9 +61,9 @@
 <li>server는 효율적이고 scalable하면 좋겠다.</li>
 </ol>
 
-<h2>구현</h2>
+<h3>구현</h3>
 
-<h3>기본 골격, object-portage</h3>
+<h4>기본 골격, object-portage</h4>
 
 <ol>
 <li>기본 java socket를 이용하여 서버와 클라이언트 간의 data 통신이 가능한 socket을 얻는다.</li>
@@ -74,7 +72,7 @@
 <li>이 때 각 socket에 대하여</li>
 </ol>
 
-<h3>요청/분기/반환, request/response dispatcher</h3>
+<h4>요청/분기/반환, request/response dispatcher</h4>
 
 <ol>
 <li>서버와 클라이언트가 주고 받는 메시지 객체(object)를 class화 하여 주고 받는다.</li>
@@ -92,7 +90,7 @@
 <span class="n">responseMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">message</span><span class="o">);</span>
 <span class="n">responseLock</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">()).</span><span class="na">notify</span><span class="o">();</span>
 </code></pre></div>
-<h3>함수 호출 메시지, function call message</h3>
+<h4>함수 호출 메시지, function call message</h4>
 
 <ol>
 <li>함수 호출을 위한 정보(함수 이름, 함수 인자 타입parameters&#39; type, 함수 인자arguments)를 담는 call message class 작성</li>
@@ -100,7 +98,7 @@
 <li>수행 도중 예외 담을 exception message class 작성</li>
 </ol>
 
-<h3>원격객체 연결/호출, binding and call remote-object</h3>
+<h4>원격객체 연결/호출, binding and call remote-object</h4>
 
 <ol>
 <li>제공할 함수에 대한 interface class 작성</li>
@@ -111,13 +109,13 @@
 <li>client에서는 호출한 call message에 대한 return message가 올 때까지 대기(wait, 2-2)</li>
 </ol>
 
-<h3>호출 간 xml message 사용</h3>
+<h4>호출 간 xml message 사용</h4>
 
 <ol>
 <li>기존의 방법은 java의 objectstream을 사용하였기 때문에 c, c++ 등과 통신 불가능. 따라서 <code>javax.beans.XMLEncoder</code>/<code>XMLDecoder</code>을 사용</li>
 </ol>
 
-<h3>http message로 위장</h3>
+<h4>http message로 위장</h4>
 
 <ol>
 <li><code>HTTP Header</code>를 붙임.</li>
@@ -130,13 +128,13 @@
 
 &lt;?xml...
 </code></pre></div>
-<h3>http message compaction</h3>
+<h4>http message compaction</h4>
 
 <ol>
 <li>ZipStream을 이용, http body message 부분의 data를 plain/text가 아닌 zip data로 보냄. data 전송량을 줄일 수 있음</li>
 </ol>
 
-<h3>타언어와의 통신</h3>
+<h4>타언어와의 통신</h4>
 
 <ol>
 <li>c 계열의 통신을 가정했을 경우, 먼저 code generator를 통해 주고받을 argument들의 대응 객체 생성. 즉 java에서 작성한 bean에 대응되는 c의 구조체를 작성해야함.</li>
@@ -145,7 +143,7 @@
 <li>한글 등 unicode/multibyte 문자를 적절히 변환해주는 charset library 제작-_-(힘들다)</li>
 </ol>
 
-<h3>고가용서버</h3>
+<h4>고가용서버</h4>
 
 <ol>
 <li>SelectableChannel과 Selector을 이용, server단 thread 개수 감소를 통한 프로그램 효율 증가</li>
@@ -153,7 +151,7 @@
 <li>ByteBufferPool, ThreadPool을 이용한 객체 재사용</li>
 </ol>
 
-<h2>현재 상황</h2>
+<h3>현재 상황</h3>
 
 <p>일단 object-stream을 이용한 remote lib 구현 완료, 주석까지 달아서 지금 올리는 중.<br>
 성능 개선이 절실히 필요한데, 일단 오늘은 시간이 없으니 여기까지만-_-</p>

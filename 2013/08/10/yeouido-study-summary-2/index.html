@@ -143,7 +143,7 @@
 <p>표준에서 설명하는 <code>memory_order_consume</code>, <code>memory_order_acquire</code>의 차이를 잘 모르겠음.
 그리고 boost thread_coordination 문서의 마지막 예제 내용을 잘 모르겠음.</p>
 
-<p>위 질문에 대한 summerlight00님의 답변</p>
+<p>위 질문에 대한 <a href="https://twitter.com/summerlight00" title="summerlight00">summerlight</a>님의 답변</p>
 
 <blockquote>
 <p>consume와 acquire 시멘틱에 대한 차이: DEC alpha에서 작업할거 아니면 그냥 acquire로 통일하면 됨.</p>
@@ -178,7 +178,7 @@
 
 <h3><a href="/2011/08/11/synchronize-function-execution-in-each-object/">객체별 수행 동기화</a> 글 코드의 문제</h3>
 
-<p>angdev님의 문제 해결법</p>
+<p><a href="http://blog.fegs.kr/" title="blog.fegs.kr">angdev</a>님의 문제 해결법</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">mJobQueue</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">RequestJobPtr</span><span class="p">(</span><span class="k">new</span> <span class="n">_RequestJobImpl</span><span class="p">(</span><span class="n">functor</span><span class="p">)));</span>
 <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">mJobQueue</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">InterlockedExchange</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mExclusiveFlag</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">RequestJobPtr</span> <span class="n">job</span> <span class="o">=</span> <span class="n">nullptr</span><span class="p">;</span> <span class="n">mJobQueue</span><span class="p">.</span><span class="n">try_pop</span><span class="p">(</span><span class="n">job</span><span class="p">);</span> <span class="p">)</span> <span class="p">{</span>

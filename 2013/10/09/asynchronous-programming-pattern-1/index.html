@@ -81,7 +81,7 @@
 
 <ul>
 <li>nodejs 계열에서 코드를 작성할 때에 위와 같이 작성하는 경향이 있다. nodejs는 비동기 io 기반이므로 간단한 서버 프로그래밍을 해도 중첩 callback에 의해 금새 tab depth가 깊어지는 것을 볼 수 있다.</li>
-<li>angdev님의 글을 보면 이를 해결하기 위한 라이브러리가 존재함을 볼 수 있다. 그 라이브러리는 아래 소개할 async/then 패턴을 nodejs에 적용한 것이라 볼 수 있겠다.</li>
+<li><a href="http://blog.fegs.kr/" title="blog.fegs.kr">angdev</a>님의 글을 보면 이를 해결하기 위한 라이브러리가 존재함을 볼 수 있다. 그 라이브러리는 아래 소개할 async/then 패턴을 nodejs에 적용한 것이라 볼 수 있겠다.</li>
 </ul>
 
 <p>async/then 패턴은 task continuation을 생각하면 좋다. 비동기 작업을 추상화한 객체가 있고, 그 객체의 method chaining으로 이후 할 작업을 연결하는 형태이다.</p>
@@ -98,7 +98,7 @@
 <li><strong>c++</strong>의 경우 (표준이 의도한 바에 따르면) <code>std::async()</code>을 통해 비동기 요청을 수행하는데 이 때의 반환값은 <code>std::future</code>이다. 따라서 <code>future</code>에 <code>then()</code> method를 통해 다음 할 비동기 작업을 잇는다는 것이다.</li>
 </ul>
 
-<p>doodoori2님께서 질문해준 것과 같이 <code>async()</code>로 시작된 작업에 대해 <code>then()</code>으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
+<p>[doodoori2]님께서 질문해준 것과 같이 <code>async()</code>로 시작된 작업에 대해 <code>then()</code>으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
 <code>async()</code>로 시작된 작업에 <code>then()</code>을 추가할 때, 다음의 상태 중 하나일 수 있다.</p>
 
 <ol>

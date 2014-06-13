@@ -121,7 +121,7 @@ C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴
 <h3>DSEL</h3>
 
 <p>이제 구조체를 정의하는 매크로를 만들어야 한다.
-이게 약간 문제가 있는데, 본 문제를 출제한 libsora님의 요구 사항은 아래와 같다.</p>
+이게 약간 문제가 있는데, 본 문제를 출제한 <a href="http://libsora.so/" title="libsora.so">if1live</a>님의 요구 사항은 아래와 같다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">STRUCT_BEGIN</span><span class="p">(</span><span class="n">SampleStruct</span><span class="p">)</span>
     <span class="n">STRUCT_VAR_FLOAT</span><span class="p">(</span><span class="n">SampleStruct</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">STRUCT_VAR_INT</span><span class="p">(</span><span class="n">SampleStruct</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -172,33 +172,29 @@ C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴
 </code></pre></div>
 <p>이 코드는 구조체와 구조체의 변수를 각각 RTTI에 등록할 때 사용될 것이다.</p>
 
-<p>이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.
-```cpp</p>
+<p>이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="cp">#define REGISTER_RTTI_STRUCT(_name) \</span>
+<span class="cp">    REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))</span>
 
-<h1>define REGISTER_RTTI_STRUCT(_name) \</h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))
+<span class="cp">#define REGISTER_RTTI_VAR(_struct, _var, _type) \</span>
+<span class="cp">    REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))</span>
 </code></pre></div>
-<h1>define REGISTER_RTTI_VAR(_struct, _var, _type) \</h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))
-</code></pre></div><div class="highlight"><pre><code class="text language-text" data-lang="text">구조체를 등록하는 매크로는 전역 `rtti_map` 객체에 `struct_info`를 넣어준다.
-구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 `varmap` 객체에 `var_info`를 넣어준다.
+<p>구조체를 등록하는 매크로는 전역 <code>rtti_map</code> 객체에 <code>struct_info</code>를 넣어준다.
+구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 <code>varmap</code> 객체에 <code>var_info</code>를 넣어준다.</p>
 
-구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 `struct_info`를 얻어와서 거기에 변수 정보(`var_info`)를 등록할 수 있다는 것이다. 이 때문에 libsora님의 매크로의 변수 선언부를 보면, `STRUCT_VAR_FLOAT(SampleStruct, a)`와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.
+<p>구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 <code>struct_info</code>를 얻어와서 거기에 변수 정보(<code>var_info</code>)를 등록할 수 있다는 것이다. 이 때문에 <a href="http://libsora.so/" title="libsora.so">if1live</a>님의 매크로의 변수 선언부를 보면, <code>STRUCT_VAR_FLOAT(SampleStruct, a)</code>와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.</p>
 
+<h3>declaration DSEL</h3>
 
-### declaration DSEL ###
-
-이제 기본 RTTI 등록 매크로가 완성되었으니, 구조체 선언 매크로와 구조체 변수 선언 매크로를 작성하면 된다.
-구조체 선언 매크로는 다음과 같다.
-
-```cpp
-#define STRUCT_BEGIN(_name)    \
-    struct _name \
-    {    \
-    private: \
-        struct __register_init { __register_init () { REGISTER_RTTI_STRUCT(_name); } } ___register_init; \
-    public: \
-        static const std::tstring&amp; name() { static std::tstring __name(_T(#_name)); return __name; }
+<p>이제 기본 RTTI 등록 매크로가 완성되었으니, 구조체 선언 매크로와 구조체 변수 선언 매크로를 작성하면 된다.
+구조체 선언 매크로는 다음과 같다.</p>
+<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="cp">#define STRUCT_BEGIN(_name)    \</span>
+<span class="cp">    struct _name \</span>
+<span class="cp">    {    \</span>
+<span class="cp">    private: \</span>
+<span class="cp">        struct __register_init { __register_init () { REGISTER_RTTI_STRUCT(_name); } } ___register_init; \</span>
+<span class="cp">    public: \</span>
+<span class="cp">        static const std::tstring&amp; name() { static std::tstring __name(_T(#_name)); return __name; }</span>
 </code></pre></div>
 <p>지정된 이름으로 구조체를 시작한다.
 멤버로 갖는 구조체의 생성자에서 RTTI 등록 매크로를 사용하여 구조체 정보를 등록하도록 한다.

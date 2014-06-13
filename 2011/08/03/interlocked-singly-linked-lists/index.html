@@ -135,8 +135,7 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 <p>아무튼 저렇게 만들어놓고 꺼내서 쓸 때는 단순히 casting 만 해서 쓰면 되니까 편하다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">MyItem</span><span class="o">*</span> <span class="n">item</span> <span class="o">=</span> <span class="p">(</span><span class="n">MyItem</span><span class="o">*</span><span class="p">)</span> <span class="n">InterlockedPopEntryList</span> <span class="p">(</span><span class="n">listHead</span><span class="p">);</span>
 </code></pre></div>
-<p>궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자.
-예제는 MSDN: <a href="http://msdn.microsoft.com/en-us/library/ms686962.aspx">Using Singly Linked List</a>에 있다.</p>
+<p>궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자. 예제는 <a href="http://msdn.microsoft.com/en-us/library/ms686962.aspx">MSDN: Using Singly Linked List</a>에 있다.</p>
 
 <p>먼저 <code>LIST_HEADER</code>를 만들어줘야한다. 이는 사용할 SLIST의 Head 포인터이다. 당연한 이야기이지만 이것도 메모리 정렬이 되어야 한다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="n">pListHead</span> <span class="o">=</span> <span class="p">(</span><span class="n">PSLIST_HEADER</span><span class="p">)</span><span class="n">_aligned_malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SLIST_HEADER</span><span class="p">),</span>
@@ -152,18 +151,20 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 </code></pre></div>
 <h3>정리</h3>
 
-<p>이러한 구조가 어디에서 쓰일까. multi thread 에서 접근해야하는 자료구조일 경우 쓰이겠다. 예를 들면,
-* 작업 queue
-* log queue
-* 메모리 관리자</p>
+<p>이러한 구조가 어디에서 쓰일까. multi thread 에서 접근해야하는 자료구조일 경우 쓰이겠다. 예를 들면,</p>
+
+<ul>
+<li>작업 queue</li>
+<li>log queue</li>
+<li>메모리 관리자</li>
+</ul>
 
 <p>queue 시리즈야 예제에서 이미 봤고, 메모리 관리자 이야기를 잠깐 해보자.</p>
 
 <p>재활용이 가능한 메모리들이 있다. 이런 것들을 pool 형태로 관리하여 할당 부담을 줄이고 단편화를 줄이기 위한 관리자를 만든다고 하자. 자원 할당은 여러 thread에서 접근해야하니까 병목 지점이고, 이 때문에 lock은 최대한 적게 썼으면 좋겠다.<br>
 그러니까 미리 지정된 크기만큼 메모리를 다 할당해서(보통 크게 할당해서 쪼개놓고) SLIST에 다 넣어둔다. 그리고 요청할 때마다 하나씩 Pop해서 쓰게 해준다.</p>
 
-<p>뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고,
-그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.</p>
+<p>뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고, 그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.</p>
 
 <p>결론이 좀 이상해졌는데 아무튼 Windows API가 제공해주는 SLIST를 사용하여 multi thread 환경에서 보다 빠른 프로그램을 작성할 수 있다니까 믿고 써보자.</p>
 

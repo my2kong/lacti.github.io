@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-13T02:45:52+00:00</updated>
+ <updated>2014-06-13T03:41:06+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -214,7 +214,7 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 
 &lt;ul&gt;
 &lt;li&gt;nodejs 계열에서 코드를 작성할 때에 위와 같이 작성하는 경향이 있다. nodejs는 비동기 io 기반이므로 간단한 서버 프로그래밍을 해도 중첩 callback에 의해 금새 tab depth가 깊어지는 것을 볼 수 있다.&lt;/li&gt;
-&lt;li&gt;angdev님의 글을 보면 이를 해결하기 위한 라이브러리가 존재함을 볼 수 있다. 그 라이브러리는 아래 소개할 async/then 패턴을 nodejs에 적용한 것이라 볼 수 있겠다.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.fegs.kr/&quot; title=&quot;blog.fegs.kr&quot;&gt;angdev&lt;/a&gt;님의 글을 보면 이를 해결하기 위한 라이브러리가 존재함을 볼 수 있다. 그 라이브러리는 아래 소개할 async/then 패턴을 nodejs에 적용한 것이라 볼 수 있겠다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;async/then 패턴은 task continuation을 생각하면 좋다. 비동기 작업을 추상화한 객체가 있고, 그 객체의 method chaining으로 이후 할 작업을 연결하는 형태이다.&lt;/p&gt;
@@ -231,7 +231,7 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 &lt;li&gt;&lt;strong&gt;c++&lt;/strong&gt;의 경우 (표준이 의도한 바에 따르면) &lt;code&gt;std::async()&lt;/code&gt;을 통해 비동기 요청을 수행하는데 이 때의 반환값은 &lt;code&gt;std::future&lt;/code&gt;이다. 따라서 &lt;code&gt;future&lt;/code&gt;에 &lt;code&gt;then()&lt;/code&gt; method를 통해 다음 할 비동기 작업을 잇는다는 것이다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;doodoori2님께서 질문해준 것과 같이 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 대해 &lt;code&gt;then()&lt;/code&gt;으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
+&lt;p&gt;[doodoori2]님께서 질문해준 것과 같이 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 대해 &lt;code&gt;then()&lt;/code&gt;으로 이어서 할 작업을 추가해줄 때 동시성 문제가 발생할 수 있기 때문에 이를 적절히 잘 제어해주는 것도 중요하다.
 &lt;code&gt;async()&lt;/code&gt;로 시작된 작업에 &lt;code&gt;then()&lt;/code&gt;을 추가할 때, 다음의 상태 중 하나일 수 있다.&lt;/p&gt;
 
 &lt;ol&gt;
@@ -698,10 +698,13 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 
 &lt;p&gt;1번의 경우는 zero-byte receive 기법으로 대충 우회가 된다. locked page가 뭔 소리인지는 대충 다음 링크에서 보자. &lt;a href=&quot;/2011/08/14/io-and-memory-copy/&quot;&gt;IO와 메모리 복사&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;rio는 각 문제를 다음과 같이 해결했다.
-1. 프로그램 시작 시 미리 buffer를 만들고 lock을 잡아놓고 쓰자. 그러면 그 이후 요청할 때에는 이미 lock된 memory를 쓰니까 매 요청마다 lock을 걸 필요가 없으니 비용문제 해결
-2. request/completion queue를 user mode에 노출시켜 user mode에 존재하는 queue만 보고도 작업이 될 수 있도록 한다. 그런데 user mode로 노출된 queue는 thread-safe하게 보호해주지 않으니 알아서 잘 보호해서 써라. (그런데 이 queue들이 어떻게 kernel 자료구조와 mapping되는지는 아직 잘 모르겠음-_-)
-3. iocp는 device handle로 요청하고 completion port로 completion이 와야하기 때문에 handle lookup이 일어나는데, rio에서는 이걸 미리 queue를 각자 다 따로 만들어서 연결해두기 때문에 handle lookup 과정이 없다는 것&lt;/p&gt;
+&lt;p&gt;rio는 각 문제를 다음과 같이 해결했다.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;프로그램 시작 시 미리 buffer를 만들고 lock을 잡아놓고 쓰자. 그러면 그 이후 요청할 때에는 이미 lock된 memory를 쓰니까 매 요청마다 lock을 걸 필요가 없으니 비용문제 해결&lt;/li&gt;
+&lt;li&gt;request/completion queue를 user mode에 노출시켜 user mode에 존재하는 queue만 보고도 작업이 될 수 있도록 한다. 그런데 user mode로 노출된 queue는 thread-safe하게 보호해주지 않으니 알아서 잘 보호해서 써라. (그런데 이 queue들이 어떻게 kernel 자료구조와 mapping되는지는 아직 잘 모르겠음-_-)&lt;/li&gt;
+&lt;li&gt;iocp는 device handle로 요청하고 completion port로 completion이 와야하기 때문에 handle lookup이 일어나는데, rio에서는 이걸 미리 queue를 각자 다 따로 만들어서 연결해두기 때문에 handle lookup 과정이 없다는 것&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://msdn.microsoft.com/en-us/library/windows/desktop/ms740642.aspx&quot;&gt;MSDN: What&amp;#39;s New for Windows Sockets&lt;/a&gt;&lt;/li&gt;
@@ -1129,7 +1132,7 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 &lt;p&gt;표준에서 설명하는 &lt;code&gt;memory_order_consume&lt;/code&gt;, &lt;code&gt;memory_order_acquire&lt;/code&gt;의 차이를 잘 모르겠음.
 그리고 boost thread_coordination 문서의 마지막 예제 내용을 잘 모르겠음.&lt;/p&gt;
 
-&lt;p&gt;위 질문에 대한 summerlight00님의 답변&lt;/p&gt;
+&lt;p&gt;위 질문에 대한 &lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님의 답변&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;consume와 acquire 시멘틱에 대한 차이: DEC alpha에서 작업할거 아니면 그냥 acquire로 통일하면 됨.&lt;/p&gt;
@@ -1164,7 +1167,7 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 
 &lt;h3&gt;&lt;a href=&quot;/2011/08/11/synchronize-function-execution-in-each-object/&quot;&gt;객체별 수행 동기화&lt;/a&gt; 글 코드의 문제&lt;/h3&gt;
 
-&lt;p&gt;angdev님의 문제 해결법&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.fegs.kr/&quot; title=&quot;blog.fegs.kr&quot;&gt;angdev&lt;/a&gt;님의 문제 해결법&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;mJobQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RequestJobPtr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_RequestJobImpl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mJobQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InterlockedExchange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mExclusiveFlag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RequestJobPtr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;job&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mJobQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;try_pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -1390,7 +1393,7 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 
 &lt;h3&gt;memory consistency model&lt;/h3&gt;
 
-&lt;p&gt;우리가 작성한 대로 수행을 보장해준다면(Sequentially-consistent ordering) 프로그램의 흐름을 이해하기가 쉽지만 최적화 가능성이 줄어듬. 이를 완화(relaxed)해주어서 최적화가 잘 되게 해보자. 그런데 intel x86-64는 그런 것 신경 안 써줘도 빠르게 돌아감*(summerlight00님 수정)*&lt;/p&gt;
+&lt;p&gt;우리가 작성한 대로 수행을 보장해준다면(Sequentially-consistent ordering) 프로그램의 흐름을 이해하기가 쉽지만 최적화 가능성이 줄어듬. 이를 완화(relaxed)해주어서 최적화가 잘 되게 해보자. 그런데 intel x86-64는 그런 것 신경 안 써줘도 빠르게 돌아감*(&lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님 수정)*&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.hpl.hp.com/techreports/Compaq-DEC/WRL-95-7.pdf&quot;&gt;WRL-RR: Shared Memory Consistency Models: A Tutorial&lt;/a&gt;&lt;/li&gt;
@@ -1431,7 +1434,7 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 &lt;h3&gt;thread safe한 singleton&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://board.poolc.org/generation03/512&quot;&gt;PoolC: C++ 싱글턴 (summerlight00)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://board.poolc.org/generation03/512&quot;&gt;PoolC: C++ 싱글턴 (summerlight)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;근데 intel x86-64에서는 memory barrier 안 쳐줘도 문제가 없다-_-; 하지만 c++11부터는 함수 내 static 변수를 반환하는 것만으로도 대충 thread-safe한 singleton이 구현 가능해졌다.&lt;/p&gt;
@@ -2511,7 +2514,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 
 &lt;p&gt;편의상 &lt;code&gt;Stat&lt;/code&gt; 구조체의 모든 변수가 float임을 가정했는데, 만약 그렇지 않다면 type erasure를 써야 하는데 이건 본 글에서 다루는 내용보다 더 큰 내용이니 다음에 다루도록 하겠다.&lt;/p&gt;
 
-&lt;p&gt;다음 글에서는 어제 summerlight00님께 배운 정보를 바탕으로 &lt;code&gt;Stat&lt;/code&gt; 구조체 내부에 배열이 있을 경우에 어떻게 처리할 수 있을지에 대해서 알아보겠다.&lt;/p&gt;
+&lt;p&gt;다음 글에서는 어제 &lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님께 배운 정보를 바탕으로 &lt;code&gt;Stat&lt;/code&gt; 구조체 내부에 배열이 있을 경우에 어떻게 처리할 수 있을지에 대해서 알아보겠다.&lt;/p&gt;
 </content>
  </entry>
  
@@ -2523,7 +2526,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
    <content type="html">&lt;p&gt;&lt;em&gt;(예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.)&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
-그냥 summerlight00님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.&lt;/p&gt;
+그냥 &lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
@@ -3170,7 +3173,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code&gt;user_t&lt;/code&gt;에 대해 reflection을 등록한다.&lt;br&gt;
 (이 부분은 딱히 답이 없는데, 편하게 하려면 code generator를 사용한다던가 하는 수 밖에 없어보인다.
-아니면 libsora님이 했던 것처럼 매크로로 구조체를 만들도록 하든가.)&lt;/p&gt;
+아니면 &lt;a href=&quot;http://libsora.so/&quot; title=&quot;libsora.so&quot;&gt;if1live&lt;/a&gt;님이 했던 것처럼 매크로로 구조체를 만들도록 하든가.)&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;class_t::from_name()&lt;/code&gt; 함수를 사용해 이름으로 &lt;code&gt;class_t&lt;/code&gt; 객체를 가져왔다. 그리고 &lt;code&gt;enumerate_fields()&lt;/code&gt; 함수(본 문에서는 생략됨)를 사용하여 &lt;code&gt;class_t&lt;/code&gt;가 가지고 있는 모든 field에 대한 이름을 출력해볼 수 있다.&lt;/p&gt;
 
@@ -3659,7 +3662,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;저 &lt;code&gt;raii_t&lt;/code&gt;는 꽤 일반적이어서, 생성과 소멸 시 특정 함수를 통해 자원 관리가 되어야 하는 class에 대해 모두 적용될 수 있다. 예를 들면 &lt;code&gt;shared_ptr&lt;/code&gt; (add_ref/release_ref) 등이 될 수 있다.&lt;/p&gt;
 
-&lt;p&gt;summerlight00님께서 예제로 달았던 finalizer를 raii의 예로 들어보자. 특정 scope가 끝나는 시점에 수행되어야할 작업들을 명시해주는 객체가 된다. 즉, 익명의 객체를 하나 만들고, 그 소멸자에서 수행될 함수를 인자로 받도록 한다.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님께서 예제로 달았던 finalizer를 raii의 예로 들어보자. 특정 scope가 끝나는 시점에 수행되어야할 작업들을 명시해주는 객체가 된다. 즉, 익명의 객체를 하나 만들고, 그 소멸자에서 수행될 함수를 인자로 받도록 한다.&lt;/p&gt;
 
 &lt;p&gt;먼저 소멸자에서 무언가를 수행해줄 수 있는 class를 만들어보자.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Func&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -3772,7 +3775,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 &lt;p&gt;inventory가 가지고 있는 item에 대한 정보는 item의 &lt;code&gt;vector&lt;/code&gt;로 관리하고 있다. 저 inventory 객체를 여러 Thread에서 접근한다고 하면, &lt;code&gt;std::find()&lt;/code&gt;에 의해 &lt;code&gt;vector&lt;/code&gt;를 순회하다가 접근 위반이 발생할 가능성이 있다. (한 thread 는 순회하고, 한 thread 는 vector 에 삽입/삭제할 경우)
 따라서 lock을 사용하여 해당 container 를 보호해준다.&lt;/p&gt;
 
-&lt;p&gt;하지만 위 코드는 문제가 있다.
+&lt;p&gt;하지만 위 코드는 문제가 있다.&lt;br&gt;
 &lt;code&gt;lock&lt;/code&gt;을 사용하여 &lt;code&gt;items&lt;/code&gt;로의 접근을 보호하지만, 실제 item을 찾은 다음 return 문을 수행하기 전에 &lt;code&gt;unlock&lt;/code&gt;을 수행하지 않았기 때문이다. 이러한 문제는 &lt;code&gt;find&lt;/code&gt; 함수가 좀만 길어지면, 혹은 조금만 신경을 쓰지 않게 되면 흔히 발생할 수 있는 문제이다.&lt;/p&gt;
 
 &lt;p&gt;따라서 이러한 문제를 해결하기 위해 정적 객체의 생존 주기를 활용한다.&lt;/p&gt;
@@ -4305,8 +4308,7 @@ iterating하면서 &lt;code&gt;update&lt;/code&gt; 함수를 불러준다. 이 �
 &lt;p&gt;그리고 위 경우에도 자신이 관심있는 속성에 대해서만 &lt;code&gt;PropertyChangeEvent&lt;/code&gt;를 받는 것이 아니라 모든 변경에 대해 받게 된다. 이 역시 &lt;code&gt;Person&lt;/code&gt; class (사실상 Model 객체)에 &lt;code&gt;Listener&lt;/code&gt;를 attach 할 때 어떤 속성에 대한 변화 통지를 받을 것인지를 따로 관리하게 하는 방법으로 해결할 수 있다.
 (하지만 더 이상의 자세한 설명은 생략한다.)&lt;/p&gt;
 
-&lt;p&gt;또한 Reflection 등을 사용하여 각 Event type마다 다른 Handler를 호출되게 하는 방법도 있다.
-&lt;a href=&quot;/2011/11/27/java-message-dispatcher/&quot;&gt;간단한 Message 체계 구현&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;또한 Reflection 등을 사용하여 각 Event type마다 다른 Handler를 호출되게 하는 방법도 있다. &lt;a href=&quot;/2011/11/27/java-message-dispatcher/&quot;&gt;간단한 Message 체계 구현&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;요약하자면 결국 송신/수신 객체간의 낮은 결합성을 고려한 상태 변화 통지의 설계가 Event Handler (Listener) 방식이라는 것이다.&lt;/p&gt;
 
@@ -4341,7 +4343,7 @@ Event와 Message는 정보를 담은 객체이면서, 송신/수신 객체의 �
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;MessageQueue&lt;/code&gt;는 전역 객체이다. &lt;code&gt;Message&lt;/code&gt;를 받아서 이를 수신 Handler 객체에게 전달한다.&lt;/li&gt;
 &lt;li&gt;여러 Thread에서 접근할 수 있으므로 Concurrent DataStructure를 사용한다.&lt;/li&gt;
-&lt;li&gt;내부적으로 각 Message 에 대해 여러 Worker Thread 를 두어 처리할 수도 있겠지만, 일단 Message 처리의 순서를 보장하기 위해 공유 Queue 를 갖고 단일 Thread 가 처리하는 방식으로 구현한다.
+&lt;li&gt;내부적으로 각 Message 에 대해 여러 Worker Thread 를 두어 처리할 수도 있겠지만, 일단 Message 처리의 순서를 보장하기 위해 공유 Queue 를 갖고 단일 Thread 가 처리하는 방식으로 구현한다.&lt;br&gt;
 (글 쓰면서 생각해보니 이 지점에서 성능 병목이 생길텐데, 고민을 더 해봐야겠다)&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -5723,7 +5725,7 @@ C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴
 &lt;h3&gt;DSEL&lt;/h3&gt;
 
 &lt;p&gt;이제 구조체를 정의하는 매크로를 만들어야 한다.
-이게 약간 문제가 있는데, 본 문제를 출제한 libsora님의 요구 사항은 아래와 같다.&lt;/p&gt;
+이게 약간 문제가 있는데, 본 문제를 출제한 &lt;a href=&quot;http://libsora.so/&quot; title=&quot;libsora.so&quot;&gt;if1live&lt;/a&gt;님의 요구 사항은 아래와 같다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;STRUCT_BEGIN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SampleStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;STRUCT_VAR_FLOAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SampleStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;STRUCT_VAR_INT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SampleStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -5774,33 +5776,29 @@ C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;이 코드는 구조체와 구조체의 변수를 각각 RTTI에 등록할 때 사용될 것이다.&lt;/p&gt;
 
-&lt;p&gt;이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.
-```cpp&lt;/p&gt;
+&lt;p&gt;이제 구조체를 등록하는 매크로와 변수를 등록하는 매크로를 보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#define REGISTER_RTTI_STRUCT(_name) \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))&lt;/span&gt;
 
-&lt;h1&gt;define REGISTER_RTTI_STRUCT(_name) \&lt;/h1&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;REGISTER_ONLY_ONCE(rtti, _name, (struct_info (_T(#_name))))
+&lt;span class=&quot;cp&quot;&gt;#define REGISTER_RTTI_VAR(_struct, _var, _type) \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;define REGISTER_RTTI_VAR(_struct, _var, _type) \&lt;/h1&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;REGISTER_ONLY_ONCE(rtti[_T(#_struct)].varmap, _var, (var_info (_T(#_var), _type, OFFSET_OF(_struct, _var))))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;구조체를 등록하는 매크로는 전역 `rtti_map` 객체에 `struct_info`를 넣어준다.
-구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 `varmap` 객체에 `var_info`를 넣어준다.
+&lt;p&gt;구조체를 등록하는 매크로는 전역 &lt;code&gt;rtti_map&lt;/code&gt; 객체에 &lt;code&gt;struct_info&lt;/code&gt;를 넣어준다.
+구조체의 변수를 등록하는 매크로는 자신이 속한 구조체 rtti 내의 &lt;code&gt;varmap&lt;/code&gt; 객체에 &lt;code&gt;var_info&lt;/code&gt;를 넣어준다.&lt;/p&gt;
 
-구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 `struct_info`를 얻어와서 거기에 변수 정보(`var_info`)를 등록할 수 있다는 것이다. 이 때문에 libsora님의 매크로의 변수 선언부를 보면, `STRUCT_VAR_FLOAT(SampleStruct, a)`와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.
+&lt;p&gt;구조체의 변수를 등록하려면, 결국 자기가 어느 struct에 속한지를 알아야, 전역 rtti에서 자신이 속한 &lt;code&gt;struct_info&lt;/code&gt;를 얻어와서 거기에 변수 정보(&lt;code&gt;var_info&lt;/code&gt;)를 등록할 수 있다는 것이다. 이 때문에 &lt;a href=&quot;http://libsora.so/&quot; title=&quot;libsora.so&quot;&gt;if1live&lt;/a&gt;님의 매크로의 변수 선언부를 보면, &lt;code&gt;STRUCT_VAR_FLOAT(SampleStruct, a)&lt;/code&gt;와 같이 구조체의 이름과 변수의 이름이 같이 들어가는 것이다.&lt;/p&gt;
 
+&lt;h3&gt;declaration DSEL&lt;/h3&gt;
 
-### declaration DSEL ###
-
-이제 기본 RTTI 등록 매크로가 완성되었으니, 구조체 선언 매크로와 구조체 변수 선언 매크로를 작성하면 된다.
-구조체 선언 매크로는 다음과 같다.
-
-```cpp
-#define STRUCT_BEGIN(_name)    \
-    struct _name \
-    {    \
-    private: \
-        struct __register_init { __register_init () { REGISTER_RTTI_STRUCT(_name); } } ___register_init; \
-    public: \
-        static const std::tstring&amp;amp; name() { static std::tstring __name(_T(#_name)); return __name; }
+&lt;p&gt;이제 기본 RTTI 등록 매크로가 완성되었으니, 구조체 선언 매크로와 구조체 변수 선언 매크로를 작성하면 된다.
+구조체 선언 매크로는 다음과 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#define STRUCT_BEGIN(_name)    \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    struct _name \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    {    \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    private: \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;        struct __register_init { __register_init () { REGISTER_RTTI_STRUCT(_name); } } ___register_init; \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    public: \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;        static const std::tstring&amp;amp; name() { static std::tstring __name(_T(#_name)); return __name; }&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;지정된 이름으로 구조체를 시작한다.
 멤버로 갖는 구조체의 생성자에서 RTTI 등록 매크로를 사용하여 구조체 정보를 등록하도록 한다.
@@ -6312,9 +6310,7 @@ Space키를 누르면서 방향 키를 누르면, 분명 총알도 나가면서 
    <link href="http://blog.lacti.me/2011/08/22/static-sized-concurrent-pool/"/>
    <updated>2011-08-22T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/08/22/static-sized-concurrent-pool</id>
-   <content type="html">&lt;h3&gt;도입&lt;/h3&gt;
-
-&lt;p&gt;정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자.&lt;br&gt;
+   <content type="html">&lt;p&gt;정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자.&lt;br&gt;
 핵심은 배열을 사용한다는 것. 왜냐하면 여러 thread가 접근해도 자신만의 index 지점을 접근하면 한 지점에 동시에 thread가 접근하면서 발생하는 문제가 없기 때문.&lt;/p&gt;
 
 &lt;p&gt;이게 동적으로 크기가 확장되면 배열의 포인터가 무효화되면서 여러 문제가 생길 수 있어 복잡하다. 따라서 정적인 크기라고 고정짓고 이야기를 해보자.&lt;/p&gt;
@@ -6532,7 +6528,7 @@ Space키를 누르면서 방향 키를 누르면, 분명 총알도 나가면서 
 당연히 WebSocket으로 개발하는게 맞겠지만 일부 브라우저 (특히 군대) 에서는 WebSocket 이 지원되지 않을 수 있기 때문에 WebSocket과 Ajax 방식 둘 다 유지해야한다는 이야기가 있어서 귀찮아서 그만 두었다.&lt;/p&gt;
 
 &lt;p&gt;게다가 WebSocket으로 작성하려면 WebSocket 서버와 웹 서버간의 SESSION 공유도 해주어야 하잖아?&lt;br&gt;
-doodoori2님의 이야기로는 데이터베이스에 SESSION을 넣어두고 WebSocket 서버에게 DB 접근 권한을 주어서 공유하라고 하는데, 그렇게되면 SESSION의 갱신에 대해 WebSocket이 능동적으로 알아챌 수 있는 방법이 없기 때문에 결국 DB Polling을 해야하는 사태가 벌어질 수도 있을 것 같다.&lt;/p&gt;
+[doodoori2]님의 이야기로는 데이터베이스에 SESSION을 넣어두고 WebSocket 서버에게 DB 접근 권한을 주어서 공유하라고 하는데, 그렇게되면 SESSION의 갱신에 대해 WebSocket이 능동적으로 알아챌 수 있는 방법이 없기 때문에 결국 DB Polling을 해야하는 사태가 벌어질 수도 있을 것 같다.&lt;/p&gt;
 
 &lt;p&gt;여러가지 해결책이 있겠지만 귀찮다는 핑계로 고민 중이다.&lt;/p&gt;
 
@@ -6555,10 +6551,7 @@ doodoori2님의 이야기로는 데이터베이스에 SESSION을 넣어두고 We
    <link href="http://blog.lacti.me/2011/08/14/io-and-memory-copy/"/>
    <updated>2011-08-14T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/08/14/io-and-memory-copy</id>
-   <content type="html">&lt;h2&gt;도입&lt;/h2&gt;
-
-&lt;p&gt;동기와 비동기 IO 에 대해 지난번에 이야기했었다.
-&lt;a href=&quot;/2011/08/07/asynchronous-io/&quot;&gt;비동기 IO 함수&lt;/a&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;동기와 비동기 IO 에 대해 지난번에 이야기했었다. &lt;a href=&quot;/2011/08/07/asynchronous-io/&quot;&gt;비동기 IO 함수&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;간단히 요약하면, 함수는 완료 알림 시점 때문에 동기와 비동기로 구분된다는 것이다.&lt;/p&gt;
 
@@ -6575,7 +6568,7 @@ doodoori2님의 이야기로는 데이터베이스에 SESSION을 넣어두고 We
 
 &lt;p&gt;어쨌든 Non-Blocking은 Thread 사용량을 줄여주고, 흐름이 방해되지 않으며, Mode/Context Switch 이 덜 일어난다는 등 성능이 향상될 좋은 이유가 많다. 그러나 IO  효율을 이야기함에 있어서는 그것이 끝이 아니다.&lt;/p&gt;
 
-&lt;h2&gt;메모리&lt;/h2&gt;
+&lt;h3&gt;메모리&lt;/h3&gt;
 
 &lt;p&gt;IO 의 효율을 이야기할 때는 메모리 관점 역시 빼 놓을 수가 없다.
 IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때문인데, 그 이유는 가상 메모리(virtual memory)를 사용하기 때문이다.&lt;/p&gt;
@@ -6629,7 +6622,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 
 &lt;p&gt;&lt;span style=&quot;color: #888;&quot;&gt;물론 이걸 제대로 설명하려면 paged pool 과 nonpaged pool 을 설명해야하지만 너무 내용이 길어지니 일단 이정도로 넘어가자.&lt;/span&gt;&lt;/p&gt;
 
-&lt;h2&gt;다시 IO로&lt;/h2&gt;
+&lt;h3&gt;다시 IO로&lt;/h3&gt;
 
 &lt;p&gt;위의 장황한 설명을 IO 로 초점을 맞추어 다시 이야기해보자.&lt;/p&gt;
 
@@ -6649,7 +6642,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 &lt;p&gt;Java 의 IO 가 느린 이유가 여기있다.&lt;br&gt;
 예를 들어 Recv 작업을 요청한다고 했을 때, IO 버퍼, 커널 버퍼, JVM, Java Memory로의 복사 단계를 거쳐야하므로 속도가 훨씬 느릴 수 밖에 없다. 따라서 JVM 내의 native 한 메모리를 직접 IO에 사용할 수 있게 해준 ByteBuffer로 인해서 Java IO 속도가 개선되었고, 이것은 NIO의 핵심 개념 중 하나가 되었다.&lt;/p&gt;
 
-&lt;h2&gt;속도 개선?&lt;/h2&gt;
+&lt;h3&gt;속도 개선?&lt;/h3&gt;
 
 &lt;p&gt;유저가 코드를 잘 작성했다. 즉, 비동기 IO 요청이 끝나기 전까지 메모리 관리를 잘 해주었다.
 그리고 커널이 튼튼해졌다. 유저의 악의적인 장난 쯤은 사소하게 여기면서 유저 프로세스를 종료시켜준다.
@@ -6675,7 +6668,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 
 &lt;p&gt;즉, 어설프게 중간 다리인 커널 버퍼를 두지 않더라도 유저 영역에서 직접 IO 버퍼에 값을 쓰거나, IO 버퍼로부터 값을 읽어올 수 있게 된다는 것이다. 메모리를 복사하는데 들어가는 CPU 사용을 줄이니 당연히 효율이 좋아질 수 밖에 없다. 뿐만 아니라 multi core 인 현 세상을 고려해볼 때, cache나 memory access 등을 고려해보면 효율이 좋아지는 것은 어찌보면 당연할 수 밖에 없는 것 같다.&lt;/p&gt;
 
-&lt;h2&gt;정리&lt;/h2&gt;
+&lt;h3&gt;정리&lt;/h3&gt;
 
 &lt;p&gt;약간의 커널적 개념과 하드웨어적 개념이 들어가서 글이 길어졌는데 요약해보면,&lt;/p&gt;
 
@@ -6695,9 +6688,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
    <link href="http://blog.lacti.me/2011/08/11/synchronize-function-execution-in-each-object/"/>
    <updated>2011-08-11T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/08/11/synchronize-function-execution-in-each-object</id>
-   <content type="html">&lt;h2&gt;도입&lt;/h2&gt;
-
-&lt;p&gt;(주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다)&lt;br&gt;
+   <content type="html">&lt;p&gt;(주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다)&lt;br&gt;
 여러 Thread가 동시에 접근을 수행하는 객체를 보호하기 위해서는 어떤 방법이 있을까?&lt;/p&gt;
 
 &lt;ul&gt;
@@ -6710,12 +6701,11 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 
 &lt;p&gt;상황적으로 볼 때, 하나의 객체에 여러 Thread가 접근할 일은 많다. 만약 2명의 User가 Party를 맺고 사냥을 하다가, 각자 동시에 한 마리씩 몬스터를 잡았다는 message가 동시에 Server에 도착해 경험치를 각 User 객체에 넣어준다고 하자.&lt;/p&gt;
 
-&lt;p&gt;User에는 AddExp함수를 통해 내부에 경험치를 증가시킨다. 그런데 만약 두 Thread가 경쟁적으로 AddExp를 호출할 경우, 결과 값이 제대로 들어간다는 보장이 없다.&lt;br&gt;
-&lt;a href=&quot;/2011/08/02/volatile-interlocked-operation/&quot;&gt;volatile과 interlocked operation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;User에는 AddExp함수를 통해 내부에 경험치를 증가시킨다. 그런데 만약 두 Thread가 경쟁적으로 AddExp를 호출할 경우, 결과 값이 제대로 들어간다는 보장이 없다. &lt;a href=&quot;/2011/08/02/volatile-interlocked-operation/&quot;&gt;volatile과 interlocked operation&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;물론 이런 경우는 InterlockedAdd 함수를 써서 해결할 수도 있겠지만, 공유 객체에 요청되는 작업들을 Queue에 모아 동기적으로 하나의 Thread 가 처리하는 방법으로 문제를 해결해보도록 하자&lt;/p&gt;
 
-&lt;h2&gt;설계&lt;/h2&gt;
+&lt;h3&gt;설계&lt;/h3&gt;
 
 &lt;p&gt;생산자와 소비자 모델에서 생산자와 소비자는 Queue 객체를 공유한다. 생산자가 데이터를 Queue에 넣으면 소비자는 Queue에서 데이터를 꺼내서 처리한다. 이 때 데이터가 공유 객체에 요청하는 작업이고, 소비자가 단일 Thread로 구성된다면, 여러 Thread에서 요청하는 작업들을 Queue에 넣어 소비자, 즉 단일 Thread가 처리하므로 공유 객체는 Lock 없이 Thread Safe하게 돌아가게 된다.&lt;/p&gt;
 
@@ -6924,9 +6914,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
    <link href="http://blog.lacti.me/2011/08/07/efficient-processing-for-multiplexing-io/"/>
    <updated>2011-08-07T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/08/07/efficient-processing-for-multiplexing-io</id>
-   <content type="html">&lt;h2&gt;도입&lt;/h2&gt;
-
-&lt;p&gt;다중 입출력 함수는 POSIX의 select 함수를 공부하면서 가장 많이 보게 되는 함수이다. 다중 입출력 함수라는 것은 영어로 바꿔보면 multiplex io function인데 말 그대로 여러 개의 io 를 하나의 함수로 처리한다는 것이다.&lt;/p&gt;
+   <content type="html">&lt;p&gt;다중 입출력 함수는 POSIX의 select 함수를 공부하면서 가장 많이 보게 되는 함수이다. 다중 입출력 함수라는 것은 영어로 바꿔보면 multiplex io function인데 말 그대로 여러 개의 io 를 하나의 함수로 처리한다는 것이다.&lt;/p&gt;
 
 &lt;p&gt;지난 글의 동기와 비동기에 이어서 여러 개의 io를 어떻게 처리하는 것이 효율적인지 알아보자.
 &lt;a href=&quot;/2011/08/07/asynchronous-io/&quot;&gt;비동기 IO 함수&lt;/a&gt;&lt;/p&gt;
@@ -6935,8 +6923,6 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 대표적으로 &lt;code&gt;scanf&lt;/code&gt;는 stdin(표준 입력 스트림)으로부터 값을 읽어오도록 되어있고, &lt;code&gt;ReadFile&lt;/code&gt;은 열려있는 하나의 File Handle 로부터 값을 읽는다. &lt;code&gt;WSARecv&lt;/code&gt; 함수는 연결되어있는 하나의 Socket으로부터 데이터를 읽는다.&lt;/p&gt;
 
 &lt;p&gt;만약 채팅방을 만든다고 해보자. 채팅방에는 여러 사람이 접속해서 데이터를 주고 받는다. 따라서 n명의 사람이 연결되어있다면, 채팅 서버는 적어도 n개의 Socket과 데이터를 주고 받아야할 것이다. 어떻게 처리해야 좋을까?&lt;/p&gt;
-
-&lt;h2&gt;IO 구현 case by case&lt;/h2&gt;
 
 &lt;h3&gt;blocking + multi-threading&lt;/h3&gt;
 
@@ -7029,7 +7015,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;의사코드 수준이지만 위의 코드를 보면 accept를 수행하는 부분과 recv를 수행하는 부분이 하나의 흐름이다. 따라서 저 로직에서는 굳이 client들의 socket을 저장하는 자료구조가 전역일 필요도 없고 lock 또한 필요하지 않다. 게다가 파악하기도 힘든 thread수행 흐름에 의한 문제가 발생할 일도 없다.&lt;/p&gt;
 
-&lt;h2&gt;어떤 것을 써야 할까?&lt;/h2&gt;
+&lt;h3&gt;어떤 것을 써야 할까?&lt;/h3&gt;
 
 &lt;p&gt;IO 요청의 빈번성과 프로그램의 특성에 따라 위 서술한 것들 중 효율적인 것을 골라서 사용하면 된다.&lt;/p&gt;
 
@@ -7084,7 +7070,7 @@ multi core가 있는 환경에서 어떤 프로그램이 가장 빠르게 수행
 &lt;p&gt;IO 프로그래밍을 할 때 요청과 완료 통지를 별개로 생각해보면 효율적 향상점을 찾을 수 있다. 물론 non blocking에 asynchronous한 모델이 더 생각하기도 어렵고 문제없이 작성하기도 어렵다.&lt;br&gt;
 예를 들면, 상대와 메세지를 주거니 받거니 해야하는 경우 blocking이라면 주거니 받거니 하는 코드를 한 scope 내에서 작성하면 절차적으로 쓰고, 읽고, 쓰고, ... 순으로 수행이 되겠지만 non blocking이라면 그 요청이 끝날 때까지 기다려야하니 복잡해진다. 그래서 내부적으로 어디까지 받았는지 state로 관리해주던가 하는 부가적인 일을 더 해야하는 것이다.&lt;/p&gt;
 
-&lt;h2&gt;마무리&lt;/h2&gt;
+&lt;h3&gt;마무리&lt;/h3&gt;
 
 &lt;p&gt;글 자체에서 IOCP 와 select 에 대해 거의 다루지 않고, 요청과 완료 통지의 분리에 대해서만 급하게 설명하다보니 제대로 그 의도가 전달되었는가 모르겠다. 최근에 봤던 어떤 글에서 IO 함수의 blocking과 non blocking, 그리고 그것을 처리하는 방식의 synchronous, asynchronous에 대해서 혼동하고 있기에 이전 글과 이번 글로 그 개념을 구분하는데 어느 정도 도움이 되었기를 바라면서 썼는데, 쓰다보니 내용이 별로인 것 같다 [...]&lt;/p&gt;
 
@@ -7242,10 +7228,9 @@ blocking 모드는 프로그램의 수행을 멈추는 것으로 간단한 예�
     &lt;span class=&quot;n&quot;&gt;isIOCompletion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 아래의 글을 보자.&lt;br&gt;
-&lt;a href=&quot;/2011/08/02/volatile-interlocked-operation/&quot;&gt;volatile-interlocked-operation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;좋은 방법인 것 같다. 그런데 flag를 사용할 경우 발생하는 문제가 있다. 여러 thread에서 저 flag 값이 바로 반영되지 않아서 생길 수 있는 문제인데 이에 대해서는 다음의 글을 보자. &lt;a href=&quot;/2011/08/02/volatile-interlocked-operation/&quot;&gt;volatile-interlocked-operation&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;보다 좋은 방법은 없을까? 다음을 보자.&lt;/p&gt;
+&lt;p&gt;보다 좋은 방법은 없을까?&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;async_read&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;async_callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// 로직 처리&lt;/span&gt;
@@ -7368,8 +7353,7 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 &lt;p&gt;아무튼 저렇게 만들어놓고 꺼내서 쓸 때는 단순히 casting 만 해서 쓰면 되니까 편하다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;MyItem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MyItem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InterlockedPopEntryList&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listHead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자.
-예제는 MSDN: &lt;a href=&quot;http://msdn.microsoft.com/en-us/library/ms686962.aspx&quot;&gt;Using Singly Linked List&lt;/a&gt;에 있다.&lt;/p&gt;
+&lt;p&gt;궁금할 것 같은 내용은 위에서 다 풀어 써놨으니까 간략한 예제를 보자. 예제는 &lt;a href=&quot;http://msdn.microsoft.com/en-us/library/ms686962.aspx&quot;&gt;MSDN: Using Singly Linked List&lt;/a&gt;에 있다.&lt;/p&gt;
 
 &lt;p&gt;먼저 &lt;code&gt;LIST_HEADER&lt;/code&gt;를 만들어줘야한다. 이는 사용할 SLIST의 Head 포인터이다. 당연한 이야기이지만 이것도 메모리 정렬이 되어야 한다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;pListHead&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PSLIST_HEADER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_aligned_malloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SLIST_HEADER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
@@ -7385,18 +7369,20 @@ WinNT.h 파일에 보면 SLIST_ENTRY type 은 아래와 같이 정의되어 있�
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;정리&lt;/h3&gt;
 
-&lt;p&gt;이러한 구조가 어디에서 쓰일까. multi thread 에서 접근해야하는 자료구조일 경우 쓰이겠다. 예를 들면,
-* 작업 queue
-* log queue
-* 메모리 관리자&lt;/p&gt;
+&lt;p&gt;이러한 구조가 어디에서 쓰일까. multi thread 에서 접근해야하는 자료구조일 경우 쓰이겠다. 예를 들면,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;작업 queue&lt;/li&gt;
+&lt;li&gt;log queue&lt;/li&gt;
+&lt;li&gt;메모리 관리자&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;queue 시리즈야 예제에서 이미 봤고, 메모리 관리자 이야기를 잠깐 해보자.&lt;/p&gt;
 
 &lt;p&gt;재활용이 가능한 메모리들이 있다. 이런 것들을 pool 형태로 관리하여 할당 부담을 줄이고 단편화를 줄이기 위한 관리자를 만든다고 하자. 자원 할당은 여러 thread에서 접근해야하니까 병목 지점이고, 이 때문에 lock은 최대한 적게 썼으면 좋겠다.&lt;br&gt;
 그러니까 미리 지정된 크기만큼 메모리를 다 할당해서(보통 크게 할당해서 쪼개놓고) SLIST에 다 넣어둔다. 그리고 요청할 때마다 하나씩 Pop해서 쓰게 해준다.&lt;/p&gt;
 
-&lt;p&gt;뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고,
-그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.&lt;/p&gt;
+&lt;p&gt;뭐 어떤 이야기에 따르면, 다 쓰고 Push한걸 다음에 바로 Pop을 하면 이 메모리가 아직 cache에 남아있어서 바로 hit되어 빠르게 사용할 수 있다는 좋은 이야기가 있는데 이게 얼마나 효용이 좋은지도 모르겠고, 그리고 Windows Vista부터는 LFH(Low Fragmentation Heap)이 기본 Heap이라서 저 작업이 뻘짓이라는 이야기도 있다.&lt;/p&gt;
 
 &lt;p&gt;결론이 좀 이상해졌는데 아무튼 Windows API가 제공해주는 SLIST를 사용하여 multi thread 환경에서 보다 빠른 프로그램을 작성할 수 있다니까 믿고 써보자.&lt;/p&gt;
 </content>
@@ -8483,9 +8469,10 @@ for 문에서 int 변수를 &lt;code&gt;i++&lt;/code&gt; 하나 &lt;code&gt;++i&
 &lt;p&gt;파생되는 이야기가 많아졌는데, 결론을 내리자면&lt;br&gt;
 static 변수나 global 변수가 &lt;strong&gt;같은 공간&lt;/strong&gt;에 할당된다는 것이다. 물론 &lt;strong&gt;초기화된 변수와 초기화되지 않은 변수&lt;/strong&gt;는 다른 공간에 분리되어 선언된다.&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Data_segment#Data&quot;&gt;http://en.wikipedia.org/wiki/Data_segment#Data&lt;/a&gt;&lt;/p&gt;
+
 &lt;blockquote&gt;
-&lt;p&gt;static int i = 10; will be stored in data segment and global int i = 10; will be stored in data segment
-&lt;a href=&quot;http://en.wikipedia.org/wiki/Data_segment#Data&quot;&gt;http://en.wikipedia.org/wiki/Data_segment#Data&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;static int i = 10; will be stored in data segment and global int i = 10; will be stored in data segment&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;물론 메모리 할당 순서가 컴파일러 의존적일 것이라고는 생각되고, 본 실험이 철저히 gcc 기반으로 수행되었기 때문에 다른 컴파일러에서도 그럴 것이다라고 단정 지을 수는 없을 것이다.&lt;/p&gt;
@@ -8631,11 +8618,7 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
    <link href="http://blog.lacti.me/2011/03/02/implementation-instance-id-with-java-annotation/"/>
    <updated>2011-03-02T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/03/02/implementation-instance-id-with-java-annotation</id>
-   <content type="html">&lt;h2&gt;문제&lt;/h2&gt;
-
-&lt;p&gt;Java에서 생성하는 &lt;code&gt;Object&lt;/code&gt;마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자.&lt;/p&gt;
-
-&lt;h2&gt;해결&lt;/h2&gt;
+   <content type="html">&lt;p&gt;Java에서 생성하는 &lt;code&gt;Object&lt;/code&gt;마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자.&lt;/p&gt;
 
 &lt;p&gt;Index 발급 Group 관련해서 파일을 하나 작성하여 &lt;code&gt;IndexGeneratingManager&lt;/code&gt;를 구성해서 발급해도 되고, 아니면 발급 받는 시점을 적절히 조절하거나 발급 함수의 인자로 Group할 Class 정보를 넣어줘도 되겠다.&lt;br&gt;
 하지만 본 글에서는 Java 1.5부터 추가된 &lt;code&gt;Annotation&lt;/code&gt;을 사용하여 source code에 metadata를 추가하여 문제를 해결하는 방법을 써 보겠다.&lt;/p&gt;
@@ -8708,11 +8691,7 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
    <link href="http://blog.lacti.me/2011/02/22/object-database-and-value-object/"/>
    <updated>2011-02-22T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2011/02/22/object-database-and-value-object</id>
-   <content type="html">&lt;h2&gt;개요&lt;/h2&gt;
-
-&lt;p&gt;프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자.&lt;/p&gt;
-
-&lt;h2&gt;설계&lt;/h2&gt;
+   <content type="html">&lt;p&gt;프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자.&lt;/p&gt;
 
 &lt;h3&gt;설계 1&lt;/h3&gt;
 
@@ -8737,13 +8716,13 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
 &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;문제점&lt;/h2&gt;
+&lt;h3&gt;문제점&lt;/h3&gt;
 
 &lt;p&gt;해당 Database Adapter는 Relation Database를 Object Database로 adapting해버리므로 JOIN 등의 Select query를 처리할만한 좋은 방법이 없다. 즉, 객체 단위의 데이터베이스 작업에 대해서는 간단한 작업을 보장하지만 각 Table의 Relation을 고려해야할 경우에 문제가 생긴다.&lt;/p&gt;
 
 &lt;p&gt;또한, 특정 값을 Update하거나, Where 조건이 복잡해지거나, 특정 항목만 Select할 경우에 대해서는 설계적으로 명확히 제공해주지 않기 때문에 구현이 복잡해지거나 자원 낭비가 발생한다.&lt;/p&gt;
 
-&lt;h2&gt;문제점 원인 분석&lt;/h2&gt;
+&lt;h3&gt;문제점 원인 분석&lt;/h3&gt;
 
 &lt;p&gt;본 모델은 Mysql J/Connector의 QueryAdapter를 기반으로 설계된 모델로, Query를 직접 작성하지 않고 객체의 class 정보를 reflection으로 읽어서 자동으로 Query를 구성해주어 작업의 편의를 도모하고자 설계한 것이다.&lt;/p&gt;
 
@@ -8751,7 +8730,7 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
 
 &lt;p&gt;따라서 위의 Object Database Adapter는 MySQL 등의 RDB에 붙여서 사용하는 것보다는 테스트를 위해 Memory Model을 사용할 때 더 적합하며, Relation이 적게 고려되는 간단한 Database 프로그래밍을 해야할 때 사용될 수 있겠다.&lt;/p&gt;
 
-&lt;h2&gt;문제점 해결&lt;/h2&gt;
+&lt;h3&gt;문제점 해결&lt;/h3&gt;
 
 &lt;p&gt;이러한 Adapter를 통해 Query를 직접 작성하지 않고 Database로부터의 결합을 분리시키기 위해서는, Query를 Modeling하여 이에 대해 각 Database별 구현을 가질 수 있도록 한다.&lt;/p&gt;
 
@@ -8781,7 +8760,7 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
 
 &lt;p&gt;아무튼 이러한 객체를 &lt;code&gt;ValueObject&lt;/code&gt;라고 해서 DAO 패턴에서 볼 수 있게 된다. 따라서 Server는 Client의 요청에 대해 Database에 필요한 정보를 요청하여 그 정보를 담는 VO 객체를 반환하면 된다.&lt;/p&gt;
 
-&lt;h2&gt;결론&lt;/h2&gt;
+&lt;h3&gt;결론&lt;/h3&gt;
 
 &lt;p&gt;프로그래밍을 함에 있어 Data의 Persistence를 고려하지 않는 프로그램은 없을 정도로 이는 기본 요소라고 할 수 있겠다. 하지만 프로그램에서 어떤 수준을 요구하냐에 따라서 그에 적합한 설계를 해야할 것이고,&lt;/p&gt;
 
@@ -9001,11 +8980,9 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
    <link href="http://blog.lacti.me/2010/05/01/java-network-programming-2-socket/"/>
    <updated>2010-05-01T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2010/05/01/java-network-programming-2-socket</id>
-   <content type="html">&lt;h2&gt;서론&lt;/h2&gt;
+   <content type="html">&lt;p&gt;자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자.&lt;/p&gt;
 
-&lt;p&gt;자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자.&lt;/p&gt;
-
-&lt;h2&gt;Socket&lt;/h2&gt;
+&lt;h3&gt;Socket&lt;/h3&gt;
 
 &lt;p&gt;전 글에서 네트워크 통신을 사람 간의 전화로 비유했었다.&lt;br&gt;
 네트워크 통신을 한다는 것은 &lt;a href=&quot;http://en.wikipedia.org/wiki/Network_Interface_Controller&quot;&gt;NIC(Network Interface Controller)&lt;/a&gt;를 사용하여 데이터를 주고 받겠다는 것이고 이는 &lt;strong&gt;하드웨어를 제어해야 한다는 뜻이다.&lt;/strong&gt; 하드웨어는  &lt;strong&gt;운영체제가 관리하고 있는 자원&lt;/strong&gt;이기 때문에 일반 프로그램들이 접근할 수 없다.&lt;/p&gt;
@@ -9017,7 +8994,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 
 &lt;p&gt;코드 한 줄 없이 이렇게 장문을 쓰는 것도 괴로운 일이므로 바로 코드로 넘어가보자.&lt;/p&gt;
 
-&lt;h2&gt;Client&lt;/h2&gt;
+&lt;h3&gt;Client&lt;/h3&gt;
 
 &lt;p&gt;클라이언트는 요청하는 쪽이다. 서버를 끊임없이 괴롭혀서 자신이 원하는 정보를 받아가는 녀석이다.&lt;br&gt;
 대표적인 예로 웹이 있다. 지금도 웹 서버에게 웹 페이지 데이터를 받아서 읽고 있는 것이다.&lt;/p&gt;
@@ -9066,7 +9043,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 
 &lt;p&gt;위 예제에서는 예외처리를 제대로 하지 않고 밖으로 다 던져**throws**버렸는데 실제 코드를 작성할 때에는 반드시 수행하는 하나하나에 대해 적절한 예외처리를 해주어야 한다.&lt;/p&gt;
 
-&lt;h2&gt;Server&lt;/h2&gt;
+&lt;h3&gt;Server&lt;/h3&gt;
 
 &lt;p&gt;서버는 응답자라고 보시면 되겠다. 클라이언트의 요청에 대한 결과물을 회신하는 쪽이다.&lt;br&gt;
 이는 웹 서버가 열심히 웹 페이지를 보내주고 있는 것으로 생각하시면 되겠다.&lt;/p&gt;
@@ -9109,7 +9086,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 
 &lt;p&gt;위의 두 예제를 실행하면, 서버가 클라이언트의 접속을 기다리고 있다가 클라이언트가 접속하면 &amp;quot;Hello Java Network Programming World!&amp;quot;라는 문자열을 보내고, 클라이언트가 이를 받아 console에 출력한 뒤 끝나는 결과를 볼 수 있다.&lt;/p&gt;
 
-&lt;h2&gt;결론&lt;/h2&gt;
+&lt;h3&gt;결론&lt;/h3&gt;
 
 &lt;p&gt;쓰다보니 필요한 많은 개념들을 대충대충 넘어갔다.&lt;br&gt;
 특히 중요한 blocking 개념을 설명하지 않고 넘어가다 보니 피상적으로 코드를 읽어주는 글이 되어버려서 아쉽다.&lt;/p&gt;
@@ -9123,13 +9100,9 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
    <link href="http://blog.lacti.me/2010/05/01/java-network-programming-1-basic/"/>
    <updated>2010-05-01T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2010/05/01/java-network-programming-1-basic</id>
-   <content type="html">&lt;h2&gt;서론&lt;/h2&gt;
+   <content type="html">&lt;p&gt;네트워크라는 것에 대해 깊게 설명할 생각은 없다. 단지 자바 언어에서 &lt;em&gt;어떻게 네트워크 프로그래밍을 할 수 있을까&lt;/em&gt; 정도에 대해 간략하게 소개할 생각이다. 이 글을 보고 관심을 조금만 갖고 구글링해보시면 당연한 이야기이지만 훨씬 잘 설명된 좋은 글이 많을테니, 이 글에서 단순히 흥미유도 차원 글을 쓴다.&lt;/p&gt;
 
-&lt;p&gt;네트워크라는 것에 대해 깊게 설명할 생각은 없다. 단지 자바 언어에서 &lt;em&gt;어떻게 네트워크 프로그래밍을 할 수 있을까&lt;/em&gt; 정도에 대해 간략하게 소개할 생각이다.&lt;/p&gt;
-
-&lt;p&gt;이 글을 보고 관심을 조금만 갖고 구글링해보시면 당연한 이야기이지만 훨씬 잘 설명된 좋은 글이 많을테니, 이 글에서 단순히 &lt;strong&gt;관심이라도 생기길 바라면서&lt;/strong&gt; 글을 쓴다.&lt;/p&gt;
-
-&lt;h2&gt;기초&lt;/h2&gt;
+&lt;h3&gt;기초&lt;/h3&gt;
 
 &lt;p&gt;네트워크 프로그래밍은 두 원격지(HOST) 간의 데이터 통신을 위한 프로그래밍이다.
 간단히 비유하자면,&lt;/p&gt;
@@ -9166,7 +9139,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;p&gt;TCP/IP 프로토콜에서는 데이터를 보낼 때 &lt;strong&gt;Packet&lt;/strong&gt;으로 쪼개어 보내는데 이 쪽을 공부해두면 장차 네트워크 프로그래밍할 때 도움되는게 많다.&lt;br&gt;
 &lt;a href=&quot;http://en.wikipedia.org/wiki/Packet_(information_technology&quot;&gt;http://en.wikipedia.org/wiki/Packet_(information_technology)&lt;/a&gt;)&lt;/p&gt;
 
-&lt;h2&gt;서버와 클라이언트&lt;/h2&gt;
+&lt;h3&gt;서버와 클라이언트&lt;/h3&gt;
 
 &lt;p&gt;전화를 할 때도 거는 사람과 받는 사람이 있다. 전화라는 것은 &lt;/p&gt;
 
@@ -9182,7 +9155,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 
 &lt;p&gt;이것이 간략한 서버와 클라이언트의 개념이고, 자세한 내용은 다음 글에서 코드로 보면 되겠다.&lt;/p&gt;
 
-&lt;h2&gt;결론&lt;/h2&gt;
+&lt;h3&gt;결론&lt;/h3&gt;
 
 &lt;p&gt;TCP와 UDP의 특성, &lt;code&gt;IP Protocol&lt;/code&gt;, &lt;code&gt;Packet&lt;/code&gt; 등 네트워크 프로그래밍 기초라고 해도 들먹일 개념이 굉장히 많지만 그것들은 wiki 등 더욱 잘 나와있는 곳이나 동아리 사람들에게 질문해보시면 더욱 확실하게 배울 수 있고,&lt;br&gt;
 &lt;strong&gt;서버와 클라이언트의 개념, &lt;code&gt;IP Address&lt;/code&gt;와 &lt;code&gt;Port&lt;/code&gt; 번호가 무엇인지 정도만 알겠다 싶으면 된 것이다.&lt;/strong&gt;&lt;/p&gt;
@@ -9290,11 +9263,9 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
    <link href="http://blog.lacti.me/2010/02/17/java-remotelib/"/>
    <updated>2010-02-17T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2010/02/17/java-remotelib</id>
-   <content type="html">&lt;h2&gt;개발 동기&lt;/h2&gt;
+   <content type="html">&lt;p&gt;심심한 상황에서 뭘 코딩할까 고민중에 java rmi app를 만들다가 고생한 기억이 있어서 이걸 좀 쉽게 사용할 수 있는 remote lib를 만들어보자는 생각에 시작하였다.&lt;/p&gt;
 
-&lt;p&gt;심심한 상황에서 뭘 코딩할까 고민중에 java rmi app를 만들다가 고생한 기억이 있어서 이걸 좀 쉽게 사용할 수 있는 remote lib를 만들어보자는 생각에 시작하였다.&lt;/p&gt;
-
-&lt;h2&gt;개발 목표&lt;/h2&gt;
+&lt;h3&gt;개발 목표&lt;/h3&gt;
 
 &lt;ol&gt;
 &lt;li&gt;기존의 java rmi와 유사한 code로 remote method interface call을 구현할 수 있어야하고,&lt;/li&gt;
@@ -9308,9 +9279,9 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;server는 효율적이고 scalable하면 좋겠다.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2&gt;구현&lt;/h2&gt;
+&lt;h3&gt;구현&lt;/h3&gt;
 
-&lt;h3&gt;기본 골격, object-portage&lt;/h3&gt;
+&lt;h4&gt;기본 골격, object-portage&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;기본 java socket를 이용하여 서버와 클라이언트 간의 data 통신이 가능한 socket을 얻는다.&lt;/li&gt;
@@ -9319,7 +9290,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;이 때 각 socket에 대하여&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;요청/분기/반환, request/response dispatcher&lt;/h3&gt;
+&lt;h4&gt;요청/분기/반환, request/response dispatcher&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;서버와 클라이언트가 주고 받는 메시지 객체(object)를 class화 하여 주고 받는다.&lt;/li&gt;
@@ -9337,7 +9308,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;span class=&quot;n&quot;&gt;responseMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;responseLock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;notify&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;함수 호출 메시지, function call message&lt;/h3&gt;
+&lt;h4&gt;함수 호출 메시지, function call message&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;함수 호출을 위한 정보(함수 이름, 함수 인자 타입parameters&amp;#39; type, 함수 인자arguments)를 담는 call message class 작성&lt;/li&gt;
@@ -9345,7 +9316,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;수행 도중 예외 담을 exception message class 작성&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;원격객체 연결/호출, binding and call remote-object&lt;/h3&gt;
+&lt;h4&gt;원격객체 연결/호출, binding and call remote-object&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;제공할 함수에 대한 interface class 작성&lt;/li&gt;
@@ -9356,13 +9327,13 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;client에서는 호출한 call message에 대한 return message가 올 때까지 대기(wait, 2-2)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;호출 간 xml message 사용&lt;/h3&gt;
+&lt;h4&gt;호출 간 xml message 사용&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;기존의 방법은 java의 objectstream을 사용하였기 때문에 c, c++ 등과 통신 불가능. 따라서 &lt;code&gt;javax.beans.XMLEncoder&lt;/code&gt;/&lt;code&gt;XMLDecoder&lt;/code&gt;을 사용&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;http message로 위장&lt;/h3&gt;
+&lt;h4&gt;http message로 위장&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;code&gt;HTTP Header&lt;/code&gt;를 붙임.&lt;/li&gt;
@@ -9375,13 +9346,13 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 
 &amp;lt;?xml...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;http message compaction&lt;/h3&gt;
+&lt;h4&gt;http message compaction&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;ZipStream을 이용, http body message 부분의 data를 plain/text가 아닌 zip data로 보냄. data 전송량을 줄일 수 있음&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;타언어와의 통신&lt;/h3&gt;
+&lt;h4&gt;타언어와의 통신&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;c 계열의 통신을 가정했을 경우, 먼저 code generator를 통해 주고받을 argument들의 대응 객체 생성. 즉 java에서 작성한 bean에 대응되는 c의 구조체를 작성해야함.&lt;/li&gt;
@@ -9390,7 +9361,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;한글 등 unicode/multibyte 문자를 적절히 변환해주는 charset library 제작-_-(힘들다)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;고가용서버&lt;/h3&gt;
+&lt;h4&gt;고가용서버&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;SelectableChannel과 Selector을 이용, server단 thread 개수 감소를 통한 프로그램 효율 증가&lt;/li&gt;
@@ -9398,7 +9369,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
 &lt;li&gt;ByteBufferPool, ThreadPool을 이용한 객체 재사용&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2&gt;현재 상황&lt;/h2&gt;
+&lt;h3&gt;현재 상황&lt;/h3&gt;
 
 &lt;p&gt;일단 object-stream을 이용한 remote lib 구현 완료, 주석까지 달아서 지금 올리는 중.&lt;br&gt;
 성능 개선이 절실히 필요한데, 일단 오늘은 시간이 없으니 여기까지만-_-&lt;/p&gt;
@@ -9421,9 +9392,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
    <link href="http://blog.lacti.me/2010/02/04/developing-java-remote-library/"/>
    <updated>2010-02-04T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2010/02/04/developing-java-remote-library</id>
-   <content type="html">&lt;h3&gt;서론&lt;/h3&gt;
-
-&lt;p&gt;PHP의 &lt;code&gt;__call method&lt;/code&gt;는 해당 object의 member를 호출했을 때, 그 member가 not implement 상태이면 &lt;code&gt;__call method&lt;/code&gt;로 method name과 arguments를 넘겨주는 그런 신비한 method이다.&lt;br&gt;
+   <content type="html">&lt;p&gt;PHP의 &lt;code&gt;__call method&lt;/code&gt;는 해당 object의 member를 호출했을 때, 그 member가 not implement 상태이면 &lt;code&gt;__call method&lt;/code&gt;로 method name과 arguments를 넘겨주는 그런 신비한 method이다.&lt;br&gt;
 예외처리도 아니고 없는 method에 대해 해당 method 호출 정보를 넘겨받을 수 있는 함수라니! 이건 진정한 proxy class를 제작하기 위한 필수 method라 할 수 있겠다.&lt;/p&gt;
 
 &lt;h3&gt;본론&lt;/h3&gt;
@@ -9459,9 +9428,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
    <link href="http://blog.lacti.me/2009/10/18/how-to-function-returning-value-with-assembly/"/>
    <updated>2009-10-18T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2009/10/18/how-to-function-returning-value-with-assembly</id>
-   <content type="html">&lt;h3&gt;목적&lt;/h3&gt;
-
-&lt;p&gt;함수에서의 값 반환이 실제로 기계어 수준에서는 어떻게 이루어지는지 알아보자.&lt;/p&gt;
+   <content type="html">&lt;p&gt;함수에서의 값 반환이 실제로 기계어 수준에서는 어떻게 이루어지는지 알아보자.&lt;/p&gt;
 
 &lt;h3&gt;참고&lt;/h3&gt;
 
@@ -9559,9 +9526,7 @@ vs환경에서 해보면 좀 다를 것 같다.&lt;/p&gt;
    <link href="http://blog.lacti.me/2009/01/04/Java-Graphics-AffineTransform-and-JScrollPane/"/>
    <updated>2009-01-04T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2009/01/04/Java-Graphics-AffineTransform-and-JScrollPane</id>
-   <content type="html">&lt;h3&gt;옛날 이야기&lt;/h3&gt;
-
-&lt;p&gt;예전에 디비랩 알바를 할 때, 어떤 이미지에 대해 확대, 축소, 이동을 해야할 일이 생겼다.
+   <content type="html">&lt;p&gt;예전에 디비랩 알바를 할 때, 어떤 이미지에 대해 확대, 축소, 이동을 해야할 일이 생겼다.
 &lt;code&gt;MouseEvent&lt;/code&gt; 처리 시 좌표 계산 등, 몇 가지 계산을 해서 Image를 확대, 축소, 이동해서 볼 수 있도록 하였다.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;Applepie(YPE2)&lt;/code&gt;를 만들 때 역시 이미지에 대해 확대, 축소, 이동을 할 일이 있었는데 이 때는 이미지가 하나가 아니라, 여러 이미지를 그려야하는 상황이었다.&lt;br&gt;
@@ -9621,9 +9586,7 @@ vs환경에서 해보면 좀 다를 것 같다.&lt;/p&gt;
    <link href="http://blog.lacti.me/2009/01/03/java-swing-1/"/>
    <updated>2009-01-03T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2009/01/03/java-swing-1</id>
-   <content type="html">&lt;h3&gt;도입&lt;/h3&gt;
-
-&lt;p&gt;Java Swing에 대해 어떻게 GUI를 배워나가는 지에 대한 이야기를 해보고 싶었다.&lt;br&gt;
+   <content type="html">&lt;p&gt;Java Swing에 대해 어떻게 GUI를 배워나가는 지에 대한 이야기를 해보고 싶었다.&lt;br&gt;
 물론 어느 순서가 바른 순서인지는 나도 모르고, 단지 내가 해온 순서는 이렇다는 이야기를 해보고 싶어서 글을 쓴다.&lt;/p&gt;
 
 &lt;h3&gt;Basic GUI&lt;/h3&gt;
@@ -9964,7 +9927,7 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
    <link href="http://blog.lacti.me/2008/04/01/pintos-internal-structure/"/>
    <updated>2008-04-01T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2008/04/01/pintos-internal-structure</id>
-   <content type="html">&lt;h2&gt;Pintos의 기본 구조&lt;/h2&gt;
+   <content type="html">&lt;h3&gt;Pintos의 기본 구조&lt;/h3&gt;
 
 &lt;p&gt;Pintos는 가장 기본 기능인 threads를 중심으로 user program, virtual memory, 그리고 file system을 추가하는 구조를 갖는다. 그래서 소스 코드의 분포 역시 기본적인 것들은 threads 디렉토리에 다 있고, 그 밖의 것들은 각각의 디렉토리에 존재하면서 threads에 있는 소스 코드를 참조하는 식으로 되어있다. 그리고 Pintos를 구성하는 데는 필요하지만 과제 항목에는 포함되어있지 않은 기본 library나 device는 별도의 디렉토리에 존재한다.&lt;/p&gt;
 
@@ -10038,7 +10001,7 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 
 &lt;p&gt;정리하자면, Pintos의 커널은 기본적으로 init.c의 main 함수에 모두 들어가있다. 부팅 과정에서 커널을 메모리에 불러오는 부분은 예외이지만 커널을 초기화하고 사용자로부터 입력을 받아 그 입력을 처리하는 부분까지 모두 main 함수에 구현되어있는 구조이다.&lt;/p&gt;
 
-&lt;h2&gt;Pintos의 동작 방식&lt;/h2&gt;
+&lt;h3&gt;Pintos의 동작 방식&lt;/h3&gt;
 
 &lt;p&gt;Pintos의 내부 동작에 대해서는 위에서 모두 설명했기 때문에 여기서는 Pintos의 커널에게 실행 인자를 넘기고 그것을 어떻게 Pintos가 받아들인 뒤 해석하여 수행하는지에 대해 기술하겠다.&lt;/p&gt;
 
@@ -10129,7 +10092,7 @@ For information on Bochs configuration file arguments, see the
 bochsrc section in the user documentation or the man page of bochsrc.
 00000000000i&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;CTRL &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; quit_sim called with &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;code 0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;다음으로 pintos를 실행하기 위해 pintos를 다운로드 받았다. pintos는 구글 검색을 통해 다운로드 주소가 &lt;a href=&quot;http://www.stanford.edu/class/cs140/projects/pintos/pintos.tar.gz%EC%97%90&quot;&gt;http://www.stanford.edu/class/cs140/projects/pintos/pintos.tar.gz에&lt;/a&gt; 있음을 찾아내서 wget 명령으로 다운로드 받았다.&lt;/p&gt;
+&lt;p&gt;다음으로 pintos를 실행하기 위해 pintos를 다운로드 받았다. pintos는 구글 검색을 통해 다운로드 주소가 &lt;a href=&quot;http://www.stanford.edu/class/cs140/projects/pintos/pintos.tar.gz&quot;&gt;http://www.stanford.edu/class/cs140/projects/pintos/pintos.tar.gz&lt;/a&gt;에 있음을 찾아내서 wget 명령으로 다운로드 받았다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://www.stanford.edu/class/cs140/projects/pintos/pintos.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;역시 tar.gz 압축이므로 tar xvzf로 압축을 해제하였다.&lt;/p&gt;
@@ -10139,7 +10102,7 @@ bochsrc section in the user documentation or the man page of bochsrc.
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;pintos/src/threads
 ~/pintos/src/threads&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;make
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;make 수행이 &lt;code&gt;undefined references to&lt;/code&gt;__stack_chk_fail&amp;#39; follow&lt;code&gt;이라는 에러에 의해 중단되었다. 이를 해결하기 위해 구글을 검색하여 [다음의 레퍼런스](http://ubuntuforums.org/showthread.php?t=303541)를 얻었다. 이 포럼에서 권고하는 대로 make 설정에서 CFLAGS의 값에&lt;/code&gt;-fno-stack-protector&lt;code&gt;옵션을 추가해주기 위해 편집기 vi를 사용하여 Make.vars에&lt;/code&gt;CFLAGS += -fno-stack-protector`를 추가해 주었다.&lt;/p&gt;
+&lt;p&gt;make 수행이 &lt;code&gt;undefined references to &amp;#39;__stack_chk_fail&amp;#39; follow&lt;/code&gt;이라는 에러에 의해 중단되었다. 이를 해결하기 위해 구글을 검색하여 &lt;a href=&quot;http://ubuntuforums.org/showthread.php?t=303541&quot;&gt;다음의 레퍼런스&lt;/a&gt;를 얻었다. 이 포럼에서 권고하는 대로 make 설정에서 CFLAGS의 값에 &lt;code&gt;-fno-stack-protector&lt;/code&gt; 옵션을 추가해주기 위해 편집기 vi를 사용하여 Make.vars에 &lt;code&gt;CFLAGS += -fno-stack-protector&lt;/code&gt;를 추가해 주었다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash language-bash&quot; data-lang=&quot;bash&quot;&gt;~/pintos/src/threads&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vi Make.vars
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;기존에 컴파일한 것들을 제거하기 위해 make clean을 수행한 후 make를 수행하여 빌드를 마쳤다.&lt;/p&gt;
@@ -10454,8 +10417,8 @@ Bochs is exiting with the following message:
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;c&lt;/td&gt;
-&lt;td&gt;break 상태에서 다시 진행을 재개한다.&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;break&lt;/td&gt;
+&lt;td&gt;상태에서 다시 진행을 재개한다.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;s&lt;/td&gt;

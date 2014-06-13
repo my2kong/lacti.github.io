@@ -119,7 +119,7 @@
 </code></pre></div>
 <p>저 <code>raii_t</code>는 꽤 일반적이어서, 생성과 소멸 시 특정 함수를 통해 자원 관리가 되어야 하는 class에 대해 모두 적용될 수 있다. 예를 들면 <code>shared_ptr</code> (add_ref/release_ref) 등이 될 수 있다.</p>
 
-<p>summerlight00님께서 예제로 달았던 finalizer를 raii의 예로 들어보자. 특정 scope가 끝나는 시점에 수행되어야할 작업들을 명시해주는 객체가 된다. 즉, 익명의 객체를 하나 만들고, 그 소멸자에서 수행될 함수를 인자로 받도록 한다.</p>
+<p><a href="https://twitter.com/summerlight00" title="summerlight00">summerlight</a>님께서 예제로 달았던 finalizer를 raii의 예로 들어보자. 특정 scope가 끝나는 시점에 수행되어야할 작업들을 명시해주는 객체가 된다. 즉, 익명의 객체를 하나 만들고, 그 소멸자에서 수행될 함수를 인자로 받도록 한다.</p>
 
 <p>먼저 소멸자에서 무언가를 수행해줄 수 있는 class를 만들어보자.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">_Func</span><span class="o">&gt;</span>

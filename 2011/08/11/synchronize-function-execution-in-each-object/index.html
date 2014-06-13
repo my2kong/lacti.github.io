@@ -45,9 +45,7 @@
 				<p><span class="glyphicon glyphicon-time"></span> Posted on 11 Aug 2011</p>
 				<hr>
 				<div class="content">
-				<h2>도입</h2>
-
-<p>(주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다)<br>
+				<p>(주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다)<br>
 여러 Thread가 동시에 접근을 수행하는 객체를 보호하기 위해서는 어떤 방법이 있을까?</p>
 
 <ul>
@@ -60,12 +58,11 @@
 
 <p>상황적으로 볼 때, 하나의 객체에 여러 Thread가 접근할 일은 많다. 만약 2명의 User가 Party를 맺고 사냥을 하다가, 각자 동시에 한 마리씩 몬스터를 잡았다는 message가 동시에 Server에 도착해 경험치를 각 User 객체에 넣어준다고 하자.</p>
 
-<p>User에는 AddExp함수를 통해 내부에 경험치를 증가시킨다. 그런데 만약 두 Thread가 경쟁적으로 AddExp를 호출할 경우, 결과 값이 제대로 들어간다는 보장이 없다.<br>
-<a href="/2011/08/02/volatile-interlocked-operation/">volatile과 interlocked operation</a></p>
+<p>User에는 AddExp함수를 통해 내부에 경험치를 증가시킨다. 그런데 만약 두 Thread가 경쟁적으로 AddExp를 호출할 경우, 결과 값이 제대로 들어간다는 보장이 없다. <a href="/2011/08/02/volatile-interlocked-operation/">volatile과 interlocked operation</a></p>
 
 <p>물론 이런 경우는 InterlockedAdd 함수를 써서 해결할 수도 있겠지만, 공유 객체에 요청되는 작업들을 Queue에 모아 동기적으로 하나의 Thread 가 처리하는 방법으로 문제를 해결해보도록 하자</p>
 
-<h2>설계</h2>
+<h3>설계</h3>
 
 <p>생산자와 소비자 모델에서 생산자와 소비자는 Queue 객체를 공유한다. 생산자가 데이터를 Queue에 넣으면 소비자는 Queue에서 데이터를 꺼내서 처리한다. 이 때 데이터가 공유 객체에 요청하는 작업이고, 소비자가 단일 Thread로 구성된다면, 여러 Thread에서 요청하는 작업들을 Queue에 넣어 소비자, 즉 단일 Thread가 처리하므로 공유 객체는 Lock 없이 Thread Safe하게 돌아가게 된다.</p>
 
