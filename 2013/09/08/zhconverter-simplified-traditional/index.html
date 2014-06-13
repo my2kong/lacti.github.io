@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="blog">
 	<meta name="author" content="lacti">
-	<title>환형큐의 thread unsafety 문제</title>
+	<title>ZhConverter (Simplified, Traditional)</title>
 	<link href="/css/bootstrap.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -41,57 +41,45 @@
 	<div class="container">
 				<div class="row">
 			<div class="col-lg-8">
-				<h1 class="page-title">환형큐의 thread unsafety 문제</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on 23 Feb 2012</p>
+				<h1 class="page-title">ZhConverter (Simplified, Traditional)</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 08 Sep 2013</p>
 				<hr>
 				<div class="content">
-				<p>어떤 자원에 대한 환형큐가 있다고 해보자. size는 2의 자승이다.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">resource_t</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rear_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">size_</span><span class="p">;</span>
-    <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="kt">resource_t</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">front_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">size_</span><span class="p">;</span>
-    <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>위 코드는 당연히 thread safety 하지 않다. 하지만 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">work</span><span class="p">(</span><span class="kt">resource_t</span> <span class="n">old</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">push</span><span class="p">(</span><span class="n">old</span><span class="p">);</span>  <span class="c1">// release old resource</span>
-    <span class="kt">resource_t</span> <span class="n">newone</span> <span class="o">=</span> <span class="n">pop</span><span class="p">();</span> <span class="c1">// acquire new on</span>
-    <span class="c1">// do some work</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>예전 자원을 반환하고, 새로운 자원을 할당받아 그것으로 무슨 작업을 하는 것이다.<br>
-이렇게 되면 pop 을 부르는 시점의 thread 는 적어도 자신이 push 한 자원 1개가 반드시 존재함을 보장할 수 있으니까 문제가 생기지 않는다.</p>
+				<p>대만에 Localization(이라고 쓰고 번역이라고 읽는다)을 담당하시는 분이 있었는데 사람이 부족하다고 중국 번역도 시키고 있다. <del>대만은 번체, 중국은 간체를 사용하는데 이론상으로는 어느 정도 수준에서 글자의 1:1 치환으로 두 언어간 변환이 가능하다고 한다.</del> <em>(후술하자면 단어 치환으로 번역할 경우 논조가 달라지므로, 해당 결과물은 제대로 사용할 수 없다고 한다.)</em></p>
 
-<p>라고 생각하면 함정.</p>
+<p>그런데도 그걸 사람이 하고 있다면 참 안 좋은 일이겠지.</p>
 
-<p>thread 4개가 동시에 work 함수를 수행한다고 해보자.</p>
+<p>중국개발팀은 대만/중국 빌드 2개를 관리해야 한다. 즉 branch가 2개라는거다. 처음에 한 번 대만어를 일괄 중국어로 번역해야 할 필요가 있었는데 그 때에는 그나마 담당자도 없어서 그냥 내가 구글 번역기로 일괄 번역 돌려서 중국쪽 branch에 commit하였다.</p>
+
+<p>현재 대만 빌드는 서비스 중, 중국 빌드는 CBT 준비 중이다. 이 상황에서 대만과 중국 양 쪽에 모두 어떤 문자열이 추가되어야 한다고 해보자. 그러면 L10N 담당자는 한 쪽에는 대만어로, 한 쪽에는 중국어로 작업을 2번 해야 한다. 왜냐하면 양 branch에 해당 문자열이 들어가는 시점이 미묘하게 다르고, 모든 내역이 들어간다는 보장이 없기 때문이다.</p>
+
+<p>버전으로만 볼 때 대만 빌드보다 중국 빌드가 더 나중 버전이다. 그리고 나중에 대만도 중국 빌드를 사용한다고 한다. 즉, 중국 빌드에도 문자열을 대만어로 작업해 놓아야 추후에 문제가 없다는 것! 그야말로 안타까운 노가다의 현장이다. 어쨌든 기계적으로 수행할 수 있는 일을 사람이 하는 것은 참 좋지 않은 일이므로 이 부분을 자동화하고자 한다. 그러려면 번체/간체 변환기가 필요하다.</p>
+
+<p>MediaWiki 쪽에서는 이미 해당 기능이 사용되고 있다고 한다. 그리고 누가 그걸 java로 구현해놨다. <a href="https://code.google.com/p/java-zhconverter/">java-zhconverter</a></p>
+
+<p>별로 믿음직스럽지는 않지만 결과를 보고도 맞는지 틀리는지 내가 알 수 없으니 일단 믿고 써보자. 사내 툴들은 대부분 C#으로 개발되어있으므로 이걸 가져다 쓰려면 C#으로 porting해야 한다.</p>
+
+<p>그래서 porting했다.</p>
 
 <ul>
-<li>push를 수행했으니까 <code>rear_</code>는 4만큼 증가한다.</li>
-<li>가장 마지막으로 <code>rear_</code>를 증가시킨 thread만 <code>array</code>에 <code>resource_t</code>를 대입하였고,</li>
-<li>나머지 thread들은 아직 <code>array</code>에 대입하기 전이다.</li>
-<li>그러면 <code>index</code>만 증가해있고, 실제 배열은 비어있다.</li>
-<li>그래서 마지막 thread가 <code>pop</code>을 할 때 access violation으로 프로그램이 사망한다.</li>
+<li><a href="https://github.com/lacti/ZhConv">github: ZhConv</a></li>
 </ul>
 
-<p>즉, <code>index</code>의 증가는 atomic함을 보장하지만 그것이 배열에 자원이 대입되었음을 보장해주지 못하므로 사망한다.</p>
+<h3>추가</h3>
 
-<p>척 봐도 당연한 소리를 여기에 쓰고 있는 이유는, 이걸 직접 당해보고도 몇 달 지나니까 다시 이 사실을 까먹기 때문이다-_-;</p>
+<p>추후 담당자에게 이야기를 들어보니 </p>
 
 				</div>
 
 				<div class="row">
 					<div class="col-md-6">
 					
-						<a href="/2012/01/10/implicit-interface-by-template/" title="template의 암시적 interface 요구">&laquo; template의 암시적 interface 요구</a>
+						<a href="/2013/09/07/websocket-webrtc/" title="websocket, webRTC">&laquo; websocket, webRTC</a>
 					
 					</div>
 					<div class="col-md-6" style="text-align: right;">
 					
-						<a href="/2012/03/01/c-sharp-ui-cross-thread-problem/" title="C# UI Cross thread problem 해결">&raquo; C# UI Cross thread problem 해결</a>
+						<a href="/2013/10/09/asynchronous-programming-pattern-1/" title="비동기 프로그래밍 패턴 1">&raquo; 비동기 프로그래밍 패턴 1</a>
 				
 					</div>
 				</div>
@@ -118,6 +106,8 @@
 				<div class="well">
 					<h4 class="well-title">Related Posts</a></h4>
 					<ul>
+					
+						<li><a href="/2013/06/07/csharp-game-server/">c# 게임 서버 만들기</a> <span class="date">07 Jun 2013</span></li>
 					
 						<li><a href="/2012/03/01/c-sharp-ui-cross-thread-problem/">C# UI Cross thread problem 해결</a> <span class="date">01 Mar 2012</span></li>
 					
