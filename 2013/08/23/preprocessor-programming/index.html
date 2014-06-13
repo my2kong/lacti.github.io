@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="blog">
 	<meta name="author" content="lacti">
-	<title>member-data-pointer와 pointer의 차이</title>
+	<title>preprocessor programming</title>
 	<link href="/css/bootstrap.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -41,52 +41,30 @@
 	<div class="container">
 				<div class="row">
 			<div class="col-lg-8">
-				<h1 class="page-title">member-data-pointer와 pointer의 차이</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on 13 Oct 2012</p>
+				<h1 class="page-title">preprocessor programming</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 23 Aug 2013</p>
 				<hr>
 				<div class="content">
-				<p>pointer는 메모리의 특정 공간의 주소를 지칭하기 위해 사용된다.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">float</span> <span class="n">some_var</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="p">;</span>
-<span class="kt">float</span><span class="o">*</span> <span class="n">float_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">some_var</span><span class="p">;</span>
-</code></pre></div>
-<p>member data pointer는 구조체나 클래스의 특정 멤버 변수의 위치를 상대적으로 지칭하기 위해 쓰인다. 따라서 메모리 주소 값을 가지는 것이 아니라, 구조체나 클래스 객체에서 어디에 접근을 해야하는지의 정보를 담고 있다고 생각하면 된다.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="kt">tuple_t</span> <span class="p">{</span>
-    <span class="kt">float</span> <span class="n">first</span><span class="p">;</span>
-<span class="p">};</span>
-<span class="k">typedef</span> <span class="kt">float</span> <span class="kt">tuple_t</span><span class="o">::*</span><span class="kt">member_t</span><span class="p">;</span>
-</code></pre></div>
-<p>때문에 실제 메모리에 접근하기 위해서는 구조체나 클래스 객체가 있어야 하고, 접근할 때에도 dereference operator를 써주어야 한다.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">member_t</span> <span class="n">member</span> <span class="o">=</span> <span class="o">&amp;</span><span class="kt">tuple_t</span><span class="o">::</span><span class="n">first</span><span class="p">;</span>
-<span class="kt">tuple_t</span> <span class="n">tuple</span><span class="p">;</span>
-<span class="n">tuple</span><span class="p">.</span><span class="o">*</span><span class="n">member</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">;</span>
-</code></pre></div>
-<p>위와 같이 <code>tuple.*member</code>를 통해 <code>member</code>가 가리키는 <code>first</code> 변수에 접근할 수 있었다. 이것은 <code>tuple</code> 객체 내에서 <code>member</code>가 가리키는 위치이고, <code>tuple</code>이라는 메모리 공간의 특정 지점에 접근을 하였으니 이제 float 값을 대입할 수 있는 것이다.</p>
+				<p>오늘 발표 자료인 preprocessor programming. x-macro pattern부터 시작해서 repetition까지 간단히 설명을 했다. <a href="http://libsora.so/" title="libsora.so">if1live</a>님에게 배운 mpinc(multi-pass include) 단어를 어떻게든 써먹어보려고 했는데 이미 <a href="http://en.wikipedia.org/wiki/X_Macro">x macro</a>라는 이름으로 60년대부터 쓰고 있댄다[...]</p>
 
-<p>이제 float*로 저것을 가리킬 수 있다.</p>
-<div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">float</span><span class="o">*</span> <span class="n">float_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">tuple</span><span class="p">.</span><span class="o">*</span><span class="n">member</span><span class="p">);</span>
-</code></pre></div>
-<p>요약하면,</p>
+<p>boost pp의 근간 원리를 설명..하고 싶었지만 능력 부족 orz</p>
 
 <ul>
-<li>메모리 주소 값을 갖는 <code>float*</code>와는 다르게 member-data-pointer는 객체 내의 상대적 위치 정보를 갖기 때문에 바로 <code>float*</code>로 casting할 수는 없고,</li>
-<li>객체를 두고 객체 내의 멤버를 접근한 다음(<code>.*</code> 혹은 <code>-&gt;*</code>)에야 메모리 주소인 <code>float*</code>로 가리킬 수 있게 된다는 것이다.</li>
+<li><a href="http://www.slideshare.net/lactrious/preprocessor-programming">Slideshare: Preprocessor Programming</a></li>
+<li><a href="https://github.com/lacti/MacRec">github: MacRec</a></li>
 </ul>
-
-<p>member-data-pointer가 member의 위치를 어떻게 가리킬 수 있는지에 대한 세부 내용은 접어두더라도, 객체 내의 member 위치(<code>offset_of</code>)의 방법을 이해하면 굳이 member-data-pointer를 쓰지 않아도 비슷한 효과를 흉내낼 수 있다(c-style)</p>
-
-<p>이에 대해서는 다음 글에서 알아보자.</p>
 
 				</div>
 
 				<div class="row">
 					<div class="col-md-6">
 					
-						<a href="/2012/10/07/extract-code-using-member-data-pointer-3/" title="멤버 데이터 포인터를 사용하여 연산식 묶어내기 3">&laquo; 멤버 데이터 포인터를 사용하여 연산식 묶어내기 3</a>
+						<a href="/2013/08/20/simple-c%2B%2B-rpc/" title="generic한 c++ rpc 구현">&laquo; generic한 c++ rpc 구현</a>
 					
 					</div>
 					<div class="col-md-6" style="text-align: right;">
 					
-						<a href="/2012/10/31/member-data-pointer-casting-safety/" title="멤버 데이터 포인터의 casting과 안정성 1">&raquo; 멤버 데이터 포인터의 casting과 안정성 1</a>
+						<a href="/2013/08/26/yeouido-study-summary-4/" title="여의도 스터디 정리 4">&raquo; 여의도 스터디 정리 4</a>
 				
 					</div>
 				</div>
@@ -114,6 +92,8 @@
 					<h4 class="well-title">Related Posts</a></h4>
 					<ul>
 					
+						<li><a href="/2013/08/20/simple-c%2B%2B-rpc/">generic한 c++ rpc 구현</a> <span class="date">20 Aug 2013</span></li>
+					
 						<li><a href="/2012/10/31/member-data-pointer-casting-safety/">멤버 데이터 포인터의 casting과 안정성 1</a> <span class="date">31 Oct 2012</span></li>
 					
 						<li><a href="/2012/10/07/extract-code-using-member-data-pointer-3/">멤버 데이터 포인터를 사용하여 연산식 묶어내기 3</a> <span class="date">07 Oct 2012</span></li>
@@ -122,7 +102,7 @@
 					
 						<li><a href="/2012/10/01/extract-code-using-member-data-pointer-1/">멤버 데이터 포인터를 사용하여 연산식 묶어내기 1</a> <span class="date">01 Oct 2012</span></li>
 					
-						<li><a href="/2013/07/25/write-game-data/">게임 데이터 작성하기 1</a> <span class="date">25 Jul 2013</span></li>
+						<li><a href="/2012/06/09/using-reflection-at-c%2B%2B-4/">c++에서 reflection 사용하기 4</a> <span class="date">09 Jun 2012</span></li>
 					
 					</ul>
 				</div>
