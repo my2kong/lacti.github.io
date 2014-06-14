@@ -4,6 +4,10 @@ title: AWS를 이용한 서버 운영
 tags: aws gameserver management
 ---
 
+{% oembed http://www.slideshare.net/lactrious/aws-gameserver-management %}
+
+* [github: source code](https://github.com/lacti/Lz/tree/v0.2)
+
 지난 번에 작성한 [c# 게임 서버 만들기]({% post_url 2013-06-07-csharp-game-server %}) 게임 서버를 aws로 서비스하는 것에 대한 발표를 진행했다.
 
 대부분은 직접 시연했기 때문에 발표 내용이 다소 부실하다 [...]  
@@ -20,8 +24,3 @@ tags: aws gameserver management
 * GameServer Management
 	* step by step
 	* cloud design pattern
-
-* [Slideshare: AWS GameServer Management](http://www.slideshare.net/lactrious/aws-gameserver-management)
-* [github: source code](https://github.com/lacti/Lz/tree/v0.2)
-
-{% oembed http://www.slideshare.net/lactrious/aws-gameserver-management %}
