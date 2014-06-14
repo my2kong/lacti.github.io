@@ -11,7 +11,7 @@ tags: remotelib java rpc
 1. 기존의 java rmi와 유사한 code로 remote method interface call을 구현할 수 있어야하고,
 2. 쌍방통신이 쉽게 가능했으면 한다.  
    ※ rmi는 보안상의 이유로 단방향을 기본적으로 지원하는데, 보통 클라이언트에서 서버의 함수를 호출하는 방식이다.  
-      &nbsp;&nbsp;&nbsp;&nbsp;서버에서 클라이언트의 함수를 호출하려면 약간 설정해줘야하는게 더 있고, 실행하기가 귀찮아진다-_-
+   서버에서 클라이언트의 함수를 호출하려면 약간 설정해줘야하는게 더 있고, 실행하기가 귀찮아진다-_-
 3. 또한 기본 socket을 이용하여 방화벽 혹은 가상ip로 인한 rmi binding 문제가 안 일어났으면 좋겠고,
 4. 가능하다면 socket proxy를 사용해서 뭐가 날라가는지도 가려보고 싶고
 5. 80 port를 이용, http message로 둔갑하여 netcare같이 packet 내용까지 보는 녀석에게도 안 걸렸으면 좋겠고,
