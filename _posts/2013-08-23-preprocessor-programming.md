@@ -11,4 +11,4 @@ boost pp의 근간 원리를 설명..하고 싶었지만 능력 부족 orz
 * [Slideshare: Preprocessor Programming](http://www.slideshare.net/lactrious/preprocessor-programming)
 * [github: MacRec](https://github.com/lacti/MacRec)
 
-{{ oembed http://www.slideshare.net/lactrious/preprocessor-programming }}
+{% oembed http://www.slideshare.net/lactrious/preprocessor-programming %}
