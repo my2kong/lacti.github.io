@@ -4,13 +4,261 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-14T02:05:31+00:00</updated>
+ <updated>2014-06-14T08:48:57+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
    <email>lactrious@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>네트워크 offload 장애</title>
+   <link href="http://blog.lacti.me/2014/02/16/network-offload-error/"/>
+   <updated>2014-02-16T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2014/02/16/network-offload-error</id>
+   <content type="html">&lt;p&gt;최근 네트워크 장비 이상 현상으로 고생을 한 적이 있다. 패킷량이 특정 이상일 때 주기적으로 throughput이 감소하는 현상을 보였던 것이다. 플랫폼팀 팀장님께서 각고의 노력 끝에 원인을 찾아내셨다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Large Send offload V2&lt;/li&gt;
+&lt;li&gt;TCP checksum offload&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;이 옵션이 왜 문제를 일으킬 수 있을까? 이에 대해 자세히 알아보자.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://windowsforum.kr/index.php?category=495009&amp;amp;document_srl=4479149&amp;amp;mid=qna&quot;&gt;Windows Forum: 랜카드 옵션 Large Send Offload 가 궁금해요&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://myknowledge.kr/29&quot;&gt;TCP 체크섬 오프로드&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;원래 위 옵션은 cpu로 처리해야 하는 일을 nic가 대신 처리해서 전체 성능을 높여준다는 것이다. 그런데 테스트를 진행했던 네트워크에서는 서버 머신의 nic와 switch 간의 저 옵션이 제대로 동작하지 않아서 주기적으로 문제가 발생한 것이다. 서버 머신의 nic에서 해당 옵션을 끄니 더 이상 문제가 발생하지 않았다.&lt;/p&gt;
+
+&lt;p&gt;재미있는 것은, 위 옵션을 끌 경우 cpu에서 처리해야할 일이 늘어나니 cpu 사용량이 늘어나야할텐데 오히려 cpu 사용량이 줄어들었다는 점이다. 아마도 비정상 동작에 의해 packet이 drop되거나 해서 그걸 재전송하기 위해 cpu level까지 작업이 전파된 것으로 추측된다. 물론 정말 그런지는 windows logging 수준으로는 알 수 없으니 nic나 switch 로그를 봐야하는데 그렇게까지는 귀찮아서 안 봤다-_-&lt;/p&gt;
+
+&lt;p&gt;지난 번에는 nic driver의 버전 문제로 이런 현상이 있었고, 이번에는 nic와 switch의 호환 문제로 이런 문제가 발생하였다. 볼 때마다 SE는 참 힘든 일이구나 싶다. 이론 공부도 많이 필요한데 다양한 장애 상황에 대응할 수 있을만큼 많은 경험을 쌓아야 하니까-_-;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>mswsock.dll의 비밀</title>
+   <link href="http://blog.lacti.me/2014/02/14/secret-of-mswsock-dll/"/>
+   <updated>2014-02-14T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2014/02/14/secret-of-mswsock-dll</id>
+   <content type="html">&lt;p&gt;최근 회사에서 c#으로 네트워크 프로그래밍을 하고 있다. 일은 아니고 그냥 개인의 취향
+나름 c#도 속도가 괜찮다는 것을 보여주려고 시작을 했는데, 진행하면서 점점 보이는 결과는 영 좋지 않다.&lt;/p&gt;
+
+&lt;p&gt;서버 과부하 테스트 프로그램을 c#으로 porting했다. 정말 과부하 테스트를 하려면 c++로 작성해야 맞지만 테스트 로직까지 c++로 작성하면 골치가 아프니 core는 c++, logic은 c#으로 작성하는 방법을 고민하면서 porting을 하고 있다. 하지만 그 전에 귀찮으니 일단 network core도 c#으로 작성했고 이 때 c# async io와 async/await을 대충 섞어서 작성했다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;정말 대충 짰더니 정말 성능이 대충 나온다-_-;&lt;/strong&gt;&lt;br&gt;
+vs analyze 기능을 통해 확인을 해보면 가장 오래 걸리는 부분이 mswsock.dll에 소속되어 있다고 나온다. 이 글은 대체 왜 mswsock.dll인가에 대한 고찰을 담은 글이다.&lt;/p&gt;
+
+&lt;p&gt;.net &lt;code&gt;Socket&lt;/code&gt;의 &lt;code&gt;BeginReceive&lt;/code&gt;, &lt;code&gt;EndReceive&lt;/code&gt; 함수를 사용하면 내부에서 pinvoke로 &lt;code&gt;WSARecv&lt;/code&gt; 함수를 부르게 된다. &lt;code&gt;WSARecv&lt;/code&gt; 함수는 &lt;code&gt;ws2_32.dll&lt;/code&gt;에 정의된 함수로 얼핏보기에는 socket 확장 api가 담겨있는 &lt;code&gt;mswsock.dll&lt;/code&gt;이 부를 필요가 없어 보인다. 이를 정확히 확인하기 위해 ms symbol server에서 clr 관련 symbol을 받고 다시 profiler를 돌려보았다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://blog.lacti.me/images/mswsock_secret_functions.png&quot; alt=&quot;functions&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;진범이 나온 것 같다. &lt;code&gt;NtDeviceIoControlFile()&lt;/code&gt;과 &lt;code&gt;NtRemoveIoCompletion()&lt;/code&gt;이 1, 2위로 나왔다. 여기서 &lt;code&gt;NtRemoveIoCompletion()&lt;/code&gt; 함수는 &lt;code&gt;GetQueuedCompletionStatus()&lt;/code&gt; 때문에 불리는 것으로 추측되니 &lt;code&gt;NtDeviceIoControlFile()&lt;/code&gt;의 정체만 밝히면 되겠다.&lt;/p&gt;
+
+&lt;p&gt;간단히 calling, called를 확인해보자.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://blog.lacti.me/images/mswsock_secret_ws2_32_dll.png&quot; alt=&quot;ws2_32.dll&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://blog.lacti.me/images/mswsock_secret_mswsock_dll.png&quot; alt=&quot;mswsock.dll&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;원인이 명확해졌다.&lt;br&gt;
+다량의 패킷 수신자가 &lt;code&gt;WSARecv&lt;/code&gt;를 부르는 과정에서 &lt;code&gt;ws2_32.dll&lt;/code&gt;의 함수가 호출된 것은 당연했다. 하지만 그 과정에서 알 수 없는 오류가 발생했고, 그 오류를 처리하기 위해 불린 &lt;code&gt;NtStatusToSocketError()&lt;/code&gt; 함수가 &lt;code&gt;mswsock.dll&lt;/code&gt;의 &lt;code&gt;NtDeviceIoControlFile()&lt;/code&gt; 함수를 불렀던 것이다.&lt;/p&gt;
+
+&lt;p&gt;그렇다면 &lt;code&gt;NtDeviceIoControlFile()&lt;/code&gt; 함수는 대체 무엇일까, 그리고 왜 그렇게 느릴까?&lt;br&gt;
+profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷한 지점을 가리키고 있는 것을 확인할 수 있다. 즉, 특정 지점에서 많이 멈춰있다는 이야기일 것인데, 이 때 cpu 사용량이 꽤 높다는 점을 미루어볼 때 뭔가 busy waiting을 하는 것이 아닐까 추측된다.&lt;/p&gt;
+
+&lt;p&gt;이 부분은 symbol 만으로 확인하기는 어렵고, 직접 disassemble을 해서 확인을 하던가 해야하지만 별로 그러고 싶지는 않고-_-; 일단 pinvoke로 직접 iocp를 호출하는 c# 코드를 작성하여 그 부분에서도 여전히 비슷한 문제가 발생하는지 확인을 해봐야겠다.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>빠른 메시지 만들기</title>
+   <link href="http://blog.lacti.me/2014/02/11/fast-message-serialization/"/>
+   <updated>2014-02-11T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2014/02/11/fast-message-serialization</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;http://kentonv.github.io/capnproto/&quot;&gt;Cap&amp;#39;n Proto&lt;/a&gt;와 같은 무한대(?)로 빠른 메시지를 설계한다고 생각해보자. 그렇다면 우리는 어떤 점을 고민해야 할까?&lt;/p&gt;
+
+&lt;p&gt;이를 위해 잠깐 네트워크로 정보를 전달하는 과정을 생각해보자.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;end-point #1은 정보를 패킷에 담아 네트워크로 전송한다. (serialize)&lt;/li&gt;
+&lt;li&gt;end-point #2는 네트워크에서 바이트를 읽어 메시지를 구성하고, 그 메시지로부터 정보를 읽는다. (deserialize)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;당연한 이야기지만 메시지 serialize/deserialize 비용을 최소화하는 것이 정답이란 소리다. 그러면 이것을 어떻게 최적화할 수 있을까? 이는 메시지에 어떠한 내용이 들어가냐를 고민해봄으로써 좀 더 자세히 생각해볼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;다음과 같은 메시지가 있다고 해보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;luck&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 경우 serialize, deserialize 과정이 필요가 없다. 왜냐하면,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// send&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;player_stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// receive&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;c/c++의 struct는 바로 byte로 mapping될 수 있기 때문데 send할 때 그냥 보내고, receive할 때 그냥 casting해서 읽으면 되기 때문이다. 이 경우 필요한 추가 정보라고 해봐야 message dispatch를 위한 id와, message의 경계를 확인하기 위한 message size 정도이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_header_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;하지만 위와 같은 단순한 경우일 때 message_size는 단순히 sizeof(T) 같은 형태로 얻어낼 수 있으니 더욱 구조가 간단해질 수 있다.&lt;/p&gt;
+
+&lt;p&gt;좀 더 복잡한 메시지를 고려해보자. 소위 말하는 가변 길이 메시지인데 보통은 list 때문에 발생한다. (string의 경우 char의 list)&lt;/p&gt;
+
+&lt;p&gt;이 경우 가장 간단한 방법은 size를 기록하는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;luck&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;하지만 이 경우 첫 번째 경우와 같은 serialize/deserialize 성능을 보이기가 어렵다. 그 이유는 &lt;code&gt;name_bytes&lt;/code&gt; 때문인데, 이 때문에 쓸 때 따로 write하는 구문을 추가해야할 뿐만 아니라 읽을 때도 &lt;code&gt;name_size&lt;/code&gt;만큼 메모리를 할당한 다음 메시지를 읽도록 구현해야 하기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;하지만 위 문제를 해결할 수 있는 간단한 방법이 있다. 바로 offset과 null-terminated를 사용하는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;luck&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이 경우 메시지의 bytes 구조는 다음과 같아진다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[hp] [mp] [name_offset] [atk] [def] [luck] [name-bytes]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위와 같이 작성할 경우 serialize 입장에서는 큰 차이가 없다. hp, mp, atk, def, luck를 모두 write한 다음 &lt;code&gt;name_offset&lt;/code&gt;의 위치를 기록하고, 마지막 부분에 &lt;code&gt;name-bytes&lt;/code&gt;를 기록한다. 하지만 deserialize에서 큰 차이가 나타난다. 첫 번째 소개한대로 읽은 message buffer에 대해 단순히 &lt;code&gt;player_message_t&lt;/code&gt;로 casting만 해서도 관련 정보를 모두 읽을 수 있는 구조이기 때문에, deserialize 비용이 필요 없어진다.&lt;/p&gt;
+
+&lt;p&gt;list도 위와 같은 방법으로 구현할 수 있다. 차이점이 있다면 string의 경우 char type에 대해 구현한 것이고, list의 경우 어떤 T type에 대해 구현한다는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;player_message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inven_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inven_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;luck&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;inven_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;item_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;item_data_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;inven_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;inven_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inven_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;inven_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;inven_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;reinterpret_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inven_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inven_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이 경우 메시지의 구조는 다음처럼 된다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[hp] [mp] [name_offset] [inven_offset] [inven_count] [atk] [def] [luck] [name-bytes] [inven_t-bytes]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;그냥 string랑 똑같은데 &lt;code&gt;begin()&lt;/code&gt;, &lt;code&gt;end()&lt;/code&gt; method를 나누어 구현했다고 보면 된다. 다만, &lt;code&gt;end()&lt;/code&gt; 함수에서 &lt;code&gt;inven_count&lt;/code&gt;를 더하는 부분이 &lt;code&gt;inven_t&lt;/code&gt; 크기가 고정일 경우를 가정하고 있는데, 이 부분은 null-terminated 등을 써서 가변에 대해서도 쉽게 적용할 수 있을 것이라 보기 때문에 더 이상의 자세한 설명은 생략한다. (iterator를 직접 구현하여 사용할 경우 간단히 해결할 수 있는데 그렇게까지 글을 쓰면 너무 무의미하게 길어진다.)&lt;/p&gt;
+
+&lt;p&gt;&lt;del&gt;대체 왜 이런 글을 쓰는지 지금도 잘 모르겠지만 어쨌든 글을 마무리 짓자면,&lt;/del&gt; 발상의 전환을 통해 어렵지 않은 방법으로 성능 개선을 할 수 있는 방법은 무궁무진하니 이미 알고 있는 내용일지라도 여러 방면으로 고민하여 기술을 갈고 닦았으면 좋겠다.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>서버 프로그래밍</title>
+   <link href="http://blog.lacti.me/2013/12/22/server-programming/"/>
+   <updated>2013-12-22T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2013/12/22/server-programming</id>
+   <content type="html">&lt;h3&gt;설계&lt;/h3&gt;
+
+&lt;p&gt;동기화 수준과 성능(규모) 수준을 고려해서 작성한다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;결국 &lt;strong&gt;어떤 서버&lt;/strong&gt;를 만들 것인지에 대한 기술 명세를 한 후 그에 맞는 설계/구현을 해야 한다는 것.&lt;/p&gt;
+
+&lt;h3&gt;비동기&lt;/h3&gt;
+
+&lt;p&gt;io와 비동기 개념을 공부한다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;여러 클라이언트와 동시에 통신해야 하는 서버를 구현한다고 하면 각 클라이언트와의 연결을 유지하면서 각각에 대한 io 작업(메시지 보내기/받기)를 수행해야 한다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;이 때 io 작업을 동기적으로 처리하면 각 요청이 완료될 때까지 blocking되므로 동시에 여러 작업을 처리하기 위해서는 각각이 blocking되어도 문제 없도록 thread를 여러 개 만들거나, 비동기 io를 사용한다.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;당연히 thread를 여러 개 만드는 것은 효율이 좋지 않으므로 효율을 고려한 서버를 구현할 경우에는 비동기 io를 사용한다.&lt;/p&gt;
+
+&lt;h3&gt;언어&lt;/h3&gt;
+
+&lt;p&gt;성능(throughput) 수준과 개인의 취향에 따라 사용할 언어를 적절히 선택해주면 된다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;javascript가 좋고 logic 부담이 적다면 &lt;strong&gt;nodejs&lt;/strong&gt;는 좋은 선택이 될 것이다.&lt;/li&gt;
+&lt;li&gt;visual studio가 좋지만 c++이 싫다면 &lt;strong&gt;c#&lt;/strong&gt;은 좋은 선택이 될 것이다.&lt;/li&gt;
+&lt;li&gt;높은 수준의 성능이 요구된다면 &lt;strong&gt;c++&lt;/strong&gt;도 좋은 선택이 될 것이다. &lt;del&gt;그리고 지옥을 보겠지&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;공부나 재미를 위한 상황이라면 그냥 본인의 취향에 맞게 선택하면 된다. 그렇지 않고 결과물을 위해서 언어를 선택해야 한다면 신중한 결정이 필요하다. 보통 io와 logic의 부담을 제대로 구별하지 못하고 과도한 최적화를 들먹이며 native를 고집하는 경우가 있는데 본인에게도, 미래의 본인에게도 별로 좋은 선택은 아니다. &lt;del&gt;c++밖에 할 줄 아는 언어가 없어서라는 이유가 있기는 한데 그건 좀...&lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;대부분의 도메인에서는 nodejs나 c# 정도면 충분히 문제를 해결할 수 있다. nodejs나 c# 모두 network library에 대한 기본 내장이 잘 되어 있으므로 약간의 기반 코드 작성 후 logic에 집중할 수 있다.&lt;/p&gt;
+
+&lt;h3&gt;라이브러리&lt;/h3&gt;
+
+&lt;p&gt;c++이나 java로 서버를 직접 작성하게 될 경우에는 기반 library를 사용하는 것이 좋다.
+개인적으로 c++은 &lt;a href=&quot;http://www.boost.org/doc/libs/release/doc/html/boost_asio.html&quot;&gt;asio&lt;/a&gt;가 괜찮고 java는 &lt;a href=&quot;http://netty.io/&quot;&gt;netty&lt;/a&gt;가 괜찮다고 생각한다.&lt;/p&gt;
+
+&lt;p&gt;어느 정도 비동기 프로그래밍 패턴이 익숙하다면 예제 코드 좀 보면 어떻게 써먹을 수 있을 지 대충은 이해할 수 있다. 그리고 워낙 저 두 프로젝트는 문서화가 잘 되어 있으니 문서만 읽어도 대부분은 이해된다.&lt;/p&gt;
+
+&lt;h3&gt;구조&lt;/h3&gt;
+
+&lt;p&gt;구조는 event model과 queue model 정도로 구분이 가능하다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;event model은 메시지를 받은 즉시 처리해서 그 결과를 클라이언트에게 다시 알려주는 방식이고,&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;queue model은 받은 메시지를 queue에 쌓아두고, 서버에서 tick을 돌면서 queue에 있는 메시지를 꺼내 처리하고 그 결과를 클라이언트로 다시 알려주는 방식이다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;event model의 경우 stateless/tickless한 요청에 대한 처리를 할 때 유리하고,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;queue model의 경우 tick 단위로 수행해야 하는 작업이 있을 때 유리하다.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;여기서 유리하다는건 최적화가 하기가 좋다거나 코드 작성/유지보수가 쉽다는 소리다.&lt;/p&gt;
+
+&lt;p&gt;예를 들어 별로 크지 않은 게임 서버를 만든다면,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;io thread 한 두어 개 돌려서 message 받아 message queue에 넣고&lt;/li&gt;
+&lt;li&gt;logic thread 한 개가 tick 돌면서 tick 작업도 처리하고 message queue에 들어온 메시지도 처리하는 구조가 될 것이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;각 thread가 늘어날 때 공유 자원에 대한 동기화 문제도 잘 고민해주어야 한다.&lt;/p&gt;
+
+&lt;h3&gt;정리&lt;/h3&gt;
+
+&lt;p&gt;메시지가 뭐고, 소켓이 뭐고, 이것들이 어떻게 관리되고는 그냥 기초 네트워크 프로그래밍 책만 읽어도 잘 소개되어 있는 내용이기 때문에 책을 읽어보면 되겠다. 그 정도의 내용은 TCP/IP 네트워크 프로그래밍 정도에도 잘 나와 있다. poll이니 interrupt이니 이런 내용은 논리회로, ca, os, sysp에도 자주 등장하고, 동기/비동기는 pp/os/sysp에 등장한다. 고로 수업만 잘 들어도 대충 기반 개념을 다 배우는 셈.&lt;/p&gt;
+
+&lt;p&gt;뭐 그게 잘 안 되었다고 하더라도 인터넷에 잘 정리된 문서가 많고 여기 풀씨에도 관련 글이 많으니 진입하는데 별로 어려움은 없다. 다만 실질적으로 어떻게 코딩을 하느냐는 직접 해보면서 감을 잡는 것과 남이 작성하는 것을 읽고 공부하는 것인데, 전자는 그냥 해보면 되고, 후자의 경우 github에 널리고 널린게 서버 프로그램이니 그걸 보고 공부하면 된다.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>메시지 enum에 따른 message 콜백 함수 자동생성</title>
@@ -170,6 +418,643 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 &lt;p&gt;async를 통해 비동기 작업을 시작한 후 then으로 이어할 작업을 설정하는 async/then 패턴과, 수행할 비동기 작업과 context를 묶어서 하나의 객체로 구성하는 async_worker 패턴을 간단히 알아보았다.&lt;/p&gt;
 
 &lt;p&gt;각자의 기본 개념을 적절히 이해하여 각 상황에 맞게 적절히 사용하면 되겠다.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>금정 스터디 3 과제 풀이</title>
+   <link href="http://blog.lacti.me/2013/11/16/geumjeong-study-homework-3/"/>
+   <updated>2013-11-16T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2013/11/16/geumjeong-study-homework-3</id>
+   <content type="html">&lt;p&gt;간단한 message dispatch 코드를 c++로 구현해보자. 일단 &lt;code&gt;std::function&lt;/code&gt;을 안 쓰고 구현해보고, 그 다음에 &lt;code&gt;std::function&lt;/code&gt;을 써서 구현해보자.&lt;/p&gt;
+
+&lt;p&gt;지난 번 글에서 &lt;code&gt;functor_ii&lt;/code&gt;로 &lt;code&gt;handler_t&lt;/code&gt;의 근간을 이미 설명했다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nullptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;impl_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;wrapper_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;impl_t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;wrapper_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;impl_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared_ptr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;wrapper_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;interface인 &lt;code&gt;wrapper_t&lt;/code&gt;, 실 구현체인 &lt;code&gt;impl_t&lt;/code&gt;, 그리고 그것을 멤버로 갖는 type erasure가 적용된 대표 type인 &lt;code&gt;handler_t&lt;/code&gt;이다. 1개의 인자와 반환 값을 가질 수 있으므로 이를 template parameter인 &lt;code&gt;R&lt;/code&gt;과 &lt;code&gt;T&lt;/code&gt;로 표현한 것이다.&lt;/p&gt;
+
+&lt;p&gt;각 message handler가 받을 message의 최상위 class를 만들고, 추후 코딩을 편하게 하기 위해 handler에 대한 typedef를 걸어준다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 모든 작업이 완료되었다. &lt;code&gt;msg_handler_t&lt;/code&gt;에 대한 &lt;a href=&quot;http://en.cppreference.com/w/cpp/container/unordered_map&quot;&gt;unordered_map&lt;/a&gt; 객체 만들고, 적절히 불러주기만 하면 된다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unordered_map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;std::function&lt;/code&gt;을 사용할 경우 template parameter만 function type으로 넣어서 &lt;code&gt;msg_handler_t&lt;/code&gt;에 대한 typedef을 바꿔주면 된다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;표준 라이브러리에서 인자를 저렇게 받는 이유는 저 표현식이 단순히 반환 타입, 인자 타입을 나열하는 것에 비해 더 가독성이 좋다고 판단했기 때문이다. 저렇게 받은 인자는 내부에서 &lt;code&gt;function_traits&lt;/code&gt;에 의해 다시 반환 타입과 인자 타입이 분리되어 결국 &lt;code&gt;handler_t&lt;/code&gt;와 같은 구현을 하게 된다.&lt;/p&gt;
+
+&lt;p&gt;위와 같이 코드를 구현하면 조금 아쉬운 점이 있다. 예를 들어 &lt;code&gt;message_t&lt;/code&gt;를 상속받은 &lt;code&gt;int_msg_t&lt;/code&gt;와 &lt;code&gt;string_msg_t&lt;/code&gt;가 있다고 하자. 그리고 이를 처리하는 &lt;code&gt;int_msg_handler&lt;/code&gt;, &lt;code&gt;string_msg_handler&lt;/code&gt;가 있을 때 코드는 다음과 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;int_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// do something with int_msg&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;string_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// do something with string_msg&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg_id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;int_msg_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;string_msg_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;int_msg_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string_msg_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;먼저, 각 handler의 type은 모두 &lt;code&gt;void (const message_t&amp;amp;)&lt;/code&gt; 이기 때문에 실제 우리가 원하는 type으로 인자를 받을 수가 없다. 따라서 매번 casting해주는 과정이 필요하다.&lt;/li&gt;
+&lt;li&gt;그리고 각 msg가 추가될 때마다 &lt;code&gt;msg_id&lt;/code&gt; 값을 정의해주어야 한다.&lt;/li&gt;
+&lt;li&gt;마지막으로 구현한 handler를 handler_table에다가 등록해주는 코드를 작성해야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;일단 &lt;code&gt;msg_id&lt;/code&gt; 문제를 해결해보자. 여러가지 방법이 있겠지만 귀찮으니 &lt;a href=&quot;http://en.cppreference.com/w/cpp/types/type_index&quot;&gt;type_index&lt;/a&gt;를 사용하자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unordered_map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;message_t&lt;/code&gt;를 받는 함수와 원하는 type을 받는 함수를 분리하고, &lt;code&gt;__handler_table&lt;/code&gt;에 함수를 프로그램 시작 시에 등록하기 위해 static 전역 변수를 사용해 코드를 정리하면 다음과 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_int_msg_wrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;int_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;int_msg_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// do something with int_msg_t&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;_table_register_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;_table_table_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_int_msg_wrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__register1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;일단 편하게 message를 casting하기 위한 cast 함수를 만들었다. 그냥 const reference 지키면서 static_cast를 해주는 함수이다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;dynamic_cast를 하지 않은 이유는 항상 올바른 type만 casting을 요청할 것이라는 믿음을 갖고 불필요한 검사를 피하기 위함이다&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;_Ty&lt;/code&gt;가 정말 &lt;code&gt;message_t&lt;/code&gt;를 상속받았는지 보려면 &lt;a href=&quot;http://en.cppreference.com/w/cpp/types/is_base_of&quot;&gt;std::is_base_of&lt;/a&gt;를 쓰면 되겠다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;실제 작업을 수행할 함수인 &lt;code&gt;int_msg_handler&lt;/code&gt;를 선언한다. 그리고 전달 함수인 &lt;code&gt;_int_msg_wrapper&lt;/code&gt; 함수를 작성한다. &lt;code&gt;_int_msg_wrapper&lt;/code&gt; 함수에서는 &lt;code&gt;message_t&lt;/code&gt;를 &lt;code&gt;int_msg_t&lt;/code&gt;로 casting만 해서 &lt;code&gt;int_msg_handler&lt;/code&gt; 함수로 넘겨준다. 그리고 실질적인 작업은 &lt;code&gt;int_msg_handler&lt;/code&gt;에서 &lt;code&gt;int_msg_t&lt;/code&gt;를 인자로 받아 처리하게 된다.&lt;/p&gt;
+
+&lt;p&gt;프로그램 시작과 동시에 &lt;code&gt;__handler_table&lt;/code&gt;에 등록하는 가장 좋은 방법은 전역 객체의 생성자를 사용하는 방법이다. 전역으로 정의된 객체의 생성자는 프로그램 시작 시에 호출된다는 점을 이용하는 것이다. 따라서 전역 객체 &lt;code&gt;__register1&lt;/code&gt;를 정의한다. 그러면 프로그램 시작 시 &lt;code&gt;_table_register_t&lt;/code&gt;의 생성자가 호출되고, 그 생성자에서 &lt;code&gt;__handler_table&lt;/code&gt;에게 &lt;code&gt;int_msg_t&lt;/code&gt;에 대한 &lt;code&gt;type_index&lt;/code&gt;와 &lt;code&gt;_int_msg_wrapper&lt;/code&gt;를 넣어주면 된다.&lt;/p&gt;
+
+&lt;p&gt;그런데 위 코드를 보면 &lt;code&gt;int_msg_t&lt;/code&gt;에 해당하는 부분을 &lt;code&gt;string_msg_t&lt;/code&gt;로 치환했을 때, &lt;code&gt;string_msg_t&lt;/code&gt;를 위해서도 사용할 수 있는 것을 확인할 수 있다. 즉, &lt;strong&gt;대부분의 코드가 무의미하게 반복된다는 것이다&lt;/strong&gt;. 이러한 boilerplate code를 적절히 제거하기 위해 반복되는 부분을 다음과 같이 macro로 묶어내자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;table_register_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;table_register_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define HANDLER(msg_type) \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void msg_type##_handler(const msg_type&amp;amp; msg); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void _##msg_type##_wrapper(const message_t&amp;amp; m) { \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;        msg_type##_handler(cast&amp;lt;msg_type&amp;gt;(m)); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    } \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static table_register_t&amp;lt;msg_type&amp;gt; __reg_##msg_type##(_##msg_type##_wrapper); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void msg_type##_handler(const msg_type&amp;amp; msg)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 다음과 같이 사용할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;HANDLER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 message를 하나 만들어서 날려보자. 이를 처리하는 dispatch 함수는 다음과 같이 간단하게 작성할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;아무 message 객체나 받아서 그 &lt;code&gt;type_index&lt;/code&gt;로 적절한 handler를 
+찾고, 그 handler에게 message 객체를 넘겨서 처리될 수 있도록 하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;하지만 위 코드에는 문제가 있다. 전역 &lt;code&gt;table_register_t&lt;/code&gt; 객체와 &lt;code&gt;__handler_table&lt;/code&gt; 객체가 다른 번역 단위에 있을 경우, 두 객체의 생성자가 불리는 시점이 undefined이기 때문에 아직 &lt;code&gt;__handler_table&lt;/code&gt; 객체가 초기화되지 않은 시점에서 register를 수행하다가 프로그램이 죽는 문제이다.&lt;/p&gt;
+
+&lt;p&gt;이 문제를 해결하는 가장 쉬운 방법은 &lt;code&gt;handler_table&lt;/code&gt; 객체를 전역 변수 말고 singleton으로 만드는 것이다. 원칙적으로 singleton 객체는 처음 접근할 때 생성되기 때문에, 어떤 register 객체든 &lt;code&gt;handler_table&lt;/code&gt; 객체를 처음 접근하는 때 &lt;code&gt;handler_table&lt;/code&gt; 객체를 생성하게 되니 위 문제를 해결할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;그리고 c++11에서는 간단하게 singleton을 구현할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_table_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_table_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;코드 전문은 다음과 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unordered_map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_table_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_table_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;handler_table_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;table_register_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;table_register_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;msg_handler_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;#define HANDLER(msg_type) \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void msg_type##_handler(const msg_type&amp;amp; msg); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void _##msg_type##_wrapper(const message_t&amp;amp; m) { \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;        msg_type##_handler(cast&amp;lt;msg_type&amp;gt;(m)); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    } \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static table_register_t&amp;lt;msg_type&amp;gt; __register_##msg_type##(_##msg_type##_wrapper); \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    static void msg_type##_handler(const msg_type&amp;amp; msg)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;handler_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;그리고 main 함수에서는 다음과 같이 사용한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;HANDLER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int_msg_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;정리&lt;/h3&gt;
+
+&lt;p&gt;이번 과제에서는 간단하게 c++의 message dispatch 코드를 구현해보았다. 위와 같은 코드는 queue를 붙여서 message pattern이나 event pattern을 구현할 때 쓰이거나 네트워크를 붙여서 서버의 packet dispatch 코드로도 사용된다. 언듯 보면 복잡해보일 수도 있으나 실상은 function map이고, 여기저기서 자주 만나게 될 개념이니 이번 기회에(?) 익숙해지도록 하자.&lt;/p&gt;
+
+&lt;p&gt;추가 과제였던 reflection 과제에 대한 풀이는 예전에 작성한 글에 대한 링크로 대신하겠다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;/2012/06/04/using-reflection-at-c%2B%2B-2/&quot;&gt;c++에서 reflection 사용하기 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/2012/06/09/using-reflection-at-c%2B%2B-3/&quot;&gt;c++에서 reflection 사용하기 3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>금정 스터디 3 정리</title>
+   <link href="http://blog.lacti.me/2013/11/10/geumjeong-study-summary-3/"/>
+   <updated>2013-11-10T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2013/11/10/geumjeong-study-summary-3</id>
+   <content type="html">&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;for_each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ForEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Functor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MoveNext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DoIt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;첫 번째 코드(&lt;code&gt;for_each&lt;/code&gt;)는 &lt;code&gt;_Iter&lt;/code&gt;, &lt;code&gt;_FuncTy&lt;/code&gt;에 들어가는 각 type에 맞게 compile time에 모든 code가 생성(template instantiation)되어 어떤 함수가 호출될지 compile time에 결정되는 구조이고,&lt;/li&gt;
+&lt;li&gt;두 번째 코드(&lt;code&gt;ForEach&lt;/code&gt;)는 &lt;code&gt;Iterator&lt;/code&gt;와 &lt;code&gt;Functor&lt;/code&gt; interface를 구현한 객체가 runtime에 &lt;code&gt;ForEach()&lt;/code&gt; 함수로 넘어간 다음 virtual function call이 불려서 runtime에 어떤 함수가 호출될지 결정되는 구조이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;즉, &lt;code&gt;ForEach&lt;/code&gt; 함수는 1개이지만 &lt;code&gt;for_each&lt;/code&gt; 함수는 부르는 type에 따라서 여러 개가 될 수 있다는 것이다. &lt;code&gt;ForEach&lt;/code&gt; 함수는 내부에서 vfptr에 의한 함수 호출 부담이 야기되지만, &lt;code&gt;for_each&lt;/code&gt; 함수는 그런 것 없다. (즉, 늦어도 linking time에 실제 호출될 함수의 주소가 binding된다)&lt;/p&gt;
+
+&lt;p&gt;template으로 일반화된 프로그래밍을 하는 것은 좋은데 문제는 결과물이 복잡한 template type으로 표현된다는 것이다. 그 부분을 모두 손으로 작성하는 type 노가다를 막기 위해 helper function에 의한 type inference를 사용한다고 해도 결국 애매한 상황이 발생한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;my_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;???&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 코드에서 process는 adapter를 인자로 받아서 무언가 작업을 수행해야 하는데 이 시점에서 결국 adapter의 full-name이 다시 한 번 등장해야 한다.&lt;/p&gt;
+
+&lt;p&gt;위 문제를 좀 더 일반화시켜서, &lt;strong&gt;int 1개를 인자로 받고 int를 반환하는 함수&lt;/strong&gt;를 &lt;code&gt;process()&lt;/code&gt; 함수가 받아서 처리한다고 생각해보자. 간단히 &lt;code&gt;int (*)(int)&lt;/code&gt;의 function pointer만 생각할 수도 있겠지만 위 예제 코드에서 나온 adapter도 &lt;code&gt;int (int)&lt;/code&gt;의 signature를 가지고 있기 때문에 이 역시 저 함수의 인자로 넘어갈 수 있어야 한다.&lt;/p&gt;
+
+&lt;p&gt;가장 간단한 방법은 &lt;code&gt;process()&lt;/code&gt; 함수 역시 template으로 만드는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;그러면 function pointer가 들어가든, adapter 객체가 들어가든, lambda가 들어가든 아니면 뭐 다른 뭔가가 들어가든 그에 맞게 알아서 &lt;code&gt;process()&lt;/code&gt;의 함수가 만들어질 것이고 코드는 문제 없이 실행될 것이다.&lt;/p&gt;
+
+&lt;p&gt;template에 의해서 코드가 모두 header에 붙어있어 컴파일된 코드 결과물이 크고 아름다워지기 때문에 위 함수를 cpp로 내리기 위해서 template을 안 쓰고 문제를 해결하고 싶을 수 있다. 물론 그렇지 않다고 하더라도 &lt;code&gt;process()&lt;/code&gt; 함수에서 바로 functor를 받아서 처리하는 구조가 아니라, map 같은 곳에 저장해놨다가 추후에 호출하는 경우라면 해당 객체의 호출 시점에 runtime으로 미루어지니 compile time에 코드가 만들어지는 template으로는 답이 없다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;register_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// register function pointer&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// register adapter object&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// register lambda&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같은 경우에는 table이라는 자료 구조에 int key과 뭔가 &lt;code&gt;int (int)&lt;/code&gt; 형태의 호출 signature를 갖는 대상을 저장해두어야, 추후 &lt;code&gt;process()&lt;/code&gt; 함수가 호출될 때 table에서 적절한 호출 객체를 꺼내서 부를 수 있게 될 것이다.&lt;/p&gt;
+
+&lt;p&gt;즉, &lt;strong&gt;요약하면 모든 일반화된 &lt;code&gt;int (int)&lt;/code&gt; 호출자에 대해서 동일하게 지칭할 수 있는 객체를 만들어야 하는 것&lt;/strong&gt;이다.&lt;/p&gt;
+
+&lt;h3&gt;generic functor: int (int)&lt;/h3&gt;
+
+&lt;p&gt;runtime에 호출될 대상이 결정되기 위해서 virtual function call을 사용한다고 하였다. 그렇다면 먼저 &lt;code&gt;int (int)&lt;/code&gt;에 대한 interface를 정의하여 virtual function call을 사용할 수 있도록 해보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 호출할 대상들이 저 interface를 구현하기만 하면 된다. 이는 template으로 간단히 표현할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_impl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;functor_ii_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;functor_ii_inf&lt;/code&gt; interface를 구현하여 operator가 virtual이 된 것을 빼면 지난 번 Adapter class와 다를 것이 별로 없다.&lt;/p&gt;
+
+&lt;p&gt;지난 2차 과제 풀이에서 썼듯이 위와 같이 &lt;code&gt;functor_ii_impl&lt;/code&gt;를 그대로 사용하려면 각 호출자를 집어넣어 생성할 때마다 그에 대한 type을 매번 명시해주어야 한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inf1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_impl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이는 매우 불편한 작업이므로 helper function을 사용하여 생성 부분을 좀 단순화해보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_impl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 다음과 같이 사용할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;register_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;template으로 인해 생성된 여러 type을 interface 상속을 통해 제거하고, &lt;code&gt;functor_ii_inf&lt;/code&gt;라는 하나의  추상화된 type으로 지칭하게 되었다. 이것을 &lt;strong&gt;type erasure&lt;/strong&gt;라고 한다.&lt;/p&gt;
+
+&lt;p&gt;위와 같은 방법으로 구현하게 되어도 큰 문제가 없을 수 있지만 &lt;code&gt;functor_ii_inf*&lt;/code&gt; 객체에 대한 메모리 해제를 해줄 주체에 대한 귀찮음이 있다.
+이를 &lt;code&gt;std::shared_ptr&lt;/code&gt;을 써서 간단히 해결하는 것도 좋은 방법이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared_ptr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;functor_ii_inf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;여기까지 구현한 내용을 하나로 묶어서 관리해주면 이번 과제를 하기 위해 template을 붙일 때 아주 좋을 것 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;functor_ii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_inf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;impl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_inf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared_ptr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_inf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;functor_ii&lt;/code&gt; class는 template이 안 붙어있는 일반 class이다. 즉 1개의 type이다. 대신 생성자가 template function이며 멤버 변수인 &lt;code&gt;_inf&lt;/code&gt;에 적절한 &lt;code&gt;impl&lt;/code&gt; 객체를 넣어준다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;inf&lt;/code&gt; class는 필요한 interface를 정의하고 있고, &lt;code&gt;impl&lt;/code&gt;에서는 호출가능한 &lt;code&gt;int (int)&lt;/code&gt; 형태를 인자로 받아 멤버 변수에 갖고, &lt;code&gt;operator ()&lt;/code&gt; 함수에서 그것을 불러주는 template class이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;즉, &lt;code&gt;functor_ii&lt;/code&gt;는 모든 &lt;code&gt;int (int)&lt;/code&gt;에 대응할 수 있는 실제 template class인 &lt;code&gt;impl&lt;/code&gt;을 &lt;code&gt;inf&lt;/code&gt; interface로 가리키고 있는 객체인 것이다. 그리고 &lt;code&gt;inf&lt;/code&gt; 객체를 &lt;code&gt;shared_ptr&lt;/code&gt;로 가지고 있기 때문에 메모리도 잘 관리가 된다.&lt;/p&gt;
+
+&lt;p&gt;한가지 재밌는 것은 아까 만들었던 &lt;code&gt;make_functor_ii()&lt;/code&gt; helper function과 다르게 &lt;code&gt;functor_ii&lt;/code&gt; class는 implicit한 생성자를 가지고 있기 때문에 register를 수행할 때 단순 대입만 해도 된다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor_ii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;register_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// functor_ii(function_1); 과 같다.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 생략&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이렇듯 template으로 최대한 일반화된 프로그래밍을 하고, 이 수행 흐름을 runtime까지 끌어올 일이 있다면 적절히 type erasure 기법을 써서 프로그래밍을 해주면 되겠다. 사실 위 구현체는 &lt;a href=&quot;http://en.cppreference.com/w/cpp/utility/functional/function&quot;&gt;std::function&lt;/a&gt;에 구현되어 있으니 이를 가져다 쓰는 것이 제일 좋다.&lt;/p&gt;
+
+&lt;h3&gt;과제 1: dispatcher&lt;/h3&gt;
+
+&lt;p&gt;간단한 dispatching 시스템을 구현해보자. message-id에 대응되는 message-handler가 호출되면 된다. 단 message-handler는 단순 function pointer일수도 있고, lambda function일 수도 있고, functor일 수도 있다. 대충 호출 가능한 대상을 다 받자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* op-code */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;message_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;op_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;handler&lt;/code&gt; class는 적절히 위 예제(&lt;code&gt;functor_ii&lt;/code&gt;)를 고쳐서 만들어보자. 다만 반환 type과 인자 type을 template 인자로 받도록 한다. 테스트 message와 handler는 대충 작성해도 된다.&lt;/p&gt;
+
+&lt;p&gt;물론 &lt;code&gt;std::function&lt;/code&gt;을 쓰면 간단히 해결되지만 연습 차원에서 위 진행 과정을 이해하면서 직접 프로그래밍 해보자.&lt;/p&gt;
+
+&lt;h3&gt;과제 2: class factory&lt;/h3&gt;
+
+&lt;p&gt;과제가 하나면 섭섭하니 시간이 남는다면 다음의 것도 구현해보자. string으로 class의 객체를 생성할 수 있는 reflection의 class factory를 구현해보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;interface_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;test_class_1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;interface_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;class_1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;test_class_2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;interface_t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;class_2&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;interface_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;test_class_2);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>금정 스터디 2 과제 풀이</title>
+   <link href="http://blog.lacti.me/2013/11/10/geumjeong-study-homework-2/"/>
+   <updated>2013-11-10T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2013/11/10/geumjeong-study-homework-2</id>
+   <content type="html">&lt;p&gt;과제는 다음의 Adapter를 만들어보자는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* return-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 1st-arg-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 2nd-arg-type */&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 1st-arg */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 120&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 180&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;많은 친구들이 이미 문제를 잘 풀었기 때문에 자세한 설명은 생략한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이름 잘 지어주는 것도 물론 중요하지만 이정도 코드에서는 저정도 글자만 써줘도 이해할 것 같으니 과감히 생략.&lt;/p&gt;
+
+&lt;p&gt;개인적으로 풀이 중 가장 마음에 드는 것은 &lt;a href=&quot;https://twitter.com/Omniavinco&quot; title=&quot;Omniavinco on Twitter&quot;&gt;Omniavinco&lt;/a&gt;가 &lt;a href=&quot;http://libsora.so/&quot; title=&quot;libsora.so&quot;&gt;if1live&lt;/a&gt; 글에 댓글로 단 binder1st 상속을 통한 구현. (있는 것 가져다가 쓰는게 제일)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;functional&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binder1st&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointer_to_binary_function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binder1st&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointer_to_binary_function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr_fun&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;type infererence&lt;/h3&gt;
+
+&lt;p&gt;자, 과제가 끝났습니다-_-; 라고 하면 섭섭하실 것 같아 준비했습니다!&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* return-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 1st-arg-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 2nd-arg-type */&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;변수 선언하기 위해서 Adapter type을 길게 써야하는게 굳이 그럴 필요가 있을까? &lt;code&gt;std::make_pair&lt;/code&gt;과 같은 type inference를 이용한 helper function을 구현하여 그 귀찮음을 해소해보자.&lt;/p&gt;
+
+&lt;p&gt;일단 function의 &lt;code&gt;return_type&lt;/code&gt;, &lt;code&gt;arg1_type&lt;/code&gt;, &lt;code&gt;arg2_type&lt;/code&gt;을 가져오기 위해서 간단한 template 부분 특수화(partial specialization)를 사용한 &lt;code&gt;type_trait&lt;/code&gt; class를 만들어보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 코드는 &lt;a href=&quot;http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html&quot;&gt;boost::function_traits&lt;/a&gt;에서 필요한 부분만 발췌한 코드이다. 설명을 위해서 가져온 코드이고, 그냥 &lt;a href=&quot;http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html&quot;&gt;boost type_traits library&lt;/a&gt;를 가져다 쓰는게 더 좋다.&lt;/p&gt;
+
+&lt;p&gt;함수 type으로부터 반환 type, 인자 type들을 얻어낼 수 있게 되었으니 이제 Adapter에 넣어주기만 하면 된다. 그 부분에 대해서도 helper class를 만들어보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter_type&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 다음과 같은 방법으로 Adapter type을 간단하게 부를 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decltype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이제 모든 준비가 끝났으니 Adapter 객체를 만들어주는 적절한 helper function만 만들면 된다. 이 함수의 인자로 우리가 원하는 함수 포인터를 넣으면 해당 함수에 대한 type을 template이 잘 알아서 inference 해줄 것이고, 그에 따라 적절한 Adapter class에 대한 객체가 만들어질 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;function_traits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;F&lt;/code&gt; type으로 받은 함수에 대해 &lt;code&gt;adapter_type&lt;/code&gt;의 객체를 만들어 적절히 반환해준다.&lt;/p&gt;
+
+&lt;p&gt;이제 다음과 같이 main 함수 내의 코드를 정리할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Adapter&amp;lt;int, int, int&amp;gt; adapter(sum, 100);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;adapter1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;정리&lt;/h3&gt;
+
+&lt;p&gt;간단한 레벨에서 c++스럽게 프로그래밍을 한다면 stl만 어느정도 써도 된다. 하지만 조금만 더 프로그래밍을 하다보면 쓸데없는 중복 코드를 제거하기 위한 일반적인 프로그래밍을 하게 되고, c++에서 그걸 표현하려면 template은 필요한 요소이기 때문에 익숙해지는게 좋다.&lt;/p&gt;
+
+&lt;p&gt;이번 과제로 나온 adapter는 어떤 함수의 interface를 다른 interface로 변환하기 위한 adapter pattern을 구현한 것이다. adapter pattern은 어떤 interface를 연결해주냐에 따라 장황한 구현의 세계가 펼쳐질 수 있는데 여기서는 간단히 함수와 함수를 연결해주는 것으로 template과 &lt;code&gt;operator ()&lt;/code&gt; 만으로 구현을 한 것이다.&lt;/p&gt;
+
+&lt;p&gt;하지만 template을 사용하게 될 경우 그 구현체를 사용하는 쪽에서 type 노가다를 해주어야할 일이 생기는데 이걸 해결하기 위해서 auto keyword와 helper function을 통한 compiler의 type inference와 &lt;code&gt;type_traits&lt;/code&gt;을 사용하는 것이다. (이번 스터디에서 type_traits는 주제를 벗어나기 때문에 다루지 않을 예정이다)&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;type_traits&lt;/code&gt;을 언급했으니 말인데, 위에서 만든 Adapter의 효율은 생각보다 좋지 않다.
+왜냐하면 binding되는 인자와 &lt;code&gt;operator ()&lt;/code&gt;의 인자로 받는 객체의 크기가 매우 클 경우 해당 객체가 복사되어 넘어가기 때문이다. 이 문제를 해결하기 위해 인자의 const-reference를 쓰는 것이 좋을지, 아니면 move semantics을 쓰는 것이 좋을지, 아니면 &lt;code&gt;shared_ptr&lt;/code&gt;, 혹은 &lt;code&gt;unique_ptr&lt;/code&gt;을 쓰는게 좋을지 고민해보고 그에 대한 구현을 해보는 것도 좋은 연습이 되겠다.&lt;/p&gt;
+
+&lt;p&gt;template의 부분 특수화와 단위 전략(unit policy)을 공부하면 충분히 일반적인 interface를 가지면서도 각 경우에 대해 효율적으로 동작할 수 있는(심지어 compile time에 모든 것이 결정되어 runtime에 추가적인 부담을 지지 않는) 구현을 할 수 있다. &lt;del&gt;MC++D, TMP 스터디 절찬리 예매 중..은 아니고&lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;사실 오늘 구현한 내용들은 어느 정도 표준에 포함되었거나 boost에 있는 내역들이다. 따라서 다음의 구현체를 찾아보며 공부하는 것을 적극 추천한다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.cppreference.com/w/cpp/utility/functional/bind&quot;&gt;Cppref: std::bind&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.cppreference.com/w/cpp/header/type_traits&quot;&gt;Cppref: type_traits&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.boost.org/doc/libs/1_54_0/libs/type_traits/doc/html/index.html%22&quot;&gt;boost: type_traits library&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;지금까지의 내용은 compiler time에서 일어나는 generic programming 이야기였다. 이를 runtime에서 하나의 type으로 모아서 작업하기 위한 type erasure을 오늘 다룰 것이다.&lt;/p&gt;
+
+&lt;p&gt;그렇다면 다음 과제는 dispatcher가 될 것 같다-_-;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>금정 스터디 1, 2 정리</title>
+   <link href="http://blog.lacti.me/2013/11/04/geumjeong-study-summary-1-2/"/>
+   <updated>2013-11-04T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2013/11/04/geumjeong-study-summary-1-2</id>
+   <content type="html">&lt;p&gt;&lt;em&gt;(한 번에 1~2시간 정도로 짧게(?) 하고 있다. 대충 accelerated c++ 책이랑 EC++ 책을 보고 있다.)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;C++ 언어를 가지고 C++스럽게 프로그래밍을 해보자! 는 어떤 의미일까?&lt;br&gt;
+다양한 의견이 있겠지만, 프로그래밍 언어는 &lt;strong&gt;표현력이 증가&lt;/strong&gt;하는 쪽으로 발전한다는 관점에서 프로그래머가 C에 비해서 보다 자신의 의도를 C++ 문법으로 잘 표현할 수 있는 방법으로 프로그래밍을 하는 의미가 아닐까라고 생각한다.&lt;/p&gt;
+
+&lt;p&gt;예를 들면 define 대신에 inline, const, typedef 등을 쓰는 것처럼.&lt;/p&gt;
+
+&lt;p&gt;프로그래머가 의도를 보다 명확히 표현해야 협업하는 사람이나 미래의 나와 오해가 덜 생기고 가독성도 좋고 버그도 적고 추후 유지보수하기도 좋다.&lt;/p&gt;
+
+&lt;p&gt;패턴을 사용하여 설계하는 것도 같은 맥락에 있다고 볼 수 있는데 문제는 그녀석들이 smalltalk나 java같이 enterprise한 언어에서 탄생한 녀석들이라, C++로 구현할 때 코드가 안드로메다로 가는 경우도 있다. 따라서 같은 설계를 C++스럽게 표현하기 위해 C++ 문법에도 익숙해지고, C++ 코드도 많이 읽어봐야한다.&lt;/p&gt;
+
+&lt;p&gt;즉, C++ 문법적 기능들을 사용해서 &lt;strong&gt;코드는 최대한 간결하게! 의미는 명확하게!&lt;/strong&gt; 작성하는 것을 목표로 진행하고 있다.&lt;/p&gt;
+
+&lt;h3&gt;명확한 의도&lt;/h3&gt;
+
+&lt;p&gt;명확한 의도를 전달하기 위해 기본적으로 지켜야할 규칙은 당연히 &lt;strong&gt;이름 잘 짓기&lt;/strong&gt;다. 예를 들어 &lt;code&gt;operator ++&lt;/code&gt; overloading 해서 빼기 연산을 수행하면 안 된다는 이야기다. 뭐 이런건 이야기할 필요도 없고.&lt;/p&gt;
+
+&lt;p&gt;모든 method를 public으로 가지는 class나 의미없는 getter/setter, 지역 함수인데 전역으로 공개된 함수 등, 해당 코드의 coverage가 비정상적으로 넓어서 그 의도를 파악하지 못하는 경우가 있을 수 있겠다. (함수 내에서 사용되는 모든 변수가 전역 변수라고 생각해보자!)&lt;/p&gt;
+
+&lt;p&gt;그러므로 객체지향이랍시고 학교에서 우리에게 주입한 &lt;em&gt;닥치고 class, 닥치고 getter/setter&lt;/em&gt;의 세뇌에서 풀려나 의도에 맞는 함수와 class의 사용, 적절한 visibility를 고민해야 할 것이다.&lt;/p&gt;
+
+&lt;p&gt;그러기 위한 시작점이 static storage class이다.&lt;/p&gt;
+
+&lt;h3&gt;static storage class&lt;/h3&gt;
+
+&lt;p&gt;이야기를 이어가기 위해 &lt;strong&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Translation_unit_%28programming%29&quot;&gt;번역 단위&lt;/a&gt;&lt;/strong&gt;에 대한 개념을 대충 알 필요가 있다. 번역단위는 컴파일러가 하나의 obj 파일을 만들어내기 위한 단위라고 보면 된다. c/c++의 경우 include한 header 파일들을 cpp에 다 복사해서 넣어놓고, 전처리기가 macro expand해주고, template engine이 template instantiation한 결과라고 보면 되겠다.&lt;/p&gt;
+
+&lt;p&gt;자, 그러면 이제 코드를 보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 전역공간&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;svar1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sfunc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;svar2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;svar1&lt;/code&gt;과 &lt;code&gt;svar2&lt;/code&gt;가 메모리에 할당되는 시점은 언제일까? 그리고 생성자가 불리는 시점은 언제일까? 둘 다 프로그램이 시작할 때 메모리에 할당되며, 생성자는 &lt;code&gt;svar1&lt;/code&gt;일 경우 프로그램 시작 시, &lt;code&gt;svar2&lt;/code&gt;일 경우 해당 함수가 처음 호출될 경우에 불리게 된다. &lt;code&gt;svar1&lt;/code&gt;과 &lt;code&gt;sfunc&lt;/code&gt;를 보면 static을 안 붙인 것과 차이가 없다고 생각할 수 있지만, static을 붙이게 되면 다른 번역 단위에서 extern keyword로 접근할 수 없게 된다.&lt;/p&gt;
+
+&lt;p&gt;요컨데 전역 변수 대신 함수 내 static 변수, 전역 함수 대신 static 함수를 써서 해당 변수/함수의 접근 범위를 줄일 수 있고, 이는 coverage를 줄일 수 있게 해주기 때문에 코드 유지보수하기 좋아진다는 소리.&lt;/p&gt;
+
+&lt;h3&gt;visibility&lt;/h3&gt;
+
+&lt;p&gt;같은 맥락으로 public, protected, private 잘 지정하고, const 잘 붙이고, const reference 잘 쓰고, typedef 잘 걸어주는걸 습관들이자. 개인적으로 필요하다면 IN, OUT directive를 넣어주는 것도 괜찮다고는 생각함. 근데 move semantics가 있으니까 reference parameter보다는 반환으로 처리해도 괜찮을 것 같다. 그리고 메모리 관리할 대상이 아니면 const reference로 반환하고, 관리할 대상이라면 &lt;code&gt;shared_ptr&lt;/code&gt;로 반환하고.&lt;/p&gt;
+
+&lt;p&gt;아무튼 등등 많이 짜고 많이 읽고 익숙해져서 의도를 명확히 표현하면 되겠다.&lt;/p&gt;
+
+&lt;h3&gt;binary_search&lt;/h3&gt;
+
+&lt;p&gt;c++스러운 프로그래밍을 하기 위한 연습 첫 번째: &lt;code&gt;binary search&lt;/code&gt;를 c++스럽게 작성해보자.&lt;/p&gt;
+
+&lt;p&gt;(과정 생략 결과 공개)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;midpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prevLeft&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prevRight&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prevLeft&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prevLeft&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bsearch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;midpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;_Ty&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;midValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;midValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;midValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;c++스럽게 작성해야 한다면 일단 class를 만들고 보는 경향이 있는데 이게 다 객체지향 수업에서 c++을 잘못 가르쳐서 그렇다. 뿐만 아니라 GoF design pattern같은 코드의 구현체가 워낙 enterprise하게 구현된걸 많이 봐서 일반화된 프로그래밍을 할 때 크고 아름다운 class와 interface의 조합을 구성하는 경우가 많다.&lt;/p&gt;
+
+&lt;p&gt;하지만 c++에는 template이라는 좋은 물건이 있으니 저걸로도 충분히 binary_search를 잘 구현할 수 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;최대한 일반화하여 작성하기 위해, container가 아닌 iterator 수준으로 받을 수 있도록 구현했다. 그리고 interface는 최대한 stl algorithm을 따라했다. (그래야 프로그래머가 외울게 줄어든다!)&lt;/li&gt;
+&lt;li&gt;c++에는 operator overloading이 있으므로 다른 언어처럼 less_comparator 같은 추상화된 객체를 도입할 필요가 없다. 그냥 &lt;code&gt;&amp;lt; 연산자&lt;/code&gt;를 쓰자.&lt;/li&gt;
+&lt;li&gt;random access iterator를 쓰면 편하겠지만 일단 사용하는 연산자를 최소화하기 위해 &lt;code&gt;++&lt;/code&gt;, &lt;code&gt;--&lt;/code&gt;, &lt;code&gt;==&lt;/code&gt;, &lt;code&gt;* 연산자&lt;/code&gt;만 사용했다. 따라서 저 함수에 들어가는 iterator는 위 4개의 연산자만 있으면 된다.
+
+&lt;ul&gt;
+&lt;li&gt;key로 지정된 _Ty의 경우 &amp;lt;, == 연산자만 있으면 된다.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;결국 하고 싶은 이야기는, &lt;del&gt;c++스럽게 프로그래밍을 하기 위해서는 template을 쓰자...가 아니라&lt;/del&gt; c++의 문법을 잘 익혀놔서 가장 적합한 문법으로 구현하자는 이야기이다. 즉, 저걸 굳이 class로 프로그래밍할 필요도 없고, 그냥 일반 함수를 써서 활용도를 축소시킬 필요도 없다는 것이다.&lt;/p&gt;
+
+&lt;p&gt;물론 더 나아가서 random access iterator에 대해서도 효율적으로 동작할 수 있도록 위 코드를 수정할 수도 있다. iterator_tag와 template의 부분 특수화를 사용하거나 함수 overloading을 사용하면 간단하게 할 수 있다. 이 부분은 EC++ 책에도 잘 나와있으니 이 글에서는 생략하도록 하겠다.&lt;/p&gt;
+
+&lt;p&gt;당연한 이야기이지만 algorithm의 &lt;a href=&quot;http://www.cplusplus.com/reference/algorithm/binary_search/&quot;&gt;binary_search&lt;/a&gt;를 쓰는게 더 낫다. 이미 구현되어있는 것을 또 구현하지 않는 것이 제일 좋다! 그러므로 표준 라이브러리에 대해서는 틈틈이 알아두는게 좋다.&lt;/p&gt;
+
+&lt;h3&gt;정리&lt;/h3&gt;
+
+&lt;p&gt;코드를 간결하게, 그리고 명확하게 작성하기 위해 가작 적합한 c++ 기능을 사용하는 것은 너무나 당연한 이야기다. 앞으로 남은 한 번 혹은 두 번의 기회 동안 그 이야기를 더 진행하면서 스터디를 진행하는 친구를 세뇌시킬 생각이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://libsora.so/&quot; title=&quot;libsora.so&quot;&gt;if1live&lt;/a&gt;님 방식으로 이야기하면 많이 짜고 많이 읽으면 된다. 그런데 &lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님처럼 표준 문서를 읽으라고는 못하겠다(나도 귀찮아서 안 읽으니까!)&lt;/p&gt;
+
+&lt;h3&gt;과제&lt;/h3&gt;
+
+&lt;p&gt;다음 이야기는 type erasure를 중심으로 진행할 예정이다.&lt;br&gt;
+과제는 아래와 같다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Adapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* return-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 1st-arg-type */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 2nd-arg-type */&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* 1st-arg */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 120&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 180&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같은 동작을 수행할 수 있는 Adapter class (혹은 struct)을 구현해보자.&lt;/p&gt;
 </content>
  </entry>
  
@@ -11380,6 +12265,166 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 &lt;p&gt;이제 run 뒤에 나오는 실행 인자가 분석되는 함수인 &lt;code&gt;run_actions()&lt;/code&gt; 함수를 보자. 이 함수도 위에서 언급했듯이 내부에 이미 실행하려고 하는 대상의 이름과 그 대상으로 수행되어야할 작업이 기술되어있는 함수가 연결되어있는 구조체 action의 배열을 갖는다. 여기서 일치하는 명령이 존재한다면 그를 수행하는 것이고 그렇지 않다면 KERNEL PANIC 메시지를 출력하면서 Pintos는 스스로 kill을 수행할 것이다.&lt;/p&gt;
 
 &lt;p&gt;추후에 나오게 될 ls나 cat 등의 명령어도 여기에 있는 것을 볼 수 있다. 즉 이러한 명령들은 커널이 자체적으로 포함하고 있는 내부 명령어로 볼 수 있다.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Pintos의 부팅 과정</title>
+   <link href="http://blog.lacti.me/2008/04/01/pintos-boot/"/>
+   <updated>2008-04-01T00:00:00+00:00</updated>
+   <id>http://blog.lacti.me/2008/04/01/pintos-boot</id>
+   <content type="html">&lt;p&gt;우리가 일반적으로 사용하는 컴퓨터 내에 존재하는 시스템은 하드 디스크 등의 보조 기억 공간을 갖고 그 기억 공간에 접근하여 동작을 수행하는데, Pintos를 수행하는 bochs는 Pintos를 빌드하여 얻어진 이미지 파일을 하드 디스크 등과 같은 storage로 인식하여 emulating을 수행한다. 하지만 Pintos는 단순히 커널만 존재하기 때문에 우리가 일반적으로 사용하는 storage와 달리 이미지 파일에는 단순히 부팅을 위한 부트 섹터와 커널 이미지만 존재하게 된다.&lt;/p&gt;
+
+&lt;h3&gt;부트로더&lt;/h3&gt;
+
+&lt;p&gt;부팅이란 컴퓨터가 구동하여 기초적인 초기화 작업을 수행하고 운영 체제를 읽어오는 일련의 작업을 말한다. 그리고 부트 섹터는 방금 언급한 기초적인 초기화 작업과 운영 체제를 읽어서 메모리에 올리고 수행시키는 작업에 대한 코드가 작성된 프로그램이 기록된 섹터로 장치의 첫 번째 트랙의 첫 번째 섹터를 지칭한다. 어떤 보조 기억 창치(storage)에 이러한 정보가 기술되어 있으면 BIOS는 컴퓨터가 구동된 후 연결된 storage들을 탐색하면서 해당 장치가 부팅 가능한 정보를 갖고 있는지 검사한다. 한 섹터의 크기는 512bytes이므로 정확히 말하자면 부트 섹터인 가장 첫 번째 섹터의 511번째 바이트와 512번째 바이트가 각각 &lt;code&gt;0x55&lt;/code&gt; &lt;code&gt;0xAA&lt;/code&gt;이어야 한다.&lt;/p&gt;
+
+&lt;p&gt;이러한 구조는 &lt;code&gt;loader.S&lt;/code&gt;에 기술되어있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;asm language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;err&quot;&gt;346&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### Boot-sector signature.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;347&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### The BIOS checks that this is set properly.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;348&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.org&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_SIG&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_BASE&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;349&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.word&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0xaa55&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;따라서 부팅을 수행하려면 일단 부팅을 수행하기 위한 일련의 작업들을 코드로 기술하고, 511byte와 512byte를 &lt;code&gt;0x55&lt;/code&gt; &lt;code&gt;0xAA&lt;/code&gt;로 끝내는 512bytes 짜리 기계어를 작성한 후에 가장 첫 번째 섹터에 기록하면 되는 것이다.&lt;/p&gt;
+
+&lt;p&gt;이런 방법을 사용하는 이유는 Pintos의 크기가 512bytes를 넘어가기 때문에 첫 번째 섹터에 그 기계어를 다 기록할 수 없기 때문이다. 따라서 부트 섹터에 기술된 기계어는 기초적인 초기화를 한 후 크기가 512bytes보다 큰 커널을 메모리에 올려놓고 그 지점으로 jump하여 운영 체제가 동작할 수 있게 해주는 것이다.&lt;/p&gt;
+
+&lt;p&gt;이제 BIOS를 emulate하는 bochs는 Pintos 이미지가 부팅 가능하다는 것을 알게 되었기 때문에 부팅을 수행한다. BIOS는 첫 번째 섹터를 읽어 메모리의 &lt;code&gt;0x7C00&lt;/code&gt;에 올려놓고 작업을 시작한다. 지금부터 설명할 부팅 시 수행하는 작업들은 loader.S에 기술되어있다.&lt;/p&gt;
+
+&lt;p&gt;먼저 부팅이 시작되면 BIOS를 사용할 수 있는 16bit 모드로 작업을 수행한다. 추후에 다시 기술할 내용이지만 Pintos는 32bit 모드로 변환한 후에도 한참 뒤에나 장치의 interrupt를 handling하기 때문에 일단은 interrupt에 의해 부팅이 방해되는 것을 막기 위해 모든 interrupt를 막는다.&lt;/p&gt;
+
+&lt;p&gt;그리고 segment 레지스터를 초기화하고 loader의 코드가 올라간 메모리의 &lt;code&gt;0x7C00&lt;/code&gt; 주소에 맞추어 origin을 설정한다. 그리고 기본적으로 설정되어있는 메모리 한계인 1MB를 풀기 위해 A20 회로를 활성화시킨다. 그 다음에 메모리의 크기를 얻는 작업을 수행한다. 여기서 BIOS를 사용한다.&lt;/p&gt;
+
+&lt;p&gt;BIOS는 Basic Input/Output System의 약자로 시스템의 기초적인 입출력을 담당하고, 또한 관련 함수를 제공해준다. BIOS에서 제공하는 함수를 호출하려면 interrupt를 사용해야 한다. 각 장치 별로 interrupt 번호가 존재하고 각 장치 내에서 수행할 함수는 보통 AH로 정한다. 유명한 BIOS interrupt로 디스크 관련 인터럽트인 INT 13과 화면 관련 인터럽트인 INT 10이 존재한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;asm language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;err&quot;&gt;316&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;panic:&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;.code16&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# We only panic in real mode.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;317&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;movw&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;$panic_message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%si&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;318&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;movb&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;$0xe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%ah&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;319&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;subb&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%bh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%bh&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;320&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;1:&lt;/span&gt;  &lt;span class=&quot;nf&quot;&gt;lodsb&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;321&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%al&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%al&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;322&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;2:&lt;/span&gt;  &lt;span class=&quot;nf&quot;&gt;jz&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;b&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# Spin.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;323&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;$0x10&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;324&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;b&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;실제로 &lt;code&gt;INT 10&lt;/code&gt;은 부팅 도중 PANIC이 일어났을 때 PANIC 문자열을 출력하기 위해 사용된다. 이 때 호출되는 함수는 &lt;code&gt;0x0E&lt;/code&gt;번 함수인데 이는 &lt;code&gt;TELETYPE_OUTPUT&lt;/code&gt; 함수이다.&lt;/p&gt;
+
+&lt;h3&gt;메모리 초기화&lt;/h3&gt;
+
+&lt;p&gt;지금은 메모리의 크기를 얻기 위해서 인터럽트를 사용한다. 이 때 인터럽트 번호는 &lt;code&gt;0x15&lt;/code&gt;번이고 함수 번호는 &lt;code&gt;0x88&lt;/code&gt;번이다. 이 때 반환되는 값은 실제 물리 메모리의 크기에서 1024를 뺀 값으로 단위는 kB이다. loader에서는 여기에 1024를 더해서 실제 물리 메모리의 크기를 얻는다. 하지만 Pintos는 이미 64MB 메모리 용으로 4kB의 page를 갖는 page table를 작성해두었기 때문에 메모리의 64MB만을 사용하도록 설정한다.&lt;/p&gt;
+
+&lt;p&gt;그리고 Page Table Entries와 Page Directory Entries를 초기화 하여 기초적인 page table를 구성한다. 이는 기본적인 virtual memory를 위한 page table를 구성하고, 32bit로 전환한 뒤에 loader를 메모리의 커널 영역인 &lt;code&gt;0xC0007C00&lt;/code&gt;으로 취급해서 수행하게 하기 위함이다. 32bit 모드에서는 메모리 주소를 가리킬 수 있는 레지스터의 크기도 32bit가 되므로 실제로 사상될 수 있는 메모리의 크기는 최대 2&lt;sup&gt;32인&lt;/sup&gt; 4GB이다. 보통 운영 체제는 이 중에서 0xC0000000 ~ 0xFFFFFFFF인 1GB를 커널 영역으로 사용한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;loader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;
+ &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Kernel virtual address at which all physical memory is mapped.&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 12&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 13    The loader maps the 4 MB at the bottom of physical memory to&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 14    this virtual base address.  Later, paging_init() adds the rest&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 15    of physical memory to the mapping.&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 16&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt; 17    This must be aligned on a 4 MB boundary. */&lt;/span&gt;
+ &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LOADER_PHYS_BASE&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xc0000000&lt;/span&gt;     &lt;span class=&quot;cm&quot;&gt;/* 3 GB. */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위의 주석에서 언급되어 있듯이 물론 page의 초기화는 kernel에서 이루어져야 하지만 16bit에서 32bit로 전환되면서 보호 모드로 바뀌었기 때문에 일단은 기초적인 page 테이블이라도 구성해서 loader를 0x7C00으로 바로 접근하는게 아니라 &lt;code&gt;LOADER_PHYS_BASE&lt;/code&gt;를 더한 &lt;code&gt;0xC000007C00&lt;/code&gt;의 가상 주소로 접근한다는 것이다.&lt;/p&gt;
+
+&lt;p&gt;수행 bit 모드가 바뀌었으니 다시 segment를 초기화한다. 그리고 이제부터 이미지 내에 존재하는 KELNEL 코드를 메모리의 &lt;code&gt;LOADER_PHYS_BASE + LOADER_KERN_BASE (0x00100000)&lt;/code&gt;에 적재한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;loader.S&lt;/code&gt;의 코드를 보면 약 245줄부터 IDE Controller를 이용하여 &lt;code&gt;$KERNEL_LOAD_PAGES * 8 + 1&lt;/code&gt; 개수만큼 읽는 것으로 추정되지만 &lt;code&gt;$KERNEL_LOAD_PAGE&lt;/code&gt;의 값과 읽기 시작하는 섹터의 정보를 정확히 찾지 못했다. 아무튼 커널을 다 읽어서 메모리에 올려놓으면 커널 코드를 수행하기 위해 jump를 한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;asm language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;loader.S&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;296&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### Jump to kernel entry point.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;297&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;298&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;movl&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;$LOADER_PHYS_BASE&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_KERN_BASE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%eax&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;299&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%eax&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;300&lt;/span&gt;     &lt;span class=&quot;nf&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;panic&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;만약 무슨 이유에서든지 커널이 메모리에 제대로 올라가지 않았거나하여 call 문이 실패하게 될 경우에는 바로 커널 패닉을 맛 볼 수 있도록 panic으로 jump를 한다.&lt;/p&gt;
+
+&lt;h3&gt;진입점 이동&lt;/h3&gt;
+
+&lt;p&gt;jump로 &lt;code&gt;init.c&lt;/code&gt;의 main로 바로 이동하는 것은 아니다. 이 main함수는 gcc에 의해 컴파일되면서 그 함수의 entry가 어디에 존재할지는 디어셈블리한 후에 여러 복잡한 계산을 해보기 전에는 모르기 때문에 일단 loader의 call에 의해 호출되는 지점의 코드는 어셈블리로 한 번 더 짜고(&lt;code&gt;start.S&lt;/code&gt;) 그 내부에서 main을 호출하는 구조를 이루고 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;loader.S&lt;/code&gt;에서는 main을 호출할 수 없는데 &lt;code&gt;start.S&lt;/code&gt;에서는 main을 그 symbol로 호출할 수 있는 이유는 빌드 과정에 있다. &lt;code&gt;loader.S&lt;/code&gt;는 부트 섹터, 즉 첫 번째 기록되는 코드로써 혼자 따로 어셈블되어 0 ~ 511bytes의 위치에 기록되고, 나머지는 모두 커널 이미지라는 것으로 묶이는데 이 때 linker script인 &lt;code&gt;kernel.lds.S&lt;/code&gt;에 의해 &lt;code&gt;init.c&lt;/code&gt;의 &lt;code&gt;main()&lt;/code&gt; 함수의 위치를 &lt;code&gt;start.S&lt;/code&gt;가 알 수 있게 하여 &lt;code&gt;start.S&lt;/code&gt;에서는 main으로 함수를 호출할 수 있게 되는 것이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;asm language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;start.S&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;.globl&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;start&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;.func&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;start&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;11&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# Call main.&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;start:&lt;/span&gt;  &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;main&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;13&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;14&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# main() should not return, but if it does, spin.&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;1:&lt;/span&gt;  &lt;span class=&quot;nf&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;b&lt;/span&gt;
+ &lt;span class=&quot;err&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;.endfunc&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;코드에서 볼 수 있듯이 12번 행에서 &lt;code&gt;call main&lt;/code&gt;을 수행하고 있다. 그리고 어떤 이유에서든지 &lt;code&gt;main()&lt;/code&gt; 함수가 종료된다면 15번 행의 무한 반복이 실행되어 절대 다른 지점으로 넘어갈 수 없도록 한다. 왜냐하면 &lt;code&gt;start.S&lt;/code&gt; 뒤에 있는 것은 커널 이미지 빌드 과정에서 합쳐지는 어딘가의 소스 코드이거나 데이터 코드일 것이며, 만약 여기서 멈추지 않는다면 그 알 수 없는 코드들을 CPU는 모두 읽어서 처리하게 될 것이기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;이제 &lt;code&gt;main()&lt;/code&gt; 함수가 수행된다. &lt;code&gt;main()&lt;/code&gt; 함수부터는 너무 깊게 들어가지 않고 가볍게 설명할 것이다.&lt;/p&gt;
+
+&lt;h3&gt;커널 초기화&lt;/h3&gt;
+
+&lt;p&gt;c 코드로 구성된 &lt;code&gt;init.c&lt;/code&gt;의 &lt;code&gt;main()&lt;/code&gt; 함수가 실제 커널의 초기화와 수행을 맡는 코드이다. 일단 &lt;code&gt;ram_init()&lt;/code&gt; 함수를 호출하여 BSS segment를 초기화 하고 page의 개수를 &lt;code&gt;ram_pages&lt;/code&gt; 변수에 넣는다. page의 개수는 &lt;code&gt;loader.S&lt;/code&gt;에서 페이지 테이블을 구성하기 위해 열심히 계산했었다.&lt;/p&gt;
+
+&lt;p&gt;그 다음에 &lt;code&gt;read_command_line()&lt;/code&gt; 함수를 사용하여 kernel 실행 인자를 받는다. 일단 pintos 구동 시 입력 받는 인자를 부트 섹터의 &lt;code&gt;arg_cnt:&lt;/code&gt;와 &lt;code&gt;args:&lt;/code&gt;에 넣어둔 뒤에 kernel에서 이 위치에 있는 인자를 가져오는 방식이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;asm language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;loader.S&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;336&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### Command-line arguments and their count.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;337&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### This is written by the `pintos&amp;#39; utility and read by the kernel.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;338&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#### The loader itself does not do anything with the command line.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;339&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.org&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_ARG_CNT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_BASE&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;340&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;arg_cnt:&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;341&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.long&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;342&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.org&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_ARGS&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LOADER_BASE&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;343&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;args:&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;344&lt;/span&gt;     &lt;span class=&quot;na&quot;&gt;.fill&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0x80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;예를 들어 &lt;code&gt;pintos -v -- run alarm-multiple&lt;/code&gt;을 수행할 경우 run과 alarm-multiple이 실행 인자가 되어 메모리의 저 영역에 올라가게 되고 &lt;code&gt;init.c&lt;/code&gt;의 &lt;code&gt;main()&lt;/code&gt;에서 이 값을 읽어서 처리하게 된다는 것이다.&lt;/p&gt;
+
+&lt;p&gt;그 다음에 &lt;code&gt;parse_options()&lt;/code&gt; 함수에서 옵션을 분석한다. 이 커널은 몇 가지 옵션을 갖고 있는데 &lt;code&gt;-h&lt;/code&gt; 옵션으로 해당 옵션에 대한 설명을 볼 수 있다(&lt;code&gt;init.c&lt;/code&gt;의 334줄). 대표적인 옵션으로 &lt;code&gt;-q&lt;/code&gt;를 주면 지정된 동작이 끝난 후 바로 커널의 수행을 종료(power off)한다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pintos -v -- -q run alarm-multiple
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;그 다음에 &lt;code&gt;thread_init()&lt;/code&gt; 함수를 호출하여 lock를 활성화시키고 대기 큐(ready_list)를 초기화한다. 그리고 현재 작동하고 있는 &lt;code&gt;ESP&lt;/code&gt;를 기준으로 가장 근처에 있는 page를 찾아서 그 주소를 기준으로 thread 정보를 설정한다. 이 thread의 이름은 main으로 &lt;code&gt;initial_thread&lt;/code&gt;가 된다. 그 후에 &lt;code&gt;console_init()&lt;/code&gt;를 통해 console에 lock을 초기화한다. 이제부터 console를 사용할 수 있으므로 &lt;code&gt;printf&lt;/code&gt; 함수를 사용할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;printf&lt;/code&gt;로 메모리의 크기를 출력한 후에 &lt;code&gt;palloc_init()&lt;/code&gt;, &lt;code&gt;malloc_init()&lt;/code&gt;, &lt;code&gt;paging_init()&lt;/code&gt; 함수를 차례로 수행하여 메모리를 초기화한다. &lt;code&gt;palloc_init&lt;/code&gt;는 이름 그대로 page를 allocate하는 작업을 수행할 수 있도록 초기화하는 것이고, &lt;code&gt;malloc_init&lt;/code&gt;는 &lt;code&gt;malloc&lt;/code&gt;을 통한 메모리 할당을 수행하기 위해 초기화를 수행하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;paging_init()&lt;/code&gt; 함수에서는 &lt;code&gt;loader.S&lt;/code&gt;에서 구성했던 page table을 다시 구성하는 것이다. page table이란 메모리를 page로 관리하게 되면서 생긴 각 page에 대한 index를 갖고 있는 table인데 관리할 메모리가 커져감에 따라 page table도 같이 커져서 이 table을 관리할 또 다른 table이 필요했는데 그것이 page directory이다. 이 함수에서는 PD와 PE를 다시 구성한다.&lt;/p&gt;
+
+&lt;p&gt;그 다음에 다시 또 segment 설정을 수행한다. 먼저 &lt;code&gt;tss_init()&lt;/code&gt;을 통해 task state segment를 설정하는데, 이는 커널이 task를 관리할 때 필요한 정보가 들어있는 segment이다. 그리고 &lt;code&gt;gdt_init()&lt;/code&gt;를 통해 global description table을 초기화 한다. gdt 역시 task를 관리하는데 필요한 정보가 들어있는데 주로 메모리 보호나 segment 관련된 내용이다. &lt;code&gt;gdt_init()&lt;/code&gt;에서는 kernel과 user의 code/data segment를 초기화하여 gdt를 구성한다. 여기서 segment privilege를 설정할 수 있다. 이는 해당 segement에 존재하는 기계어가 CPU의 중요한, 즉 다른 프로그램에 영향을 미칠 수 있는 코드를 수행할 수 있느냐에 대한 권한이다.&lt;/p&gt;
+
+&lt;h3&gt;인터럽트 초기화&lt;/h3&gt;
+
+&lt;p&gt;그 다음에 interrupt를 초기화한다. &lt;code&gt;먼저 intr_init()&lt;/code&gt; 함수를 호출해서 PIC(programmable interrupt controller)를 초기화한다. 이 PIC는 interrupt 장치에 연결되어 CPU에게 interrupt 신호를 보내주는 장치이다. 그리고 interrupt descriptor table인 idt를 초기화한다. 이 table에는 interrupt를 handling하는 handler 함수들이 연결되는데 지금은 일단 깨끗이 초기화한다. 그리고 덤으로 0번부터 19번까지의 interrupt 이름을 초기화하는데 이는 CPU가 운영 체제, 즉 커널에게 전달하는 interrupt이다.&lt;/p&gt;
+
+&lt;p&gt;PIC에 의해 전달되는 interrupt도 0번부터 시작하지만 &lt;code&gt;0x00&lt;/code&gt;부터 &lt;code&gt;0x19&lt;/code&gt;까지는 CPU가 커널에게 전달하기 위한 interrupt로 사용하고 그 이후부터가 PIC에 의한 interrupt가 된다. 대표적인 예로 조금 있다 보게 될 keyboard의 interrupt 번호는 &lt;code&gt;0x21&lt;/code&gt;이다.&lt;br&gt;
+interrupt table을 초기화했으므로 이제 각 interrupt에 대해 handler를 연결한다. 먼저 이번 과제의 예제로 주어진 thread에서도 사용되는 timer를 먼저 초기화한다. timer는 PIC &lt;code&gt;0x00&lt;/code&gt;번으로 &lt;code&gt;timer_init()&lt;/code&gt;에서 초기화를 한다. 함수 내부에서 보면 &lt;code&gt;intr_register_ext()&lt;/code&gt; 함수를 이용하여 &lt;code&gt;0x20&lt;/code&gt;에 &lt;code&gt;timer_interrupt()&lt;/code&gt; 함수를 연결하는 것을 확인할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;timer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;46&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;intr_register_ext&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timer_interrupt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;8254 Timer&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;그리고 동일한 방법으로 &lt;code&gt;kbd_init()&lt;/code&gt;에서는 keyboard의 interrupt를 초기화한다. 아직은 사용하지 않지만 keyboard로부터 입력받은 interrupt는 interrupt queue에 넣어졌다가 interrupt를 처리하는 thread에 의해 처리되는데 이러한 동작을 수행하는 모듈이 input이다. 일단 &lt;code&gt;input_init()&lt;/code&gt; 함수를 호출하여 초기화한다.&lt;/p&gt;
+
+&lt;p&gt;그리고 &lt;code&gt;exception_init()&lt;/code&gt; 함수를 수행하여 아까 &lt;code&gt;intr_init()&lt;/code&gt;에서 작성해두었던 &lt;code&gt;0x00&lt;/code&gt; ~ &lt;code&gt;0x13&lt;/code&gt;까지의 interrupt를 연결한다. 연결되는 handler를 살펴보면 &lt;code&gt;exception.c&lt;/code&gt;의 72번째 줄에 존재하는 &lt;code&gt;kill&lt;/code&gt; 함수인데 친절하게도 왜 죽는지에 대해 설명해주고 죽는다. 주석을 보면 user program에 의해 process가 잘못된 수행을 했을 경우에 이 handler이 호출된다고 한다.&lt;/p&gt;
+
+&lt;p&gt;그 다음에 &lt;code&gt;syscall_init()&lt;/code&gt; 함수를 통해 system call interrupt를 handling한다. 현재 handling하는 system call은 &lt;code&gt;0x30&lt;/code&gt;번 interrupt인데 단순히 “system call!”을 출력하고 끝나는 system call이다.&lt;/p&gt;
+
+&lt;p&gt;이상으로 software interrupt(exception), hardware interrupt, system call에 대한 interrupt handler 초기화 및 설정을 마쳤다.&lt;/p&gt;
+
+&lt;p&gt;이제 설정한 interrupt를 동작시켜야 한다. interrupt를 받지 않으려는 노력은 &lt;code&gt;loader.S&lt;/code&gt;의 맨 처음에서부터 시작하여 중간에 메모리 크기를 측정하고 커널 이미지를 메모리에 올리면서도 행해져 왔다. 이제 interrupt를 받도록 설정하기 위해서 일단 threads를 시작한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;thread_start()&lt;/code&gt; 함수는 가장 실행 우선 순위가 낮은 idle이라는 thread를 생성하여 동작시킨다. 그리고나서 &lt;code&gt;intr_enable()&lt;/code&gt; 함수를 호출하여 interrupt를 활성화시키는데 그 이유는 idle에 있다. idle 함수는 일단 interrupt를 다시 disable시키고 thread를 block하여 다른 thread가 먼저 수행될 수 있도록 한다. 그 뒤에 다시 활동하게 되면 바로 inline assembly인 &lt;code&gt;sti; hlt&lt;/code&gt;를 수행하게 되는데 이는 interrupt를 다시 enable하고 바로 정지하겠다는 것이다. hlt instruction은 CPU가 interrupt를 받을 때까지 대기시키는 instruction이다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;kr&quot;&gt;thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;383&lt;/span&gt;       &lt;span class=&quot;n&quot;&gt;asm&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;sti; hlt&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;memory&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;기타&lt;/h3&gt;
+
+&lt;p&gt;그 이후에 &lt;code&gt;serial_init_queue()&lt;/code&gt; 함수를 통해 serial로부터 interrupt를 받아 커널을 제어할 수 있도록 한다. 이는 커널이 올라가 있는 장치에 keyboard로 바로 console를 통해 접속하는 것이 아니라 tty등의 serial interface로 접근했을 때도 커널이 반응할 수 있도록 하기 위함이다.&lt;/p&gt;
+
+&lt;p&gt;그 다음에 &lt;code&gt;timer_calibrate()&lt;/code&gt; 함수에서 아까 설정한 timer interrupt에 의한 한 tick에 몇 번의 loop를 돌 수 있나 계산해서 전역 변수인 &lt;code&gt;loops_per_tick&lt;/code&gt;에 넣어두고 이 값은 여러 &lt;code&gt;sleep()&lt;/code&gt; 함수들의 동작을 실제로 수행하는 &lt;code&gt;real_time_sleep()&lt;/code&gt; 함수에서 사용한다. 이 값을 사용하여 멈추기를 요구하는 시간을 근사한 loop 회수로 변환하여 &lt;code&gt;busy_wait()&lt;/code&gt; 함수에서 지정된 회수만큼 반복문을 돌면서 대기한다.&lt;/p&gt;
+
+&lt;p&gt;그 밑의 &lt;code&gt;disk_init()&lt;/code&gt;와 &lt;code&gt;filesys_init()&lt;/code&gt;는 FILESYS가 있을 때 사용하는 함수로, 간단하게 설명하자면 &lt;code&gt;disk_init()&lt;/code&gt; 함수에서는 커널에서 현재 연결된 storage를 검색해서 초기화하고, &lt;code&gt;filesys_init()&lt;/code&gt;에서는 &lt;code&gt;disk_init()&lt;/code&gt;에서 탐지하고 초기화한 disk를 가져와서 inode를 구성하거나 포맷을 수행한다.&lt;/p&gt;
+
+&lt;p&gt;마지막으로 &lt;code&gt;init.c&lt;/code&gt;의 118번째 줄에서 &lt;code&gt;printf (&amp;quot;Boot complete.\n&amp;quot;)&lt;/code&gt; 를 수행함으로써 pintos의 부팅이 완료된다.&lt;/p&gt;
+
+&lt;h3&gt;참고&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.hanbit.co.kr/book/look.html?isbn=978-89-7914-482-6&quot;&gt;OS 구조와 원리: OS 개발 30일 프로젝트&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.hanbit.co.kr/book/look.html?isbn=89-7914-396-6&quot;&gt;Windows 구조와 원리: OS를 관통하는 프로그래밍의 원리&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://kangcom.com/sub/view.asp?sku=201207250002&quot;&gt;리눅스 커널 심층 분석&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </content>
  </entry>
  

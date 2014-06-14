@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>mswsock.dll의 비밀</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">mswsock.dll의 비밀</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 14 Feb 2014</p>
+				<hr>
+				<div class="content">
+				<p>최근 회사에서 c#으로 네트워크 프로그래밍을 하고 있다. 일은 아니고 그냥 개인의 취향
+나름 c#도 속도가 괜찮다는 것을 보여주려고 시작을 했는데, 진행하면서 점점 보이는 결과는 영 좋지 않다.</p>
+
+<p>서버 과부하 테스트 프로그램을 c#으로 porting했다. 정말 과부하 테스트를 하려면 c++로 작성해야 맞지만 테스트 로직까지 c++로 작성하면 골치가 아프니 core는 c++, logic은 c#으로 작성하는 방법을 고민하면서 porting을 하고 있다. 하지만 그 전에 귀찮으니 일단 network core도 c#으로 작성했고 이 때 c# async io와 async/await을 대충 섞어서 작성했다.</p>
+
+<p><strong>정말 대충 짰더니 정말 성능이 대충 나온다-_-;</strong><br>
+vs analyze 기능을 통해 확인을 해보면 가장 오래 걸리는 부분이 mswsock.dll에 소속되어 있다고 나온다. 이 글은 대체 왜 mswsock.dll인가에 대한 고찰을 담은 글이다.</p>
+
+<p>.net <code>Socket</code>의 <code>BeginReceive</code>, <code>EndReceive</code> 함수를 사용하면 내부에서 pinvoke로 <code>WSARecv</code> 함수를 부르게 된다. <code>WSARecv</code> 함수는 <code>ws2_32.dll</code>에 정의된 함수로 얼핏보기에는 socket 확장 api가 담겨있는 <code>mswsock.dll</code>이 부를 필요가 없어 보인다. 이를 정확히 확인하기 위해 ms symbol server에서 clr 관련 symbol을 받고 다시 profiler를 돌려보았다.</p>
+
+<p><img src="http://blog.lacti.me/images/mswsock_secret_functions.png" alt="functions"></p>
+
+<p>진범이 나온 것 같다. <code>NtDeviceIoControlFile()</code>과 <code>NtRemoveIoCompletion()</code>이 1, 2위로 나왔다. 여기서 <code>NtRemoveIoCompletion()</code> 함수는 <code>GetQueuedCompletionStatus()</code> 때문에 불리는 것으로 추측되니 <code>NtDeviceIoControlFile()</code>의 정체만 밝히면 되겠다.</p>
+
+<p>간단히 calling, called를 확인해보자.</p>
+
+<p><img src="http://blog.lacti.me/images/mswsock_secret_ws2_32_dll.png" alt="ws2_32.dll"></p>
+
+<p><img src="http://blog.lacti.me/images/mswsock_secret_mswsock_dll.png" alt="mswsock.dll"></p>
+
+<p>원인이 명확해졌다.<br>
+다량의 패킷 수신자가 <code>WSARecv</code>를 부르는 과정에서 <code>ws2_32.dll</code>의 함수가 호출된 것은 당연했다. 하지만 그 과정에서 알 수 없는 오류가 발생했고, 그 오류를 처리하기 위해 불린 <code>NtStatusToSocketError()</code> 함수가 <code>mswsock.dll</code>의 <code>NtDeviceIoControlFile()</code> 함수를 불렀던 것이다.</p>
+
+<p>그렇다면 <code>NtDeviceIoControlFile()</code> 함수는 대체 무엇일까, 그리고 왜 그렇게 느릴까?<br>
+profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷한 지점을 가리키고 있는 것을 확인할 수 있다. 즉, 특정 지점에서 많이 멈춰있다는 이야기일 것인데, 이 때 cpu 사용량이 꽤 높다는 점을 미루어볼 때 뭔가 busy waiting을 하는 것이 아닐까 추측된다.</p>
+
+<p>이 부분은 symbol 만으로 확인하기는 어렵고, 직접 disassemble을 해서 확인을 하던가 해야하지만 별로 그러고 싶지는 않고-_-; 일단 pinvoke로 직접 iocp를 호출하는 c# 코드를 작성하여 그 부분에서도 여전히 비슷한 문제가 발생하는지 확인을 해봐야겠다.</p>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2014/02/11/fast-message-serialization/" title="빠른 메시지 만들기">&laquo; 빠른 메시지 만들기</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2014/02/16/network-offload-error/" title="네트워크 offload 장애">&raquo; 네트워크 offload 장애</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2014/02/16/network-offload-error/">네트워크 offload 장애</a> <span class="date">16 Feb 2014</span></li>
+					
+						<li><a href="/2013/09/08/zhconverter-simplified-traditional/">ZhConverter (Simplified, Traditional)</a> <span class="date">08 Sep 2013</span></li>
+					
+						<li><a href="/2013/06/07/csharp-game-server/">c# 게임 서버 만들기</a> <span class="date">07 Jun 2013</span></li>
+					
+						<li><a href="/2012/03/01/c-sharp-ui-cross-thread-problem/">C# UI Cross thread problem 해결</a> <span class="date">01 Mar 2012</span></li>
+					
+						<li><a href="/2010/05/01/java-network-programming-2-socket/">자바 네트워크 프로그래밍 2 - Socket</a> <span class="date">01 May 2010</span></li>
+					
+						<li><a href="/2010/05/01/java-network-programming-1-basic/">자바 네트워크 프로그래밍 1 - 기초</a> <span class="date">01 May 2010</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2014/02/16/network-offload-error/">네트워크 offload 장애</a> <span class="date">16 Feb 2014</span></li>
+					
+						<li><a href="/2014/02/14/secret-of-mswsock-dll/">mswsock.dll의 비밀</a> <span class="date">14 Feb 2014</span></li>
+					
+						<li><a href="/2014/02/11/fast-message-serialization/">빠른 메시지 만들기</a> <span class="date">11 Feb 2014</span></li>
+					
+						<li><a href="/2013/12/22/server-programming/">서버 프로그래밍</a> <span class="date">22 Dec 2013</span></li>
+					
+						<li><a href="/2013/11/19/message-dispatch-code-generation-by-enum-value/">메시지 enum에 따른 message 콜백 함수 자동생성</a> <span class="date">19 Nov 2013</span></li>
+					
+						<li><a href="/2013/11/19/asynchronous-programming-pattern-2/">비동기 프로그래밍 패턴 2</a> <span class="date">19 Nov 2013</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>
