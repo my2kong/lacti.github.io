@@ -10,9 +10,9 @@ tags: ndc14 rx reactive
 
 ### 요약 ###
 
-* 대세는 병렬처리, 이를 Reactive functional programming으로 풀어보자. ~~~근데 functional 이야기 안 함~~~
+* 대세는 병렬처리, 이를 Reactive functional programming으로 풀어보자. ~~근데 functional 이야기 안 함~~
 * Reactive가 왜 나왔는지 알아보자, 그러면서 MONAD 잠깐 이야기
-* 그러면서 Rx.NET 조금 소개 ~~~고성능 이야기 안 함~~~
+* 그러면서 Rx.NET 조금 소개 ~~고성능 이야기 안 함~~
 
 ### 내용 ###
 
@@ -42,7 +42,7 @@ tags: ndc14 rx reactive
 	* 사실상 microthread 이야기를 함
 	* 관련 framework 이야기를 하면서 callback hell 같은 문제를 언급
 *  MONAD
-	*  `INPUT =&amp;gt; M&amp;lt;OUTPUT&amp;gt;`
+	*  `INPUT => M<OUTPUT>`
 	*  MONAD = Unit + FlatMap
 	*  Maybe, Try, Iterable, Future
 
@@ -61,7 +61,7 @@ tags: ndc14 rx reactive
 * LE Platform
 	* TCP -&amp;gt; Dispatch -&amp;gt; [Handlers...] -&amp;gt; Database
 * 기타
-	* reactive-streams.org
+	* http://reactive-streams.org
 	* java: play, akka, reactor
 	* http://reactconf.org
 	* coursera principles of Reactive programming
