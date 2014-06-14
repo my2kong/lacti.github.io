@@ -24,8 +24,7 @@ tags: java network socket
 이 될 수 있겠다.
 
 통신을 한다는 건 두 HOST가 네트워크로<span style="color: #aaa;">(wired or wireless)</span> 연결되어있다는 것이다.  
-네트워크에 속한 HOST는 그 특정 주소를 갖는데, 흔히 생각하는 `IP Address`라고 보면 되겠다. 흔히 우리는 네트워크를 사용하기 위해 TCP/IP Protocol을 사용하기 때문이다.**(점박이 3형제)**
-
+네트워크에 속한 HOST는 그 특정 주소를 갖는데, 흔히 생각하는 `IP Address`라고 보면 되겠다. 흔히 우리는 네트워크를 사용하기 위해 TCP/IP Protocol을 사용하기 때문이다.  
 [http://en.wikipedia.org/wiki/Transmission_Control_Protocol](http://en.wikipedia.org/wiki/Transmission_Control_Protocol)  
 <span style="color: #aaa;">(다른 곳에 더욱 설명이 잘 있으니 자세한 설명은 생략한다)</span>  
 <span style="color: #aaa;">(기계적 주소인 MAC Address와 함께 같이 찾아보면서 공부해보는 것도 좋다. 하지만 이 글은 자바 네트워크 프로그래밍이 주라서 이 부분은 제외)</span>
@@ -49,7 +48,7 @@ TCP/IP 프로토콜에서는 데이터를 보낼 때 **Packet**으로 쪼개어 
 
 을 이야기한다.
 
-이 때 거는 사람**(클라이언트)**은 받을 사람**(서버)**의 전화번호<span style="color: #aaa;">(IP Address와 Port)</span>를 눌러 전화를 걸고, 받을 사람**(서버)**은 전화가 걸려오기를 기다리고 있다가 전화가 오면 받는 것이다.
+이 때 거는 사람`(클라이언트)`은 받을 사람`(서버)`의 전화번호<span style="color: #aaa;">(IP Address와 Port)</span>를 눌러 전화를 걸고, 받을 사람`(서버)`은 전화가 걸려오기를 기다리고 있다가 전화가 오면 받는 것이다.
 
 이것이 간략한 서버와 클라이언트의 개념이고, 자세한 내용은 다음 글에서 코드로 보면 되겠다.
 
