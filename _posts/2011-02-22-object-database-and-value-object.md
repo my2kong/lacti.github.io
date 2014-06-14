@@ -26,8 +26,8 @@ Database Table에 대응되는 객체를 설계(class)하고,
 
 ```java
 Database db = new MySQLDatabase();
-db.insert(new Person("최재영", "연세대학교"));
-Person p = new Person("최재영");
+db.insert(new Person("lacti", "poolc"));
+Person p = new Person("lacti");
 db.read(p);
 db.delete(p);
 ```
