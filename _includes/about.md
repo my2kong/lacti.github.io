@@ -15,7 +15,6 @@
 	* Server Programmer (Windows/C++)
 	* Tool Programmer (Windows/C#)
 	* Live Team (windbg)
-
 - **Database Lab. Yonsei Univ**, Streaming database developer, *Mar 2007 - May 2011*
 	- Framework (linux/c/java)
 	- Control UI (linux/java)
