@@ -21,7 +21,3 @@ MediaWiki 쪽에서는 이미 해당 기능이 사용되고 있다고 한다. �
 그래서 porting했다.
 
 * [github: ZhConv](https://github.com/lacti/ZhConv)
-
-### 추가 ###
-
-추후 담당자에게 이야기를 들어보니 
