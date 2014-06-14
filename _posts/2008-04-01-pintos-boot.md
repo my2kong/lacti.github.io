@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Pintos의 부팅 과정
+title: pintos 부팅 과정
 tags: pintos boot
 ---
 
