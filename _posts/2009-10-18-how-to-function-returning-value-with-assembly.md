@@ -54,14 +54,14 @@ int main (void)
 gdb를 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
 
 ```c
-0x08048420 &lt;me+44&gt;:     mov    -0x14(%ebp),%eax
-0x08048423 &lt;me+47&gt;:     mov    %eax,(%ebx)
-0x08048425 &lt;me+49&gt;:     mov    -0x10(%ebp),%eax
-0x08048428 &lt;me+52&gt;:     mov    %eax,0x4(%ebx)
-0x0804842b &lt;me+55&gt;:     mov    -0xc(%ebp),%eax
-0x0804842e &lt;me+58&gt;:     mov    %eax,0x8(%ebx)
-0x08048431 &lt;me+61&gt;:     mov    -0x8(%ebp),%eax
-0x08048434 &lt;me+64&gt;:     mov    %eax,0xc(%ebx)
+0x08048420 <me+44>:     mov    -0x14(%ebp),%eax
+0x08048423 <me+47>:     mov    %eax,(%ebx)
+0x08048425 <me+49>:     mov    -0x10(%ebp),%eax
+0x08048428 <me+52>:     mov    %eax,0x4(%ebx)
+0x0804842b <me+55>:     mov    -0xc(%ebp),%eax
+0x0804842e <me+58>:     mov    %eax,0x8(%ebx)
+0x08048431 <me+61>:     mov    -0x8(%ebp),%eax
+0x08048434 <me+64>:     mov    %eax,0xc(%ebx)
 ```
 
 반환 부분 코드다.
@@ -72,7 +72,7 @@ gdb를 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
 그리고 
 
 ```c
-0x08048437 &lt;me+67&gt;:     mov    %ebx,%eax
+0x08048437 <me+67>:     mov    %ebx,%eax
 ```
 
 그 `ebx` 값, 즉 메모리 주소인데 어떤 메모리 주소냐하면 지역변수 `m`에 담긴 정보가 **복사**된 곳의 메모리 주소가 `eax`에 담겨서 반환된다는 것이다.  
@@ -81,14 +81,14 @@ gdb를 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
 지역변수가 왜 지역변수냐? 하면 함수 호출이 끝나고 다 없어지기 때문이다. 어떻게 없어지나 하면
 
 ```c
-0x080483f5 &lt;me+1&gt;:      mov    %esp,%ebp
-0x080483f8 &lt;me+4&gt;:      sub    $0x24,%esp
+0x080483f5 <me+1>:      mov    %esp,%ebp
+0x080483f8 <me+4>:      sub    $0x24,%esp
 ```
 
 처음에 쓸 만큼 stack pointer를 계산해두고, `ebp`에 stack 시작점을 담아서, `ebp`부터 `esp`까지의 영역을 지역변수를 사용하는 공간으로 쓰다가,
 
 ```c
-0x08048439 &lt;me+69&gt;:     add    $0x24,%esp
+0x08048439 <me+69>:     add    $0x24,%esp
 ```
 
 함수가 끝날 때 stack pointer를 다시 복원하면서, 아까 사용하는 공간을 폐기하는 것이다. 그래서 함수가 반환될 때 공간이 폐기되므로 반환 시 그 값을 **복사** 한 것이다.
@@ -96,7 +96,7 @@ gdb를 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
 그렇다면 `ebx`는 어디를 가리키고 있단 말인가?
 
 ```c
-0x080483fb &lt;me+7&gt;:      mov    0x8(%ebp),%ebx
+0x080483fb <me+7>:      mov    0x8(%ebp),%ebx
 ```
 
 이 코드를 보면 `ebx`는 `ebp`의 `+0x08` 지점을 가리키고 있는데, 또 그럼 여기가 어디냐라는 문제가 있다만 간단히 생각해보면
@@ -108,7 +108,7 @@ gdb를 써줘서 disassemble 코드를 보자. [gdb, disassemble main]
 여기서 이제
 
 ```c
-0x08048452 &lt;main+17&gt;:   lea    -0x14(%ebp),%eax
+0x08048452 <main+17>:   lea    -0x14(%ebp),%eax
 ```
 
 이 코드를 통해
