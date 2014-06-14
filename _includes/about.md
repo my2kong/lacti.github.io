@@ -4,24 +4,23 @@
 
 ### external
 
+* [lactrious@gmail.com](mailto:lactrious@gmail.com)
 * [github](https://github.com/lacti)
 * [twitter](https://twitter.com/lacti)
 * [linkedin](http://www.linkedin.com/pub/jaeyoung-choi/99/243/861)
 
 ### career
 
-* **Bluehole Studio**, *2011. 7. - 2014. 5.*
+* **Bluehole Studio**, Programmer, *Jul 2011 - May 2014*
 	* Server Programmer (Windows/C++)
 	* Tool Programmer (Windows/C#)
-	* Live Team
+	* Live Team (windbg)
 
-
-* **Database Lab. in Yonsei Univ**, *2007. 3. - 2011. 5.*
-	* Streaming database developer
-		* Framework (linux/c/java)
-		* Control UI (linux/java)
-		* Data gather (nesC/RF/Zigbee)
-		* Actuator (linux/java)
+- **Database Lab. Yonsei Univ**, Streaming database developer, *Mar 2007 - May 2011*
+	- Framework (linux/c/java)
+	- Control UI (linux/java)
+	- Data gather (nesC/RF/Zigbee)
+	- Actuator (linux/java)
 
 ### skills
 
