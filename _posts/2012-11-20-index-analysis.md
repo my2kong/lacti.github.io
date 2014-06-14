@@ -9,3 +9,5 @@ tags: mssql index
 MSSQL에서 Index 관련된 내용을 정리했는데, 너무 대충 정리했다. 2시간 자고 발표하러 가야한다니 [...]
 
 * [Slideshare: Index Analysis](http://www.slideshare.net/lactrious/index-analysis)
+
+{% oembed http://www.slideshare.net/lactrious/index-analysis %}
