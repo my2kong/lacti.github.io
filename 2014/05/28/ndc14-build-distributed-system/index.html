@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 28 May 2014</p>
+				<hr>
+				<div class="content">
+				<ul>
+<li>이호규</li>
+</ul>
+
+<h3>왜?</h3>
+
+<ul>
+<li>기획 요구가 높아짐에 따라 성능 문제가 야기됨</li>
+<li>단일 머신으로 처리가 어려우니 분산으로 간다! network traffic, cpu, memory 등</li>
+</ul>
+
+<h3>어떻게?</h3>
+
+<ul>
+<li>scale out
+
+<ul>
+<li>기능 분리 서버
+
+<ul>
+<li>상점 서버, 퀘스트 서버, ... 이런 식으로 분리</li>
+<li>예외 처리도 어렵고 transaction 구성도 어렵다. 그냥 이렇게 안 하는게 좋겠다.</li>
+</ul></li>
+<li>통합 독립 서버
+
+<ul>
+<li>role로 분리. 일반 서버, 던전 서버, ... 이런 식</li>
+<li>동시성 제어 및 유지보수가 용이하다.</li>
+</ul></li>
+</ul></li>
+<li>scale up
+
+<ul>
+<li>성능보다 안정성을 위해 scale up을 사용 <em>(?)</em></li>
+</ul></li>
+<li>database scale out
+
+<ul>
+<li>sharding
+
+<ul>
+<li>mapping table을 써서 shard 정보를 저장할 경우 caching 필수. 필요시 scale up</li>
+<li>dynamic sharding은 db-instance가 추가되었을 경우 resharding이 어렵다.</li>
+</ul></li>
+<li>transaction은 어떻게? 그냥 code로 다 구현해야 한다.</li>
+</ul></li>
+<li>cpu
+
+<ul>
+<li>pipeline 구조가 아닌 producer/consumer 구조로 구현을 해야 한다.</li>
+</ul></li>
+<li>memory
+
+<ul>
+<li>한 머신에 2TB까지 사용할 수 있다. <em>(?)</em></li>
+</ul></li>
+<li>IO
+
+<ul>
+<li>database
+
+<ul>
+<li>일단 memory에 반영 후 db validation (즉, 후처리). 이 때 실패하면 해당 유저 disconnect하고 db 정합성 유지하도록 한다. <em>(?)</em></li>
+</ul></li>
+<li>network
+
+<ul>
+<li>chat을 분리해서 network 병목을 제거한다.</li>
+<li>broadcast는 지불할 수 밖에 없는 비용이지만 grouping을 최적화해서 잘 하거나, 아니면 역시 network를 분리한다. <em>(?)</em></li>
+</ul></li>
+</ul></li>
+<li>지표
+
+<ul>
+<li>cpu는 packet queue 소모 시간을 본다.</li>
+<li>network는 latency나 send queue 크기를 본다.</li>
+<li>병목 지점을 찾을 때에는 제일 부하를 많이 주는 로직을 단일 instance에서 실행해서 찾도록 한다.</li>
+</ul></li>
+<li>서버 성능
+
+<ul>
+<li>비동기 IO를 쓰고, polling보다는 event를 쓰고, 계산 값을 caching하는 등 최적화한다.</li>
+<li>multi process와 multi thread 중 무엇을 사용하는 것이 좋을까?
+
+<ul>
+<li>switching 비용과 구현 비용 등을 고민하자.</li>
+</ul></li>
+<li>multi thread를 쓰면 throughput이 좋지만 concurrent 버그가 발생하고 singleton에 접근하는 thread간의 경합 문제로 인해 제약(?)이 발생한댄다. <em>(?)</em></li>
+<li>그래서 mo/mmo 서버가 아니면 multi io thread, single logic thread의 multi process 구조가 관리 개발이 편하니 좋댄다.</li>
+</ul></li>
+</ul>
+
+<h3>무엇을?</h3>
+
+<ul>
+<li>fault tolerance
+
+<ul>
+<li>exception handling
+
+<ul>
+<li>always available (SEH)
+
+<ul>
+<li>예외가 발생해도 SEH로 잘 잡아서 문제 상황만 적출하고 서비스는 가용하도록 한다.</li>
+</ul></li>
+<li>graceful exception handling
+
+<ul>
+<li>문제가 발생한 유저를 disconnect하는게 아니라 정중하게 로비로 모셔준다.</li>
+</ul></li>
+<li>error trace (callstack + debug log)
+
+<ul>
+<li>tracing하기 쉽게 정보를 잘 모아서 남겨준다.</li>
+</ul></li>
+</ul></li>
+<li>fail over
+
+<ul>
+<li>instance load</li>
+<li>local db, memory db</li>
+<li>db replication</li>
+</ul></li>
+</ul></li>
+<li>user trace</li>
+<li>server dashboard</li>
+<li>log
+
+<ul>
+<li>file보다 검색이 용이한 db를 쓰자.</li>
+<li>하나의 테이블에 데이터가 너무 많아지면 조회가 느려지니까 일일 로그는 일별 테이블을 만들어서 기록하자.</li>
+</ul></li>
+<li>monitor
+
+<ul>
+<li>redis 등의 memory db를 쓰자</li>
+</ul></li>
+<li>indicator
+
+<ul>
+<li>중요한 로그는 서버에서 남기자, 근데 logging도 부담이 있으니까,</li>
+<li>게임 분석 지표는 클라이언트에서 logging을 하도록 하자. RabbitMQ 같은걸 쓰자.</li>
+</ul></li>
+<li>redis
+
+<ul>
+<li>push(notification) 기능을 사용해서 management를 위한 실시간 event를 전달하거나 상점 on/off같은 작업을 수행하자.</li>
+</ul></li>
+</ul>
+
+<h3>deploy</h3>
+
+<ul>
+<li>binary
+
+<ul>
+<li>united server
+
+<ul>
+<li>모든 기능을 하나의 binary에 다 넣어두면 관리가 편하고 좋댄다.</li>
+</ul></li>
+<li>one binary server
+
+<ul>
+<li>위랑 뭐가 다른지는 잘 모르겠지만 아무튼 좋댄다. 근데 종합 설정 파일 같은게 나와서 복잡해질 수 있다고 한다.</li>
+</ul></li>
+</ul></li>
+<li>일정 산출
+
+<ul>
+<li>분산 시스템을 도입할 경우 유지보수 비용이 꽤 크기 때문에 개발:유지보수의 비율을 6:4 정도로 생각하고 일정을 잡자.</li>
+<li>TDD를 애용하자.</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<ul>
+<li><strong>중간중간 무슨 소리인지 잘 이해가 안 되는 부분이 있었다.</strong></li>
+<li>chat의 경우 시야 범위의 broadcasting이 아닌 전체 전달 같은 경우엔 독립적 기능이니 community server를 따로 두어 io를 분산시키는 방법이 유효할지 모르겠는데, broadcasting의 network io를 분리한다는 발상은 좀 이상해보인다. 차라리 io를 전담하는 server를 둔다면 모르겠는데 어차피 분산 서버를 설계하는 상황에서 그게 무슨 큰 의미가 있는지 모르겠다.</li>
+<li>singleton 이야기는 그냥 concurrency control의 어려움을 이야기하려는 것 같은데 multi threading에서 singleton을 쓰려면 lock을 전제로 하거나 tls를 이용한 replica를 생각해야 할텐데 뭘 생각하는 건지 자세히 이야기를 안 해줘서 잘 모르겠다.</li>
+<li>서비스 가용성 이야기하면서 계속 SEH 이야기를 하는데 heap corruption이 일어나거나 transaction 오류로 아이템 복사가 일어나도 SEH로 잡고 넘어갈 수 있다고 생각하는지 모르겠다.</li>
+<li>일일 로그를 일일 테이블로 쪼개야한다는 것에서는 의견이 좀 분분한데, 요새 dbms는 내부적으로 partition을 제공해주기 때문에 굳이 사용자가 table을 직접 vertical partition을 해줘야 할 것 같지는 않다.</li>
+</ul>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2014/05/27/ndc14-wcf-mobile-server/" title="WCF를 이용하여 쉽게 만드는 모바일 게임서버">&laquo; WCF를 이용하여 쉽게 만드는 모바일 게임서버</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2014/05/28/ndc14-build-private-cloud/" title="모바일 게임서비스를 위한 사설 클라우드 구축/운영 분투기">&raquo; 모바일 게임서비스를 위한 사설 클라우드 구축/운영 분투기</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2014/05/28/ndc14-distributed-mmorpg-server-without-spof/">프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</a> <span class="date">28 May 2014</span></li>
+					
+						<li><a href="/2013/08/27/yeouido-study-homework-4/">여의도 스터디 과제 풀이 4</a> <span class="date">27 Aug 2013</span></li>
+					
+						<li><a href="/2013/06/08/simple-distributed-system-implementation-3/">분산 처리 환경 구현 3</a> <span class="date">08 Jun 2013</span></li>
+					
+						<li><a href="/2013/05/07/simple-distributed-system-implementation-2/">분산 처리 환경 구현 2</a> <span class="date">07 May 2013</span></li>
+					
+						<li><a href="/2013/04/22/simple-distributed-system-implementation-1/">분산 처리 환경 구현 1</a> <span class="date">22 Apr 2013</span></li>
+					
+						<li><a href="/2008/07/28/ConsoleHandler-System-in-out-error-closing/">ConsoleHandler와 System.in/out/error의 closing</a> <span class="date">28 Jul 2008</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">Ndc14 Dungeon And Fighter Loader Optimization</a> <span class="date">29 May 2014</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

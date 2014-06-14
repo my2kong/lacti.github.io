@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 28 May 2014</p>
+				<hr>
+				<div class="content">
+				<div class="embed rich SlideShare"><iframe src="http://www.slideshare.net/slideshow/embed_code/35192845" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/jongwookkim/ndc14-rx-functional-reactive-programming" title="NDC14 - Rx와 Functional Reactive Programming으로 고성능 서버 만들기" target="_blank">NDC14 - Rx와 Functional Reactive Programming으로 고성능 서버 만들기</a> </strong> from <strong><a href="http://www.slideshare.net/jongwookkim" target="_blank">Jong Wook Kim</a></strong> </div>
+
+<p></div></p>
+
+<ul>
+<li><a href="http://jongwook.kim/home">김종욱</a></li>
+</ul>
+
+<h3>요약</h3>
+
+<ul>
+<li>대세는 병렬처리, 이를 Reactive functional programming으로 풀어보자. ~~~근데 functional 이야기 안 함~~~</li>
+<li>Reactive가 왜 나왔는지 알아보자, 그러면서 MONAD 잠깐 이야기</li>
+<li>그러면서 Rx.NET 조금 소개 ~~~고성능 이야기 안 함~~~</li>
+</ul>
+
+<h3>내용</h3>
+
+<ul>
+<li>ControlFlow
+
+<ul>
+<li>Turning machine, Intel Arch</li>
+<li>Imperative Programming</li>
+</ul></li>
+<li>DataFlow
+
+<ul>
+<li>병렬처리</li>
+<li>Compiler 발전으로 최적화 잘 해줌</li>
+<li>The Future of Programming
+
+<ul>
+<li>Actor Model</li>
+<li>Massively Parallel model</li>
+</ul></li>
+</ul></li>
+<li>Reactive Programming
+
+<ul>
+<li>DataFlow 설명을 위한 Excel cell 예시 A + B -&gt; C</li>
+<li>독립적 작업 단위 + 데이터 흐름 예시) Gate 조합</li>
+<li>기존 명령형 언어는 병렬처리가 어렵다?
+
+<ul>
+<li>선언적, DataFlow, Functional Programming, Reactive</li>
+</ul></li>
+</ul></li>
+<li>Reactive Manifesto
+
+<ul>
+<li>Responsible</li>
+<li>Scalable</li>
+<li><strong>Event-driven</strong></li>
+<li>Resilient</li>
+</ul></li>
+<li>시간 이야기
+
+<ul>
+<li>뭔가 이야기를 많이 했지만 결국 <strong>switch 비용을 줄이자</strong></li>
+<li>tasklet이 작고 빨라야 함.</li>
+</ul></li>
+<li>event driven
+
+<ul>
+<li>사실상 microthread 이야기를 함</li>
+<li>관련 framework 이야기를 하면서 callback hell 같은 문제를 언급</li>
+</ul></li>
+<li> MONAD
+
+<ul>
+<li> <code>INPUT =&amp;amp;gt; M&amp;amp;lt;OUTPUT&amp;amp;gt;</code></li>
+<li> MONAD = Unit + FlatMap</li>
+<li> Maybe, Try, Iterable, Future</li>
+</ul></li>
+</ul>
+
+<table><thead>
+<tr>
+<th>-</th>
+<th>하나</th>
+<th>다수</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>동기</td>
+<td>Try</td>
+<td>Iterable</td>
+</tr>
+<tr>
+<td>비동기</td>
+<td>Future</td>
+<td>Rx</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li>Reactive
+
+<ul>
+<li>Rx = Observable + LINQ + Scheduler
+
+<ul>
+<li>Observable = Reactive Stream</li>
+</ul></li>
+<li>Iterable (pull) -&gt; Observable (push) [duality]</li>
+<li>Map: Synchronous Continuation</li>
+<li>FlatMap: Asynchronous Continuation</li>
+<li>기타 operation들 소개</li>
+</ul></li>
+<li>LE Platform
+
+<ul>
+<li>TCP -&amp;gt; Dispatch -&amp;gt; [Handlers...] -&amp;gt; Database</li>
+</ul></li>
+<li>기타
+
+<ul>
+<li>reactive-streams.org</li>
+<li>java: play, akka, reactor</li>
+<li><a href="http://reactconf.org">http://reactconf.org</a></li>
+<li>coursera principles of Reactive programming</li>
+</ul></li>
+<li>debugging
+
+<ul>
+<li>data flow 기반 분석</li>
+<li>data flow를 database처럼 기록(?)해서 추적</li>
+</ul></li>
+<li>기타 청중 건의
+
+<ul>
+<li>async lock이나 async enumerable을 쓰는 것도 고려해보세요.</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<ul>
+<li>발표 내용은 잘 정리되어 흥미로웠지만 정작 Reactive Programming으로 어떻게 고성능 서버를 구현하는 지에 대한 언급이 미흡
+
+<ul>
+<li>병렬 처리에 있어서 stateless한 functional programming이 유리한건 사실이나 이게 reactive programming과 어떻게 연결된다는 지에 대한 설명이 부족</li>
+<li>event driven으로 microthread나 async io를 설명하는건 좋고, 이게 sync io나 blocking에 비해 성능이 좋은 것은 맞는데 reactive programming과의 연결성이 모호</li>
+<li>reactive programming으로 소개된 rx.net은 표현력이 좋은 것이지 성능적 이점을 얻기 위한 것이 아님</li>
+<li>lineage eternal이 저걸 어떻게 사용했는지에 대한 부분을 너무 대충 다루고 넘어감</li>
+</ul></li>
+<li>재미는 있었으나 내용면에서 좀 아쉬운 발표였음</li>
+</ul>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2014/05/28/ndc14-experience-of-using-redis/" title="라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담">&laquo; 라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/" title="Ndc14 Dungeon And Fighter Loader Optimization">&raquo; Ndc14 Dungeon And Fighter Loader Optimization</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/28/ndc14-experience-of-using-redis/">라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담</a> <span class="date">28 May 2014</span></li>
+					
+						<li><a href="/2014/05/28/ndc14-distributed-mmorpg-server-without-spof/">프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</a> <span class="date">28 May 2014</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">Ndc14 Dungeon And Fighter Loader Optimization</a> <span class="date">29 May 2014</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>

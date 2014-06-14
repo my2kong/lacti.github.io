@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="blog">
+	<meta name="author" content="lacti">
+	<title>신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</title>
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/markdownpad-github.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
+	<link href="/css/blog-post.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">#</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/about/">about</a></li>
+					<li><a href="http://twitter.com/lacti/">twitter</a></li>
+					<li><a href="http://github.com/lacti/">github</a></li>
+					<li><a href="/atom.xml">atom</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container">
+				<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-title">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</h1>
+				<p><span class="glyphicon glyphicon-time"></span> Posted on 29 May 2014</p>
+				<hr>
+				<div class="content">
+				<ul>
+<li><a href="https://twitter.com/LTeaRain">최진욱</a></li>
+<li><a href="https://twitter.com/skyser2003">장승호</a></li>
+</ul>
+
+<h3>요약</h3>
+
+<ul>
+<li>Effective (Live) Old Project</li>
+<li>적절한 과제를 통해 신입 프로그래머의 실력 향상을 돕자.</li>
+<li>추후 라이브 상황을 고려하여 신규 때 기반을 잘 닦도록 하자.</li>
+</ul>
+
+<h3>목표</h3>
+
+<ul>
+<li>오래 라이브 서비스가 가능하면서 신입이 쉽게 적응할 수 있는 project를 만듭시다.</li>
+</ul>
+
+<h3>신입은 무슨 생각?</h3>
+
+<ul>
+<li>라이브에 배치됨
+
+<ul>
+<li>이미 만들어진 게임, 할게 적을 것 같다.</li>
+<li>하지만 이벤트 등의 신규 컨텐츠 구현할 게 꽤 많다.</li>
+</ul></li>
+<li>실력에 대한 불안감
+
+<ul>
+<li>채용 후 근거없는 자신감으로 변함</li>
+<li>실력 향상을 위한 도서 등의 가이드가 필요하다.</li>
+</ul></li>
+<li><strong>지침과 격려가 필요함</strong></li>
+</ul>
+
+<h3>사례 연구</h3>
+
+<ul>
+<li>CSO2
+
+<ul>
+<li>자력으로 문제 해결 능력을 키우도록 과제를 준다.</li>
+</ul></li>
+<li>M1
+
+<ul>
+<li>코드 분석을 통해 의도/흐름을 정리하도록 한다.</li>
+<li>기존 시나리오를 바탕으로 유사 코드를 작성하도록 한다. (2달 정도)</li>
+<li>결과에 대한 평가/피드백으로 같은 실수 방지 등의 실력 향상 도모</li>
+<li>실무와 유사한 작업이므로 실력과 자신감을 같이 키울 수 있다.</li>
+<li>모두에게 발표: 기존 프로그매러도 큰 그림을 볼 기회를 얻음</li>
+</ul></li>
+<li>GE
+
+<ul>
+<li>신입이 할만한 것으로 과제를 부여</li>
+<li>있으면 좋은 기능 중 복잡도가 낮고 부담이 별로 없는 것을 준다.</li>
+<li>몇 번 반복시킨다.</li>
+</ul></li>
+<li><strong>적절한 난이도 과제를 주어서 불안을 몰입으로 만들 기회를 주자</strong></li>
+</ul>
+
+<h3>old project에서 겪는 문제 및 해결</h3>
+
+<ul>
+<li>legacy
+
+<ul>
+<li>문서화했다고 해도 찾는데 부담이 크다.</li>
+<li>그냥 코드를 잘 작성해서 코드만으로 유추할 수 있도록 하자. <em>(literate programming?)</em></li>
+</ul></li>
+<li>TODO
+
+<ul>
+<li>오래되면 엄청 많아지니 convention을 통해 category하는 등 잘 찾아볼 수 있도록 한다.</li>
+</ul></li>
+<li>툴 소스 관리
+
+<ul>
+<li>툴의 binary만 버전관리하지 말고 툴 source도 같이 버전 관리를 해서 추후 유지보수가 가능하도록 한다.</li>
+</ul></li>
+<li>폐기된 코드
+
+<ul>
+<li>코드 파악에 방해되므로 주기적으로 정리한다. 
+
+<ul>
+<li>주석처리 하지 말고 삭제하거나 브랜치로 관리한다.</li>
+</ul></li>
+<li>많아질 경우, c++ 같은 언어라면 컴파일 시간도 길어질 수 있다.</li>
+</ul></li>
+<li>컴파일 시간 증가
+
+<ul>
+<li>급하면 컴파일 시간을 줄이겠다고, 하단 수정이 필요함에도 상대적으로 의존성이 적은 상단에서 수정을 할 수도 있다.</li>
+<li>include 정리, forward decl, pch, include 정리, unitybuild 도입, 빌드 머신 scale up, incredibuild 도입 등을 고민해본다.</li>
+</ul></li>
+<li>과도한 절약과 최적화로 인한 유지보수 어려움
+
+<ul>
+<li>macro, template
+
+<ul>
+<li>신입들은 익숙하지 않다.</li>
+<li>visual assist x나 intellisense의 성능을 저하시킨다.</li>
+<li>왠만하면 자제 부탁</li>
+</ul></li>
+<li>주요 변수를 8bit로 구현
+
+<ul>
+<li>시간이 지나면 256개로는 부족하다.</li>
+<li>쉽게 고칠 수 있는 부분이 아니라면 초기부터 넉넉하게 할당해두자.</li>
+</ul></li>
+<li>profiling을 통한 필요 부분 최적화를 지향하자.</li>
+<li>차후 수정이 쉬운 방향으로 리팩토링을 하자.</li>
+</ul></li>
+<li>pImpl
+
+<ul>
+<li>build-time이 줄어드는 것이 좋기는 하지만,</li>
+<li>interface와 implement 모두 수정해야 하므로 코드 수정량이 많아진다.</li>
+<li>debugging할 때도 step 수가 많아져서 불편하다.</li>
+<li>과도한 사용을 하지 말자.</li>
+</ul></li>
+<li>정보 공유
+
+<ul>
+<li>정보 공유를 위해 Q&amp;A를 자주하면 작업 효율성이 저하된다.</li>
+<li>정보 저장소를 관리해서 검색할 수 있게 하자.</li>
+</ul></li>
+<li>UnitTest 부재
+
+<ul>
+<li>코드 수정을 쉽게 할 수가 없다.</li>
+<li>특히 Client/Server 구조에서 둘 다 구동해서 login하고 테스트하는 것은 비용도 크다.</li>
+</ul></li>
+<li>external library 사용은 신중히 하자.
+
+<ul>
+<li>license 정책이 변경되는 경우가 있다.</li>
+<li>해당 기능이 표준으로 통합될 수 있다.</li>
+</ul></li>
+<li>Tool에 VCS api를 hard-binding하지 말자.
+
+<ul>
+<li>specific한 VCS api를 hard-binding하면 추후 VCS 변경이 어렵다.</li>
+<li>중간에 추상화된 layer를 두고 연결할 수 있도록 하면 좋겠다.</li>
+</ul></li>
+<li>구현을 비워둔 virtual function이 있다면 assert라도 넣어주자.</li>
+</ul>
+
+<h3><del>그래도</del> 좋은 점도 있다!</h3>
+
+<ul>
+<li>M1
+
+<ul>
+<li>XML 기반의 UI
+
+<ul>
+<li>unpack 등 보안에 취약한 점도 있지만 생산성 증대 효과가 더 크다.</li>
+</ul></li>
+<li>MetaData
+
+<ul>
+<li>string key/value 형태로 가독성 덜 해치는 범위에서 급한 코딩을 할 때 유용하다.</li>
+</ul></li>
+<li>직군 회의
+
+<ul>
+<li>merge나 localize 이슈 등의 불편 사항을 공유/논의할 수 있어 좋다.</li>
+</ul></li>
+<li>운영툴
+
+<ul>
+<li>잘 만들어놨다.</li>
+</ul></li>
+<li>script 함수 목록 gathering이 가능하다.</li>
+</ul></li>
+<li>GE
+
+<ul>
+<li>기획자 처리 범위가 넓어 대부분의 컨텐츠를 기획자가 구현하는 것이 가능하다.
+
+<ul>
+<li>XML 구조가 간단해서 가능하다 (?)</li>
+</ul></li>
+<li>범용적 script (...)</li>
+<li>짧은 빌드 시간</li>
+<li>단일 솔루션으로 인한 빌드 관리가 용이하다.</li>
+</ul></li>
+<li>공통
+
+<ul>
+<li>전 국가 trunk를 공유하고 기능별로 로직을 분기한다.</li>
+<li>merge 비용이 적고 side effect를 조기에 발견 가능하다.</li>
+<li>근데 build broken 상태가 되면 stop the world.
+
+<ul>
+<li>신속한 수정이 가능하다면 괜찮다고 본다.</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3>결국 &amp; 그러므로</h3>
+
+<ul>
+<li>기간이 좀 지나면 시니어 프로그래머는 신규 프로젝트로 떠난다.</li>
+<li>안전성 문제로 리팩토링 &amp; 신규 기술 도입을 쉽게 할 수 없다.</li>
+<li>얻을 수 있는 부분을 얻자.
+
+<ul>
+<li>라이브를 해봐서 얻는 부분이 있다.</li>
+<li>프로그래머라면, 제한된 여건에서 설득을 하는 기술 등</li>
+</ul></li>
+<li><strong>나는 계속 배우고 있구나</strong> 라는 관점을 견지하자.</li>
+</ul>
+
+<h3>정리</h3>
+
+<ul>
+<li>처음부터 많이 고민해서 좋은 라이브가 될 수 있도록 노력이 필요하다.
+
+<ul>
+<li>그리고 믿고 의지할 시니어가 있으면 좋겠다.</li>
+</ul></li>
+</ul>
+
+<h3>Q&amp;A</h3>
+
+<ul>
+<li>신규 프로젝튼 어떤가요?
+
+<ul>
+<li>열정적이다.</li>
+</ul></li>
+<li>라이브가 뭔가요?
+
+<ul>
+<li>서비스를 시작하면 라이브임</li>
+</ul></li>
+<li>프로그래머와 소통을 하려면 어떻게 하는 것이 좋을까요?
+
+<ul>
+<li>프로그래밍 언어의 기초를 익혀두면 프로그래머에 대한 이해를 하기 좋다.</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<ul>
+<li>내용이 상당히 유익하고 많다. Effective 시리즈를 연상시킬만큼 case by case에 대한 이야기가 많다.</li>
+<li>그런데 발표 시간이 25분으로 너무 짧았고, 그 발표 시간에 맞추기 위해 내용을 축약한 점이 아쉽다.</li>
+<li>많은 사람들이 볼 수 있도록 위키나 블로그에 위 내용을 정리 &amp; 발전시키면 좋겠다.</li>
+<li>발표자 컨디션이 좀 안 좋았는지 (양이 많아서 말이 빠른 것과 별개로) 목소리에 좀 힘이 없는 것 같았다.</li>
+</ul>
+
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+					
+						<a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/" title="Ndc14 Dungeon And Fighter Loader Optimization">&laquo; Ndc14 Dungeon And Fighter Loader Optimization</a>
+					
+					</div>
+					<div class="col-md-6" style="text-align: right;">
+					
+						<a href="/2014/05/29/ndc14-mobile-data-mining/" title="모바일 데이터 분석">&raquo; 모바일 데이터 분석</a>
+				
+					</div>
+				</div>
+				<hr>
+
+				<!-- the comments -->
+				<div id="disqus_container">
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+						var disqus_shortname = 'lacti';
+						(function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-4 sides">
+			
+				<div class="well">
+					<h4 class="well-title">Related Posts</a></h4>
+					<ul>
+					
+						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/28/ndc14-experience-of-using-redis/">라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담</a> <span class="date">28 May 2014</span></li>
+					
+						<li><a href="/2014/05/28/ndc14-rx-server-application/">Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기</a> <span class="date">28 May 2014</span></li>
+					
+						<li><a href="/2014/05/28/ndc14-distributed-mmorpg-server-without-spof/">프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</a> <span class="date">28 May 2014</span></li>
+					
+					</ul>
+				</div>
+			
+
+				<div class="well">
+					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
+					<ul>
+					
+						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
+					
+						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">Ndc14 Dungeon And Fighter Loader Optimization</a> <span class="date">29 May 2014</span></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<footer>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<em>&copy; 2008-2014 Jaeyoung Choi</em>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<!-- /.container -->
+
+	<!-- JavaScript -->
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/bootstrap.js"></script>
+</body>
+</html>
