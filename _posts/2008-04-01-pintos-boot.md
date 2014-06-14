@@ -125,7 +125,7 @@ loader.S
 
 그 다음에 `parse_options()` 함수에서 옵션을 분석한다. 이 커널은 몇 가지 옵션을 갖고 있는데 `-h` 옵션으로 해당 옵션에 대한 설명을 볼 수 있다(`init.c`의 334줄). 대표적인 옵션으로 `-q`를 주면 지정된 동작이 끝난 후 바로 커널의 수행을 종료(power off)한다.
 
-```shell
+```sh
 $ pintos -v -- -q run alarm-multiple
 ```
 
