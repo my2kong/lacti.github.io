@@ -3,46 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="blog">
+	<meta name="description" content="xml 기반의 데이터시트 빨리 읽기">
 	<meta name="author" content="lacti">
 	<title>xml 기반의 데이터시트 빨리 읽기</title>
-	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
 	<link href="/css/blog-post.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">#</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/about/">about</a></li>
-					<li><a href="http://twitter.com/lacti/">twitter</a></li>
-					<li><a href="http://github.com/lacti/">github</a></li>
-					<li><a href="/atom.xml">atom</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container -->
-	</nav>
-
+	<div id="head"></div>
 	<div class="container">
-				<div class="row">
-			<div class="col-lg-8">
+		<div class="pure-g">
+			<div class="pure-u-1">
 				<h1 class="page-title">xml 기반의 데이터시트 빨리 읽기</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on 09 Jun 2013</p>
+				<p class="page-date">09 Jun 2013</p>
 				<hr>
 				<div class="content">
 				<p>지금 일하고 있는 회사에서는 모든 게임 데이터를 xml로 기술하고 있다. 서버가 시작할 때 읽게 되는 xml의 양만 본다면 대략 800~900MB로 엄청난 양을 읽어야 한다. 덕분에 서버가 저 모든 데이터시트를 읽어서 메모리에 올리는 시간만 약 4~5분이 소요가 되었고, 이 시간으로 인해 발생하는 비효율은 말할 필요가 없을 정도였다.</p>
@@ -171,16 +146,16 @@ DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlType
 
 				</div>
 
-				<div class="row page-navigator">
-					<div class="col-md-6">
+				<div class="pure-g page-navigator">
+					<div class="pure-u-1-2">
 					
 						<a href="/2013/06/08/simple-distributed-system-implementation-3/" title="분산 처리 환경 구현 3">&laquo; 분산 처리 환경 구현 3</a>
 					
 					</div>
-					<div class="col-md-6" style="text-align: right;">
+					<div class="pure-u-1-2 text-right">
 					
 						<a href="/2013/07/12/aws-gameserver-management/" title="AWS를 이용한 서버 운영">&raquo; AWS를 이용한 서버 운영</a>
-				
+					
 					</div>
 				</div>
 				<hr>
@@ -200,38 +175,6 @@ DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlType
 					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 				</div>
 			</div>
-
-			<div class="col-lg-4 sides">
-			
-				<div class="well">
-					<h4 class="well-title">Related Posts</a></h4>
-					<ul>
-					
-						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
-					
-					</ul>
-				</div>
-			
-
-				<div class="well">
-					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
-					<ul>
-					
-						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!</a> <span class="date">29 May 2014</span></li>
-					
-					</ul>
-				</div>
-			</div>
 		</div>
 
 		
@@ -246,10 +189,6 @@ DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlType
 	</div>
 	<!-- /.container -->
 
-	<!-- JavaScript -->
-	<script src="/js/jquery-1.10.2.js"></script>
-	<script src="/js/bootstrap.js"></script>
-	
 	<!-- ga -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

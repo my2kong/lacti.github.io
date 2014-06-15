@@ -3,46 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="blog">
+	<meta name="description" content="c++에서 reflection 사용하기 3">
 	<meta name="author" content="lacti">
 	<title>c++에서 reflection 사용하기 3</title>
-	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
 	<link href="/css/blog-post.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">#</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/about/">about</a></li>
-					<li><a href="http://twitter.com/lacti/">twitter</a></li>
-					<li><a href="http://github.com/lacti/">github</a></li>
-					<li><a href="/atom.xml">atom</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container -->
-	</nav>
-
+	<div id="head"></div>
 	<div class="container">
-				<div class="row">
-			<div class="col-lg-8">
+		<div class="pure-g">
+			<div class="pure-u-1">
 				<h1 class="page-title">c++에서 reflection 사용하기 3</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on 09 Jun 2012</p>
+				<p class="page-date">09 Jun 2012</p>
 				<hr>
 				<div class="content">
 				<p>지난 #2에서는 <code>class_t</code>, <code>field_t</code> 자체가 가상 함수를 갖고, <code>class_impl_t</code>와 <code>field_impl_t</code>가 이 class를 상속 받아서 구현하는 방식을 사용하였다. 사실 굳이 이 <code>impl_t</code> class 들은 노출될 필요가 없으므로 이를 감추도록 해보자.</p>
@@ -271,16 +246,16 @@
 
 				</div>
 
-				<div class="row page-navigator">
-					<div class="col-md-6">
+				<div class="pure-g page-navigator">
+					<div class="pure-u-1-2">
 					
 						<a href="/2012/06/04/using-reflection-at-c%2B%2B-2/" title="c++에서 reflection 사용하기 2">&laquo; c++에서 reflection 사용하기 2</a>
 					
 					</div>
-					<div class="col-md-6" style="text-align: right;">
+					<div class="pure-u-1-2 text-right">
 					
 						<a href="/2012/06/09/using-reflection-at-c%2B%2B-4/" title="c++에서 reflection 사용하기 4">&raquo; c++에서 reflection 사용하기 4</a>
-				
+					
 					</div>
 				</div>
 				<hr>
@@ -300,48 +275,6 @@
 					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 				</div>
 			</div>
-
-			<div class="col-lg-4 sides">
-			
-				<div class="well">
-					<h4 class="well-title">Related Posts</a></h4>
-					<ul>
-					
-						<li><a href="/2012/06/09/using-reflection-at-c%2B%2B-4/">c++에서 reflection 사용하기 4</a> <span class="date">09 Jun 2012</span></li>
-					
-						<li><a href="/2012/06/04/using-reflection-at-c%2B%2B-2/">c++에서 reflection 사용하기 2</a> <span class="date">04 Jun 2012</span></li>
-					
-						<li><a href="/2012/06/03/using-reflection-at-c%2B%2B-1/">c++에서 reflection 사용하기 1</a> <span class="date">03 Jun 2012</span></li>
-					
-						<li><a href="/2012/05/31/xml-mapping-using-java-annotation-and-reflection/">java annotation과 reflection을 사용한 xml mapping</a> <span class="date">31 May 2012</span></li>
-					
-						<li><a href="/2013/11/16/geumjeong-study-homework-3/">금정 스터디 3 과제 풀이</a> <span class="date">16 Nov 2013</span></li>
-					
-						<li><a href="/2013/11/10/geumjeong-study-summary-3/">금정 스터디 3 정리</a> <span class="date">10 Nov 2013</span></li>
-					
-					</ul>
-				</div>
-			
-
-				<div class="well">
-					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
-					<ul>
-					
-						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!</a> <span class="date">29 May 2014</span></li>
-					
-					</ul>
-				</div>
-			</div>
 		</div>
 
 		
@@ -356,10 +289,6 @@
 	</div>
 	<!-- /.container -->
 
-	<!-- JavaScript -->
-	<script src="/js/jquery-1.10.2.js"></script>
-	<script src="/js/bootstrap.js"></script>
-	
 	<!-- ga -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

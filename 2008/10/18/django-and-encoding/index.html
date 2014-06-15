@@ -3,46 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="blog">
+	<meta name="description" content="django와 encoding">
 	<meta name="author" content="lacti">
 	<title>django와 encoding</title>
-	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
 	<link href="/css/blog-post.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">#</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/about/">about</a></li>
-					<li><a href="http://twitter.com/lacti/">twitter</a></li>
-					<li><a href="http://github.com/lacti/">github</a></li>
-					<li><a href="/atom.xml">atom</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container -->
-	</nav>
-
+	<div id="head"></div>
 	<div class="container">
-				<div class="row">
-			<div class="col-lg-8">
+		<div class="pure-g">
+			<div class="pure-u-1">
 				<h1 class="page-title">django와 encoding</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on 18 Oct 2008</p>
+				<p class="page-date">18 Oct 2008</p>
 				<hr>
 				<div class="content">
 				<p>mysql의 encoding은 참 여러 곳에 존재하기 때문에 종종 까먹곤 한다.<br>
@@ -72,16 +47,16 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 
 				</div>
 
-				<div class="row page-navigator">
-					<div class="col-md-6">
+				<div class="pure-g page-navigator">
+					<div class="pure-u-1-2">
 					
 						<a href="/2008/10/12/const-overloading/" title="const overloading">&laquo; const overloading</a>
 					
 					</div>
-					<div class="col-md-6" style="text-align: right;">
+					<div class="pure-u-1-2 text-right">
 					
 						<a href="/2008/12/25/eclipse-with-subversive/" title="eclipse + subversive">&raquo; eclipse + subversive</a>
-				
+					
 					</div>
 				</div>
 				<hr>
@@ -101,40 +76,6 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 				</div>
 			</div>
-
-			<div class="col-lg-4 sides">
-			
-				<div class="well">
-					<h4 class="well-title">Related Posts</a></h4>
-					<ul>
-					
-						<li><a href="/2011/10/08/design-database/">데이터베이스 설계</a> <span class="date">08 Oct 2011</span></li>
-					
-						<li><a href="/2011/02/22/object-database-and-value-object/">Object Database와 Value Object</a> <span class="date">22 Feb 2011</span></li>
-					
-					</ul>
-				</div>
-			
-
-				<div class="well">
-					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
-					<ul>
-					
-						<li><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="date">02 Jun 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-the-npc-master/">THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a> <span class="date">29 May 2014</span></li>
-					
-						<li><a href="/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!</a> <span class="date">29 May 2014</span></li>
-					
-					</ul>
-				</div>
-			</div>
 		</div>
 
 		
@@ -149,10 +90,6 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
 	</div>
 	<!-- /.container -->
 
-	<!-- JavaScript -->
-	<script src="/js/jquery-1.10.2.js"></script>
-	<script src="/js/bootstrap.js"></script>
-	
 	<!-- ga -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
