@@ -1,3 +1,8 @@
+---
+layout: plain
+title: about me
+---
+
 * Jaeyoung, Choi
 * lacti
 * lactrious
