@@ -2,16 +2,15 @@ footer {
 	margin-top: 16px;
 	padding-bottom: 12px;
 }
+footer hr {
+  margin: 0px;
+}
+footer p {
+  margin: 8px 0px;
+}
 
 * {
 	font-family: "Consolas", "맑은 고딕";
-}
-
-@media (min-width: 768px) {
-	#head {
-		height: 8px;
-		background-color: #333;
-	}
 }
 
 .container {
@@ -21,25 +20,34 @@ footer {
   margin-left: auto;
   padding-top: 12px;
 }
+
 @media (min-width: 768px) {
+	#head {
+		height: 8px;
+		background-color: #333;
+	}
   .container {
     width: 710px;
-	border: 4px solid #fafafa;
-	border-width: 0px 4px;
+    border: 4px solid #fafafa;
+    border-width: 0px 4px;
   }
+  .l-box {
+    padding-right: 0.5em;
+	  box-sizing: border-box;
+  }
+	.r-box {
+		padding-left: 0.5em;
+		box-sizing: border-box;
+	}
 }
 @media (min-width: 992px) {
   .container {
     width: 920px;
-	border: 4px solid #fafafa;
-	border-width: 0px 4px;
   }
 }
 @media (min-width: 1200px) {
   .container {
     width: 1024px;
-	border: 4px solid #fafafa;
-	border-width: 0px 4px;
   }
 }
 
@@ -115,3 +123,13 @@ ul#indexes span {
 .text-right {
 	text-align: right;
 }
+
+div h1:first-child,
+div h2:first-child,
+div h3:first-child,
+div h4:first-child,
+div h5:first-child,
+div h6:first-child {
+	margin-top: 0px;
+}
+
