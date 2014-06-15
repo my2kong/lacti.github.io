@@ -1,13 +1,46 @@
-body {
-	margin-top: 72px; /* 100px is double the height of the navbar - I made it a big larger for some more space - keep it at 50px at least if you want to use the fixed top nav */
-}
-
 footer {
-	margin: 16px 0;
+	margin-top: 16px;
+	padding-bottom: 12px;
 }
 
 * {
 	font-family: "Consolas", "맑은 고딕";
+}
+
+@media (min-width: 768px) {
+	#head {
+		height: 8px;
+		background-color: #333;
+	}
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 12px;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 710px;
+	border: 4px solid #fafafa;
+	border-width: 0px 4px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 920px;
+	border: 4px solid #fafafa;
+	border-width: 0px 4px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1024px;
+	border: 4px solid #fafafa;
+	border-width: 0px 4px;
+  }
 }
 
 .content {
@@ -42,12 +75,23 @@ footer {
 	hr	{
 		display: none;
 	}
+	.container {
+		padding-top: 0px;
+	}
 }
 
 .page-title,
 .index-title,
 .well-title {
 	margin-top: 0px;
+}
+
+.page-title,
+.page-date {
+	display: inline;
+}
+.page-date {
+	margin-left: 8px;
 }
 
 footer {

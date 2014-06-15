@@ -1,25 +1,25 @@
 ---
 layout: default
 ---
-		<div class="row">
-			<div class="col-lg-8">
+		<div class="pure-g">
+			<div class="pure-u-1">
 				<h1 class="page-title">{{ page.title }}</h1>
-				<p><span class="glyphicon glyphicon-time"></span> Posted on {{ page.date | date_to_string }}</p>
+				<p class="page-date">{{ page.date | date_to_string }}</p>
 				<hr>
 				<div class="content">
 				{{ content }}
 				</div>
 
-				<div class="row page-navigator">
-					<div class="col-md-6">
+				<div class="pure-g page-navigator">
+					<div class="pure-u-1-2">
 					{% if page.previous.url %}
 						<a href="{{ page.previous.url }}" title="{{ page.previous.title }}">&laquo; {{ page.previous.title }}</a>
 					{% endif %}
 					</div>
-					<div class="col-md-6" style="text-align: right;">
+					<div class="pure-u-1-2 text-right">
 					{% if page.next.url %}
 						<a href="{{ page.next.url }}" title="{{ page.next.title }}">&raquo; {{ page.next.title }}</a>
-				{% endif %}
+					{% endif %}
 					</div>
 				</div>
 				<hr>
@@ -37,28 +37,6 @@ layout: default
 					</script>
 					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 					<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-				</div>
-			</div>
-
-			<div class="col-lg-4 sides">
-			{% if site.related_posts != empty %}
-				<div class="well">
-					<h4 class="well-title">Related Posts</a></h4>
-					<ul>
-					{% for post in site.related_posts limit:6 %}
-						<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="date">{{ post.date | date_to_string }}</span></li>
-					{% endfor %}
-					</ul>
-				</div>
-			{% endif %}
-
-				<div class="well">
-					<h4 class="well-title">Recent Posts <a href="/" class="show-all">(all)</a></h4>
-					<ul>
-					{% for post in site.posts limit:6 %}
-						<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="date">{{ post.date | date_to_string }}</span></li>
-					{% endfor %}
-					</ul>
 				</div>
 			</div>
 		</div>
