@@ -1,6 +1,6 @@
 footer {
-	margin-top: 16px;
-	padding-bottom: 12px;
+  margin-top: 16px;
+  padding-bottom: 12px;
 }
 footer hr {
   margin: 0px;
@@ -10,7 +10,7 @@ footer p {
 }
 
 * {
-	font-family: "Consolas", "맑은 고딕";
+  font-family: "Consolas", "맑은 고딕";
 }
 
 .container {
@@ -21,11 +21,19 @@ footer p {
   padding-top: 12px;
 }
 
+div :first-child {
+  margin-top: 0px;
+}
+
+div.r-head-div :first-child {
+  margin-top: 20px;
+}
+
 @media (min-width: 768px) {
-	#head {
-		height: 8px;
-		background-color: #333;
-	}
+  #head {
+    height: 8px;
+    background-color: #333;
+  }
   .container {
     width: 710px;
     border: 4px solid #fafafa;
@@ -33,12 +41,34 @@ footer p {
   }
   .l-box {
     padding-right: 0.5em;
-	  box-sizing: border-box;
+    box-sizing: border-box;
   }
-	.r-box {
-		padding-left: 0.5em;
-		box-sizing: border-box;
-	}
+  .r-box {
+    padding-left: 0.5em;
+    box-sizing: border-box;
+  }
+  div.r-head-div :first-child {
+    margin-top: 0px;
+  }
+}
+@media (min-width: 768px) {
+  #head {
+    height: 8px;
+    background-color: #333;
+  }
+  .container {
+    width: 710px;
+    border: 4px solid #fafafa;
+    border-width: 0px 4px;
+  }
+  .l-box {
+    padding-right: 0.5em;
+    box-sizing: border-box;
+  }
+  .r-box {
+    padding-left: 0.5em;
+    box-sizing: border-box;
+  }
 }
 @media (min-width: 992px) {
   .container {
@@ -52,84 +82,74 @@ footer p {
 }
 
 .content {
-	font-size: 0.98em;
-	line-height: 1.8em;
+  font-size: 0.98em;
+  line-height: 1.8em;
 }
 
 .date {
-	font-size: 0.8em;
-	color: #999;
+  font-size: 0.8em;
+  color: #999;
 }
 
 .show-all {
-	font-size: 0.8em;
-	font-weight: bold;
-	color: #777;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #777;
 }
 
 @media print {
-	body {
-		margin-top: 0px;
-	}
-	
-	footer {
-		margin: 0px;
-		display: none;
-	}
-	
-	#disqus_container,
-	.sides,
-	.page-navigator,
-	hr	{
-		display: none;
-	}
-	.container {
-		padding-top: 0px;
-	}
+  body {
+    margin-top: 0px;
+  }
+  
+  footer {
+    margin: 0px;
+    display: none;
+  }
+  
+  #disqus_container,
+  .sides,
+  .page-navigator,
+  hr  {
+    display: none;
+  }
+  .container {
+    padding-top: 0px;
+  }
 }
 
 .page-title,
 .index-title,
 .well-title {
-	margin-top: 0px;
+  margin-top: 0px;
 }
 
 .page-title,
 .page-date {
-	display: inline;
+  display: inline;
 }
 .page-date {
-	margin-left: 8px;
+  margin-left: 8px;
 }
 
 ul#indexes {
-	list-style: none;
-	padding-left: 0px;
-	margin-top: 0px;
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 0px;
 }
 
 ul#indexes h3:first-child {
-	margin-top: 0px;
+  margin-top: 0px;
 }
 
 ul#indexes a {
-	font-size: 1.1em;
+  font-size: 1.1em;
 }
 ul#indexes span {
-	font-weight: bold;
-	color: #aaa;
+  font-weight: bold;
+  color: #aaa;
 }
 
 .text-right {
-	text-align: right;
+  text-align: right;
 }
-
-div h1:first-child,
-div h2:first-child,
-div h3:first-child,
-div h4:first-child,
-div h5:first-child,
-div h6:first-child {
-	margin-top: 0px;
-}
-
