@@ -5,6 +5,11 @@ layout: default
 			<div class="pure-u-1">
 				<h1 class="page-title">{{ page.title }}</h1>
 				<p class="page-date">{{ page.date | date_to_string }}</p>
+				<p class="page-tags">
+				{% for tag in page.tags %}
+					<code class="tag">{{ tag | first }}</code>
+				{% endfor %}
+				</p>
 				<hr/>
 				<div class="content">
 				{{ content }}
