@@ -1,14 +1,11 @@
 language: ruby
-
 install:
-  # speed up
-  - sudo sed -i*.bak -e "0,/require/s/require/require 'resolv-replace'\nrequire/" `which gem`
-  
-  # install Jekyll and dependencies
+  - ./rebund/run download
   - bundle install
-
 script: bundle exec rake site:deploy
-
+after_script:
+  - ./rebund/run upload
 env:
   global:
-    secure: "SKqb7+XhRkQxobCupeoiXAK9qPjkPM5ZXask8upW1U3Esy4PnpuzQDzmHVdRlOFfURab9vHpHXS+fjQC5yM2KK7WyeX841I5bkqE0JtOSAuA+AvbXl/5XJcT00Nv12nWdXSPzIswfnc55OyiLzWEwrmPMffL/8yQ2JX5DIL0K8s="
+    - REBUND_ENDPOINT=http://lacti-keyfile.herokuapp.com/
+    secure: "o15kOScoA+u4KuVRYhTXCDSq4LLgC+ojmVFtt4lBQq5IosCSANgqjO7F6Z9znz84rHa+M2gRTvTudPYub7FU/Dfg2IpGqr0TExdN4Cd2KnTwnAnh3tjaKg3vHwj7VIQ5tiGPnzWBlw3C96RSyvQQCZd2wGI22pzzDwsqS8PhWnE="
