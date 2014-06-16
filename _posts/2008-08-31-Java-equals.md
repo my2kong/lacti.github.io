@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java의 equals의 세계
-tags: java equals
+tags: java
 ---
 
 * boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 `equals`와 == 연산자는 과연 어떻게 동작할 것인가

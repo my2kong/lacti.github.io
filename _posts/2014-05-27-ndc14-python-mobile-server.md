@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 파이썬과 친구들 - 체계적이고 빠른 모바일 게임 서버 개발을 위한 최적의 도구
-tags: ndc14 python mobile
+tags: ndc14 python game-server
 ---
 
 * 모바일은 connectivity가 불안정하다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: C# UI Cross thread problem 해결
-tags: c# ui cross thread
+tags: c#
 ---
 
 다른 Thread에서 UI component에 접근하려면 문제가 발생한다. (cross thread)

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 반복자 i++과 ++i에 대한 헛소리
-tags: iterator increment
+tags: c++
 ---
 
 반복문에서 반복자를 증가시킬 때, `for ( ; ; i++)`과 `for ( ; ; ++i)`를 이야기할 때, 뭐가 빠르네 느리네 이야기가 왜 나왔을까?  

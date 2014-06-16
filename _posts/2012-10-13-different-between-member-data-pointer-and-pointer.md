@@ -1,7 +1,7 @@
 ---
 layout: post
 title: member-data-pointer와 pointer의 차이
-tags: member data pointer raw pointer
+tags: c++ pointer
 ---
 
 pointer는 메모리의 특정 공간의 주소를 지칭하기 위해 사용된다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Index Analysis
-tags: mssql index
+tags: database slide
 ---
 
 {% oembed http://www.slideshare.net/lactrious/index-analysis %}

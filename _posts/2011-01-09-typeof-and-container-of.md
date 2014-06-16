@@ -1,7 +1,7 @@
 ---
 layout: post
 title: typeof, container_of
-tags: typeof container of
+tags: c
 ---
 
 gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있었구나 ㄷㄷ  

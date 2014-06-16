@@ -1,7 +1,7 @@
 ---
 layout: post
 title: volatile과 interlocked operation
-tags: volatile interlocked operation
+tags: c++ concurrency
 ---
 
 ### volatile ###

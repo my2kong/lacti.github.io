@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버
-tags: ndc14 distributed system
+tags: ndc14 python distributed
 ---
 
 {% oembed http://www.slideshare.net/sublee/spof-mmorpg %}

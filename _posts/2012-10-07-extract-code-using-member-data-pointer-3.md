@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 멤버 데이터 포인터를 사용하여 연산식 묶어내기 3
-tags: data member pointer c++
+tags: c++ refactor pointer
 ---
 
 지난 두 글에서 사용한 전략은, 멤버에 접근하기 위한 방법을 동일한 인터페이스로 맞춰서 (첫 번째 글에서는 멤버 데이터 포인터, 두 번째 글에서는 멤버 함수 포인터) `BuffType`과 그 인터페이스를 대응시키는 방법을 사용하였다.

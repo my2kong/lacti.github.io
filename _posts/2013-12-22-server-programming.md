@@ -10,7 +10,6 @@ tags: server
 
 * 완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다.
 * 실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다.
-
 - morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다.
 - mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다.
 
@@ -22,7 +21,6 @@ io와 비동기 개념을 공부한다.
 
 * 간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다.
 * 요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다.
-
 - 여러 클라이언트와 동시에 통신해야 하는 서버를 구현한다고 하면 각 클라이언트와의 연결을 유지하면서 각각에 대한 io 작업(메시지 보내기/받기)를 수행해야 한다.
 - 이 때 io 작업을 동기적으로 처리하면 각 요청이 완료될 때까지 blocking되므로 동시에 여러 작업을 처리하기 위해서는 각각이 blocking되어도 문제 없도록 thread를 여러 개 만들거나, 비동기 io를 사용한다.
 
@@ -53,7 +51,6 @@ c++이나 java로 서버를 직접 작성하게 될 경우에는 기반 library�
 
 * event model은 메시지를 받은 즉시 처리해서 그 결과를 클라이언트에게 다시 알려주는 방식이고,
 * queue model은 받은 메시지를 queue에 쌓아두고, 서버에서 tick을 돌면서 queue에 있는 메시지를 꺼내 처리하고 그 결과를 클라이언트로 다시 알려주는 방식이다.
-
 - event model의 경우 stateless/tickless한 요청에 대한 처리를 할 때 유리하고,
 - queue model의 경우 tick 단위로 수행해야 하는 작업이 있을 때 유리하다.
 

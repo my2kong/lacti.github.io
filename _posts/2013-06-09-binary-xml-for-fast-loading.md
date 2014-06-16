@@ -1,7 +1,7 @@
 ---
 layout: post
 title: xml 기반의 데이터시트 빨리 읽기
-tags: binary xml pack
+tags: xml
 ---
 
 지금 일하고 있는 회사에서는 모든 게임 데이터를 xml로 기술하고 있다. 서버가 시작할 때 읽게 되는 xml의 양만 본다면 대략 800~900MB로 엄청난 양을 읽어야 한다. 덕분에 서버가 저 모든 데이터시트를 읽어서 메모리에 올리는 시간만 약 4~5분이 소요가 되었고, 이 시간으로 인해 발생하는 비효율은 말할 필요가 없을 정도였다.
@@ -81,7 +81,7 @@ profiling 수행 후 재미있는 결과가 나왔는데, 이는 제일 처음 �
 1. literal string의 주소는 다 동일하니까, literal 주소로 index-cache를 만든다.
 2. 이 때 다른 xml의 동일한 literal string의 주소도 같을테니까 TypeDefine의 주소도 섞어서 key로 쓴다.
 3. 없으면 TypeDefine에서 AttributeIndex를 찾아서 접근하고, 이 index를 잘 cache해둔다.
-4. stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.[/code]
+4. stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.
 
 ![attribute index cache]({{site.url}}/images/binary_xml_attribute_index_cache.png)
 

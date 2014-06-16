@@ -1,7 +1,7 @@
 ---
 layout: post
 title: pintos 부팅 과정
-tags: pintos boot
+tags: c os
 ---
 
 우리가 일반적으로 사용하는 컴퓨터 내에 존재하는 시스템은 하드 디스크 등의 보조 기억 공간을 갖고 그 기억 공간에 접근하여 동작을 수행하는데, Pintos를 수행하는 bochs는 Pintos를 빌드하여 얻어진 이미지 파일을 하드 디스크 등과 같은 storage로 인식하여 emulating을 수행한다. 하지만 Pintos는 단순히 커널만 존재하기 때문에 우리가 일반적으로 사용하는 storage와 달리 이미지 파일에는 단순히 부팅을 위한 부트 섹터와 커널 이미지만 존재하게 된다.

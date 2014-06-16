@@ -1,14 +1,14 @@
 ---
 layout: post
-title: 여의도 스터디 정리 1
-tags: concurrency volatile actor oooe
+title: concurrency 스터디
+tags: study concurrency
 ---
 
 오늘 스터디에서 공부한 내용을 간략히 정리해보자.
 
 * [Wiki: ABA problem](http://en.wikipedia.org/wiki/ABA_problem)
 * [Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms](http://www.cs.rochester.edu/u/scott/papers/1996_PODC_queues.pdf)
-* [context switching 과 simultaneously 실행]({% post_url 2011-08-02-context-switching-and-simultaneously %})
+* [context switching과 simultaneously 실행]({% post_url 2011-08-02-context-switching-and-simultaneously %})
 * [환형큐의 thread unsafety 문제]({% post_url 2012-02-23-thread-unsafety-problem-in-circular-queue %})
 
 

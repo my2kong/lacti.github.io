@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 금정 스터디 3 과제 풀이
-tags: c++ template
+title: c++ message dispatcher
+tags: study c++ template
 ---
 
 간단한 message dispatch 코드를 c++로 구현해보자. 일단 `std::function`을 안 쓰고 구현해보고, 그 다음에 `std::function`을 써서 구현해보자.

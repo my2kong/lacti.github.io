@@ -1,7 +1,7 @@
 ---
 layout: post
 title: asynchronous programming과 async, await
-tags: asynchronous programming async await
+tags: async
 ---
 
 함수를 호출하는 코드를 작성한다고 해보자. synchronous하게 호출하는 방법이 있고, asynchronous하게 호출하는 방법이 있다. (보통 후자는 호출이라고 하기보다는 요청을 한다고 할 것이다)
@@ -87,4 +87,4 @@ async call_result request_call(call_context ctx) {
 
 ### 참고 ###
 
-* [http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await](http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await)
+* [C# 5 Async, Part 1: Simplifying Asynchrony – That for which we await](http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await)

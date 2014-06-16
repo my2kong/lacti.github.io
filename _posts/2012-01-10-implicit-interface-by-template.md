@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template의 암시적 interface 요구
-tags: template implicit interface tmp
+tags: c++ tmp
 ---
 
 상속을 통한 동적 다형성을 이용하려면, 명시적인 interface가 형성되어야 한다.

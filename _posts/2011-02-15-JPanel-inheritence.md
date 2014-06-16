@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JPanel 상속
-tags: jpanel inheritence architecture
+tags: java
 ---
 
 Java에서 UI 코드를 작성할 때, 가장 많이 하는 코딩 방식이 UI Pane class를 만들고 이 class가 JPanel을 상속받는 것이다.  

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template에 의한 generic interface 정의
-tags: template generic interface
+tags: c++ tmp
 ---
 
 알고리즘 등의 일반화나 의존성 제거를 위해서 class 사이를 interface 로 쪼개는 경우가 있다.

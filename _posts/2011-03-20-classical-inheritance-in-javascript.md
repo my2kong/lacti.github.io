@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Classical Inheritance in JavaScript
-tags: classical inheritance in javascript
+tags: javascript
 ---
 
 [Classical Inheritance in JavaScript](http://javascript.crockford.com/inheritance.html)

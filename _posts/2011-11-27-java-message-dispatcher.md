@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 간단한 Message 체계 구현 (Java)
-tags: message java dispatcher
+tags: java message
 ---
 
 본 글을 객체 간의 메시지 통신이 아니라 모듈 간의 메시지 통신에 대해 다룬다.

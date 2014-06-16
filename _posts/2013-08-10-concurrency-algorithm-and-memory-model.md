@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 여의도 스터디 정리 2
-tags: peterson-algorithm memory-consistency-model lock-free-algorithm aba-problem hazard-pointer smr
+title: concurrency 알고리즘과 memory model
+tags: study concurrency memory-model
 ---
 
 오늘 스터디에서 공부한 내용을 간략히 정리해보자.
@@ -10,7 +10,8 @@ tags: peterson-algorithm memory-consistency-model lock-free-algorithm aba-proble
 
 * peterson's algorithm을 보고 여기서 비순차 실행이 일어날 때 발생하는 문제를 보고,
 * memory consistency model의 memory order를 통해 문제를 어떻게 해결할 수 있는지 본 후에,
-* lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해 * hazard pointer를 보려고 했는데
+* lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해
+* hazard pointer를 보려고 했는데
 
 순서가 꼬였다-_-
 아무튼 의도했던 순서로 정리하겠음

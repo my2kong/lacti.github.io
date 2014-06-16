@@ -1,7 +1,7 @@
 ---
 layout: post
 title: WCF를 이용하여 쉽게 만드는 모바일 게임서버
-tags: ndc14 c# wcf mobile server
+tags: ndc14 c# game-server
 ---
 
 * WebServiceHost를 사용한 모바일 rest web api 서버를 만들어보자.

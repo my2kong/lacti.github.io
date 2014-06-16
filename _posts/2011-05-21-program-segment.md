@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 프로그램 세그먼트
-tags: memory segment 
+tags: memory 
 ---
 
 (리눅스 커널의 이해 개정 3판 810쪽)  

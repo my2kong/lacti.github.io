@@ -1,7 +1,7 @@
 ---
 layout: post
 title: as you know, utf8_unicode_ci
-tags: as you know utf unicode ci
+tags: database
 ---
 
 * http://www.mysqlkorea.co.kr/sub.html?mcode=manual&scode=01&m_no=21616&cat1=10&cat2=311&cat3=329&lang=k

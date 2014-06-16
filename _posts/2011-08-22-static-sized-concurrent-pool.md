@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Concurrent Pool (Static Size)
-tags: static size concurrent pool
+tags: c++ concurrency
 ---
 
 정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자.  

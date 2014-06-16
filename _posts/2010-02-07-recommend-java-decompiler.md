@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 꽤 쓸만한 Java Decompiler
-tags: java decompiler
+tags: java
 ---
 
 [JD](http://jd.benow.ca/)

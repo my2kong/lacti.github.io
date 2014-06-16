@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 비동기 프로그래밍 패턴 2
-tags: asynchronous programming pattern async then
+tags: async pattern
 ---
 
 위 이야기에 이어, async 작업과 then 작업 간의 상태 공유에 대해서 알아보자.  

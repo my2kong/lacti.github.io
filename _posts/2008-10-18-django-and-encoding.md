@@ -1,7 +1,7 @@
 ---
 layout: post
 title: django와 encoding
-tags: django encoding database collation
+tags: database
 ---
 
 mysql의 encoding은 참 여러 곳에 존재하기 때문에 종종 까먹곤 한다.  

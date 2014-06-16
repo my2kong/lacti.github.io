@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HashSet과 ArrayList
-tags: hashset arraylist
+tags: java
 ---
 
 시간이 없으니 일단 짧게.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 데이터베이스 설계
-tags: design database
+tags: database design
 ---
 
 데이터베이스는 데이터가 모여있는 것이다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template 인자를 상속 받기
-tags: template inherits tmp
+tags: c++ tmp
 ---
 
 ```cpp

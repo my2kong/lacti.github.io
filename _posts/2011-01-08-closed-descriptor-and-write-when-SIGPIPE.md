@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 닫힌 descriptor와 write, SIGPIPE
-tags: io descriptor write sigpipe
+tags: c io
 ---
 
 예전에도 엄청 고생했던 것인데, `socket`이나 pipe 등에서

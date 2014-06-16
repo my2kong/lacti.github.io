@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 금정 스터디 3 정리
-tags: c++ template
+title: template 프로그래밍과 type erasure
+tags: study c++ template
 ---
 
 ```cpp

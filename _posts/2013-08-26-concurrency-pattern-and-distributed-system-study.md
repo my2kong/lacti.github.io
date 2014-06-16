@@ -1,10 +1,10 @@
 ---
 layout: post
-title: 여의도 스터디 정리 4
-tags: concurrency pattern reader-writer-lock pacelc actor-model fault-tolerant
+title: concurrency pattern과 분산 시스템 스터디
+tags: study concurrency distributed
 ---
 
-Concurrency Pattern부터 Distributed System까지! 근데 대충함-_-
+Concurrency Pattern부터 Distributed System까지! 근데 대충함 [...]
 
 ### [Concurrency pattern](http://en.wikipedia.org/wiki/Concurrency_pattern) ###
 

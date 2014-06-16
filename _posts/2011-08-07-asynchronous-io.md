@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 비동기 IO 함수
-tags: asynchronous io
+tags: async io
 ---
 
 IO 함수라고 하면 생소하게 느끼는 경우가 많다. IO 함수는 input / output 함수의 줄임말인데 우리가 흔히 봐왔던 함수로는 scanf와 printf가 있겠다. `scanf`는 keyboard에서 글자를 읽어(input) 오는 것이고, `printf`는 문자열을 화면으로 출력(print)하는 함수다.  

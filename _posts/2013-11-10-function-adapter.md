@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 금정 스터디 2 과제 풀이
-tags: c++ template
+title: function adapter와 type inference
+tags: study c++ template
 ---
 
 과제는 다음의 Adapter를 만들어보자는 것이다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: hso
-tags: http java object persistence
+tags: java
 ---
 
 http 기반으로 object를 server와 주고 받아 database와 연동, persistence를 구현한 ~~대충만든~~ 라이브러리이다.  

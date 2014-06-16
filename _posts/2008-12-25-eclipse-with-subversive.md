@@ -1,7 +1,7 @@
 ---
 layout: post
 title: eclipse + subversive
-tags: eclipse subversive
+tags: tool
 ---
 
 eclipse는 우연히 만나서 같이 지내오는 녀석이고,

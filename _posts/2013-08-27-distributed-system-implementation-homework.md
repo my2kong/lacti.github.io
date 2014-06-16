@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 여의도 스터디 과제 풀이 4
-tags: distributed system
+title: 분산 시스템 구현 과제 정리
+tags: study distributed
 ---
 
 뭐라도 좋으니 간단한 분산 시스템을 구현해보자!  

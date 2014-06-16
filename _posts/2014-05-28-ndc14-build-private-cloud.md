@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 모바일 게임서비스를 위한 사설 클라우드 구축/운영 분투기
-tags: ndc14 private cloud
+tags: ndc14 cloud
 ---
 
 {% oembed http://www.slideshare.net/reinkim/ndc14 %}

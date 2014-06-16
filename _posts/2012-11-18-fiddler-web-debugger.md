@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Fiddler Web Debugger
-tags: fiddler web debugger
+tags: tool
 ---
 
 써보니까 꽤 괜찮아서 잊기 전에 링크함

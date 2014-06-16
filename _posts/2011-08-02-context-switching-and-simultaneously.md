@@ -1,7 +1,7 @@
 ---
 layout: post
 title: context switching과 simultaneously 실행
-tags: context switching simultaneously
+tags: concurrency
 ---
 
 multi thread (or process) programming에서 가장 기초적인 개념으로 ABA Problem과 연결(되나?) 되는 기본적인 개념을 설명하고자 한다. 왜냐하면 지금은 multi process programming을 넘어 [클라우드 시대](http://imaso.co.kr/?doc=bbs/gnuboard.php&wr_id=37918&bo_table=article)니까! (ㅋㅋ)

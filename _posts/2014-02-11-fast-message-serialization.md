@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 빠른 메시지 만들기
-tags: message serialize
+tags: c++ message serialize
 ---
 
 [Cap'n Proto](http://kentonv.github.io/capnproto/)와 같은 무한대(?)로 빠른 메시지를 설계한다고 생각해보자. 그렇다면 우리는 어떤 점을 고민해야 할까?
@@ -73,7 +73,7 @@ struct player_message_t {
 
 이 경우 메시지의 bytes 구조는 다음과 같아진다.
 
-* `[hp] [mp] [name_offset] [atk] [def] [luck] [name-bytes]`
+* `hp` `mp` `name_offset` `atk` `def` `luck` `name-bytes`
 
 위와 같이 작성할 경우 serialize 입장에서는 큰 차이가 없다. hp, mp, atk, def, luck를 모두 write한 다음 `name_offset`의 위치를 기록하고, 마지막 부분에 `name-bytes`를 기록한다. 하지만 deserialize에서 큰 차이가 나타난다. 첫 번째 소개한대로 읽은 message buffer에 대해 단순히 `player_message_t`로 casting만 해서도 관련 정보를 모두 읽을 수 있는 구조이기 때문에, deserialize 비용이 필요 없어진다.
 
@@ -107,7 +107,7 @@ struct player_message_t {
 
 이 경우 메시지의 구조는 다음처럼 된다.
 
-* `[hp] [mp] [name_offset] [inven_offset] [inven_count] [atk] [def] [luck] [name-bytes] [inven_t-bytes]`
+* `hp` `mp` `name_offset` `inven_offset` `inven_count` `atk` `def` `luck` `name-bytes` `inven_t-bytes`
 
 그냥 string랑 똑같은데 `begin()`, `end()` method를 나누어 구현했다고 보면 된다. 다만, `end()` 함수에서 `inven_count`를 더하는 부분이 `inven_t` 크기가 고정일 경우를 가정하고 있는데, 이 부분은 null-terminated 등을 써서 가변에 대해서도 쉽게 적용할 수 있을 것이라 보기 때문에 더 이상의 자세한 설명은 생략한다. (iterator를 직접 구현하여 사용할 경우 간단히 해결할 수 있는데 그렇게까지 글을 쓰면 너무 무의미하게 길어진다.)
 

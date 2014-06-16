@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 멤버 데이터 포인터의 casting과 안정성 1
-tags: c++ member data pointer casting type safety
+tags: c++ type
 ---
 
 어제 동아리 친구와 이야기를 나누다 run-time에서는 float array를 float pointer로 casting하여 사용할 수 있는데 compile time에서는 왜 그럴 수 없냐는 이야기가 나왔다.

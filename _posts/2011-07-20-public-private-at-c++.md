@@ -1,7 +1,7 @@
 ---
 layout: post
 title: class의 public과 private
-tags: class public private
+tags: c++
 ---
 
 예전에 동아리 선배님께서 어떤 코드를 수정하시면서 하셨던 말이 있다.

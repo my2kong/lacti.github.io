@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c# 게임 서버 만들기
-tags: c# game server
+tags: c# game-server slide
 ---
 
 {% oembed http://www.slideshare.net/lactrious/c-game-server %}

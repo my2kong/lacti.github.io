@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ConsoleHandler와 System.in/out/error의 closing
-tags: consolehandler system error
+tags: java
 ---
 
 `java.util.logging`의 Logger 쓰는 맛을 들이고 있는데

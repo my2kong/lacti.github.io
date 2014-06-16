@@ -1,7 +1,7 @@
 ---
 layout: post
 title: generic한 c++ rpc 구현
-tags: c++ rpc asio
+tags: c++ rpc
 ---
 
 generic한 rpc를 간단히 구현해보자.

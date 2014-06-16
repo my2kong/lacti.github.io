@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How much faster is C++ than C#?
-tags: how much faster is c than c
+tags: c#
 ---
 
 마음에 드는 답변

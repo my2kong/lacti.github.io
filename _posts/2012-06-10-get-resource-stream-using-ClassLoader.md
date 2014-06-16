@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ClassLoader를 사용하여 Resource Stream 얻기
-tags: classloader resource stream
+tags: java
 ---
 
 ```java

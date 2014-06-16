@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 여의도 스터디 과제 풀이 1
-tags: lock atomic_int atomic_flag actor message-passing
+title: thread-safe한 counter 구현
+tags: study cpp concurrency
 ---
 
 먼저 간단한 counter example을 만들어보자.

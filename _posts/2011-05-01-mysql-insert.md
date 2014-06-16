@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MySQL INSERT
-tags: mysql insert
+tags: database
 ---
 
 요번에 만든 동아리 홈페이지의 채팅방은 `MySQL Memory Table`과 `Prototypejs`의 polling 기반이다.  

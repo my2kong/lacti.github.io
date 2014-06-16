@@ -1,7 +1,7 @@
 ---
 layout: post
 title: EventHandler와 Message Passing
-tags: eventhandler message passing
+tags: java message
 ---
 
 객체(object)는 상태(state)를 갖고 외부의 조작(mutator)에 의해서 변경될 수 있다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 개발중인 Remote Library 중간보고
-tags: remote library
+tags: java rpc
 ---
 
 PHP의 `__call method`는 해당 object의 member를 호출했을 때, 그 member가 not implement 상태이면 `__call method`로 method name과 arguments를 넘겨주는 그런 신비한 method이다.  

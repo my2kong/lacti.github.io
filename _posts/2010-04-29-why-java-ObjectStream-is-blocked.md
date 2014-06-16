@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java ObjectStream의 Input/Ouput Blocking이야기
-tags: java objectstream input ouput blocking
+tags: java
 ---
 
 Java의 `ObjectInputStream` / `ObjectOutputStream`을 사용하여 데이터 통신을 할 때 Client와 Server 양측에서 `ObjectInputStream`을 먼저 생성하면 프로그램이 더이상 진행되지 않는 경우가 있는데, 그 이유는 다음과 같다.

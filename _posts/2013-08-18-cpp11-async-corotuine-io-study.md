@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 여의도 스터디 정리 3
-tags: future promise async await asyncio asio iocp rio
+title: c++11 async, corotuine, io 스터디
+tags: study async coroutine io
 ---
 
 오늘 스터디에서 공부한 내용을 간단히 정리해보자.

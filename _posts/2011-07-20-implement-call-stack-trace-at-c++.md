@@ -1,7 +1,7 @@
 ---
 layout: post
 title: C++에서 Call Stack Trace를 만들어보자.
-tags: c++ callstack trace
+tags: c++
 ---
 
 이전에 Macro와 inline을 사용하여 log를 찍는 이야기를 했었다. 좀 더 나아가면 여러가지 재밌는 일을 할 수 있어 소개해보고자 한다.  

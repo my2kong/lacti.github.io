@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 여의도 스터디 과제 풀이 2
-tags: producer consumer spinlock actor mpsc
+title: producer/consumer model 구현
+tags: study c++ concurrency
 ---
 
 먹깨비 과제를 풀어보자. 여러 가지 구현법이 있을 것인데, 나는 간단하게
