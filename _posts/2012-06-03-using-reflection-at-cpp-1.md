@@ -8,7 +8,7 @@ mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고
 
 그렇게 고민하다가 예전에 쓴 글을 발견했다.
 
-* [c++에서 구조체 RTTI 정보 남기기]({% post_url 2011-09-30-using-rtti-at-c++ %})
+* [c++에서 구조체 RTTI 정보 남기기]({% post_url 2011-09-30-using-rtti-at-cpp %})
 
 
 기본 아이디어는 다음과 같다. 각 class마다 자신의 field에 대한 정보를 갖는다. 이름과 멤버 변수 포인터 쌍을 가진다고 보면 된다. 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데, 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다. 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다.
