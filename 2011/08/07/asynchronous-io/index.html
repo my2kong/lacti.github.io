@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="비동기 IO 함수">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="비동기 IO 함수 07 Aug 2011 IO 함수라고 하면 생소하게 느끼는 경우가 많다. IO 함수는 input / output 함수의 줄임말인데 우리가 흔히 봐왔던 함수로는 scanf와 printf가 있겠다. scanf는 keyboard에서 글자를 읽어(input) 오는 것이고, printf는 문자열을 화면으로 출력(print)하는 함수다. 이 뿐만 아니라 fprintf, fscanf 등의 파일 입출력 관련의 함수 역시 io 함수들이고, 파일 관련 Windows API인 ReadFile, WriteFile, 네트워크 통신을 위한 WSARecv, WSASend, 기타 등등 입출력 장치와 통신하기 위한 함수들은 io 함수라고 보면 된다. blocking IO 함수들은 기본적으로 blocking 모드로 동작하게 되어있다. blocking 모드는 프로그램의 수행을 멈추는 것으로 간단한 예를 보면 다음과 같다. while (true) { // 테트리스 블럭을 내린다 // 벽돌 간 충돌 검사를 한다 // 사용자의 키 입력을 받는다. scanf (&quot;%c&quot;, &amp;key); // 키 입력에 대한 처리를 한다. 혹시나..." />
+
+	<meta http-equiv="date" content="Sunday, 07  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="async,io" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>비동기 IO 함수</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">비동기 IO 함수</h1>
 				<p class="page-date">07 Aug 2011</p>
+				<hr/>
 				<div class="content">
 				<p>IO 함수라고 하면 생소하게 느끼는 경우가 많다. IO 함수는 input / output 함수의 줄임말인데 우리가 흔히 봐왔던 함수로는 scanf와 printf가 있겠다. <code>scanf</code>는 keyboard에서 글자를 읽어(input) 오는 것이고, <code>printf</code>는 문자열을 화면으로 출력(print)하는 함수다.<br>
 이 뿐만 아니라 <code>fprintf</code>, <code>fscanf</code> 등의 파일 입출력 관련의 함수 역시 io 함수들이고, 파일 관련 Windows API인 <code>ReadFile</code>, <code>WriteFile</code>, 네트워크 통신을 위한 <code>WSARecv</code>, <code>WSASend</code>, 기타 등등 입출력 장치와 통신하기 위한 함수들은 io 함수라고 보면 된다.</p>

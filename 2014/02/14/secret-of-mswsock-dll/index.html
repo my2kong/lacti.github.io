@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="mswsock.dll의 비밀">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="mswsock.dll의 비밀 14 Feb 2014 최근 회사에서 c#으로 네트워크 프로그래밍을 하고 있다. 일은 아니고 그냥 개인의 취향 나름 c#도 속도가 괜찮다는 것을 보여주려고 시작을 했는데, 진행하면서 점점 보이는 결과는 영 좋지 않다. 서버 과부하 테스트 프로그램을 c#으로 porting했다. 정말 과부하 테스트를 하려면 c++로 작성해야 맞지만 테스트 로직까지 c++로 작성하면 골치가 아프니 core는 c++, logic은 c#으로 작성하는 방법을 고민하면서 porting을 하고 있다. 하지만 그 전에 귀찮으니 일단 network core도 c#으로 작성했고 이 때 c# async io와 async/await을 대충 섞어서 작성했다. 정말 대충 짰더니 정말 성능이 대충 나온다-_-; vs analyze 기능을 통해 확인을 해보면 가장 오래 걸리는 부분이 mswsock.dll에 소속되어 있다고 나온다. 이 글은 대체 왜 mswsock.dll인가에 대한 고찰을 담은 글이다. .net Socket의 BeginReceive, EndReceive 함수를 사용하면 내부에서 pinvoke로 WSARecv 함수를 부르게..." />
+
+	<meta http-equiv="date" content="Friday, 14  2014 00:00:00 GMT" />
+
+	<meta name="keywords" content="c#,network" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>mswsock.dll의 비밀</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">mswsock.dll의 비밀</h1>
 				<p class="page-date">14 Feb 2014</p>
+				<hr/>
 				<div class="content">
 				<p>최근 회사에서 c#으로 네트워크 프로그래밍을 하고 있다. 일은 아니고 그냥 개인의 취향
 나름 c#도 속도가 괜찮다는 것을 보여주려고 시작을 했는데, 진행하면서 점점 보이는 결과는 영 좋지 않다.</p>

@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="분산 처리 환경 구현 2">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="분산 처리 환경 구현 2 07 May 2013 Github: DistWork - simplest 지난 번 글에서는 분산 처리 환경에 대한 구조를 대충 알아봤다. 이번 글에서는 대충 알아본 것 중 하나를 선택해서 C#으로 구현을 해볼 것이다. 가장 간단해보이는 M-S 모델 (master-slave)을 C#으로 구현해보자. 일단 구현하기에 앞서 간단히 설계도를 살펴보자. master에는 여러 slave가 연결한다. 각 연결된 slave는 master 내에 어떤 작업을 수행하는지/했는지 info를 갖는다. master에 command가 들어오면 수행할 work를 만든다. 연결된 slave의 info를 살펴보고 적절한 slave를 선택한 후 work를 보내준다**(distribute)**. 그러면 slave는 그 작업을 처리하고 결과를 master에게 보내주던가 한다. 위 구현을 위해서는, c# network programming 기술 c# object serialization 기술 정도만 알면 된다. 하지만 본 글에서 위 내용을 설명하는 것은 매우 무의미하기 때문에 이 부분에 대해서는 설명하지 않는다. 자세한 내용은 소스 코드의 AsyncSocketExtension.cs와..." />
+
+	<meta http-equiv="date" content="Tuesday, 07  2013 00:00:00 GMT" />
+
+	<meta name="keywords" content="c#,distributed" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>분산 처리 환경 구현 2</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">분산 처리 환경 구현 2</h1>
 				<p class="page-date">07 May 2013</p>
+				<hr/>
 				<div class="content">
 				<ul>
 <li><a href="https://github.com/lacti/DistWork/tree/simplest">Github: DistWork - simplest</a></li>

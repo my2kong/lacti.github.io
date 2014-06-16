@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="class의 public과 private">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="class의 public과 private 20 Jul 2011 예전에 동아리 선배님께서 어떤 코드를 수정하시면서 하셨던 말이 있다. &quot;왜 멤버가 다 public 으로 되어있는거야!&quot; 요즘 읽고 있는 코드에서 몇 개의 class 들이 저런 문제점을 지니고 있다. 다음 예제를 보자. class Worker { public: void DoWork(); void Run(); void Append(Work*); void Remove(Work*); Work* GetWork(int); public: volatile long workCount; Work* workArray; }; (volatile keyword를 사용한 이유는 다음에 설명하겠다) 저런 class가 있다고 할 때 저 interface만 보고 class가 무슨 일을 하는지 알 수 있을까? 이름도 적절히 Worker이고, DoWork와 Run함수를 보니 Work를 실행해주는 것 같고, Append와 Remove가 있으니 뭔가 Work를 넣었다 뺐다도 할 수 있나보다. 그리고 GetWork 라는게 있으니까 뭔가 Work 객체를 가져올 수도 있나보다. 그리고 WorkCount, WorkArray가 있으니 내부에서 Work 객체를 저장하나보네? 그런데 public? 그리고 로직..." />
+
+	<meta http-equiv="date" content="Wednesday, 20  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="c++" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>class의 public과 private</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">class의 public과 private</h1>
 				<p class="page-date">20 Jul 2011</p>
+				<hr/>
 				<div class="content">
 				<p>예전에 동아리 선배님께서 어떤 코드를 수정하시면서 하셨던 말이 있다.</p>
 

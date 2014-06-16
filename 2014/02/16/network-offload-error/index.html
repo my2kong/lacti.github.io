@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="네트워크 offload 장애">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="네트워크 offload 장애 16 Feb 2014 최근 네트워크 장비 이상 현상으로 고생을 한 적이 있다. 패킷량이 특정 이상일 때 주기적으로 throughput이 감소하는 현상을 보였던 것이다. 플랫폼팀 팀장님께서 각고의 노력 끝에 원인을 찾아내셨다. Large Send offload V2 TCP checksum offload 이 옵션이 왜 문제를 일으킬 수 있을까? 이에 대해 자세히 알아보자. Windows Forum: 랜카드 옵션 Large Send Offload 가 궁금해요 TCP 체크섬 오프로드 원래 위 옵션은 cpu로 처리해야 하는 일을 nic가 대신 처리해서 전체 성능을 높여준다는 것이다. 그런데 테스트를 진행했던 네트워크에서는 서버 머신의 nic와 switch 간의 저 옵션이 제대로 동작하지 않아서 주기적으로 문제가 발생한 것이다. 서버 머신의 nic에서 해당 옵션을 끄니 더 이상 문제가 발생하지 않았다. 재미있는 것은, 위 옵션을 끌 경우 cpu에서 처리해야할 일이 늘어나니 cpu 사용량이 늘어나야할텐데 오히려 cpu..." />
+
+	<meta http-equiv="date" content="Sunday, 16  2014 00:00:00 GMT" />
+
+	<meta name="keywords" content="network" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>네트워크 offload 장애</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">네트워크 offload 장애</h1>
 				<p class="page-date">16 Feb 2014</p>
+				<hr/>
 				<div class="content">
 				<p>최근 네트워크 장비 이상 현상으로 고생을 한 적이 있다. 패킷량이 특정 이상일 때 주기적으로 throughput이 감소하는 현상을 보였던 것이다. 플랫폼팀 팀장님께서 각고의 노력 끝에 원인을 찾아내셨다.</p>
 

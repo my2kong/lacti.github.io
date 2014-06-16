@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="member-data-pointer와 pointer의 차이">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="member-data-pointer와 pointer의 차이 13 Oct 2012 pointer는 메모리의 특정 공간의 주소를 지칭하기 위해 사용된다. float some_var = 1.0f; float* float_ptr = &amp;some_var; member data pointer는 구조체나 클래스의 특정 멤버 변수의 위치를 상대적으로 지칭하기 위해 쓰인다. 따라서 메모리 주소 값을 가지는 것이 아니라, 구조체나 클래스 객체에서 어디에 접근을 해야하는지의 정보를 담고 있다고 생각하면 된다. struct tuple_t { float first; }; typedef float tuple_t::*member_t; 때문에 실제 메모리에 접근하기 위해서는 구조체나 클래스 객체가 있어야 하고, 접근할 때에도 dereference operator를 써주어야 한다. member_t member = &amp;tuple_t::first; tuple_t tuple; tuple.*member = 100.0f; 위와 같이 tuple.*member를 통해 member가 가리키는 first 변수에 접근할 수 있었다. 이것은 tuple 객체 내에서 member가 가리키는 위치이고, tuple이라는 메모리 공간의 특정 지점에 접근을 하였으니 이제 float 값을 대입할 수 있는 것이다. 이제..." />
+
+	<meta http-equiv="date" content="Saturday, 13  2012 00:00:00 GMT" />
+
+	<meta name="keywords" content="c++" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>member-data-pointer와 pointer의 차이</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">member-data-pointer와 pointer의 차이</h1>
 				<p class="page-date">13 Oct 2012</p>
+				<hr/>
 				<div class="content">
 				<p>pointer는 메모리의 특정 공간의 주소를 지칭하기 위해 사용된다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">float</span> <span class="n">some_var</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="p">;</span>

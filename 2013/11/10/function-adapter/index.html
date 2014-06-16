@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="function adapter와 type inference">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="function adapter와 type inference 10 Nov 2013 과제는 다음의 Adapter를 만들어보자는 것이다. int sum(int a, int b) { return a + b; } void main() { Adapter&lt;int /* return-type */, int /* 1st-arg-type */, int /* 2nd-arg-type */&gt; functor1(sum, 100 /* 1st-arg */); int result1 = functor1(20); // 120 int result2 = functor1(80); // 180 } 많은 친구들이 이미 문제를 잘 풀었기 때문에 자세한 설명은 생략한다. template &lt;typename R, typename T1, typename T2&gt; struct Adapter { typedef R (*F)(T1, T2); Adapter(F func, T1 arg1) : _function(func), _arg1(arg1) {} R operator () (T2 arg2) const { return _function(_arg1, arg2); } F _function; T1 _arg1; }; 이름 잘 지어주는 것도 물론 중요하지만 이정도 코드에서는 저정도 글자만 써줘도 이해할 것 같으니 과감히 생략...." />
+
+	<meta http-equiv="date" content="Sunday, 10  2013 00:00:00 GMT" />
+
+	<meta name="keywords" content="study,c++,template" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>function adapter와 type inference</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">function adapter와 type inference</h1>
 				<p class="page-date">10 Nov 2013</p>
+				<hr/>
 				<div class="content">
 				<p>과제는 다음의 Adapter를 만들어보자는 것이다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">sum</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="p">}</span>

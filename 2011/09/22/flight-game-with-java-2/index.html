@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="자바로 만드는 비행기 게임 2">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="자바로 만드는 비행기 게임 2 22 Sep 2011 노란색 타원 대신 비행기 이미지를 제대로 띄워보자. 자바에서 이미지를 읽는 것은 간단하다. java.awt.Image ship = java.awt.Toolkit.getDefaultToolkit().getImage(&quot;player.gif&quot;); AWT에서 제공해주는 Toolkit의 helper function인 getImage 함수를 통해 이미지 객체를 얻을 수 있다. (물론 player.gif 는 프로젝트 안에 들어있어야 한다.) 그럼 이제 그리는 방법을 알아보자. 그림을 그리는 것도 당연하지만, Graphics 객체가 존재하는 paintComponent 함수에서 이루어진다. protected void paintComponent(java.awt.Graphics g) { g.drawImage(ship, shipPos.x, shipPos.y, this); } 마지막에 들어가는 this는 ImageObserver 라고 한다. Toolkit은 큰 Image를 읽어달라고 요청받으면 MediaTracker라는 요상한 것을 써서 비동기적으로 읽고 그 결과를 ImageObserver에게 알려준다. 즉, java.awt.Image ship = java.awt.Toolkit.getDefaultToolkit().getImage(&quot;veryBigShip.bmp&quot;); int shipWidth = ship.getWidth() 와 같이 했을 때 ship 객체는 아직 데이터가 읽어지지 않은 상태에서 getWidth 함수가 호출되어 저기서 반환되는 값이 이상한 값이 될 수가..." />
+
+	<meta http-equiv="date" content="Thursday, 22  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="java,game" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>자바로 만드는 비행기 게임 2</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">자바로 만드는 비행기 게임 2</h1>
 				<p class="page-date">22 Sep 2011</p>
+				<hr/>
 				<div class="content">
 				<p>노란색 타원 대신 비행기 이미지를 제대로 띄워보자.<br>
 자바에서 이미지를 읽는 것은 간단하다.</p>

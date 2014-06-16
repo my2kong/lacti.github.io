@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="서버 프로그래밍">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="서버 프로그래밍 22 Dec 2013 설계 동기화 수준과 성능(규모) 수준을 고려해서 작성한다. 완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다. 실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다. morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다. mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다. 결국 어떤 서버를 만들 것인지에 대한 기술 명세를 한 후 그에 맞는 설계/구현을 해야 한다는 것. 비동기 io와 비동기 개념을 공부한다. 간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다. 요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다. 여러 클라이언트와..." />
+
+	<meta http-equiv="date" content="Sunday, 22  2013 00:00:00 GMT" />
+
+	<meta name="keywords" content="server" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>서버 프로그래밍</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">서버 프로그래밍</h1>
 				<p class="page-date">22 Dec 2013</p>
+				<hr/>
 				<div class="content">
 				<h3>설계</h3>
 

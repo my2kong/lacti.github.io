@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요! 29 May 2014 [NDC 2014] 던전앤파이터 클라이언트 로딩 최적화 from Jaeseung Ha 하재승 요약 최적화 아이디어 공유 (분할 압축, dumpable, resource dependency) 하지만 정작 효과가 큰 방법은 버그 수정이었다. (잘못 들어간 logging 삭제) 문제 분석 유저가 만족하는 편안한 게임을 만들어 보자. 하지만 8년간 라이브를 해서 이미 코드는 누더기 상태. 기술 부채를 넘어선 기술 파산 데이터 파일 54만개 642mb, packing하면 300mb 이미지 1000만개 이상, 4.1gb 매번 HDD를 access하기 때문에 SSD는 필수이고, 메모리 사용량은 2GB를 넘어서 크래시가 발생한다. lag 최소화, 메모리 최적화, 크래시 해결, 코드 개선 등이 필요. 그 중 본 발표에서는 lag 최소화를 이야기함. eg) 클라이언트 로딩 속도 개선, 스킬 랙 개선 해결 데이터 분할 압축 packing 시 binary..." />
+
+	<meta http-equiv="date" content="Thursday, 29  2014 00:00:00 GMT" />
+
+	<meta name="keywords" content="ndc14,optimization" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!</h1>
 				<p class="page-date">29 May 2014</p>
+				<hr/>
 				<div class="content">
 				<div class="embed rich SlideShare"><iframe src="http://www.slideshare.net/slideshow/embed_code/35508014" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/JaeseungHa/ndc-2014-35508014" title="[NDC 2014] 던전앤파이터 클라이언트 로딩 최적화" target="_blank">[NDC 2014] 던전앤파이터 클라이언트 로딩 최적화</a> </strong> from <strong><a href="http://www.slideshare.net/JaeseungHa" target="_blank">Jaeseung Ha</a></strong> </div>
 

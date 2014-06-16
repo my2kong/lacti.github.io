@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Tls 초기화">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="Tls 초기화 13 Jul 2011 Tls는 Thread Local Storage로 Thread 내 전역변수라고 생각하면 간단하다(Local 인데 왠 전역!) 즉, 그냥 global 영역에 선언하는 변수는 프로그램 내에 여러 Thread 가 공유하는 자원이 되지만, Tls 로 선언한 자원들은 해당 Thread 별로 따로 갖는다고 보면 된다. (이 때문에 strtok 같은 함수도 내부에서 static 변수를 써도 Tls 로 선언하면 Multithread 에서도 문제가 없다는 것) 그런데, Tls 는 생성자/소멸자가 정의된 객체에 대해 사용할 수가 없다. 따라서 primitive type, pointer, 그냥 구조체만 선언해서 쓸 수 있게 된다. __declspec(thread) int tlsValue; __descspec(thread) struct { char header[32]; char body[64]; char tail[16]; } tlsChunk; 그 외의 객체를 쓰고 싶으면 객체의 포인터를 Tls 선언해서 각 Thread 마다 객체를 동적할당(new)하여 사용해야하는 것이다. typedef std::vector&lt;std::string&gt; Strings; typedef Strings* StringsPtr; __declspec(thread) StringsPtr tlsStrings; void..." />
+
+	<meta http-equiv="date" content="Wednesday, 13  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="c++" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>Tls 초기화</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">Tls 초기화</h1>
 				<p class="page-date">13 Jul 2011</p>
+				<hr/>
 				<div class="content">
 				<p>Tls는 <code>Thread Local Storage</code>로 Thread 내 전역변수라고 생각하면 간단하다(Local 인데 왠 전역!)<br>
 즉, 그냥 global 영역에 선언하는 변수는 프로그램 내에 여러 Thread 가 공유하는 자원이 되지만, Tls 로 선언한 자원들은 해당 Thread 별로 따로 갖는다고 보면 된다.<br>

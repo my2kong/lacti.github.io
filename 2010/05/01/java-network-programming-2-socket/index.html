@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="자바 네트워크 프로그래밍 2 - Socket">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="자바 네트워크 프로그래밍 2 - Socket 01 May 2010 자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자. Socket 전 글에서 네트워크 통신을 사람 간의 전화로 비유했었다. 네트워크 통신을 한다는 것은 NIC(Network Interface Controller)를 사용하여 데이터를 주고 받겠다는 것이고 이는 하드웨어를 제어해야 한다는 뜻이다. 하드웨어는 운영체제가 관리하고 있는 자원이기 때문에 일반 프로그램들이 접근할 수 없다. 처음 c/c++ 배울 때 사용했떤 파일 읽기/쓰기도 하드디스크라는 하드웨어 자원을 쓰는데 잘은 몰랐지만 프로그램이 제어를 했었다. 그 이유는 모르는 사이에 open, read, write와 같은 운영체제가 제공하는 API를 사용했기 때문이다. 요약하자면, 하드웨어 자원은 운영체제가 관리하니 운영체제가 제공하는 API를 사용하여 프로그래밍을 해야 한다는 것이다. 고로 네트워크 프로그래밍을 하기 위해 운영체제가 주는 API가 있는데 그것이 바로 소켓:Socket이라고 보면 되겠다. 짧은 지식으로는 더 잘 설명할..." />
+
+	<meta http-equiv="date" content="Saturday, 01  2010 00:00:00 GMT" />
+
+	<meta name="keywords" content="java" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>자바 네트워크 프로그래밍 2 - Socket</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">자바 네트워크 프로그래밍 2 - Socket</h1>
 				<p class="page-date">01 May 2010</p>
+				<hr/>
 				<div class="content">
 				<p>자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자.</p>
 

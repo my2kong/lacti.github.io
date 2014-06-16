@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="MySQL INSERT">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="MySQL INSERT 01 May 2011 요번에 만든 동아리 홈페이지의 채팅방은 MySQL Memory Table과 Prototypejs의 polling 기반이다. 따라서 사용자가 꽤 접속하면 apache가 좀 힘들어할 수는 있지만, 그 양을 정량적으로 계산해봤을 때 크게 무리가 없다고 판단, 과도한 용도가 아닌 경우에서는 써도 괜찮겠다 싶어서 구현해놨다. 어차피 나중에 부분 update와 websocket으로만 치환해놓으면 되겠지. 그건 그렇고 MySQL의 INSERT문과 UPDATE문을 같이 쓰고 싶을 때, UPDATE를 먼저 시도하고 affected된 row의 수를 확인하거나 query의 성공여부를 확인해서 INSERT를 썼는데, 이게 생각보다 잘 안된다. Memory Table이라서 그런건지 이유는 잘 모르겠는데 저 두 동작을 하나의 질의어로 합치고 싶었으나 내 지식선에서는 아는 바가 없었다. 그런데 찾아보니, http://dev.mysql.com/doc/refman/5.5/en/insert.html http://dev.mysql.com/doc/refman/5.5/en/insert-on-duplicate.html ON DUPLICATE KEY UPDATE라는 재밌는 문법이 있다. INSERT를 실패했는데 그 이유가 DUPLICATE KEY라면 UPDATE를 수행하라는 것이니, 이것을 사용하면 위 문제가 깔끔하게 해결된다. 역시 사람은..." />
+
+	<meta http-equiv="date" content="Sunday, 01  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="database" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>MySQL INSERT</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">MySQL INSERT</h1>
 				<p class="page-date">01 May 2011</p>
+				<hr/>
 				<div class="content">
 				<p>요번에 만든 동아리 홈페이지의 채팅방은 <code>MySQL Memory Table</code>과 <code>Prototypejs</code>의 polling 기반이다.<br>
 따라서 사용자가 꽤 접속하면 apache가 좀 힘들어할 수는 있지만, 그 양을 정량적으로 계산해봤을 때 크게 무리가 없다고 판단, 과도한 용도가 아닌 경우에서는 써도 괜찮겠다 싶어서 구현해놨다.</p>

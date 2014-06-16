@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버 28 May 2014 [야생의 땅: 듀랑고] 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버 from Heungsub Lee 이흥섭 요약 gevent를 믿고 ØMQ를 통해 객체/서버 시야 개념을 바탕으로 서버간 정보 동기화를 한다. 정보가 동기화되었으니 서버가 다중화되었다고 치고, 서버 말고는 다 튼튼하니 SPOF가 없다. (ELB 튼튼, couchbase 튼튼) 하지만 무중단 패치나 서버 다운으로 인한 client의 server connection 이전은 고민 중. 목표 실시간 동기화되는, 영속성 있고, 심리스인, 단일 세계를 구현해보자. 높은 가용성, 높은 가용률, 높은 신축성이 목표 따라서 SPOF는 허용하지 않는다. 구현 python open source를 통해 생산성을 높임. 연산이 느리고 multi threading이 미흡하지만, 대부분은 io bound 작업(inter-server communication)이기 때문에 필요한 부분(serialize, deserialize)만 c로 작성하면 되겠다. gevent sync/async io, coroutine, monkey patch, microthread inter-server communication..." />
+
+	<meta http-equiv="date" content="Wednesday, 28  2014 00:00:00 GMT" />
+
+	<meta name="keywords" content="ndc14,python,distributed" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">프로젝트K 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</h1>
 				<p class="page-date">28 May 2014</p>
+				<hr/>
 				<div class="content">
 				<div class="embed rich SlideShare"><iframe src="http://www.slideshare.net/slideshow/embed_code/35288078" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/sublee/spof-mmorpg" title="[야생의 땅: 듀랑고] 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버" target="_blank">[야생의 땅: 듀랑고] 서버 아키텍처 - SPOF 없는 분산 MMORPG 서버</a> </strong> from <strong><a href="http://www.slideshare.net/sublee" target="_blank">Heungsub Lee</a></strong> </div>
 

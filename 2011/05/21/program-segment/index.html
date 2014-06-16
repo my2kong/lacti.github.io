@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="프로그램 세그먼트">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="프로그램 세그먼트 21 May 2011 (리눅스 커널의 이해 개정 3판 810쪽) 유닉스 프로그램의 선형 주소 공간은 논리적인 관점으로 볼 때 몇 개의 선형 주소 구간으로 나뉘어있다 텍스트 세그먼트는 실행 코드를 포함하고, 초기화된 데이터 세그먼트는 초기화된 데이터, 즉 정적 변수(static variable)와 전역 변수(global variable)의 초기 값이 지정된 경우 그 값 자체가 실행 파일에 저장되어 포함되고, 초기화되지 않은 데이터 세그먼트는 초기화되지 않은 데이터, 즉 초기값을 지정하지 않은 모든 전역 변수를 포함하고, 스택 세그먼트는 반환주소, 매개변수, 실행하는 함수의 지역 변수 등을 담은 프로그램 스택을 포함한다. 이에 대해 linux에서는 memory descriptor (mm_struct 구조체)에서 관리를 하는데, 이번에 면접을 볼 때, 지나가는 형식으로 해당 문제가 나왔다. 함수 내 static 변수와, 전역(global) 변수가 같은 메모리 공간에 할당되는가? 내 대답은 그럴 것 같군요 이었고, 문제를 내신 분께서는 사실은..." />
+
+	<meta http-equiv="date" content="Saturday, 21  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="memory" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>프로그램 세그먼트</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">프로그램 세그먼트</h1>
 				<p class="page-date">21 May 2011</p>
+				<hr/>
 				<div class="content">
 				<p>(리눅스 커널의 이해 개정 3판 810쪽)<br>
 유닉스 프로그램의 선형 주소 공간은 논리적인 관점으로 볼 때 몇 개의 선형 주소 구간으로 나뉘어있다</p>

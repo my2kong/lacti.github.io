@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="django와 encoding">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="django와 encoding 18 Oct 2008 mysql의 encoding은 참 여러 곳에 존재하기 때문에 종종 까먹곤 한다. table 자체의 collation과 field의 collation은 늘 인식하고 있는 존재이기는 한데, database 자체도 collation이 있다는 것을 깜빡한다. 이게 무슨 영향을 끼칠 수 있냐하면 구조적으로 database와 table, 그리고 field는 collation을 상속받는 구조이기 때문에 table을 만들 때 collation을 명시하지 않으면 database의 collation을 상속받고, field 역시 table의 collation과 운명을 같이 하는 것이다. django의 Model class는 db에 해당 객체를 tuple로 집어넣어주는 save란 method를 지원한다. 근데 한글 데이터를 넣는데 자꾸 뭐라뭐라 warning exception을 띄우는 것이다 코드를 백방으로 고치다가 안 되어서 이상해서 해당 table의 tuple 현황을 보니까 이름과 nickname에 ???로 들어간 것이다. collation을 확인해보니 역시 latin1_swedish이다. 그래서 tuple은 들어가지만 제대로 안 들어가고 깨진다는 warning이 나오는 것이었다. 그런데 그걸 인지 못하고 unicode 문제인가..." />
+
+	<meta http-equiv="date" content="Saturday, 18  2008 00:00:00 GMT" />
+
+	<meta name="keywords" content="database" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>django와 encoding</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">django와 encoding</h1>
 				<p class="page-date">18 Oct 2008</p>
+				<hr/>
 				<div class="content">
 				<p>mysql의 encoding은 참 여러 곳에 존재하기 때문에 종종 까먹곤 한다.<br>
 table 자체의 collation과 field의 collation은 늘 인식하고 있는 존재이기는 한데, database 자체도 collation이 있다는 것을 깜빡한다.</p>

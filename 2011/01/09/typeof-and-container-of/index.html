@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="typeof, container_of">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="typeof, container_of 09 Jan 2011 gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있었구나 ㄷㄷ typeof 어떤 struct 내부 변수의 주소와 그 struct의 typename을 알 때, struct 변수의 시작 주소를 알아내는 container_of라는 매크로에 대해 동아리 친구와 잠깐 이야기했던 적이 있다. 간단히 설명하면 ((type *) NULL)-&gt;var는 분명히 access violation이 나겠지만, 주소를 얻어내는 &amp; 연산자가 붙으면 컴파일러에서 실행 전(!)에 주소 값을 구해주기 때문에 &amp;((type *) NULL)-&gt;var는 해당 struct 변수에서 멤버 변수의 주소가 얼마나 떨어져있나를 알 수 있게 된다.. 해당 멤버 변수의 주소를 알게 되면, 덕분에 저 &quot;떨어진 길이&quot;를 역으로 빼서 struct 변수의 주소를 구할 수 있다. &laquo; 당연하지만 간과하는 size_t ssize_t &raquo; bash 참조 사이트 var disqus_shortname = 'lacti'; (function() { var dsq = document.createElement('script'); dsq.type..." />
+
+	<meta http-equiv="date" content="Sunday, 09  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="c" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>typeof, container_of</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">typeof, container_of</h1>
 				<p class="page-date">09 Jan 2011</p>
+				<hr/>
 				<div class="content">
 				<p>gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있었구나 ㄷㄷ<br>
 <a href="http://gcc.gnu.org/onlinedocs/gcc/Typeof.html">typeof</a></p>

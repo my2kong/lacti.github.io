@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담 28 May 2014 요약 linux 모르는 windows 개발자가 linux에 redis깔고 lua script 돌렸습니다. 내용 CSO에 실시간 랭킹 구현 요청에 따라 redis를 도입 db는 어렵고 sql 못하니 유지보수 못하고 신규 서버 만드려니 구현 부담이 너무 큼 근데 windows redis는 unofficial임 따라서 ubuntu 깔고 redis 설치 sentinel 써서 master/slave 구축을 해 failover하도록 구성해야 했는데 못 함 client library로 hiredis를 썼는데 linux library라서 porting을 할까 하다가 그냥 windows redis에 붙어있는 library 씀 최신 버전을 깔고 싶은데 package repo에 버전이 옛날 것. PPA라는 좋은 물건이 있어요! cron 설명, pscp 설명 rdb, aof로 백업해서 windows에 둠 rdb는 redis desktop manager로 열어보면 좋음 live 운영 실수로 redis, rdb 모두 날림. aof로 복구함 redis lua script 설명..." />
+
+	<meta http-equiv="date" content="Wednesday, 28  2014 00:00:00 GMT" />
+
+	<meta name="keywords" content="ndc14,server" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담</h1>
 				<p class="page-date">28 May 2014</p>
+				<hr/>
 				<div class="content">
 				<h3>요약</h3>
 

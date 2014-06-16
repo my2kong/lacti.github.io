@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="분산 처리 환경 구현 1">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="분산 처리 환경 구현 1 22 Apr 2013 잉여 컴퓨팅 자원을 십분 활용하여 처리량을 늘리기 위한 분산 처리 환경을 구축해보자. (hadoop, incredibuild 같은 프로그램을 만드려면 어떤 고민이 필요한지 생각해볼 수 있겠다.) 자세하게 파고들면 밑도 끝도 없을테니 간단하게 살펴보자. 분산 처리 환경을 구축할 때 적어도 다음의 항목에 대한 고민이 필요하다. 플랫폼은 무엇을 사용할 것인가? 언어는 무엇을 사용할 것인가? p2p로 만들 것인가, master-slave로 만들 것인가? 물론 더 고민할 것이 많겠지만 일단 위 정도만 고민해도 간단한 체계는 만들 수 있다. 다양한 플랫폼을 고려할 때 jvm같이 밑단이 있는 녀석을 사용하거나 script 언어를 사용할 경우에는 native 언어를 사용할 때에 비해 target별로 cross-compile해줄 수고를 덜 수 있다는 장점이 있다. 반면 수행 속도가 중요할 경우에는 native 언어를 사용해야 할 수도 있다. 본 글에서는 귀찮으니 windows, c#, master-slave로..." />
+
+	<meta http-equiv="date" content="Monday, 22  2013 00:00:00 GMT" />
+
+	<meta name="keywords" content="c#,distributed" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>분산 처리 환경 구현 1</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">분산 처리 환경 구현 1</h1>
 				<p class="page-date">22 Apr 2013</p>
+				<hr/>
 				<div class="content">
 				<p>잉여 컴퓨팅 자원을 십분 활용하여 처리량을 늘리기 위한 분산 처리 환경을 구축해보자.<br>
 (hadoop, incredibuild 같은 프로그램을 만드려면 어떤 고민이 필요한지 생각해볼 수 있겠다.)</p>

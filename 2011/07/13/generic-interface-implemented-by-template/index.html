@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="template에 의한 generic interface 정의">
 	<meta name="author" content="lacti">
+
+	<meta name="description" content="template에 의한 generic interface 정의 13 Jul 2011 알고리즘 등의 일반화나 의존성 제거를 위해서 class 사이를 interface 로 쪼개는 경우가 있다. 나는 C++ 보다는 Java가 더 익숙해서 template보다는 interface나 generics를 사용하는게 더 익숙한 편이다. 그래서 저번 자료구조 숙제를 할 때도 당황했던 것이, Iterator나 List 에 대해 Vector나 LinkedList를 구현할 때, 먼저 Interface를 정의하고 그것에 대해 구현하려 했던 것이다. template &lt;class T&gt; class Iterator { public: virtual Iterator&amp; operator ++ (void) = 0; virtual T&amp; operator -&gt; (void) = 0; }; 물론 더 많은 method가 필요하겠지만 이정도로 하자. ++ 연산자에 대해 overloading을 하면서 그걸 virtual로 만들고 있다. 그러면 Iterator를 상속받는 녀석은 다음과 같다. template &lt;class T&gt; class VectorIterator : public Iterator&lt;T&gt; { public: virtual Iterator&amp; operator ++ (void) { /* pointing..." />
+
+	<meta http-equiv="date" content="Wednesday, 13  2011 00:00:00 GMT" />
+
+	<meta name="keywords" content="c++,tmp" />
+
+	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>template에 의한 generic interface 정의</title>
-  <link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
+	<link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet">
 	<link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet">
 	<link href="/css/markdownpad-github.css" rel="stylesheet">
 	<link href="/css/syntax.css" rel="stylesheet">
@@ -19,6 +26,7 @@
 			<div class="pure-u-1">
 				<h1 class="page-title">template에 의한 generic interface 정의</h1>
 				<p class="page-date">13 Jul 2011</p>
+				<hr/>
 				<div class="content">
 				<p>알고리즘 등의 일반화나 의존성 제거를 위해서 class 사이를 interface 로 쪼개는 경우가 있다.
 나는 C++ 보다는 Java가 더 익숙해서 template보다는 interface나 generics를 사용하는게 더 익숙한 편이다.</p>
