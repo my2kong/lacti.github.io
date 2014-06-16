@@ -1,7 +1,10 @@
 language: ruby
 
 install:
-  # Install Jekyll and dependencies
+  # speed up
+  - sudo sed -i*.bak -e "0,/require/s/require/require 'resolv-replace'\nrequire/" `which gem`
+  
+  # install Jekyll and dependencies
   - bundle install
 
 script: bundle exec rake site:deploy
