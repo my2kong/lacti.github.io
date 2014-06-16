@@ -1,7 +1,7 @@
 ---
 layout: post
 title: websocket, webRTC
-tags: websocket webrtc
+tags: web
 ---
 
 * [websocket.org](http://www.websocket.org/)

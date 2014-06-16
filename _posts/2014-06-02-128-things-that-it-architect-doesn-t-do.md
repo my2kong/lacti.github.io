@@ -1,7 +1,7 @@
 ---
 layout: post
 title: IT 아키텍트가 하지 말아야 할 128가지
-tags: book architect
+tags: book design
 ---
 
 [IT 아키텍트가 하지 말아야 할 128가지](http://www.roadbook.co.kr/73)  

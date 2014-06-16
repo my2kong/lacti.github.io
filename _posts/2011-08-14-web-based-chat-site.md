@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 웹 기반 채팅방
-tags: web push
+tags: web
 ---
 
 동아리에는 현재 대충 그지같이 만들어놓은 채팅방이 있다. ~~내가 만들었다 orz~~  

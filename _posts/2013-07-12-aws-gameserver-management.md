@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AWS를 이용한 서버 운영
-tags: aws game-server slide
+tags: server slide
 ---
 
 {% oembed http://www.slideshare.net/lactrious/aws-gameserver-management %}

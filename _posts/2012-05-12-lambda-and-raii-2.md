@@ -1,7 +1,7 @@
 ---
 layout: post
 title: lambda와 RAII 2
-tags: c++ raii
+tags: c++
 ---
 
 C++11은 lambda expression을 지원해주니 좀 다르게 생각해볼 수 있다.

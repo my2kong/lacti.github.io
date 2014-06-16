@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 범용 게임 서버 프레임워크 디자인 및 테크닉
-tags: ndc14 design game-server
+tags: ndc14 server design
 ---
 
 {% oembed http://www.slideshare.net/iFunFactory/20140524-ndc-sharing %}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: preprocessor programming
-tags: c++ preprocessor slide
+tags: c++ slide
 ---
 
 {% oembed http://www.slideshare.net/lactrious/preprocessor-programming %}

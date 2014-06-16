@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 라이브 상황에서 윈도우 서버 개발자가 겪은 좌충우돌 Redis 적용 경험담
-tags: ndc14 redis
+tags: ndc14 server
 ---
 
 ### 요약 ###

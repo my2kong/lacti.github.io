@@ -1,7 +1,7 @@
 ---
 layout: post
 title: bash 참조 사이트
-tags: bash
+tags: tool
 ---
 
 * http://www.faqs.org/docs/Linux-HOWTO/Bash-Prog-Intro-HOWTO.html

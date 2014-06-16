@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++ 에서 구조체 RTTI 정보 남기기
-tags: c++ rtti
+tags: c++
 ---
 
 RTTI는 Run-time Type Information의 약자로, 실행 중에 어떤 type에 대한 정보를 알 수 있다는 것이다. 보통 type 에 대한 정보는 컴파일 타임에 다 사용되고, 실행 중에는 없어지는데, 실행 중에 이 정보를 얻을 수 있으면 재밌는 일을 많이 할 수 있다.

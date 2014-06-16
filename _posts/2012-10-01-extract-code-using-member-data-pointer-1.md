@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 멤버 데이터 포인터를 사용하여 연산식 묶어내기 1
-tags: c++ refactor pointer
+tags: c++ refactor
 ---
 
 게임 내 스탯 시스템을 구현한다고 해보자. 그 스탯들은 여러 상황에서 버프에 의해 값이 변경될 수 있기 때문에

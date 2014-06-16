@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 모바일 데이터 분석
-tags: ndc14 mobile data-mining
+tags: ndc14 mobile data
 ---
 
 {% oembed http://www.slideshare.net/5rocks_io/ndc-20140529 %}
