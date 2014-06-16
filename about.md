@@ -13,6 +13,7 @@ title: about me
 * [github](https://github.com/lacti)
 * [twitter](https://twitter.com/lacti)
 * [linkedin](http://www.linkedin.com/pub/jaeyoung-choi/99/243/861)
+* [slideshare](http://www.slideshare.net/lactrious/presentations)
 
 ### career
 
