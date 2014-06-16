@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="HashSet과 ArrayList 20 Mar 2010 시간이 없으니 일단 짧게. 어떤 equals, hashCode가 구현된 Entity object를 HashSet에 추가한 뒤, 그 object에 대한 reference 변수를 사용하여 저 두 함수의 결과에 영향을 주는 field 값을 변경할 경우, HashSet은 contains가 false를 반환하는 반면, ArrayList는 contains에서 true를 반환함. ArrayList는 전체 대상에 대해 equals를 수행하지만, HashSet은 hashCode 값을 가지고 검색을 하기 때문에 false가 반환된다. Entity entity = new Entity(&quot;lacti&quot;, &quot;lactrious@gmail.com&quot;); set.add (entity); entity.setName (&quot;choi&quot;); set.contains (entity); // false list.add (entity); entity.setName (&quot;choi&quot;); list.contains (entity); // true &laquo; 개발중인 remotelib 중간보고 &raquo; Java ObjectStream의 Input/Ouput Blocking이야기 var disqus_shortname = 'lacti'; (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq); })(); Please enable JavaScript to..." />
+	<meta name="description" content="HashSet과 ArrayList 20 Mar 2010 java 시간이 없으니 일단 짧게. 어떤 equals, hashCode가 구현된 Entity object를 HashSet에 추가한 뒤, 그 object에 대한 reference 변수를 사용하여 저 두 함수의 결과에 영향을 주는 field 값을 변경할 경우, HashSet은 contains가 false를 반환하는 반면, ArrayList는 contains에서 true를 반환함. ArrayList는 전체 대상에 대해 equals를 수행하지만, HashSet은 hashCode 값을 가지고 검색을 하기 때문에 false가 반환된다. Entity entity = new Entity(&quot;lacti&quot;, &quot;lactrious@gmail.com&quot;); set.add (entity); entity.setName (&quot;choi&quot;); set.contains (entity); // false list.add (entity); entity.setName (&quot;choi&quot;); list.contains (entity); // true &laquo; 개발중인 remotelib 중간보고 &raquo; Java ObjectStream의 Input/Ouput Blocking이야기 var disqus_shortname = 'lacti'; (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq); })(); Please enable JavaScript..." />
 
 	<meta http-equiv="date" content="Saturday, 20  2010 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">20 Mar 2010</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">java</code>
 				
 				</p>
 				<hr/>

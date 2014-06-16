@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="함수 값 반환 방법[어셈블리] 18 Oct 2009 함수에서의 값 반환이 실제로 기계어 수준에서는 어떻게 이루어지는지 알아보자. 참고 assembly 정도는 알고 있어야 무얼 이야기하고자 하는지 알 수 있다. 아래의 코드들은 gcc((Debian 4.3.4-5) 4.3.4) + gdb(6.8.50.20090628-cvs-debian)인 curs-server에서 실험한 것이다. vs환경에서 해보면 좀 다를 것 같다. 본문 함수는 1-2 공전계 시간에 배우고, 함수 호출 원리는 2-1 컴퓨터시스템 시간에 PC 조작과 스택에 return address를 어떻게 넣고 불러오느냐로 배우고, 그걸 직접 짜보는 것은 3-1 CA 시간에 해보았지만, 의외로 함수 값 반환 방법은 자세히 배워본 적이 없다. 보통 우리가 알고 있는 함수 값 반환 방식은 eax에다 반환할 값을 넣고 함수 코드를 ret하면 호출지점 코드에서 eax에 있는 값을 가져오는 것이다. 하지만 eax는 IA32 register로 그 크기가 32bit, 즉 4byte인데 이 크기를 넘어가는 걸 반환하는건 어떻게 할 것인가가..." />
+	<meta name="description" content="함수 값 반환 방법[어셈블리] 18 Oct 2009 c 함수에서의 값 반환이 실제로 기계어 수준에서는 어떻게 이루어지는지 알아보자. 참고 assembly 정도는 알고 있어야 무얼 이야기하고자 하는지 알 수 있다. 아래의 코드들은 gcc((Debian 4.3.4-5) 4.3.4) + gdb(6.8.50.20090628-cvs-debian)인 curs-server에서 실험한 것이다. vs환경에서 해보면 좀 다를 것 같다. 본문 함수는 1-2 공전계 시간에 배우고, 함수 호출 원리는 2-1 컴퓨터시스템 시간에 PC 조작과 스택에 return address를 어떻게 넣고 불러오느냐로 배우고, 그걸 직접 짜보는 것은 3-1 CA 시간에 해보았지만, 의외로 함수 값 반환 방법은 자세히 배워본 적이 없다. 보통 우리가 알고 있는 함수 값 반환 방식은 eax에다 반환할 값을 넣고 함수 코드를 ret하면 호출지점 코드에서 eax에 있는 값을 가져오는 것이다. 하지만 eax는 IA32 register로 그 크기가 32bit, 즉 4byte인데 이 크기를 넘어가는 걸 반환하는건 어떻게 할..." />
 
 	<meta http-equiv="date" content="Sunday, 18  2009 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">18 Oct 2009</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c</code>
 				
 				</p>
 				<hr/>

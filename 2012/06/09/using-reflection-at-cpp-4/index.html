@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="c++에서 reflection 사용하기 4 09 Jun 2012 이전 글에서는 자료구조가 선언된 header파일을 여러 번 include하면 문제가 발생했었다. 하지만 이리저리 참조가 되다보면 각 번역 단위에서 include가 한 번만 되는 것은 굉장히 힘든 일일 것이다. 따라서 본 글에서는 매크로를 잘 정의해서 선언 header파일이 구조체 선언, reflection 등록 딱 2번만 include가 될 수 있도록 만들어볼 것이다. 이전 글(#3)의 소스 코드 내의, reset_type_macro.h type_declare_macro.h type_register_macro.h user.h 가 이번 글의 타겟이 될 것이다. #include를 하는 phase는 2단계로 나뉜다. 첫 번째는 구조체를 선언하기 위한 단계로 DECLARE_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 DECLARE 매크로가 사용되어야 하므로, 이 시점에서는 type_declare_macro.h가 include된 상태이어야 한다. 두 번째는 선언된 구조체의 reflection 정보를 등록하는 단계로 REGISTER_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 REFLECTION_REGISTER 매크로가 사용되어야 하므로, 이 시점에서는 type_register_macro.h가 include된 상태이어야 한다. 두..." />
+	<meta name="description" content="c++에서 reflection 사용하기 4 09 Jun 2012 c++ reflection 이전 글에서는 자료구조가 선언된 header파일을 여러 번 include하면 문제가 발생했었다. 하지만 이리저리 참조가 되다보면 각 번역 단위에서 include가 한 번만 되는 것은 굉장히 힘든 일일 것이다. 따라서 본 글에서는 매크로를 잘 정의해서 선언 header파일이 구조체 선언, reflection 등록 딱 2번만 include가 될 수 있도록 만들어볼 것이다. 이전 글(#3)의 소스 코드 내의, reset_type_macro.h type_declare_macro.h type_register_macro.h user.h 가 이번 글의 타겟이 될 것이다. #include를 하는 phase는 2단계로 나뉜다. 첫 번째는 구조체를 선언하기 위한 단계로 DECLARE_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 DECLARE 매크로가 사용되어야 하므로, 이 시점에서는 type_declare_macro.h가 include된 상태이어야 한다. 두 번째는 선언된 구조체의 reflection 정보를 등록하는 단계로 REGISTER_PHASE라고 하겠다. 이 때 STRUCT 매크로들은 REFLECTION_REGISTER 매크로가 사용되어야 하므로, 이 시점에서는 type_register_macro.h가 include된 상태이어야..." />
 
 	<meta http-equiv="date" content="Saturday, 09  2012 00:00:00 GMT" />
 
@@ -28,9 +28,9 @@
 				<p class="page-date">09 Jun 2012</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
-					<code class="tag"></code>
+					<code class="tag">reflection</code>
 				
 				</p>
 				<hr/>

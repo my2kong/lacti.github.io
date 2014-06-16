@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="메시지 enum에 따른 message 콜백 함수 자동생성 19 Nov 2013 일단 message에 대한 기본 type과 각 message을 구분하기 위한 enum이 있다. struct message_base_t {}; enum message_enum { message1, message2, message3, message_count, }; message과 enum 값을 쉽게 연결하기 위해 중간 층을 도입한다. template &lt;int code&gt; struct message_enum_t : public message_base_t { enum { enum_value = code }; }; 이제 message을 만든다. struct message_struct_1 : public message_enum_t&lt;message1&gt; {}; struct message_struct_2 : public message_enum_t&lt;message2&gt; {}; struct message_struct_3 : public message_enum_t&lt;message3&gt; {}; 기본적인 handler는 다음과 같이 단순하게 정의할 수 있다. typedef void (*base_handler_t)(const message_base_t&amp;); dispatch를 위해 handler에 대한 table을 하나 만들어둔다. typedef std::array&lt;base_handler_t, message_count&gt; handler_table_t; static handler_table_t _handler_table_t; 일단 등록된 handler가 없어도 서버 동작에 문제가 없도록 하기 위해 빈 handler로 초기화를 해준다. static void..." />
+	<meta name="description" content="메시지 enum에 따른 message 콜백 함수 자동생성 19 Nov 2013 c++ message 일단 message에 대한 기본 type과 각 message을 구분하기 위한 enum이 있다. struct message_base_t {}; enum message_enum { message1, message2, message3, message_count, }; message과 enum 값을 쉽게 연결하기 위해 중간 층을 도입한다. template &lt;int code&gt; struct message_enum_t : public message_base_t { enum { enum_value = code }; }; 이제 message을 만든다. struct message_struct_1 : public message_enum_t&lt;message1&gt; {}; struct message_struct_2 : public message_enum_t&lt;message2&gt; {}; struct message_struct_3 : public message_enum_t&lt;message3&gt; {}; 기본적인 handler는 다음과 같이 단순하게 정의할 수 있다. typedef void (*base_handler_t)(const message_base_t&amp;); dispatch를 위해 handler에 대한 table을 하나 만들어둔다. typedef std::array&lt;base_handler_t, message_count&gt; handler_table_t; static handler_table_t _handler_table_t; 일단 등록된 handler가 없어도 서버 동작에 문제가 없도록 하기 위해 빈 handler로 초기화를 해준다...." />
 
 	<meta http-equiv="date" content="Tuesday, 19  2013 00:00:00 GMT" />
 
@@ -28,9 +28,9 @@
 				<p class="page-date">19 Nov 2013</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
-					<code class="tag"></code>
+					<code class="tag">message</code>
 				
 				</p>
 				<hr/>

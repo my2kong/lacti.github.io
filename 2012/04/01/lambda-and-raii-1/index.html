@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="lambda와 RAII 1 01 Apr 2012 C++11 에서 도입된 lambda expression을 통한 RAII 구현 방식의 한 예와, 단위 전략을 통한 RAII 구현을 통해 장단점을 비교해보자. Wiki: Resource Acquisition Is Initialization(RAII)는 scope 내의 정적으로 할당되는 객체의 생존 주기로 생성자와 소멸자가 쌍으로 호출되는 것을 사용하는 자원 관리 기법이다. 보통 IO (열었으면 닫아야하니까), 메모리 (할당했으면 해제해야하니까, shared_ptr도 AddReference 했으면 ReleaseReference) Lock (Lock 걸었으면 Unlock 해줘야하니까) 등에서 사용된다. 본 글에서는 Lock을 사용하여 예를 들어보자. class lock_t { public: void lock(); void unlock(); }; 위와 같은 lock_t class가 정의되어 있다. 어떤 class에서 저 객체를 쓴다고 해보자. class item_t; typedef __int64 item_id_t; typedef std::shared_ptr&lt;item_t&gt; item_ref; class inventory_t { public: item_ref find(item_id_t item_id); private: lock_t lock; std::vector&lt;item_ref&gt; items; }; item_ref inventory_t::find(item_id_t item_id) { lock.lock(); auto iter =..." />
+	<meta name="description" content="lambda와 RAII 1 01 Apr 2012 c++ C++11 에서 도입된 lambda expression을 통한 RAII 구현 방식의 한 예와, 단위 전략을 통한 RAII 구현을 통해 장단점을 비교해보자. Wiki: Resource Acquisition Is Initialization(RAII)는 scope 내의 정적으로 할당되는 객체의 생존 주기로 생성자와 소멸자가 쌍으로 호출되는 것을 사용하는 자원 관리 기법이다. 보통 IO (열었으면 닫아야하니까), 메모리 (할당했으면 해제해야하니까, shared_ptr도 AddReference 했으면 ReleaseReference) Lock (Lock 걸었으면 Unlock 해줘야하니까) 등에서 사용된다. 본 글에서는 Lock을 사용하여 예를 들어보자. class lock_t { public: void lock(); void unlock(); }; 위와 같은 lock_t class가 정의되어 있다. 어떤 class에서 저 객체를 쓴다고 해보자. class item_t; typedef __int64 item_id_t; typedef std::shared_ptr&lt;item_t&gt; item_ref; class inventory_t { public: item_ref find(item_id_t item_id); private: lock_t lock; std::vector&lt;item_ref&gt; items; }; item_ref inventory_t::find(item_id_t item_id) { lock.lock(); auto iter..." />
 
 	<meta http-equiv="date" content="Sunday, 01  2012 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">01 Apr 2012</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
 				</p>
 				<hr/>

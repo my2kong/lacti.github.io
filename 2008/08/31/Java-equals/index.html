@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="Java의 equals의 세계 31 Aug 2008 boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 equals와 == 연산자는 과연 어떻게 동작할 것인가 class 주제에 primitives라고 이야기하는 String class의 equals와 == 연산자는 과연 어떻게 동작할 것인가 그리고, 만약 위의 객체들이 Vector&lt;Object&gt;에 들어가서 Object로 pointing될 때, equals와 == 연산자는 과연 어떻게 동작할 것인가!!! Compare Object Long(123) equals 123? false Long(123) equals new Long(123)? true Long(123) == 123? true String(&quot;hell&quot;) equals &quot;hell&quot;? true String(&quot;hell&quot;) == &quot;hell&quot;? true Compare Object with pointed Object. Long:Object(123) equals 123? false Long:Object(123) equals new Long(123)? true Long:Object(123) == 123? true Long:Object(123) == new Long(123)? false String:Object(&quot;hell&quot;) equals &quot;hell&quot;? true String:Object(&quot;hell&quot;) == &quot;hell&quot;? true 결론 숫자형이 Wrapper Class로 싸여있을 때는 == 로 비교해야 원하는 결과가 나온다. (boxing되어 Long..." />
+	<meta name="description" content="Java의 equals의 세계 31 Aug 2008 java boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 equals와 == 연산자는 과연 어떻게 동작할 것인가 class 주제에 primitives라고 이야기하는 String class의 equals와 == 연산자는 과연 어떻게 동작할 것인가 그리고, 만약 위의 객체들이 Vector&lt;Object&gt;에 들어가서 Object로 pointing될 때, equals와 == 연산자는 과연 어떻게 동작할 것인가!!! Compare Object Long(123) equals 123? false Long(123) equals new Long(123)? true Long(123) == 123? true String(&quot;hell&quot;) equals &quot;hell&quot;? true String(&quot;hell&quot;) == &quot;hell&quot;? true Compare Object with pointed Object. Long:Object(123) equals 123? false Long:Object(123) equals new Long(123)? true Long:Object(123) == 123? true Long:Object(123) == new Long(123)? false String:Object(&quot;hell&quot;) equals &quot;hell&quot;? true String:Object(&quot;hell&quot;) == &quot;hell&quot;? true 결론 숫자형이 Wrapper Class로 싸여있을 때는 == 로 비교해야 원하는 결과가 나온다. (boxing되어..." />
 
 	<meta http-equiv="date" content="Sunday, 31  2008 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">31 Aug 2008</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">java</code>
 				
 				</p>
 				<hr/>

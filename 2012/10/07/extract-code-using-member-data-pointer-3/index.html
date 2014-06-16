@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 3 07 Oct 2012 지난 두 글에서 사용한 전략은, 멤버에 접근하기 위한 방법을 동일한 인터페이스로 맞춰서 (첫 번째 글에서는 멤버 데이터 포인터, 두 번째 글에서는 멤버 함수 포인터) BuffType과 그 인터페이스를 대응시키는 방법을 사용하였다. 동일한 인터페이스를 사용하기 위해서 그들을 하나의 동일한 타입으로 지칭하는 방법을 사용하였고, 그렇기 때문에 서로 다른 type, int 변수와 float 변수, 그리고 그에 대한 배열 변수가 있을 때에는 사용할 수 없는 방법이었다. struct Stat { int hp; float attack; }; typedef float Stat::*DataPtr; DataPtr ptr = &amp;Stat::hp; // Error! 이번 글에서는 형식 삭제(type erasure)를 사용하여 보다 다양한 type을 지원하면서, 확장 가능한 방법에 대해 알아보도록 하겠다. 형식 삭제라고 하면 뭔가 어려워 보이지만, 그 결과물을 보면 굉장히 친숙하다. C++에서 형식 삭제를 하는 방법은..." />
+	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 3 07 Oct 2012 c++ refactor 지난 두 글에서 사용한 전략은, 멤버에 접근하기 위한 방법을 동일한 인터페이스로 맞춰서 (첫 번째 글에서는 멤버 데이터 포인터, 두 번째 글에서는 멤버 함수 포인터) BuffType과 그 인터페이스를 대응시키는 방법을 사용하였다. 동일한 인터페이스를 사용하기 위해서 그들을 하나의 동일한 타입으로 지칭하는 방법을 사용하였고, 그렇기 때문에 서로 다른 type, int 변수와 float 변수, 그리고 그에 대한 배열 변수가 있을 때에는 사용할 수 없는 방법이었다. struct Stat { int hp; float attack; }; typedef float Stat::*DataPtr; DataPtr ptr = &amp;Stat::hp; // Error! 이번 글에서는 형식 삭제(type erasure)를 사용하여 보다 다양한 type을 지원하면서, 확장 가능한 방법에 대해 알아보도록 하겠다. 형식 삭제라고 하면 뭔가 어려워 보이지만, 그 결과물을 보면 굉장히 친숙하다. C++에서 형식 삭제를..." />
 
 	<meta http-equiv="date" content="Sunday, 07  2012 00:00:00 GMT" />
 
@@ -28,9 +28,9 @@
 				<p class="page-date">07 Oct 2012</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
-					<code class="tag"></code>
+					<code class="tag">refactor</code>
 				
 				</p>
 				<hr/>

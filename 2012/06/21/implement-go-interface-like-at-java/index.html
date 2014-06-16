@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="go interface 구현하기 21 Jun 2012 (예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.) 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고 그냥 summerlight님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다. class A { public: void a(); void b(); void c(); }; class X { public: void a() = 0; }; class Y { public: void b() = 0; }; class Z { public void c() = 0; }; A obj; X* x = /* 어떻게든 obj랑 연결 */; x-&gt;a(); // A::a() 함수가 호출됨 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다. 하지만 암시적으로라도, 동일한 함수..." />
+	<meta name="description" content="go interface 구현하기 21 Jun 2012 java (예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.) 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고 그냥 summerlight님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다. class A { public: void a(); void b(); void c(); }; class X { public: void a() = 0; }; class Y { public: void b() = 0; }; class Z { public void c() = 0; }; A obj; X* x = /* 어떻게든 obj랑 연결 */; x-&gt;a(); // A::a() 함수가 호출됨 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다. 하지만 암시적으로라도, 동일한..." />
 
 	<meta http-equiv="date" content="Thursday, 21  2012 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">21 Jun 2012</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">java</code>
 				
 				</p>
 				<hr/>

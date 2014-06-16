@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="type_t class 도입을 통한 임시 객체 없는 type 분기 15 Nov 2011 적당한 제목을 못 찾아서 일단 저렇게 표기, 시간이 짧은 관계로 대충 설명한다. 이 글타래의 키워드는 일반성과 최적화이다. 어떤 class 2개가 있다. class big_class {}; class huge_class {}; 이 class들은 기본 생성자에서 굉장히 복잡한 작업을 하는 객체들 혹은 생성 자체가 복잡한 class들이다. 이러한 class에 대해 어떠한 작업을 수행하는 generic한 함수가 있다. template &lt;typename _Ty&gt; void operation() {} 이 함수는 객체의 type을 받아서 내부에서 모종의 작업을 수행하게 된다. 따라서 메인 함수에서는 다음과 같이 각 class에 대해 operation을 요청하게 된다. int _tmain(int argc, _TCHAR* argv[]) { operation&lt;big_class&gt;(); operation&lt;huge_class&gt;(); return 0; } (굳이 객체를 넘기지 않은건 이 예제에서는 별로 그럴 필요가 없기 때문이다.) operation 내에서는 각 type별로 type의 이름을 출력해주는 print라는 함수를..." />
+	<meta name="description" content="type_t class 도입을 통한 임시 객체 없는 type 분기 15 Nov 2011 c++ tmp 적당한 제목을 못 찾아서 일단 저렇게 표기, 시간이 짧은 관계로 대충 설명한다. 이 글타래의 키워드는 일반성과 최적화이다. 어떤 class 2개가 있다. class big_class {}; class huge_class {}; 이 class들은 기본 생성자에서 굉장히 복잡한 작업을 하는 객체들 혹은 생성 자체가 복잡한 class들이다. 이러한 class에 대해 어떠한 작업을 수행하는 generic한 함수가 있다. template &lt;typename _Ty&gt; void operation() {} 이 함수는 객체의 type을 받아서 내부에서 모종의 작업을 수행하게 된다. 따라서 메인 함수에서는 다음과 같이 각 class에 대해 operation을 요청하게 된다. int _tmain(int argc, _TCHAR* argv[]) { operation&lt;big_class&gt;(); operation&lt;huge_class&gt;(); return 0; } (굳이 객체를 넘기지 않은건 이 예제에서는 별로 그럴 필요가 없기 때문이다.) operation 내에서는 각 type별로 type의 이름을 출력해주는..." />
 
 	<meta http-equiv="date" content="Tuesday, 15  2011 00:00:00 GMT" />
 
@@ -28,9 +28,9 @@
 				<p class="page-date">15 Nov 2011</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
-					<code class="tag"></code>
+					<code class="tag">tmp</code>
 				
 				</p>
 				<hr/>

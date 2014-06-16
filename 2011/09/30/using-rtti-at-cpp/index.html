@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="c++ 에서 구조체 RTTI 정보 남기기 30 Sep 2011 RTTI는 Run-time Type Information의 약자로, 실행 중에 어떤 type에 대한 정보를 알 수 있다는 것이다. 보통 type 에 대한 정보는 컴파일 타임에 다 사용되고, 실행 중에는 없어지는데, 실행 중에 이 정보를 얻을 수 있으면 재밌는 일을 많이 할 수 있다. Java나 C#, 아니면 여타 동적 언어들은 당연히 이 기능을 지원하고 (보통 reflection 이라고 한다) C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴다는 것은 메모리도 많이 먹고 참조하려면 속도도 느려지니까! 그래서 구조체에 있는 정보만으로 xml read/write 가 자동으로 이루어지려면, 1. 타입 정보를 runtime 에 접근해서 동적으로 read/write 를 한다. 2. xml read/write 코드를 generator 를 통해 찍어낸다. 보통 성능을 위해 2번을 쓰지만 본 글에서는 1번 방법에 대해 서술하겠다...." />
+	<meta name="description" content="c++ 에서 구조체 RTTI 정보 남기기 30 Sep 2011 c++ RTTI는 Run-time Type Information의 약자로, 실행 중에 어떤 type에 대한 정보를 알 수 있다는 것이다. 보통 type 에 대한 정보는 컴파일 타임에 다 사용되고, 실행 중에는 없어지는데, 실행 중에 이 정보를 얻을 수 있으면 재밌는 일을 많이 할 수 있다. Java나 C#, 아니면 여타 동적 언어들은 당연히 이 기능을 지원하고 (보통 reflection 이라고 한다) C, C++ 은 당연히 지원 안한다. 실행 중에 뭔가 정보를 더 남긴다는 것은 메모리도 많이 먹고 참조하려면 속도도 느려지니까! 그래서 구조체에 있는 정보만으로 xml read/write 가 자동으로 이루어지려면, 1. 타입 정보를 runtime 에 접근해서 동적으로 read/write 를 한다. 2. xml read/write 코드를 generator 를 통해 찍어낸다. 보통 성능을 위해 2번을 쓰지만 본 글에서는 1번 방법에 대해..." />
 
 	<meta http-equiv="date" content="Friday, 30  2011 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">30 Sep 2011</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
 				</p>
 				<hr/>

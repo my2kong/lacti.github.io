@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="JPanel 상속 15 Feb 2011 Java에서 UI 코드를 작성할 때, 가장 많이 하는 코딩 방식이 UI Pane class를 만들고 이 class가 JPanel을 상속받는 것이다. 하지만 생각해보면 그 class는 전혀 JPanel을 상속받을 필요가 없고 그냥 JPanel 객체를 멤버 변수로 하나 만들어서 contain pane으로 사용해도 된다. 그러면 그 class는 정확히 controller 역할을 수행할 것이고(event handling을 포함하여) controller가 view(JPanel, JLabel... 등) 객체들의 reference 변수를 알고 변경시키는 깔끔한 MVC 구조가 성립된다. 하지만 JPanel을 상속받은 객체 내에서 controller일을 수행하면, JPanel을 상속받은 시점에서 그 class가 view class화 되기 때문에 V랑 C가 합쳐지는 듯한 해석이 가능해지는데 어차피 코드 입장에서는 크게 달라지는게 없으므로 이런 해석은 사실상 의미가 없기는 하지만 생각해보면 굳이 상속을 받아야할 필요는 없으므로 상당히 애매한 위치에 놓인다. 요약하면 상속을 받아서 UI를 구성해도 되고 상속을 받지 않고..." />
+	<meta name="description" content="JPanel 상속 15 Feb 2011 java Java에서 UI 코드를 작성할 때, 가장 많이 하는 코딩 방식이 UI Pane class를 만들고 이 class가 JPanel을 상속받는 것이다. 하지만 생각해보면 그 class는 전혀 JPanel을 상속받을 필요가 없고 그냥 JPanel 객체를 멤버 변수로 하나 만들어서 contain pane으로 사용해도 된다. 그러면 그 class는 정확히 controller 역할을 수행할 것이고(event handling을 포함하여) controller가 view(JPanel, JLabel... 등) 객체들의 reference 변수를 알고 변경시키는 깔끔한 MVC 구조가 성립된다. 하지만 JPanel을 상속받은 객체 내에서 controller일을 수행하면, JPanel을 상속받은 시점에서 그 class가 view class화 되기 때문에 V랑 C가 합쳐지는 듯한 해석이 가능해지는데 어차피 코드 입장에서는 크게 달라지는게 없으므로 이런 해석은 사실상 의미가 없기는 하지만 생각해보면 굳이 상속을 받아야할 필요는 없으므로 상당히 애매한 위치에 놓인다. 요약하면 상속을 받아서 UI를 구성해도 되고 상속을 받지..." />
 
 	<meta http-equiv="date" content="Tuesday, 15  2011 00:00:00 GMT" />
 
@@ -28,7 +28,7 @@
 				<p class="page-date">15 Feb 2011</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">java</code>
 				
 				</p>
 				<hr/>

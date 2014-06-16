@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="producer/consumer model 구현 12 Aug 2013 먹깨비 과제를 풀어보자. 여러 가지 구현법이 있을 것인데, 나는 간단하게 바구니는 공유 자원이니 lock으로 보호하고, 제빵사와 먹깨비는 actor로 만들어서 매 tick마다 상황 판단 후 작업을 처리하도록 했다. 따라서 공유 자원을 보호하기 위한 spin_lock과 actor 기반 코드를 만들었고 그 기반으로 바구니, 제빵사, 먹깨비를 만들었다. 먼저 spin_lock을 만들어보자. 이전 글에서 몇 번 설명한적 있으니 대충 보자. class spin_lock_t { public: spin_lock_t() { _flag.clear(); } void acquire() { while (_flag.test_and_set()); } void release() { _flag.clear(); } private: std::atomic_flag _flag; }; class spin_lock_raii_t { public: explicit spin_lock_raii_t(spin_lock_t&amp; lock) : _lock(&amp;lock) { _lock-&gt;acquire(); } spin_lock_raii_t(spin_lock_raii_t&amp;&amp; other) : _lock(other._lock) { other._lock = nullptr; } ~spin_lock_raii_t() { if (_lock != nullptr) _lock-&gt;release(); } private: spin_lock_raii_t(const spin_lock_raii_t&amp;); spin_lock_raii_t&amp; operator = (const spin_lock_raii_t&amp;);..." />
+	<meta name="description" content="producer/consumer model 구현 12 Aug 2013 study c++ concurrency 먹깨비 과제를 풀어보자. 여러 가지 구현법이 있을 것인데, 나는 간단하게 바구니는 공유 자원이니 lock으로 보호하고, 제빵사와 먹깨비는 actor로 만들어서 매 tick마다 상황 판단 후 작업을 처리하도록 했다. 따라서 공유 자원을 보호하기 위한 spin_lock과 actor 기반 코드를 만들었고 그 기반으로 바구니, 제빵사, 먹깨비를 만들었다. 먼저 spin_lock을 만들어보자. 이전 글에서 몇 번 설명한적 있으니 대충 보자. class spin_lock_t { public: spin_lock_t() { _flag.clear(); } void acquire() { while (_flag.test_and_set()); } void release() { _flag.clear(); } private: std::atomic_flag _flag; }; class spin_lock_raii_t { public: explicit spin_lock_raii_t(spin_lock_t&amp; lock) : _lock(&amp;lock) { _lock-&gt;acquire(); } spin_lock_raii_t(spin_lock_raii_t&amp;&amp; other) : _lock(other._lock) { other._lock = nullptr; } ~spin_lock_raii_t() { if (_lock != nullptr) _lock-&gt;release(); } private: spin_lock_raii_t(const spin_lock_raii_t&amp;); spin_lock_raii_t&amp; operator..." />
 
 	<meta http-equiv="date" content="Monday, 12  2013 00:00:00 GMT" />
 
@@ -28,11 +28,11 @@
 				<p class="page-date">12 Aug 2013</p>
 				<p class="page-tags">
 				
-					<code class="tag"></code>
+					<code class="tag">study</code>
 				
-					<code class="tag"></code>
+					<code class="tag">c++</code>
 				
-					<code class="tag"></code>
+					<code class="tag">concurrency</code>
 				
 				</p>
 				<hr/>
