@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 빠른 메시지 만들기
-tags: c++ message serialize
+tags: c++ message
 ---
 
 [Cap'n Proto](http://kentonv.github.io/capnproto/)와 같은 무한대(?)로 빠른 메시지를 설계한다고 생각해보자. 그렇다면 우리는 어떤 점을 고민해야 할까?

@@ -227,4 +227,4 @@ case METHOD_RATE: accessible.SetValue(buffType, accessible.GetValue(buffType) * 
 
 그렇지만 이번 글에 소개된 방법은 `IAccessor`라는 interface를 통해 concrete의 동작을 위해 vfptr을 사용하는 방식으로 가상 함수 호출을 위한 부담을 추가로 가지게 되는 것이다. 이 호출 부담 때문에 더 느릴 수 밖에 없는 것이다.
 
-다 쓰고 보니 `AccessorManager`가 굳이 map을 사용하지 않고, `BUFF_MAX`를 받아 배열로 `IAccessor`를 관리하는 것이 더 낫겠다 싶다. 하지만 굳이 위와 같이 냅둔 이유는 [c++에서 reflection 사용하기 3]({% post_url 2012-06-09-using-reflection-at-c++-3 %})와 형식이 유사해지기 때문에 코드 읽기가 좀 더 나을지도 모르겠다는 생각과, `AccessorManager`에서 배열의 크기를 template parameter로 받아서 배열을 생성해주기 약간 귀찮았기 때문이다-_-a
+다 쓰고 보니 `AccessorManager`가 굳이 map을 사용하지 않고, `BUFF_MAX`를 받아 배열로 `IAccessor`를 관리하는 것이 더 낫겠다 싶다. 하지만 굳이 위와 같이 냅둔 이유는 [c++에서 reflection 사용하기 3]({% post_url 2012-06-09-using-reflection-at-cpp-3 %})와 형식이 유사해지기 때문에 코드 읽기가 좀 더 나을지도 모르겠다는 생각과, `AccessorManager`에서 배열의 크기를 template parameter로 받아서 배열을 생성해주기 약간 귀찮았기 때문이다-_-a
