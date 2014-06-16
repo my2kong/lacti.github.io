@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-15T16:37:00+00:00</updated>
+ <updated>2014-06-16T01:09:51+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -2431,7 +2431,7 @@ profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷
 &lt;p&gt;이 경우 메시지의 bytes 구조는 다음과 같아진다.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;[hp] [mp] [name_offset] [atk] [def] [luck] [name-bytes]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hp&lt;/code&gt; &lt;code&gt;mp&lt;/code&gt; &lt;code&gt;name_offset&lt;/code&gt; &lt;code&gt;atk&lt;/code&gt; &lt;code&gt;def&lt;/code&gt; &lt;code&gt;luck&lt;/code&gt; &lt;code&gt;name-bytes&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;위와 같이 작성할 경우 serialize 입장에서는 큰 차이가 없다. hp, mp, atk, def, luck를 모두 write한 다음 &lt;code&gt;name_offset&lt;/code&gt;의 위치를 기록하고, 마지막 부분에 &lt;code&gt;name-bytes&lt;/code&gt;를 기록한다. 하지만 deserialize에서 큰 차이가 나타난다. 첫 번째 소개한대로 읽은 message buffer에 대해 단순히 &lt;code&gt;player_message_t&lt;/code&gt;로 casting만 해서도 관련 정보를 모두 읽을 수 있는 구조이기 때문에, deserialize 비용이 필요 없어진다.&lt;/p&gt;
@@ -2464,7 +2464,7 @@ profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷
 &lt;p&gt;이 경우 메시지의 구조는 다음처럼 된다.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;[hp] [mp] [name_offset] [inven_offset] [inven_count] [atk] [def] [luck] [name-bytes] [inven_t-bytes]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hp&lt;/code&gt; &lt;code&gt;mp&lt;/code&gt; &lt;code&gt;name_offset&lt;/code&gt; &lt;code&gt;inven_offset&lt;/code&gt; &lt;code&gt;inven_count&lt;/code&gt; &lt;code&gt;atk&lt;/code&gt; &lt;code&gt;def&lt;/code&gt; &lt;code&gt;luck&lt;/code&gt; &lt;code&gt;name-bytes&lt;/code&gt; &lt;code&gt;inven_t-bytes&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;그냥 string랑 똑같은데 &lt;code&gt;begin()&lt;/code&gt;, &lt;code&gt;end()&lt;/code&gt; method를 나누어 구현했다고 보면 된다. 다만, &lt;code&gt;end()&lt;/code&gt; 함수에서 &lt;code&gt;inven_count&lt;/code&gt;를 더하는 부분이 &lt;code&gt;inven_t&lt;/code&gt; 크기가 고정일 경우를 가정하고 있는데, 이 부분은 null-terminated 등을 써서 가변에 대해서도 쉽게 적용할 수 있을 것이라 보기 때문에 더 이상의 자세한 설명은 생략한다. (iterator를 직접 구현하여 사용할 경우 간단히 해결할 수 있는데 그렇게까지 글을 쓰면 너무 무의미하게 길어진다.)&lt;/p&gt;
@@ -2484,9 +2484,9 @@ profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷
 
 &lt;ul&gt;
 &lt;li&gt;완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다.&lt;/li&gt;
+&lt;li&gt;morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다.&lt;/li&gt;
+&lt;li&gt;mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;결국 &lt;strong&gt;어떤 서버&lt;/strong&gt;를 만들 것인지에 대한 기술 명세를 한 후 그에 맞는 설계/구현을 해야 한다는 것.&lt;/p&gt;
@@ -2497,9 +2497,9 @@ profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷
 
 &lt;ul&gt;
 &lt;li&gt;간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;여러 클라이언트와 동시에 통신해야 하는 서버를 구현한다고 하면 각 클라이언트와의 연결을 유지하면서 각각에 대한 io 작업(메시지 보내기/받기)를 수행해야 한다.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;이 때 io 작업을 동기적으로 처리하면 각 요청이 완료될 때까지 blocking되므로 동시에 여러 작업을 처리하기 위해서는 각각이 blocking되어도 문제 없도록 thread를 여러 개 만들거나, 비동기 io를 사용한다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다.&lt;/li&gt;
+&lt;li&gt;여러 클라이언트와 동시에 통신해야 하는 서버를 구현한다고 하면 각 클라이언트와의 연결을 유지하면서 각각에 대한 io 작업(메시지 보내기/받기)를 수행해야 한다.&lt;/li&gt;
+&lt;li&gt;이 때 io 작업을 동기적으로 처리하면 각 요청이 완료될 때까지 blocking되므로 동시에 여러 작업을 처리하기 위해서는 각각이 blocking되어도 문제 없도록 thread를 여러 개 만들거나, 비동기 io를 사용한다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;당연히 thread를 여러 개 만드는 것은 효율이 좋지 않으므로 효율을 고려한 서버를 구현할 경우에는 비동기 io를 사용한다.&lt;/p&gt;
@@ -2531,9 +2531,9 @@ profiling한 결과를 보면 대부분의 exclusive sample의 address가 비슷
 
 &lt;ul&gt;
 &lt;li&gt;event model은 메시지를 받은 즉시 처리해서 그 결과를 클라이언트에게 다시 알려주는 방식이고,&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;queue model은 받은 메시지를 queue에 쌓아두고, 서버에서 tick을 돌면서 queue에 있는 메시지를 꺼내 처리하고 그 결과를 클라이언트로 다시 알려주는 방식이다.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;event model의 경우 stateless/tickless한 요청에 대한 처리를 할 때 유리하고,&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;queue model의 경우 tick 단위로 수행해야 하는 작업이 있을 때 유리하다.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;queue model은 받은 메시지를 queue에 쌓아두고, 서버에서 tick을 돌면서 queue에 있는 메시지를 꺼내 처리하고 그 결과를 클라이언트로 다시 알려주는 방식이다.&lt;/li&gt;
+&lt;li&gt;event model의 경우 stateless/tickless한 요청에 대한 처리를 할 때 유리하고,&lt;/li&gt;
+&lt;li&gt;queue model의 경우 tick 단위로 수행해야 하는 작업이 있을 때 유리하다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;여기서 유리하다는건 최적화가 하기가 좋다거나 코드 작성/유지보수가 쉽다는 소리다.&lt;/p&gt;
@@ -2717,10 +2717,10 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>금정 스터디 3 과제 풀이</title>
-   <link href="http://blog.lacti.me/2013/11/16/geumjeong-study-homework-3/"/>
+   <title>c++ message dispatcher</title>
+   <link href="http://blog.lacti.me/2013/11/16/cpp-message-dispatcher/"/>
    <updated>2013-11-16T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/11/16/geumjeong-study-homework-3</id>
+   <id>http://blog.lacti.me/2013/11/16/cpp-message-dispatcher</id>
    <content type="html">&lt;p&gt;간단한 message dispatch 코드를 c++로 구현해보자. 일단 &lt;code&gt;std::function&lt;/code&gt;을 안 쓰고 구현해보고, 그 다음에 &lt;code&gt;std::function&lt;/code&gt;을 써서 구현해보자.&lt;/p&gt;
 
 &lt;p&gt;지난 번 글에서 &lt;code&gt;functor_ii&lt;/code&gt;로 &lt;code&gt;handler_t&lt;/code&gt;의 근간을 이미 설명했다.&lt;/p&gt;
@@ -2937,17 +2937,17 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 &lt;p&gt;추가 과제였던 reflection 과제에 대한 풀이는 예전에 작성한 글에 대한 링크로 대신하겠다.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;/2012/06/04/using-reflection-at-c%2B%2B-2/&quot;&gt;c++에서 reflection 사용하기 2&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;/2012/06/09/using-reflection-at-c%2B%2B-3/&quot;&gt;c++에서 reflection 사용하기 3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/2012/06/04/using-reflection-at-cpp-2/&quot;&gt;c++에서 reflection 사용하기 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/2012/06/09/using-reflection-at-cpp-3/&quot;&gt;c++에서 reflection 사용하기 3&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>
  
  <entry>
-   <title>금정 스터디 3 정리</title>
-   <link href="http://blog.lacti.me/2013/11/10/geumjeong-study-summary-3/"/>
+   <title>template 프로그래밍과 type erasure</title>
+   <link href="http://blog.lacti.me/2013/11/10/template-programming-and-type-erasure/"/>
    <updated>2013-11-10T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/11/10/geumjeong-study-summary-3</id>
+   <id>http://blog.lacti.me/2013/11/10/template-programming-and-type-erasure</id>
    <content type="html">&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;for_each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_Iter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_FuncTy&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -3127,10 +3127,10 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>금정 스터디 2 과제 풀이</title>
-   <link href="http://blog.lacti.me/2013/11/10/geumjeong-study-homework-2/"/>
+   <title>function adapter와 type inference</title>
+   <link href="http://blog.lacti.me/2013/11/10/function-adapter/"/>
    <updated>2013-11-10T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/11/10/geumjeong-study-homework-2</id>
+   <id>http://blog.lacti.me/2013/11/10/function-adapter</id>
    <content type="html">&lt;p&gt;과제는 다음의 Adapter를 만들어보자는 것이다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -3237,10 +3237,10 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>금정 스터디 1, 2 정리</title>
-   <link href="http://blog.lacti.me/2013/11/04/geumjeong-study-summary-1-2/"/>
+   <title>template을 사용한 generic 프로그래밍</title>
+   <link href="http://blog.lacti.me/2013/11/04/generic-programming-with-template/"/>
    <updated>2013-11-04T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/11/04/geumjeong-study-summary-1-2</id>
+   <id>http://blog.lacti.me/2013/11/04/generic-programming-with-template</id>
    <content type="html">&lt;p&gt;&lt;em&gt;(한 번에 1~2시간 정도로 짧게(?) 하고 있다. 대충 accelerated c++ 책이랑 EC++ 책을 보고 있다.)&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;C++ 언어를 가지고 C++스럽게 프로그래밍을 해보자! 는 어떤 의미일까?&lt;br&gt;
@@ -3325,7 +3325,7 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;결국 하고 싶은 이야기는, &lt;del&gt;c++스럽게 프로그래밍을 하기 위해서는 template을 쓰자...가 아니라&lt;/del&gt; c++의 문법을 잘 익혀놔서 가장 적합한 문법으로 구현하자는 이야기이다. 즉, 저걸 굳이 class로 프로그래밍할 필요도 없고, 그냥 일반 함수를 써서 활용도를 축소시킬 필요도 없다는 것이다.&lt;/p&gt;
+&lt;p&gt;결국 하고 싶은 이야기는, &lt;del&gt;c++스럽게 프로그래밍을 하기 위해서는 template을 쓰자!가 아니라&lt;/del&gt; c++의 문법을 잘 익혀놔서 가장 적합한 문법으로 구현하자는 이야기이다. 즉, 저걸 굳이 class로 프로그래밍할 필요도 없고, 그냥 일반 함수를 써서 활용도를 축소시킬 필요도 없다는 것이다.&lt;/p&gt;
 
 &lt;p&gt;물론 더 나아가서 random access iterator에 대해서도 효율적으로 동작할 수 있도록 위 코드를 수정할 수도 있다. iterator_tag와 template의 부분 특수화를 사용하거나 함수 overloading을 사용하면 간단하게 할 수 있다. 이 부분은 EC++ 책에도 잘 나와있으니 이 글에서는 생략하도록 하겠다.&lt;/p&gt;
 
@@ -3455,13 +3455,11 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
    <link href="http://blog.lacti.me/2013/09/08/zhconverter-simplified-traditional/"/>
    <updated>2013-09-08T00:00:00+00:00</updated>
    <id>http://blog.lacti.me/2013/09/08/zhconverter-simplified-traditional</id>
-   <content type="html">&lt;p&gt;대만에 Localization(이라고 쓰고 번역이라고 읽는다)을 담당하시는 분이 있었는데 사람이 부족하다고 중국 번역도 시키고 있다. &lt;del&gt;대만은 번체, 중국은 간체를 사용하는데 이론상으로는 어느 정도 수준에서 글자의 1:1 치환으로 두 언어간 변환이 가능하다고 한다.&lt;/del&gt; &lt;em&gt;(후술하자면 단어 치환으로 번역할 경우 논조가 달라지므로, 해당 결과물은 제대로 사용할 수 없다고 한다.)&lt;/em&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;대만에 Localization(이라고 쓰고 번역이라고 읽는다)을 담당하시는 분이 있었는데 사람이 부족하다고 중국 번역도 시키고 있다. ~~대만은 번체, 중국은 간체를 사용하는데 이론상으로는 어느 정도 수준에서 글자의 1:1 치환으로 두 언어간 변환이 가능하다고 한다. &lt;em&gt;(후술하자면 단어 치환으로 번역할 경우 논조가 달라지므로, 해당 결과물은 제대로 사용할 수 없다고 한다.)&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;그런데도 그걸 사람이 하고 있다면 참 안 좋은 일이겠지.&lt;/p&gt;
 
-&lt;p&gt;중국개발팀은 대만/중국 빌드 2개를 관리해야 한다. 즉 branch가 2개라는거다. 처음에 한 번 대만어를 일괄 중국어로 번역해야 할 필요가 있었는데 그 때에는 그나마 담당자도 없어서 그냥 내가 구글 번역기로 일괄 번역 돌려서 중국쪽 branch에 commit하였다.&lt;/p&gt;
-
-&lt;p&gt;현재 대만 빌드는 서비스 중, 중국 빌드는 CBT 준비 중이다. 이 상황에서 대만과 중국 양 쪽에 모두 어떤 문자열이 추가되어야 한다고 해보자. 그러면 L10N 담당자는 한 쪽에는 대만어로, 한 쪽에는 중국어로 작업을 2번 해야 한다. 왜냐하면 양 branch에 해당 문자열이 들어가는 시점이 미묘하게 다르고, 모든 내역이 들어간다는 보장이 없기 때문이다.&lt;/p&gt;
+&lt;p&gt;중국개발팀은 대만/중국 빌드 2개를 관리해야 한다. 즉 branch가 2개라는거다. 처음에 한 번 대만어를 일괄 중국어로 번역해야 할 필요가 있었는데 그 때에는 그나마 담당자도 없어서 그냥 내가 구글 번역기로 일괄 번역 돌려서 중국쪽 branch에 commit하였다. 현재 대만 빌드는 서비스 중, 중국 빌드는 CBT 준비 중이다. 이 상황에서 대만과 중국 양 쪽에 모두 어떤 문자열이 추가되어야 한다고 해보자. 그러면 L10N 담당자는 한 쪽에는 대만어로, 한 쪽에는 중국어로 작업을 2번 해야 한다. 왜냐하면 양 branch에 해당 문자열이 들어가는 시점이 미묘하게 다르고, 모든 내역이 들어간다는 보장이 없기 때문이다.&lt;/p&gt;
 
 &lt;p&gt;버전으로만 볼 때 대만 빌드보다 중국 빌드가 더 나중 버전이다. 그리고 나중에 대만도 중국 빌드를 사용한다고 한다. 즉, 중국 빌드에도 문자열을 대만어로 작업해 놓아야 추후에 문제가 없다는 것! 그야말로 안타까운 노가다의 현장이다. 어쨌든 기계적으로 수행할 수 있는 일을 사람이 하는 것은 참 좋지 않은 일이므로 이 부분을 자동화하고자 한다. 그러려면 번체/간체 변환기가 필요하다.&lt;/p&gt;
 
@@ -3522,10 +3520,10 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>여의도 스터디 과제 풀이 4</title>
-   <link href="http://blog.lacti.me/2013/08/27/yeouido-study-homework-4/"/>
+   <title>분산 시스템 구현 과제 정리</title>
+   <link href="http://blog.lacti.me/2013/08/27/distributed-system-implementation-homework/"/>
    <updated>2013-08-27T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/27/yeouido-study-homework-4</id>
+   <id>http://blog.lacti.me/2013/08/27/distributed-system-implementation-homework</id>
    <content type="html">&lt;p&gt;뭐라도 좋으니 간단한 분산 시스템을 구현해보자!&lt;br&gt;
 단일 시스템과 비교하여 성능 혹은 가용성을 높이기 위해 분산 시스템을 설계해야 하는 것이니 일단 네트워크 프로그래밍은 필수이다. 효율을 높이기 위해 얼마나 작업을 잘 쪼개고 합치는가도 고민해야 하고, 장애가 발생했을 때 얼마나 복구될 수 있는지도 고민해야 한다.&lt;/p&gt;
 
@@ -3586,11 +3584,11 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>여의도 스터디 정리 4</title>
-   <link href="http://blog.lacti.me/2013/08/26/yeouido-study-summary-4/"/>
+   <title>concurrency pattern과 분산 시스템 스터디</title>
+   <link href="http://blog.lacti.me/2013/08/26/concurrency-pattern-and-distributed-system-study/"/>
    <updated>2013-08-26T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/26/yeouido-study-summary-4</id>
-   <content type="html">&lt;p&gt;Concurrency Pattern부터 Distributed System까지! 근데 대충함-_-&lt;/p&gt;
+   <id>http://blog.lacti.me/2013/08/26/concurrency-pattern-and-distributed-system-study</id>
+   <content type="html">&lt;p&gt;Concurrency Pattern부터 Distributed System까지! 근데 대충함 [...]&lt;/p&gt;
 
 &lt;h3&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Concurrency_pattern&quot;&gt;Concurrency pattern&lt;/a&gt;&lt;/h3&gt;
 
@@ -3764,9 +3762,9 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  
  <entry>
    <title>generic한 c++ rpc 구현</title>
-   <link href="http://blog.lacti.me/2013/08/20/simple-c%2B%2B-rpc/"/>
+   <link href="http://blog.lacti.me/2013/08/20/simple-cpp-rpc/"/>
    <updated>2013-08-20T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/20/simple-c++-rpc</id>
+   <id>http://blog.lacti.me/2013/08/20/simple-cpp-rpc</id>
    <content type="html">&lt;p&gt;generic한 rpc를 간단히 구현해보자.&lt;/p&gt;
 
 &lt;p&gt;원래 의도는 asio를 사용하여 가벼운 덧셈 rpc 정도를 구현해보자는 것이었는데 왠지 모르게 스터디 친구들이 spec을 안드로메다로 보내버려서 &lt;a href=&quot;http://c2.com/cgi/wiki?EmbeddedDomainSpecificLanguage&quot;&gt;DSEL&lt;/a&gt;을 통한 rpc stub, skeleton 생성 코드를 구현해보도록 하겠다.&lt;/p&gt;
@@ -4210,10 +4208,10 @@ async에서 then으로 상태를 전달하는 가장 기본적인 방법은 반�
  </entry>
  
  <entry>
-   <title>여의도 스터디 정리 3</title>
-   <link href="http://blog.lacti.me/2013/08/18/yeouido-study-summary-3/"/>
+   <title>c++11 async, corotuine, io 스터디</title>
+   <link href="http://blog.lacti.me/2013/08/18/cpp11-async-corotuine-io-study/"/>
    <updated>2013-08-18T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/18/yeouido-study-summary-3</id>
+   <id>http://blog.lacti.me/2013/08/18/cpp11-async-corotuine-io-study</id>
    <content type="html">&lt;p&gt;오늘 스터디에서 공부한 내용을 간단히 정리해보자.&lt;/p&gt;
 
 &lt;h3&gt;async, future&lt;/h3&gt;
@@ -4458,10 +4456,10 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
  </entry>
  
  <entry>
-   <title>여의도 스터디 과제 풀이 2</title>
-   <link href="http://blog.lacti.me/2013/08/12/yeouido-study-homework-2/"/>
+   <title>producer/consumer model 구현</title>
+   <link href="http://blog.lacti.me/2013/08/12/implements-producer-consumer-model/"/>
    <updated>2013-08-12T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/12/yeouido-study-homework-2</id>
+   <id>http://blog.lacti.me/2013/08/12/implements-producer-consumer-model</id>
    <content type="html">&lt;p&gt;먹깨비 과제를 풀어보자. 여러 가지 구현법이 있을 것인데, 나는 간단하게&lt;/p&gt;
 
 &lt;ul&gt;
@@ -4768,10 +4766,10 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
  </entry>
  
  <entry>
-   <title>여의도 스터디 정리 2</title>
-   <link href="http://blog.lacti.me/2013/08/10/yeouido-study-summary-2/"/>
+   <title>concurrency 알고리즘과 memory model</title>
+   <link href="http://blog.lacti.me/2013/08/10/concurrency-algorithm-and-memory-model/"/>
    <updated>2013-08-10T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/10/yeouido-study-summary-2</id>
+   <id>http://blog.lacti.me/2013/08/10/concurrency-algorithm-and-memory-model</id>
    <content type="html">&lt;p&gt;오늘 스터디에서 공부한 내용을 간략히 정리해보자.&lt;/p&gt;
 
 &lt;p&gt;원래 의도는,&lt;/p&gt;
@@ -4779,7 +4777,8 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
 &lt;ul&gt;
 &lt;li&gt;peterson&amp;#39;s algorithm을 보고 여기서 비순차 실행이 일어날 때 발생하는 문제를 보고,&lt;/li&gt;
 &lt;li&gt;memory consistency model의 memory order를 통해 문제를 어떻게 해결할 수 있는지 본 후에,&lt;/li&gt;
-&lt;li&gt;lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해 * hazard pointer를 보려고 했는데&lt;/li&gt;
+&lt;li&gt;lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해&lt;/li&gt;
+&lt;li&gt;hazard pointer를 보려고 했는데&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;순서가 꼬였다-_-
@@ -4926,10 +4925,10 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
  </entry>
  
  <entry>
-   <title>여의도 스터디 과제 풀이 1</title>
-   <link href="http://blog.lacti.me/2013/08/04/yeouido-study-homework-1/"/>
+   <title>thread-safe한 counter 구현</title>
+   <link href="http://blog.lacti.me/2013/08/04/implements-thread-safe-counter/"/>
    <updated>2013-08-04T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/04/yeouido-study-homework-1</id>
+   <id>http://blog.lacti.me/2013/08/04/implements-thread-safe-counter</id>
    <content type="html">&lt;p&gt;먼저 간단한 counter example을 만들어보자.
 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -5076,16 +5075,16 @@ boost는 boost context를 먼저 만들어서 cpu context를 capture할 수 있�
  </entry>
  
  <entry>
-   <title>여의도 스터디 정리 1</title>
-   <link href="http://blog.lacti.me/2013/08/03/yeouido-study-summary-1/"/>
+   <title>concurrency 스터디</title>
+   <link href="http://blog.lacti.me/2013/08/03/concurrency-study/"/>
    <updated>2013-08-03T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/08/03/yeouido-study-summary-1</id>
+   <id>http://blog.lacti.me/2013/08/03/concurrency-study</id>
    <content type="html">&lt;p&gt;오늘 스터디에서 공부한 내용을 간략히 정리해보자.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/ABA_problem&quot;&gt;Wiki: ABA problem&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.cs.rochester.edu/u/scott/papers/1996_PODC_queues.pdf&quot;&gt;Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;/2011/08/02/context-switching-and-simultaneously/&quot;&gt;context switching 과 simultaneously 실행&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/2011/08/02/context-switching-and-simultaneously/&quot;&gt;context switching과 simultaneously 실행&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2012/02/23/thread-unsafety-problem-in-circular-queue/&quot;&gt;환형큐의 thread unsafety 문제&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -5454,7 +5453,7 @@ DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlType
 &lt;li&gt;literal string의 주소는 다 동일하니까, literal 주소로 index-cache를 만든다.&lt;/li&gt;
 &lt;li&gt;이 때 다른 xml의 동일한 literal string의 주소도 같을테니까 TypeDefine의 주소도 섞어서 key로 쓴다.&lt;/li&gt;
 &lt;li&gt;없으면 TypeDefine에서 AttributeIndex를 찾아서 접근하고, 이 index를 잘 cache해둔다.&lt;/li&gt;
-&lt;li&gt;stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.[/code]&lt;/li&gt;
+&lt;li&gt;stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://blog.lacti.me/images/binary_xml_attribute_index_cache.png&quot; alt=&quot;attribute index cache&quot;&gt;&lt;/p&gt;
@@ -5718,9 +5717,9 @@ Master에서 Slave에게 수행시키고 싶은 함수가 있는데 Slave에게�
  
  <entry>
    <title>How much faster is C++ than C#?</title>
-   <link href="http://blog.lacti.me/2013/05/19/how-much-faster-is-c%2B%2B-than-c-sharp/"/>
+   <link href="http://blog.lacti.me/2013/05/19/how-much-faster-is-cpp-than-c-sharp/"/>
    <updated>2013-05-19T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2013/05/19/how-much-faster-is-c++-than-c-sharp</id>
+   <id>http://blog.lacti.me/2013/05/19/how-much-faster-is-cpp-than-c-sharp</id>
    <content type="html">&lt;p&gt;마음에 드는 답변&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -6470,7 +6469,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 
 &lt;p&gt;그렇지만 이번 글에 소개된 방법은 &lt;code&gt;IAccessor&lt;/code&gt;라는 interface를 통해 concrete의 동작을 위해 vfptr을 사용하는 방식으로 가상 함수 호출을 위한 부담을 추가로 가지게 되는 것이다. 이 호출 부담 때문에 더 느릴 수 밖에 없는 것이다.&lt;/p&gt;
 
-&lt;p&gt;다 쓰고 보니 &lt;code&gt;AccessorManager&lt;/code&gt;가 굳이 map을 사용하지 않고, &lt;code&gt;BUFF_MAX&lt;/code&gt;를 받아 배열로 &lt;code&gt;IAccessor&lt;/code&gt;를 관리하는 것이 더 낫겠다 싶다. 하지만 굳이 위와 같이 냅둔 이유는 &lt;a href=&quot;/2012/06/09/using-reflection-at-c%2B%2B-3/&quot;&gt;c++에서 reflection 사용하기 3&lt;/a&gt;와 형식이 유사해지기 때문에 코드 읽기가 좀 더 나을지도 모르겠다는 생각과, &lt;code&gt;AccessorManager&lt;/code&gt;에서 배열의 크기를 template parameter로 받아서 배열을 생성해주기 약간 귀찮았기 때문이다-_-a&lt;/p&gt;
+&lt;p&gt;다 쓰고 보니 &lt;code&gt;AccessorManager&lt;/code&gt;가 굳이 map을 사용하지 않고, &lt;code&gt;BUFF_MAX&lt;/code&gt;를 받아 배열로 &lt;code&gt;IAccessor&lt;/code&gt;를 관리하는 것이 더 낫겠다 싶다. 하지만 굳이 위와 같이 냅둔 이유는 &lt;a href=&quot;/2012/06/09/using-reflection-at-cpp-3/&quot;&gt;c++에서 reflection 사용하기 3&lt;/a&gt;와 형식이 유사해지기 때문에 코드 읽기가 좀 더 나을지도 모르겠다는 생각과, &lt;code&gt;AccessorManager&lt;/code&gt;에서 배열의 크기를 template parameter로 받아서 배열을 생성해주기 약간 귀찮았기 때문이다-_-a&lt;/p&gt;
 </content>
  </entry>
  
@@ -6814,9 +6813,9 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
  
  <entry>
    <title>c++에서 reflection 사용하기 4</title>
-   <link href="http://blog.lacti.me/2012/06/09/using-reflection-at-c%2B%2B-4/"/>
+   <link href="http://blog.lacti.me/2012/06/09/using-reflection-at-cpp-4/"/>
    <updated>2012-06-09T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2012/06/09/using-reflection-at-c++-4</id>
+   <id>http://blog.lacti.me/2012/06/09/using-reflection-at-cpp-4</id>
    <content type="html">&lt;p&gt;이전 글에서는 자료구조가 선언된 header파일을 여러 번 include하면 문제가 발생했었다. 하지만 이리저리 참조가 되다보면 각 번역 단위에서 include가 한 번만 되는 것은 굉장히 힘든 일일 것이다.&lt;/p&gt;
 
 &lt;p&gt;따라서 본 글에서는 매크로를 잘 정의해서 선언 header파일이 구조체 선언, reflection 등록 딱 2번만 include가 될 수 있도록 만들어볼 것이다. &lt;a href=&quot;https://github.com/lacti/FieldInfo/tree/v0.3&quot;&gt;이전 글(#3)의 소스 코드&lt;/a&gt; 내의,&lt;/p&gt;
@@ -6936,9 +6935,9 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
  
  <entry>
    <title>c++에서 reflection 사용하기 3</title>
-   <link href="http://blog.lacti.me/2012/06/09/using-reflection-at-c%2B%2B-3/"/>
+   <link href="http://blog.lacti.me/2012/06/09/using-reflection-at-cpp-3/"/>
    <updated>2012-06-09T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2012/06/09/using-reflection-at-c++-3</id>
+   <id>http://blog.lacti.me/2012/06/09/using-reflection-at-cpp-3</id>
    <content type="html">&lt;p&gt;지난 #2에서는 &lt;code&gt;class_t&lt;/code&gt;, &lt;code&gt;field_t&lt;/code&gt; 자체가 가상 함수를 갖고, &lt;code&gt;class_impl_t&lt;/code&gt;와 &lt;code&gt;field_impl_t&lt;/code&gt;가 이 class를 상속 받아서 구현하는 방식을 사용하였다. 사실 굳이 이 &lt;code&gt;impl_t&lt;/code&gt; class 들은 노출될 필요가 없으므로 이를 감추도록 해보자.&lt;/p&gt;
 
 &lt;p&gt;그리고 다 완성된 type을 register함에 있어, 따로 &lt;code&gt;register_class&lt;/code&gt;, &lt;code&gt;register_field&lt;/code&gt; 함수를 직접 불러서 등록을 하였는데, 이것을 &lt;a href=&quot;http://en.wikipedia.org/wiki/X_Macro&quot;&gt;X-Macro pattern&lt;/a&gt;을 사용하여 개선해보도록 하자.&lt;/p&gt;
@@ -7167,9 +7166,9 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
  
  <entry>
    <title>c++에서 reflection 사용하기 2</title>
-   <link href="http://blog.lacti.me/2012/06/04/using-reflection-at-c%2B%2B-2/"/>
+   <link href="http://blog.lacti.me/2012/06/04/using-reflection-at-cpp-2/"/>
    <updated>2012-06-04T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2012/06/04/using-reflection-at-c++-2</id>
+   <id>http://blog.lacti.me/2012/06/04/using-reflection-at-cpp-2</id>
    <content type="html">&lt;p&gt;지난 번 글의 문제점은 다음과 같다.&lt;/p&gt;
 
 &lt;ul&gt;
@@ -7350,15 +7349,15 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
  
  <entry>
    <title>c++에서 reflection 사용하기 1</title>
-   <link href="http://blog.lacti.me/2012/06/03/using-reflection-at-c%2B%2B-1/"/>
+   <link href="http://blog.lacti.me/2012/06/03/using-reflection-at-cpp-1/"/>
    <updated>2012-06-03T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2012/06/03/using-reflection-at-c++-1</id>
+   <id>http://blog.lacti.me/2012/06/03/using-reflection-at-cpp-1</id>
    <content type="html">&lt;p&gt;mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고 있는 field의 정보를 enumerate 해야할 일이 생겼다. 그런데 c++은 reflection이 없잖아?&lt;/p&gt;
 
 &lt;p&gt;그렇게 고민하다가 예전에 쓴 글을 발견했다.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;/2011/09/30/using-rtti-at-c%2B%2B/&quot;&gt;c++에서 구조체 RTTI 정보 남기기&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/2011/09/30/using-rtti-at-cpp/&quot;&gt;c++에서 구조체 RTTI 정보 남기기&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;기본 아이디어는 다음과 같다. 각 class마다 자신의 field에 대한 정보를 갖는다. 이름과 멤버 변수 포인터 쌍을 가진다고 보면 된다. 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데, 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다. 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다.&lt;/p&gt;
@@ -8045,7 +8044,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
 &lt;h3&gt;참고&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await&quot;&gt;http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://reedcopsey.com/2010/10/28/c-5-async-part-1-simplifying-asynchrony-that-for-which-we-await&quot;&gt;C# 5 Async, Part 1: Simplifying Asynchrony – That for which we await&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>
@@ -9811,9 +9810,9 @@ binary로 넣어버리면 column이 하나 추가될 때마다 기존 사용자�
  
  <entry>
    <title>c++ 에서 구조체 RTTI 정보 남기기</title>
-   <link href="http://blog.lacti.me/2011/09/30/using-rtti-at-c%2B%2B/"/>
+   <link href="http://blog.lacti.me/2011/09/30/using-rtti-at-cpp/"/>
    <updated>2011-09-30T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2011/09/30/using-rtti-at-c++</id>
+   <id>http://blog.lacti.me/2011/09/30/using-rtti-at-cpp</id>
    <content type="html">&lt;p&gt;RTTI는 Run-time Type Information의 약자로, 실행 중에 어떤 type에 대한 정보를 알 수 있다는 것이다. 보통 type 에 대한 정보는 컴파일 타임에 다 사용되고, 실행 중에는 없어지는데, 실행 중에 이 정보를 얻을 수 있으면 재밌는 일을 많이 할 수 있다.&lt;/p&gt;
 
 &lt;p&gt;Java나 C#, 아니면 여타 동적 언어들은 당연히 이 기능을 지원하고 (보통 reflection 이라고 한다)
@@ -13207,9 +13206,9 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
  
  <entry>
    <title>stl operator 실수</title>
-   <link href="http://blog.lacti.me/2010/12/24/c%2B%2B-stl-fault/"/>
+   <link href="http://blog.lacti.me/2010/12/24/cpp-stl-fault/"/>
    <updated>2010-12-24T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2010/12/24/c++-stl-fault</id>
+   <id>http://blog.lacti.me/2010/12/24/cpp-stl-fault</id>
    <content type="html">&lt;p&gt;어제 나를 1시간동안 고민하게 한 코드는 다음과 같다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CMyData&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GetKey&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_nKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -13250,9 +13249,9 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
  
  <entry>
    <title>class와 memset</title>
-   <link href="http://blog.lacti.me/2010/12/24/c%2B%2B-class-memset-fault/"/>
+   <link href="http://blog.lacti.me/2010/12/24/cpp-class-memset-fault/"/>
    <updated>2010-12-24T00:00:00+00:00</updated>
-   <id>http://blog.lacti.me/2010/12/24/c++-class-memset-fault</id>
+   <id>http://blog.lacti.me/2010/12/24/cpp-class-memset-fault</id>
    <content type="html">&lt;p&gt;c++의 class보다 java의 class를 훨씬 많이 쓰는 나는 사실 c의 struct라면 모를까 c++의 class는 아직도 생소하다. struct를 쓸 때, 가장 좋은 점 중 하나는 초기화라고 생각하는데,&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyData&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;TCHAR&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;szName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;

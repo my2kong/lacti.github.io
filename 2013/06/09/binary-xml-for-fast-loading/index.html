@@ -104,7 +104,7 @@ DataChunk를 만드는 과정에서 약간의 번거로움이 있지만 (XmlType
 <li>literal string의 주소는 다 동일하니까, literal 주소로 index-cache를 만든다.</li>
 <li>이 때 다른 xml의 동일한 literal string의 주소도 같을테니까 TypeDefine의 주소도 섞어서 key로 쓴다.</li>
 <li>없으면 TypeDefine에서 AttributeIndex를 찾아서 접근하고, 이 index를 잘 cache해둔다.</li>
-<li>stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.[/code]</li>
+<li>stack 변수로 attribute 이름이 조합되어 넘어올 수 있으니 잘 integrity를 검사해준다.</li>
 </ol>
 
 <p><img src="http://blog.lacti.me/images/binary_xml_attribute_index_cache.png" alt="attribute index cache"></p>
