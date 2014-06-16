@@ -1,11 +1,13 @@
 language: ruby
 install:
   - ./rebund/run download
-  - bundle install
+  - bundle install --path vendor/bundle
 script: bundle exec rake site:deploy
 after_script:
   - ./rebund/run upload
 env:
   global:
-    secure: o15kOScoA+u4KuVRYhTXCDSq4LLgC+ojmVFtt4lBQq5IosCSANgqjO7F6Z9znz84rHa+M2gRTvTudPYub7FU/Dfg2IpGqr0TExdN4Cd2KnTwnAnh3tjaKg3vHwj7VIQ5tiGPnzWBlw3C96RSyvQQCZd2wGI22pzzDwsqS8PhWnE=
-    secure: PNUECNBxmAXe1g3o7csKUaMq5EuIeEYJtOE0aRhN3FHp9gy9XxvtyKFsVm1E3yRBlziIqcuAqdtHn1j0Jox93z1M+jgsTy7BPHq9KJO76280cy4MdyPAMssCg26ELMdjqk38lijMdFOmSoLaT4rLbNpwKcuy3MhCWUQxHv4P2j0=
+    - GIT_NAME=lacti
+    - GIT_EMAIL=lactrious@gmail.com
+    - REBUND_ENDPOINT=http://lacti-keyfile.herokuapp.com/
+    - secure: "rpAp1Medn5ih0aGzhHI8E3Mr6HLEl78q2IPrc2Q8HHUlD32ZQerpU/XyzjvkciWrhd3VxfvtTvDq/oVwlDx0W5L33ag0ZgQ71PkzaNIg+HD6f245XohwBa8jo8t5Ak7gwu2hBd3SzUIewdw64Evy/utGlxSSPbmqA9Fqy+WYTJU="
