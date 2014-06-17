@@ -1,3 +1,10 @@
+* {
+  font-family: "Consolas", "맑은 고딕";
+  word-spacing: -1px;
+}
+body {
+  background-color: #f6f6f6;
+}
 footer {
   margin-top: 16px;
   padding-bottom: 12px;
@@ -7,10 +14,6 @@ footer hr {
 }
 footer p {
   margin: 8px 0px;
-}
-* {
-  font-family: "Consolas", "맑은 고딕";
-  word-spacing: -1px;
 }
 .container {
   padding-right: 15px;
@@ -25,15 +28,29 @@ div :first-child {
 div.r-head-div :first-child {
   margin-top: 20px;
 }
+#head {
+  display: none;
+}
+#head a {
+  color: #aaa;
+  margin: 4px 4px;
+  display: inline-block;
+}
+.mobile-only {
+  display: inline;
+}
 @media (min-width: 768px) {
   #head {
-    height: 8px;
-    background-color: #333;
+    display: block;
+    background-image: url('../images/3AyOMSuV.png');
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    background-color: #f0f0f0;
+	border-bottom: 1px solid #ccc;
   }
   .container {
     width: 710px;
-    border: 4px solid #fafafa;
-    border-width: 0px 4px;
   }
   .l-box {
     padding-right: 0.5em;
@@ -46,24 +63,8 @@ div.r-head-div :first-child {
   div.r-head-div :first-child {
     margin-top: 0px;
   }
-}
-@media (min-width: 768px) {
-  #head {
-    height: 8px;
-    background-color: #333;
-  }
-  .container {
-    width: 710px;
-    border: 4px solid #fafafa;
-    border-width: 0px 4px;
-  }
-  .l-box {
-    padding-right: 0.5em;
-    box-sizing: border-box;
-  }
-  .r-box {
-    padding-left: 0.5em;
-    box-sizing: border-box;
+  .mobile-only {
+    display: none;
   }
 }
 @media (min-width: 992px) {
@@ -144,4 +145,8 @@ ul#indexes span {
 code.tag {
   padding: 2px;
   margin: 1px;
+}
+#footer-menu {
+  float: left;
+  margin-top: 8px;
 }
