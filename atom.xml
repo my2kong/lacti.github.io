@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-17T06:27:30+00:00</updated>
+ <updated>2014-06-17T06:31:04+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -1134,9 +1134,9 @@
 
 &lt;ul&gt;
 &lt;li&gt;보통 최적화를 할 때에는 &lt;a href=&quot;http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29&quot;&gt;profiling&lt;/a&gt;을 먼저 한다. vs의 analysis를 쓰든 vtune을 쓰든 돌려보면 느린 함수가 순서대로 잘 나온다. 그리고 보통 그 순서대로 원인을 파악하기 위해 작업을 한다.&lt;/li&gt;
-&lt;li&gt;만약 그랬다면 위 최적화의 적용 순서가 &lt;em&gt;logging 삭제&lt;/em&gt;, &lt;em&gt;list 미리 구성&lt;/em&gt;, &lt;em&gt;unordered_map, scalable_alloc 적용&lt;/em&gt;, &lt;em&gt;분할 압축&lt;/em&gt;, &lt;em&gt;dumpable&lt;/em&gt; 순일 것 같은데 그렇지 않았다.&lt;/li&gt;
-&lt;li&gt;그렇다는 것은 던파 코드가 analysis를 써도 결과가 제대로 안 나오는 답이 없는 상황~~이거나 profiling을 초반에 제대로 못 돌렸다는 것이다.~~이었다는 것이다.&lt;br&gt;
-&lt;em&gt;제가 발표 시점에 제대로 못 들었나 봅니다, 발표자님 감사합니다 :)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;만약 그랬다면 위 최적화의 적용 순서가 logging 삭제, list 미리 구성, &lt;code&gt;unordered_map&lt;/code&gt;, &lt;code&gt;scalable_alloc&lt;/code&gt; 적용, 분할 압축, dumpable 순일 것 같은데 그렇지 않았다&lt;/del&gt; &lt;em&gt;특별히 어느 한 부분이 압도적으로 문제가 되는 부분이 없었다고 한다.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;그렇다는 것은 던파 코드가 analysis를 써도 결과가 제대로 안 나오는 답이 없는 상황 &lt;del&gt;이거나 profiling을 초반에 제대로 못 돌렸다는 것이다&lt;/del&gt; 이었다는 것이다.&lt;br&gt;
+&lt;em&gt;발표 시점에 해당 내용을 놓친 것 같다. 발표자님의 댓글 도움으로 수정&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;따라서 다른 누군가가 위 세션에 감동을 받아 최적화를 진행한다고 하면,
 
