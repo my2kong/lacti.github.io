@@ -1,7 +1,7 @@
 language: ruby
 install:
   - ./rebund/run download
-  - bundle install --path vendor/bundle
+  - bundle install --local --path vendor/bundle
 script: bundle exec rake site:deploy
 after_script:
   - ./rebund/run upload
