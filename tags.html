@@ -9,7 +9,7 @@ title: lacti's blog
 			<div class="pure-u-1">
 				<ul id="indexes">
 				{% for tag in tag_words %}
-					<h3><a id="{{ tag }}">{{ tag }}</a></h3>
+					<h3><a id="{{ tag }}" href="#{{ tag }}">{{ tag }}</a></h3>
 					{% for post in site.posts %}
 						{% if post.tags contains tag %}
 					<li>
