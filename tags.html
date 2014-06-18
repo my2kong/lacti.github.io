@@ -1,0 +1,25 @@
+---
+layout: default
+title: lacti's blog
+---
+
+{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+{% assign tag_words = site_tags | split:',' | sort %}
+		<div class="pure-g">
+			<div class="pure-u-1">
+				<ul id="indexes">
+				{% for tag in tag_words %}
+					<h3><a id="{{ tag }}">{{ tag }}</a></h3>
+					{% for post in site.posts %}
+						{% if post.tags contains tag %}
+					<li>
+						<span>{{ post.date | date: '%d %b %Y' }}</span>
+						<a href="{{ post.url }}">{{ post.title }}</a>
+					</li>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+
