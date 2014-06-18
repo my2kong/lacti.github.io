@@ -13,7 +13,7 @@ title: lacti's blog
 					{% for post in site.posts %}
 						{% if post.tags contains tag %}
 					<li>
-						<span>{{ post.date | date: '%d %b %Y' }}</span>
+						<span class="index-date">{{ post.date | date: '%d %b %Y' }}</span>
 						<a href="{{ post.url }}">{{ post.title }}</a>
 					</li>
 						{% endif %}

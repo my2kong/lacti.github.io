@@ -16,7 +16,7 @@ title: lacti's blog
 						{% endif %}
 					{% endunless %}
 					<li>
-						<span>{{ post.date | date: '%d.' }}</span>
+						<span class="index-date">{{ post.date | date: '%d.' }}</span>
 						<a href="{{ post.url }}">{{ post.title }}</a>
 					</li>
 				{% endfor %}
