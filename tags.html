@@ -3,12 +3,11 @@ layout: default
 title: lacti's blog
 ---
 
-{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
-{% assign tag_words = site_tags | split:',' | sort %}
 		<div class="pure-g">
 			<div class="pure-u-1">
 				<ul id="indexes">
-				{% for tag in tag_words %}
+				{% sorted_keys_for tag in site.tags %}
+				{% if tag != '-pub' %}
 					<h3><a id="{{ tag }}" href="#{{ tag }}">{{ tag }}</a></h3>
 					{% for post in site.posts %}
 						{% if post.tags contains tag %}
@@ -18,7 +17,8 @@ title: lacti's blog
 					</li>
 						{% endif %}
 					{% endfor %}
-				{% endfor %}
+				{% endif %}
+				{% endsorted_keys_for %}
 				</ul>
 			</div>
 		</div>
