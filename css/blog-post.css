@@ -120,9 +120,13 @@ a:hover {
   .SlideShare {
     display: none;
   }
-}
-p, li, a, code, span, h1, h2, h3, h4, h5, h6, img {
-  page-break-inside: avoid;
+  a:link:after, a:visited:after { content:" [" attr(href) "] "; }
+  p, li, a, code, span, h1, h2, h3, h4, h5, h6, img {
+    page-break-inside: avoid;
+  }
+  .page-breaker {
+    page-break-after: always;
+  }
 }
 .page-title,
 .index-title,

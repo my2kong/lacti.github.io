@@ -10,7 +10,7 @@ title: lacti's blog
 				{% for tag in tag_words %}
 				<h1><a id="{{ tag }}" href="#{{ tag }}">{{ tag }}</a></h1>
 				<hr />
-				<div style="page-break-after: always"></div>
+				<div class="page-breaker"></div>
 					{% for post in site.posts reversed %}
 						{% assign category = post.tags | first %}
 						{% if category == tag %}
@@ -25,7 +25,7 @@ title: lacti's blog
 {{ post.content }}
 					</div>
 				<hr />
-				<div style="page-break-after: always"></div>
+				<div class="page-breaker"></div>
 						{% endif %}
 					{% endfor %}
 				{% endfor %}
