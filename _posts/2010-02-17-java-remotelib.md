@@ -1,7 +1,7 @@
 ---
 layout: post
 title: java remotelib 개발
-tags: java rpc _pub
+tags: java rpc -pub
 ---
 
 심심한 상황에서 뭘 코딩할까 고민중에 java rmi app를 만들다가 고생한 기억이 있어서 이걸 좀 쉽게 사용할 수 있는 remote lib를 만들어보자는 생각에 시작하였다.

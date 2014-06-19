@@ -1,7 +1,7 @@
 ---
 layout: post
 title: java의 FutureTask를 사용한 간단한 수행 대기
-tags: java _pub
+tags: java -pub
 ---
 
 어떤 작업에 timeout을 주고 실행하고 싶은 경우가 있다. 예를 들어 web crawler를 만들 때에는 해당 페이지에 대한 응답이 10초정도 없을 경우에 그냥 그 페이지를 읽지 않도록 예외처리 하는 것이다.

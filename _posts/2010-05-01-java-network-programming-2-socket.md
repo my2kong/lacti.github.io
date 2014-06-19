@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 자바 네트워크 프로그래밍 2 - Socket
-tags: java _pub
+tags: java -pub
 ---
 
 자바 네트워크 프로그래밍을 설명하려면 당연히 IO부터 이야기해야하는 것이 맞겠지만 이왕 저지른거 막장으로 달려보자.

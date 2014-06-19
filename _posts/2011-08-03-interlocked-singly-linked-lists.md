@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Interlocked Singly Linked Lists
-tags: concurrency _pub
+tags: concurrency -pub
 ---
 
 Concurrent Data Structure는 Lock을 최소화하여 동작해야 multi thread에서 해당 자료구조에 접근할 때 발생하는 부담이 최소화되어 효율적인 프로그래밍이 가능하다.

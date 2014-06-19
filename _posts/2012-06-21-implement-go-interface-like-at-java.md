@@ -1,7 +1,7 @@
 ---
 layout: post
 title: go interface 구현하기
-tags: java _pub
+tags: java -pub
 ---
 
 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고

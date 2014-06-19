@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 프로그램 세그먼트
-tags: c memory _pub
+tags: c memory -pub
 ---
 
 (리눅스 커널의 이해 개정 3판 810쪽)  

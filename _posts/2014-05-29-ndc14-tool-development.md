@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 팀을 구하는 툴 개발
-tags: ndc14 tool _pub
+tags: ndc14 tool -pub
 ---
 
 [박경재](http://kyungjaepark.com/)

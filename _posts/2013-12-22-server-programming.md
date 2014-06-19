@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 서버 프로그래밍
-tags: design server _pub
+tags: design server -pub
 ---
 
 ### 설계 ###

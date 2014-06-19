@@ -1,7 +1,7 @@
 ---
 layout: post
 title: type_t class 도입을 통한 임시 객체 없는 type 분기
-tags: c++ template _pub
+tags: c++ template -pub
 ---
 
 어떤 class 2개가 있다.

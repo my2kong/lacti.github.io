@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들
-tags: ndc14 distributed _pub
+tags: ndc14 distributed -pub
 ---
 
 * 이호규

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: debian 계열 db 덮어쓸 때 주의점
-tags: database _pub
+tags: database -pub
 ---
 
 debian-sys-maint 계정 암호가 바뀌면 안된다

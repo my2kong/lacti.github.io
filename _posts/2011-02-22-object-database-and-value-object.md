@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Object Database와 Value Object
-tags: design database _pub
+tags: design database -pub
 ---
 
 프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 다중 입출력에 대한 효율적 처리
-tags: async io _pub
+tags: async io -pub
 ---
 
 다중 입출력 함수는 POSIX의 select 함수를 공부하면서 가장 많이 보게 되는 함수이다. 다중 입출력 함수라는 것은 영어로 바꿔보면 multiplex io function인데 말 그대로 여러 개의 io 를 하나의 함수로 처리한다는 것이다.

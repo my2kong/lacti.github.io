@@ -1,7 +1,7 @@
 ---
 layout: post
 title: java annotation과 reflection을 사용한 xml mapping
-tags: java reflection _pub
+tags: java reflection -pub
 ---
 
 마침 요즘 spring을 쓰면서 자바를 공부한다는 친구를 채팅방에서 만나게 되어 reflection과 annotation을 사용한 xml mapping에 대한 코드를 작성해보라고 이야기하였다. 그 친구가 언급한 DI와는 좀 다른 방향이지만, annotation을 사용한 metadata 사용과 reflection을 통한 설계적 유연성을 공부해보면 spring framework을 이해하는데 도움이 되지 않을까 하여 이야기했던 것이다.

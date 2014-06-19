@@ -1,7 +1,7 @@
 ---
 layout: post
 title: java annotation을 사용한 InstanceId 구현
-tags: java _pub
+tags: java -pub
 ---
 
 Java에서 생성하는 `Object`마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자.

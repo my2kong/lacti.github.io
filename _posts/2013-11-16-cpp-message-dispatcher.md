@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++ message dispatcher
-tags: c++ template study _pub
+tags: c++ template study -pub
 ---
 
 간단한 message dispatch 코드를 c++로 구현해보자. 일단 `std::function`을 안 쓰고 구현해보고, 그 다음에 `std::function`을 써서 구현해보자.

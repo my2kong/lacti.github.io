@@ -1,7 +1,7 @@
 ---
 layout: post
 title: function adapter와 type inference
-tags: c++ template study _pub
+tags: c++ template study -pub
 ---
 
 과제는 다음의 Adapter를 만들어보자는 것이다.

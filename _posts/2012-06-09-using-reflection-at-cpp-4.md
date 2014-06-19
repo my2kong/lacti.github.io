@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++에서 reflection 사용하기 4
-tags: c++ reflection _pub
+tags: c++ reflection -pub
 ---
 
 이전 글에서는 자료구조가 선언된 header파일을 여러 번 include하면 문제가 발생했었다. 하지만 이리저리 참조가 되다보면 각 번역 단위에서 include가 한 번만 되는 것은 굉장히 힘든 일일 것이다.

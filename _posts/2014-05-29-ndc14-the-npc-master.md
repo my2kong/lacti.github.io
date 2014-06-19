@@ -1,7 +1,7 @@
 ---
 layout: post
 title: THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법
-tags: ndc14 design live _pub
+tags: ndc14 design live -pub
 ---
 
 {% oembed http://www.slideshare.net/khalbora/the-npcmsterpublicfinal-35354617 %}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: const overloading
-tags: c++ _pub
+tags: c++ -pub
 ---
 
 c++의 overloading은 c에서 어떤 함수를 단순히 함수의 이름으로만 식별했던 것에 비해 함수의 인자의 type, 개수, 혹은 const/volatile 여부까지 고려해서 식별한다는 것이다.

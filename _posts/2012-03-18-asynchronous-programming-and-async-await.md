@@ -1,7 +1,7 @@
 ---
 layout: post
 title: asynchronous programming과 async, await
-tags: async _pub
+tags: async -pub
 ---
 
 함수를 호출하는 코드를 작성한다고 해보자. synchronous하게 호출하는 방법이 있고, asynchronous하게 호출하는 방법이 있다. (보통 후자는 호출이라고 하기보다는 요청을 한다고 할 것이다)

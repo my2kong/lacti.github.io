@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++에서 reflection 사용하기 2
-tags: c++ reflection _pub
+tags: c++ reflection -pub
 ---
 
 지난 번 글의 문제점은 다음과 같다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 객체별 함수 수행 동기화
-tags: concurrency c++ async _pub
+tags: concurrency c++ async -pub
 ---
 
 (주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다)  

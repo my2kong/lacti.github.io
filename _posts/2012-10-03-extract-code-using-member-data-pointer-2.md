@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 멤버 데이터 포인터를 사용하여 연산식 묶어내기 2
-tags: c++ refactor _pub
+tags: c++ refactor -pub
 ---
 
 이번 글에서는 `Stat` 자료구조 내에 배열이 있을 때 이를 어떻게 처리할지에 대해서 알아보도록 하자.

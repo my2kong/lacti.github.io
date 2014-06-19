@@ -1,7 +1,7 @@
 ---
 layout: post
 title: thread-safe한 counter 구현
-tags: concurrency c++ study _pub
+tags: concurrency c++ study -pub
 ---
 
 먼저 간단한 counter example을 만들어보자.

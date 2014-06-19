@@ -1,7 +1,7 @@
 ---
 layout: post
 title: context switching과 simultaneously 실행
-tags: concurrency _pub
+tags: concurrency -pub
 ---
 
 multi thread (or process) programming에서 가장 기초적인 개념으로 ABA Problem과 연결(되나?) 되는 기본적인 개념을 설명하고자 한다. **한 개의 코어는 한 시점에 한 개의 명령을 수행한다!** 라는 기본 전제를 깔고 이야기를 시작해보려 한다.

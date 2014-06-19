@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 자바로 만드는 비행기 게임 4
-tags: java game _pub
+tags: java game -pub
 ---
 
 이번과 다음은 코드 정리를 해보자.

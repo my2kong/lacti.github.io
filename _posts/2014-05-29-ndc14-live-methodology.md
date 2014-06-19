@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기
-tags: ndc14 live _pub
+tags: ndc14 live -pub
 ---
 
 * [최진욱](https://twitter.com/LTeaRain)

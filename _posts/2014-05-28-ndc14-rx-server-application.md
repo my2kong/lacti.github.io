@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기
-tags: ndc14 server _pub
+tags: ndc14 server -pub
 ---
 
 {% oembed http://www.slideshare.net/jongwookkim/ndc14-rx-functional-reactive-programming %}

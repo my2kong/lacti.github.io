@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++11 async, corotuine, io 스터디
-tags: async io study _pub
+tags: async io study -pub
 ---
 
 오늘 스터디에서 공부한 내용을 간단히 정리해보자.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: IO와 메모리 복사
-tags: io memory _pub
+tags: io memory -pub
 ---
 
 동기와 비동기 IO 에 대해 지난번에 이야기했었다. [비동기 IO 함수]({% post_url 2011-08-07-asynchronous-io %})

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: stl operator 실수
-tags: c++ _pub
+tags: c++ -pub
 ---
 
 어제 나를 1시간동안 고민하게 한 코드는 다음과 같다.

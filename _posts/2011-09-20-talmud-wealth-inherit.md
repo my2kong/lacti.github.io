@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 탈무드 이야기
-tags: c++ _pub
+tags: c++ -pub
 ---
 
 탈무드에는 다음과 같은 이야기가 있다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 당연하지만 간과하는 size_t ssize_t
-tags: c _pub
+tags: c -pub
 ---
 
 IO 함수를 사용함에 있어서 그 근간이 되는 것은 `read`와 `write` 함수이다.  

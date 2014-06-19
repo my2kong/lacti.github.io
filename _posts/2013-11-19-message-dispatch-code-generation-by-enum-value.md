@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 메시지 enum에 따른 message 콜백 함수 자동생성
-tags: c++ message _pub
+tags: c++ message -pub
 ---
 
 일단 message에 대한 기본 type과 각 message을 구분하기 위한 enum이 있다.

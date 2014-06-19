@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template을 사용한 generic 프로그래밍
-tags: c++ template study _pub
+tags: c++ template study -pub
 ---
 
 *(한 번에 1~2시간 정도로 짧게(?) 하고 있다. 대충 accelerated c++ 책이랑 EC++ 책을 보고 있다.)*

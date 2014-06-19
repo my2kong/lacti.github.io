@@ -1,7 +1,7 @@
 ---
 layout: post
 title: mswsock.dll의 비밀
-tags: optimization network c# _pub
+tags: optimization network c# -pub
 ---
 
 최근 회사에서 c#으로 네트워크 프로그래밍을 하고 있다. 일은 아니고 그냥 개인의 취향
