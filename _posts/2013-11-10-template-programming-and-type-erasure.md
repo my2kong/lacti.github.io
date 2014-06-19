@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template 프로그래밍과 type erasure
-tags: study c++ template
+tags: c++ template study _pub
 ---
 
 ```cpp

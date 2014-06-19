@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 게임 데이터 작성하기 1
-tags: design game data
+tags: design game data _pub
 ---
 
 보통 프로그램을 작성할 때에는 필요한 데이터를 읽고, 해석하여 동작하는 구조로 많이 작성한다.

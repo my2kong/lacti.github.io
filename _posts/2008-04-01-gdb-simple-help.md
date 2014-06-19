@@ -1,7 +1,7 @@
 ---
 layout: post
 title: gdb 간단 사용법 정리
-tags: tool
+tags: tool _pub
 ---
 
 GDB는 GNU Debugger의 약자로 console 디버거이다. console 디버거이므로 gdb는 gdb shell을 제공하고, 사용자는 그 shell에 명령을 입력함으로써 디버깅을 수행할 수 있다.

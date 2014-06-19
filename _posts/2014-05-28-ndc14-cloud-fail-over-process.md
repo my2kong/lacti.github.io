@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 나이키 런더시티로 본 클라우드 서비스의 장애 복구 프로세스
-tags: ndc14 cloud
+tags: ndc14 cloud _pub
 ---
 
 ### 요약 ###

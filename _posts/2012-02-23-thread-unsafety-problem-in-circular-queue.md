@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 환형큐의 thread unsafety 문제
-tags: c++ concurrency
+tags: concurrency c++ _pub
 ---
 
 어떤 자원에 대한 환형큐가 있다고 해보자. size는 2의 자승이다.

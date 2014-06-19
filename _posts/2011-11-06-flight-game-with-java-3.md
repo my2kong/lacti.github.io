@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 자바로 만드는 비행기 게임 3
-tags: java game
+tags: java game _pub
 ---
 
 이번에는 적기의 등장과 충돌검사를 해보자.

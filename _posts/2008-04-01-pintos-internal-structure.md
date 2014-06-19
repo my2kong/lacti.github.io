@@ -1,7 +1,7 @@
 ---
 layout: post
 title: pintos 기본 구조와 동작 원리
-tags: os
+tags: os _pub
 ---
 
 ### Pintos의 기본 구조 ###

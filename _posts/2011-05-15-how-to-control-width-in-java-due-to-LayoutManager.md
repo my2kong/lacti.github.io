@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java에서 LayoutManager로 인해 width가 뜻대로 안될 때
-tags: java
+tags: java _pub
 ---
 
 Java의 `LayoutManager`는 유연한 component 배치를 위해 parent component의 width에 딱 맞춰서 자식 control을 배치해주는 작업을 수행한다. 그러다보니 자식의 가로 길이를 고정으로 하고 싶은 경우에도 그 크기가 변경되어서 문제가 생기는 경우가 있다.

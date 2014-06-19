@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 분산 처리 환경 구현 1
-tags: c# distributed
+tags: distributed c# _pub
 ---
 
 잉여 컴퓨팅 자원을 십분 활용하여 처리량을 늘리기 위한 분산 처리 환경을 구축해보자.  

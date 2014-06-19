@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Tls 초기화
-tags: c++
+title: thread local storage 초기화
+tags: c++ _pub
 ---
 
 Tls는 `Thread Local Storage`로 Thread 내 전역변수라고 생각하면 간단하다(Local 인데 왠 전역!)  

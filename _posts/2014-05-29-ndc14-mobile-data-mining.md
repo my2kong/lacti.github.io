@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 모바일 데이터 분석
-tags: ndc14 mobile data
+tags: ndc14 data _pub
 ---
 
 {% oembed http://www.slideshare.net/5rocks_io/ndc-20140529 %}

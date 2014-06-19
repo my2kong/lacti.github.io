@@ -1,7 +1,7 @@
 ---
 layout: post
 title: concurrency pattern과 분산 시스템 스터디
-tags: study concurrency distributed
+tags: distributed concurrency study _pub
 ---
 
 Concurrency Pattern부터 Distributed System까지! 근데 대충함 [...]

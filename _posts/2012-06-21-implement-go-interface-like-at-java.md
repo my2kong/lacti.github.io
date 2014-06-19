@@ -1,10 +1,8 @@
 ---
 layout: post
 title: go interface 구현하기
-tags: java
+tags: java _pub
 ---
-
-*(예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.)*
 
 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
 그냥 [summerlight]님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.

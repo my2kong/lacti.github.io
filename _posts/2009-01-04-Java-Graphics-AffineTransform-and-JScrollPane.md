@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java Graphics와 AffineTransform, 그리고 JScrollPane
-tags: java
+tags: java _pub
 ---
 
 예전에 디비랩 알바를 할 때, 어떤 이미지에 대해 확대, 축소, 이동을 해야할 일이 생겼다.

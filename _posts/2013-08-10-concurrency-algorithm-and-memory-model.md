@@ -1,7 +1,7 @@
 ---
 layout: post
 title: concurrency 알고리즘과 memory model
-tags: study concurrency
+tags: concurrency memory study _pub
 ---
 
 오늘 스터디에서 공부한 내용을 간략히 정리해보자.

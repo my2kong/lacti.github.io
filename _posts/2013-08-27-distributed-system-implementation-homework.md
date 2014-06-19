@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 분산 시스템 구현 과제 정리
-tags: study distributed
+tags: distributed study _pub
 ---
 
 뭐라도 좋으니 간단한 분산 시스템을 구현해보자!  

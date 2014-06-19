@@ -1,7 +1,7 @@
 ---
 layout: post
 title: producer/consumer model 구현
-tags: study c++ concurrency
+tags: concurrency c++ study _pub
 ---
 
 먹깨비 과제를 풀어보자. 여러 가지 구현법이 있을 것인데, 나는 간단하게

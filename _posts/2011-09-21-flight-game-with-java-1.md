@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 자바로 만드는 비행기 게임 1
-tags: java game
+tags: java game _pub
 ---
 
 본 글타래에서는 자바를 사용하여 간단한 비행기 게임을 만드는 과정을 서술해볼까 한다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: LockWindowUpdate
-tags: c++
+tags: c++ _pub
 ---
 
 Win32 혹은 MFC를 하다보면  

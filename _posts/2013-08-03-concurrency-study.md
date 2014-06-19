@@ -1,7 +1,7 @@
 ---
 layout: post
 title: concurrency 스터디
-tags: study concurrency
+tags: concurrency study _pub
 ---
 
 오늘 스터디에서 공부한 내용을 간략히 정리해보자.

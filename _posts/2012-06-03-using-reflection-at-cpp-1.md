@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++에서 reflection 사용하기 1
-tags: c++ reflection
+tags: c++ reflection _pub
 ---
 
 mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고 있는 field의 정보를 enumerate 해야할 일이 생겼다. 그런데 c++은 reflection이 없잖아?

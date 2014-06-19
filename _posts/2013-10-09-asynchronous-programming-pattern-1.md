@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 비동기 프로그래밍 패턴 1
-tags: async design
+tags: async design _pub
 ---
 
 일련의 순서로 호출되어야 하는 비동기 함수들이 있다. 이 때 사용되는 method chaining을 사용한 async/then 패턴과 수행할 비동기 context를 갖고 직접 비동기 수행을 연쇄적으로 진행하는 async_worker 패턴을 알아보자.

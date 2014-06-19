@@ -6,7 +6,7 @@ tags: java
 
 * boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 `equals`와 == 연산자는 과연 어떻게 동작할 것인가
 * class 주제에 primitives라고 이야기하는 `String class`의 `equals`와 == 연산자는 과연 어떻게 동작할 것인가
-* 그리고, 만약 위의 객체들이 `Vector<Object>`에 들어가서 `Object`로 pointing될 때, `equals`와 == 연산자는 과연 어떻게 동작할 것인가!!!
+* 그리고, 만약 위의 객체들이 `Vector<Object>`에 들어가서 `Object`로 pointing될 때, `equals`와 == 연산자는 과연 어떻게 동작할 것인가!
 
 ### Compare Object ###
 

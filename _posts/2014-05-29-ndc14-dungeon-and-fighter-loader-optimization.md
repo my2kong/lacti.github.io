@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 던전 앤 파이터 클라이언트 로딩 속도 최적화 - 우리 아이가 세배 빨라졌어요!
-tags: ndc14 optimization
+tags: ndc14 optimization _pub
 ---
 
 {% oembed http://www.slideshare.net/JaeseungHa/ndc-2014-35508014 %}

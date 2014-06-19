@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 분산 처리 환경 구현 3
-tags: c# distributed rpc
+tags: distributed c# rpc _pub
 ---
 
 * [Github: DistWork - simpler](https://github.com/lacti/DistWork/tree/simpler)

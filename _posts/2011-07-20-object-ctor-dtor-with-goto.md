@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 객체의 생성, 소멸과 goto 이야기
-tags: c++
+tags: c++ _pub
 ---
 
 ### 생성자 소멸자 이야기 ###

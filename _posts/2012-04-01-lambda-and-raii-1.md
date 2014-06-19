@@ -1,7 +1,7 @@
 ---
 layout: post
 title: lambda와 RAII 1
-tags: c++
+tags: c++ _pub
 ---
 
 C++11 에서 도입된 lambda expression을 통한 RAII 구현 방식의 한 예와, 단위 전략을 통한 RAII 구현을 통해 장단점을 비교해보자.

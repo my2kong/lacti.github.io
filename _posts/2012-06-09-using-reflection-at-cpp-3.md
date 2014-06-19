@@ -1,7 +1,7 @@
 ---
 layout: post
 title: c++에서 reflection 사용하기 3
-tags: c++ reflection
+tags: c++ reflection _pub
 ---
 
 지난 #2에서는 `class_t`, `field_t` 자체가 가상 함수를 갖고, `class_impl_t`와 `field_impl_t`가 이 class를 상속 받아서 구현하는 방식을 사용하였다. 사실 굳이 이 `impl_t` class 들은 노출될 필요가 없으므로 이를 감추도록 해보자.

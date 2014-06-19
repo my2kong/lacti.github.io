@@ -1,7 +1,7 @@
 ---
 layout: post
 title: template을 사용한 type간 동등성, 대입가능성
-tags: c++ tmp
+tags: c++ template _pub
 ---
 
 * runtime에 `typeid`를 써서 객체 type의 동등성(Same)을 확인하고,

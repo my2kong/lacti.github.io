@@ -1,13 +1,11 @@
 ---
 layout: post
 title: 닫힌 descriptor와 write, SIGPIPE
-tags: c io
+tags: c io _pub
 ---
 
 예전에도 엄청 고생했던 것인데, `socket`이나 pipe 등에서
 `read`와 `write`로 IO를 수행할 때 상대쪽(opposite endpoint)이 닫혔다면 어떤 현상이 벌어질까?
-
-*뭐 벌어지긴 뭐가 벌어져 안되는거지*
 
 * `read`는 -1을 반환한다
 * `write`는 SIGPIPE를 받는다.
@@ -28,5 +26,3 @@ setsockopt(sd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));
 
 그래서 결국 `sigaction`으로 handler 설치해주고 작업을 해야하는데
 단, signal 함수를 써서 handler를 지정했다가는 **os에 따라서 한번밖에 handler가 설정 안되는 경우가 있으므로 주의**가 필요하다.
-
-이래저래 쉽지 않구나

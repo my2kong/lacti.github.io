@@ -1,10 +1,8 @@
 ---
 layout: post
 title: type_t class 도입을 통한 임시 객체 없는 type 분기
-tags: c++ tmp
+tags: c++ template _pub
 ---
-
-*적당한 제목을 못 찾아서 일단 저렇게 표기, 시간이 짧은 관계로 대충 설명한다. 이 글타래의 키워드는 일반성과 최적화이다.*
 
 어떤 class 2개가 있다.
 

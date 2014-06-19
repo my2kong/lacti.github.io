@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 자바로 만드는 비행기 게임 2
-tags: java game
+tags: java game _pub
 ---
 
 노란색 타원 대신 비행기 이미지를 제대로 띄워보자.  

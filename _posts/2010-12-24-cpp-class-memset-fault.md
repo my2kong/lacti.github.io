@@ -1,7 +1,7 @@
 ---
 layout: post
 title: class와 memset
-tags: c++
+tags: c++ _pub
 ---
 
 c++의 class보다 java의 class를 훨씬 많이 쓰는 나는 사실 c의 struct라면 모를까 c++의 class는 아직도 생소하다. struct를 쓸 때, 가장 좋은 점 중 하나는 초기화라고 생각하는데,

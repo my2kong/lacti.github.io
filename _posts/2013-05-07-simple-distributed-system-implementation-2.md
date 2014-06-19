@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 분산 처리 환경 구현 2
-tags: c# distributed
+tags: distributed c# _pub
 ---
 
 * [Github: DistWork - simplest](https://github.com/lacti/DistWork/tree/simplest)
