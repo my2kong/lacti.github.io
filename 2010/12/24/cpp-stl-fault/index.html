@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="stl operator 실수 24 Dec 2010 c++ _pub 어제 나를 1시간동안 고민하게 한 코드는 다음과 같다. class CMyData { int GetKey (void) const { return m_nKey; } CMyData (void) {} ~CMyData (void) {} private: int m_nKey; }; std::list&lt;CMyData&gt; gCache; BOOL Find (std::list&lt;CMyData&gt;&amp; list, int key) { for (std::list&lt;CMyData&gt;::iterator iterator = gCache.begin (); iterator &lt; gCache.end (); ++iterator) { if (iterator-&gt;GetKey () == key) list.push_back (list); } return list.size () != 0; } 어제 정신이 없었다고 변명을 해도 너무 어이없는 실수를 저질렀는데 더 큰 문제는 컴파일에서 뱉어주는 에러를 보고도 해당 문제를 파악하지 못했다는 것이다. 위 코드의 문제는 나는 OOP 수업의 영향으로 class declaration에서 public - protected - private 순으로 선언을 하고, public method를 선언할 때 가장 마지막 부분에 생성자 소멸자를 선언한다...." />
+	<meta name="description" content="stl operator 실수 24 Dec 2010 c++ -pub 어제 나를 1시간동안 고민하게 한 코드는 다음과 같다. class CMyData { int GetKey (void) const { return m_nKey; } CMyData (void) {} ~CMyData (void) {} private: int m_nKey; }; std::list&lt;CMyData&gt; gCache; BOOL Find (std::list&lt;CMyData&gt;&amp; list, int key) { for (std::list&lt;CMyData&gt;::iterator iterator = gCache.begin (); iterator &lt; gCache.end (); ++iterator) { if (iterator-&gt;GetKey () == key) list.push_back (list); } return list.size () != 0; } 어제 정신이 없었다고 변명을 해도 너무 어이없는 실수를 저질렀는데 더 큰 문제는 컴파일에서 뱉어주는 에러를 보고도 해당 문제를 파악하지 못했다는 것이다. 위 코드의 문제는 나는 OOP 수업의 영향으로 class declaration에서 public - protected - private 순으로 선언을 하고, public method를 선언할 때 가장 마지막 부분에 생성자 소멸자를 선언한다...." />
 
 	<meta http-equiv="date" content="Friday, 24  2010 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,_pub" />
+	<meta name="keywords" content="c++,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>stl operator 실수</title>
@@ -48,7 +48,7 @@
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

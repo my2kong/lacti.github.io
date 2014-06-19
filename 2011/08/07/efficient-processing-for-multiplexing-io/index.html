@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="다중 입출력에 대한 효율적 처리 07 Aug 2011 async io _pub 다중 입출력 함수는 POSIX의 select 함수를 공부하면서 가장 많이 보게 되는 함수이다. 다중 입출력 함수라는 것은 영어로 바꿔보면 multiplex io function인데 말 그대로 여러 개의 io 를 하나의 함수로 처리한다는 것이다. 지난 글의 동기와 비동기에 이어서 여러 개의 io를 어떻게 처리하는 것이 효율적인지 알아보자. 비동기 IO 함수 지난 번에 봤던 함수들은 하나의 IO에 대해서만 사용 가능한 함수들이었다. 대표적으로 scanf는 stdin(표준 입력 스트림)으로부터 값을 읽어오도록 되어있고, ReadFile은 열려있는 하나의 File Handle 로부터 값을 읽는다. WSARecv 함수는 연결되어있는 하나의 Socket으로부터 데이터를 읽는다. 만약 채팅방을 만든다고 해보자. 채팅방에는 여러 사람이 접속해서 데이터를 주고 받는다. 따라서 n명의 사람이 연결되어있다면, 채팅 서버는 적어도 n개의 Socket과 데이터를 주고 받아야할 것이다. 어떻게 처리해야 좋을까? blocking +..." />
+	<meta name="description" content="다중 입출력에 대한 효율적 처리 07 Aug 2011 async io -pub 다중 입출력 함수는 POSIX의 select 함수를 공부하면서 가장 많이 보게 되는 함수이다. 다중 입출력 함수라는 것은 영어로 바꿔보면 multiplex io function인데 말 그대로 여러 개의 io 를 하나의 함수로 처리한다는 것이다. 지난 글의 동기와 비동기에 이어서 여러 개의 io를 어떻게 처리하는 것이 효율적인지 알아보자. 비동기 IO 함수 지난 번에 봤던 함수들은 하나의 IO에 대해서만 사용 가능한 함수들이었다. 대표적으로 scanf는 stdin(표준 입력 스트림)으로부터 값을 읽어오도록 되어있고, ReadFile은 열려있는 하나의 File Handle 로부터 값을 읽는다. WSARecv 함수는 연결되어있는 하나의 Socket으로부터 데이터를 읽는다. 만약 채팅방을 만든다고 해보자. 채팅방에는 여러 사람이 접속해서 데이터를 주고 받는다. 따라서 n명의 사람이 연결되어있다면, 채팅 서버는 적어도 n개의 Socket과 데이터를 주고 받아야할 것이다. 어떻게 처리해야 좋을까? blocking +..." />
 
 	<meta http-equiv="date" content="Sunday, 07  2011 00:00:00 GMT" />
 
-	<meta name="keywords" content="async,io,_pub" />
+	<meta name="keywords" content="async,io,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>다중 입출력에 대한 효율적 처리</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#io">io</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 1 01 Oct 2012 c++ refactor _pub 게임 내 스탯 시스템을 구현한다고 해보자. 그 스탯들은 여러 상황에서 버프에 의해 값이 변경될 수 있기 때문에 스탯을 저장하는 자료구조와 그 스탯을 변경하기 위한 버프 종류 enum과, 각 버프 종류 enum에 따라 스탯을 어떻게 변경할지에 대한 연산식에 대해서 코딩을 해주어야 한다. enum BuffType { BUFF_HP, BUFF_MP, BUFF_ATTACK, BUFF_DEFENCE, }; struct Stat { float hp; float mp; float attack; float defence; }; 일단 각 스탯에 어떤 값을 어떻게 계산하면 되는지에 대해서는 다음의 3가지로 추상화를 했다고 치자. SET, ADD, RATE 즉, 지정, 더하기, 곱하기이다. 그럼 대충 다음과 같은 코드가 나온다. switch (buffType) { case BUFF_HP: switch (buffMethod) { case SET: stat.hp = buffValue; break; case ADD: stat.hp += buffValue;..." />
+	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 1 01 Oct 2012 c++ refactor -pub 게임 내 스탯 시스템을 구현한다고 해보자. 그 스탯들은 여러 상황에서 버프에 의해 값이 변경될 수 있기 때문에 스탯을 저장하는 자료구조와 그 스탯을 변경하기 위한 버프 종류 enum과, 각 버프 종류 enum에 따라 스탯을 어떻게 변경할지에 대한 연산식에 대해서 코딩을 해주어야 한다. enum BuffType { BUFF_HP, BUFF_MP, BUFF_ATTACK, BUFF_DEFENCE, }; struct Stat { float hp; float mp; float attack; float defence; }; 일단 각 스탯에 어떤 값을 어떻게 계산하면 되는지에 대해서는 다음의 3가지로 추상화를 했다고 치자. SET, ADD, RATE 즉, 지정, 더하기, 곱하기이다. 그럼 대충 다음과 같은 코드가 나온다. switch (buffType) { case BUFF_HP: switch (buffMethod) { case SET: stat.hp = buffValue; break; case ADD: stat.hp += buffValue;..." />
 
 	<meta http-equiv="date" content="Monday, 01  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,refactor,_pub" />
+	<meta name="keywords" content="c++,refactor,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>멤버 데이터 포인터를 사용하여 연산식 묶어내기 1</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#refactor">refactor</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

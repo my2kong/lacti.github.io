@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="비동기 프로그래밍 패턴 1 09 Oct 2013 async design _pub 일련의 순서로 호출되어야 하는 비동기 함수들이 있다. 이 때 사용되는 method chaining을 사용한 async/then 패턴과 수행할 비동기 context를 갖고 직접 비동기 수행을 연쇄적으로 진행하는 async_worker 패턴을 알아보자. 연속적인 비동기 작업을 처리할 때에는 동기적 프로그래밍과는 다르게 코드를 순차적으로 서술할 수 없다. 만약 아래와 같이 작성된다면, async_work2나 async_work3는 그 위의 async_work1 혹은 async_work2가 완료되기 전에 시작될 것이다. async_work1(); async_work2(); async_work3(); 간단하게 생각해볼 수 있는 방법은 하나의 작업이 끝난 후에 다음 작업을 호출하도록 하는 것이다. void entry_point() { async_work1(); } void async_work1() { // do something async_work2(); } 그런데 만약 async_work1이 끝난 후 async_work2가 아니라 다른 일반적인 작업을 수행하게 하고 싶을 경우에는 위와 같이 구현할 수 없다. 그래서 선택하는 방법이 callback이다. void entry_point()..." />
+	<meta name="description" content="비동기 프로그래밍 패턴 1 09 Oct 2013 async design -pub 일련의 순서로 호출되어야 하는 비동기 함수들이 있다. 이 때 사용되는 method chaining을 사용한 async/then 패턴과 수행할 비동기 context를 갖고 직접 비동기 수행을 연쇄적으로 진행하는 async_worker 패턴을 알아보자. 연속적인 비동기 작업을 처리할 때에는 동기적 프로그래밍과는 다르게 코드를 순차적으로 서술할 수 없다. 만약 아래와 같이 작성된다면, async_work2나 async_work3는 그 위의 async_work1 혹은 async_work2가 완료되기 전에 시작될 것이다. async_work1(); async_work2(); async_work3(); 간단하게 생각해볼 수 있는 방법은 하나의 작업이 끝난 후에 다음 작업을 호출하도록 하는 것이다. void entry_point() { async_work1(); } void async_work1() { // do something async_work2(); } 그런데 만약 async_work1이 끝난 후 async_work2가 아니라 다른 일반적인 작업을 수행하게 하고 싶을 경우에는 위와 같이 구현할 수 없다. 그래서 선택하는 방법이 callback이다. void entry_point()..." />
 
 	<meta http-equiv="date" content="Wednesday, 09  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="async,design,_pub" />
+	<meta name="keywords" content="async,design,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>비동기 프로그래밍 패턴 1</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#design">design</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

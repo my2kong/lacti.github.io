@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="generic한 c++ rpc 구현 20 Aug 2013 c++ rpc _pub generic한 rpc를 간단히 구현해보자. 원래 의도는 asio를 사용하여 가벼운 덧셈 rpc 정도를 구현해보자는 것이었는데 왠지 모르게 스터디 친구들이 spec을 안드로메다로 보내버려서 DSEL을 통한 rpc stub, skeleton 생성 코드를 구현해보도록 하겠다. 양이 좀 많기 때문에 개요부터 설명하겠다. rpc 메시지을 주고 받기 위한 buffer를 먼저 설계하고, 메시지을 처리할 handler를 선언한다. 이를 기반으로 하나의 연결(connection)을 처리할 session을 구현하고, 이 위에 rpc_server와 rpc_client을 구현할 것이다. 마지막으로 구현된 기반 라이브러리를 바탕으로 DSEL을 만들어서 실제 사용할 rpc를 구현해볼 것이다. buffer 네트워크로 byte를 주고 받기 위한 buffer는 다음과 같이 쉽게 구현할 수 있다. 다만 매번 복사되는 것을 막기 위해 shared_ptr 형태도로 사용할 것이다. typedef std::vector&lt;char&gt; buffer_t; typedef boost::shared_ptr&lt;buffer_t&gt; buffer_ref; buffer로부터 데이터를 읽고 쓰는 class를 구현해보자. template만 있으면..." />
+	<meta name="description" content="generic한 c++ rpc 구현 20 Aug 2013 c++ rpc -pub generic한 rpc를 간단히 구현해보자. 원래 의도는 asio를 사용하여 가벼운 덧셈 rpc 정도를 구현해보자는 것이었는데 왠지 모르게 스터디 친구들이 spec을 안드로메다로 보내버려서 DSEL을 통한 rpc stub, skeleton 생성 코드를 구현해보도록 하겠다. 양이 좀 많기 때문에 개요부터 설명하겠다. rpc 메시지을 주고 받기 위한 buffer를 먼저 설계하고, 메시지을 처리할 handler를 선언한다. 이를 기반으로 하나의 연결(connection)을 처리할 session을 구현하고, 이 위에 rpc_server와 rpc_client을 구현할 것이다. 마지막으로 구현된 기반 라이브러리를 바탕으로 DSEL을 만들어서 실제 사용할 rpc를 구현해볼 것이다. buffer 네트워크로 byte를 주고 받기 위한 buffer는 다음과 같이 쉽게 구현할 수 있다. 다만 매번 복사되는 것을 막기 위해 shared_ptr 형태도로 사용할 것이다. typedef std::vector&lt;char&gt; buffer_t; typedef boost::shared_ptr&lt;buffer_t&gt; buffer_ref; buffer로부터 데이터를 읽고 쓰는 class를 구현해보자. template만 있으면..." />
 
 	<meta http-equiv="date" content="Tuesday, 20  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,rpc,_pub" />
+	<meta name="keywords" content="c++,rpc,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>generic한 c++ rpc 구현</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#rpc">rpc</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

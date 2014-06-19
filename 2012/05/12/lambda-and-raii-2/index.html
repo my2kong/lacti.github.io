@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="lambda와 RAII 2 12 May 2012 c++ _pub C++11은 lambda expression을 지원해주니 좀 다르게 생각해볼 수 있다. class lock_t { public: template &lt;typename functor&gt; void scoped(functor&amp; func) { lock(); func(); unlock(); } }; lock_t class 자체에 위와 같이 functor를 받아 실행할 수 있는 함수를 만든다. 그리고 그 앞 뒤로 lock-unlock을 불러준다. 이렇게 하면 lambda를 사용하여 lock 사용 코드를 보다 깔끔하게 정리해볼 수 있다. item_ref inventory_t::find(item_id_t item_id) { item_ref item(NULL); lock.scoped([&amp;item] () { auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id)); if (iter != items.end()) item = (*iter); }); return item; } lambda를 통해 lock 구문을 수행하는 코드를 보다 깔끔하게 묶어낼 수 있다... 라고 이야기하고 싶지만, item이라는 값을 반환해야할 방법이 딱히 없어서 외부에서 변수를 선언하고 내부로 전달하는 영 좋지 못한 방법을 쓰고 있다...." />
+	<meta name="description" content="lambda와 RAII 2 12 May 2012 c++ -pub C++11은 lambda expression을 지원해주니 좀 다르게 생각해볼 수 있다. class lock_t { public: template &lt;typename functor&gt; void scoped(functor&amp; func) { lock(); func(); unlock(); } }; lock_t class 자체에 위와 같이 functor를 받아 실행할 수 있는 함수를 만든다. 그리고 그 앞 뒤로 lock-unlock을 불러준다. 이렇게 하면 lambda를 사용하여 lock 사용 코드를 보다 깔끔하게 정리해볼 수 있다. item_ref inventory_t::find(item_id_t item_id) { item_ref item(NULL); lock.scoped([&amp;item] () { auto iter = std::find(items.begin(), items.end(), find_item_by_id(item_id)); if (iter != items.end()) item = (*iter); }); return item; } lambda를 통해 lock 구문을 수행하는 코드를 보다 깔끔하게 묶어낼 수 있다... 라고 이야기하고 싶지만, item이라는 값을 반환해야할 방법이 딱히 없어서 외부에서 변수를 선언하고 내부로 전달하는 영 좋지 못한 방법을 쓰고 있다...." />
 
 	<meta http-equiv="date" content="Saturday, 12  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,_pub" />
+	<meta name="keywords" content="c++,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>lambda와 RAII 2</title>
@@ -48,7 +48,7 @@
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

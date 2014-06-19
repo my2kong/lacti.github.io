@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="concurrency pattern과 분산 시스템 스터디 26 Aug 2013 distributed concurrency study _pub Concurrency Pattern부터 Distributed System까지! 근데 대충함 [...] Concurrency pattern 대충 정리해보자. Wiki: Active Object Active Object는 Actor Model 구현하면서 써봤다. asynchronous method invocation과 request scheduling이 관건이다. 지난 글에서는 함수 요청을 functor로 만들어서 요청을 queueing하고, 처음 진입하는 thread가 해당 queue의 모든 작업을 처리하는 식으로 구현하였다. Wiki: Double checked locking pattern 보호해야 하는 특정 구간에 대해 단순 if 문으로 조건을 검사할 경우 여러 thread가 동시에 진입하여 concurrency problem이 발생할 수 있다. 따라서 해당 if문도 lock으로 보호해야 하는데, if 문 내의 코드가 정말 드물게 실행되는 경우 매번 lock을 걸고 if 문을 검사하는 것은 뭔가 아까워서, 일단 lock 없이 if 문으로 대충 검사해보고, lock 걸고, 다시 if 문으로 검사하여 안전하게 코드를 수행시키는..." />
+	<meta name="description" content="concurrency pattern과 분산 시스템 스터디 26 Aug 2013 distributed concurrency study -pub Concurrency Pattern부터 Distributed System까지! 근데 대충함 [...] Concurrency pattern 대충 정리해보자. Wiki: Active Object Active Object는 Actor Model 구현하면서 써봤다. asynchronous method invocation과 request scheduling이 관건이다. 지난 글에서는 함수 요청을 functor로 만들어서 요청을 queueing하고, 처음 진입하는 thread가 해당 queue의 모든 작업을 처리하는 식으로 구현하였다. Wiki: Double checked locking pattern 보호해야 하는 특정 구간에 대해 단순 if 문으로 조건을 검사할 경우 여러 thread가 동시에 진입하여 concurrency problem이 발생할 수 있다. 따라서 해당 if문도 lock으로 보호해야 하는데, if 문 내의 코드가 정말 드물게 실행되는 경우 매번 lock을 걸고 if 문을 검사하는 것은 뭔가 아까워서, 일단 lock 없이 if 문으로 대충 검사해보고, lock 걸고, 다시 if 문으로 검사하여 안전하게 코드를 수행시키는..." />
 
 	<meta http-equiv="date" content="Monday, 26  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="distributed,concurrency,study,_pub" />
+	<meta name="keywords" content="distributed,concurrency,study,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>concurrency pattern과 분산 시스템 스터디</title>
@@ -52,7 +52,7 @@
 				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="자바로 만드는 비행기 게임 4 13 Nov 2011 java game _pub 이번과 다음은 코드 정리를 해보자. 이전까지의 비행기 게임 코드는 너무 하나의 class 에서 다 처리하는 방식으로, 뭐 하나 수정하기도 좋지 못한 구조였다 (물론 코드 전체가 별로 안 기니까 크게 상관없겠지만) 예를 들어 적기의 종류를 새로 추가한다던가, 총알의 종류를 새로 추가한다던가 하는 것이 쉽지 않은 코드였다. 따라서 이번에는 간단하게 코드를 묶으면서 정리를 해보자. resource 정리 현재 게임에서 사용되고 있는 resource는 player의 ship image와 enemy의 ship image이다. 그리고 그것들은 모두 java.awt.Image 형식으로 특정 정보를 가져올 때마다 ImageObserver(MediaTracker)를 걸어주는 구조로, 미리 모두 메모리에 올려두는 것과는 좀 다른 방식이다. 어차피 게임이 한 번 떠서 끝날 때까지 resource를 내릴 필요가 없으므로, 모든 정보가 메모리에 올라가있는 java.awt.BufferedImage를 사용하여 resource를 관리하자. 먼저 resource의 type을 정의하자. enum..." />
+	<meta name="description" content="자바로 만드는 비행기 게임 4 13 Nov 2011 java game -pub 이번과 다음은 코드 정리를 해보자. 이전까지의 비행기 게임 코드는 너무 하나의 class 에서 다 처리하는 방식으로, 뭐 하나 수정하기도 좋지 못한 구조였다 (물론 코드 전체가 별로 안 기니까 크게 상관없겠지만) 예를 들어 적기의 종류를 새로 추가한다던가, 총알의 종류를 새로 추가한다던가 하는 것이 쉽지 않은 코드였다. 따라서 이번에는 간단하게 코드를 묶으면서 정리를 해보자. resource 정리 현재 게임에서 사용되고 있는 resource는 player의 ship image와 enemy의 ship image이다. 그리고 그것들은 모두 java.awt.Image 형식으로 특정 정보를 가져올 때마다 ImageObserver(MediaTracker)를 걸어주는 구조로, 미리 모두 메모리에 올려두는 것과는 좀 다른 방식이다. 어차피 게임이 한 번 떠서 끝날 때까지 resource를 내릴 필요가 없으므로, 모든 정보가 메모리에 올라가있는 java.awt.BufferedImage를 사용하여 resource를 관리하자. 먼저 resource의 type을 정의하자. enum..." />
 
 	<meta http-equiv="date" content="Sunday, 13  2011 00:00:00 GMT" />
 
-	<meta name="keywords" content="java,game,_pub" />
+	<meta name="keywords" content="java,game,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>자바로 만드는 비행기 게임 4</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#game">game</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

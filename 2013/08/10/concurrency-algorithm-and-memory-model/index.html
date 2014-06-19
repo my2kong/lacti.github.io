@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="concurrency 알고리즘과 memory model 10 Aug 2013 concurrency memory study _pub 오늘 스터디에서 공부한 내용을 간략히 정리해보자. 원래 의도는, peterson&#39;s algorithm을 보고 여기서 비순차 실행이 일어날 때 발생하는 문제를 보고, memory consistency model의 memory order를 통해 문제를 어떻게 해결할 수 있는지 본 후에, lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해 hazard pointer를 보려고 했는데 순서가 꼬였다-_- 아무튼 의도했던 순서로 정리하겠음 peterson&#39;s algorithm Wiki: Peterson&#39;s algorithm 그냥 눈에 보이는대로 코드가 수행되면 문제가 발생하지 않는데, 비순차 실행에 의해 flag[my_index] = true; turn = other_index; 대입의 순서가 뒤집히면 critical section에 두 thread가 진입할 수 있는 문제가 발생한다. P0: turn = 1; flag[0] = true; while (flag[1] == true &amp;&amp; turn == 1) { // busy wait..." />
+	<meta name="description" content="concurrency 알고리즘과 memory model 10 Aug 2013 concurrency memory study -pub 오늘 스터디에서 공부한 내용을 간략히 정리해보자. 원래 의도는, peterson&#39;s algorithm을 보고 여기서 비순차 실행이 일어날 때 발생하는 문제를 보고, memory consistency model의 memory order를 통해 문제를 어떻게 해결할 수 있는지 본 후에, lock free stack, lock free queue algorithm을 보고 문제를 파악한 후에 이를 해결하기 위해 hazard pointer를 보려고 했는데 순서가 꼬였다-_- 아무튼 의도했던 순서로 정리하겠음 peterson&#39;s algorithm Wiki: Peterson&#39;s algorithm 그냥 눈에 보이는대로 코드가 수행되면 문제가 발생하지 않는데, 비순차 실행에 의해 flag[my_index] = true; turn = other_index; 대입의 순서가 뒤집히면 critical section에 두 thread가 진입할 수 있는 문제가 발생한다. P0: turn = 1; flag[0] = true; while (flag[1] == true &amp;&amp; turn == 1) { // busy wait..." />
 
 	<meta http-equiv="date" content="Saturday, 10  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="concurrency,memory,study,_pub" />
+	<meta name="keywords" content="concurrency,memory,study,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>concurrency 알고리즘과 memory model</title>
@@ -52,7 +52,7 @@
 				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

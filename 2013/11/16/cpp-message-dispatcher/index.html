@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="c++ message dispatcher 16 Nov 2013 c++ template study _pub 간단한 message dispatch 코드를 c++로 구현해보자. 일단 std::function을 안 쓰고 구현해보고, 그 다음에 std::function을 써서 구현해보자. 지난 번 글에서 functor_ii로 handler_t의 근간을 이미 설명했다. template &lt;typename R, typename T&gt; struct handler_t { handler_t() : _impl(nullptr) { } template &lt;typename F&gt; handler_t(F f) : _impl(new impl_t&lt;F&gt;(f)) {} R operator () (T arg) const { return (*_impl)(arg); } private: struct wrapper_t { virtual R operator () (T arg) const = 0; }; template &lt;typename F&gt; struct impl_t : public wrapper_t { impl_t(F f) : _f(f) {} virtual R operator () (T arg) const { return _f(arg); } F _f; }; std::shared_ptr&lt;wrapper_t&gt; _impl; }; interface인 wrapper_t, 실 구현체인 impl_t, 그리고 그것을 멤버로 갖는..." />
+	<meta name="description" content="c++ message dispatcher 16 Nov 2013 c++ template study -pub 간단한 message dispatch 코드를 c++로 구현해보자. 일단 std::function을 안 쓰고 구현해보고, 그 다음에 std::function을 써서 구현해보자. 지난 번 글에서 functor_ii로 handler_t의 근간을 이미 설명했다. template &lt;typename R, typename T&gt; struct handler_t { handler_t() : _impl(nullptr) { } template &lt;typename F&gt; handler_t(F f) : _impl(new impl_t&lt;F&gt;(f)) {} R operator () (T arg) const { return (*_impl)(arg); } private: struct wrapper_t { virtual R operator () (T arg) const = 0; }; template &lt;typename F&gt; struct impl_t : public wrapper_t { impl_t(F f) : _f(f) {} virtual R operator () (T arg) const { return _f(arg); } F _f; }; std::shared_ptr&lt;wrapper_t&gt; _impl; }; interface인 wrapper_t, 실 구현체인 impl_t, 그리고 그것을 멤버로 갖는..." />
 
 	<meta http-equiv="date" content="Saturday, 16  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,template,study,_pub" />
+	<meta name="keywords" content="c++,template,study,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>c++ message dispatcher</title>
@@ -52,7 +52,7 @@
 				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

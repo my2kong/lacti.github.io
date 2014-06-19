@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="c++11 async, corotuine, io 스터디 18 Aug 2013 async io study _pub 오늘 스터디에서 공부한 내용을 간단히 정리해보자. async, future future, promise는 비동기로 실행되는 수행 결과를 받아오기 위한 개념이다. async는 내부적으로 promise를 사용하여 결과를 set()할 비동기 작업을 수행시키고, future를 반환한다. packaged_task는 비동기 작업을 수행할 수 있는 task 객체를 만들어준다. task 객체로부터 future를 가져올 수 있다. vs2012 기준으로 내부 구현 분석한 내용: async, future, promise in c++ vs2012 쪽 문제인지 std::async를 수행할 때 std::launchenum 값을 주지 않으면 std::launch::any로 수행하게 되는데 이 때 deferred로 수행되면서 future를 통해 값을 가져오게 될 경우 문제가 발생하는 것 같다. 내가 개념을 잘못 이해하고 있는 것인지 모르겠는데 문제가 발생하지 않으려면 std::launch::async로 policy를 주고 실행해야 할 듯 Stackoverflow: VS11 with std::future - is this a bug? spawn Wiki:..." />
+	<meta name="description" content="c++11 async, corotuine, io 스터디 18 Aug 2013 async io study -pub 오늘 스터디에서 공부한 내용을 간단히 정리해보자. async, future future, promise는 비동기로 실행되는 수행 결과를 받아오기 위한 개념이다. async는 내부적으로 promise를 사용하여 결과를 set()할 비동기 작업을 수행시키고, future를 반환한다. packaged_task는 비동기 작업을 수행할 수 있는 task 객체를 만들어준다. task 객체로부터 future를 가져올 수 있다. vs2012 기준으로 내부 구현 분석한 내용: async, future, promise in c++ vs2012 쪽 문제인지 std::async를 수행할 때 std::launchenum 값을 주지 않으면 std::launch::any로 수행하게 되는데 이 때 deferred로 수행되면서 future를 통해 값을 가져오게 될 경우 문제가 발생하는 것 같다. 내가 개념을 잘못 이해하고 있는 것인지 모르겠는데 문제가 발생하지 않으려면 std::launch::async로 policy를 주고 실행해야 할 듯 Stackoverflow: VS11 with std::future - is this a bug? spawn Wiki:..." />
 
 	<meta http-equiv="date" content="Sunday, 18  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="async,io,study,_pub" />
+	<meta name="keywords" content="async,io,study,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>c++11 async, corotuine, io 스터디</title>
@@ -52,7 +52,7 @@
 				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				

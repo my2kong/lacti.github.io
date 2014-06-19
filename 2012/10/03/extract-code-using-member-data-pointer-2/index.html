@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 2 03 Oct 2012 c++ refactor _pub 이번 글에서는 Stat 자료구조 내에 배열이 있을 때 이를 어떻게 처리할지에 대해서 알아보도록 하자. Stat 코드를 작성하다보니, 이동 속도에 관해서는 각각의 변수를 따로 두는 것 보다, 배열 하나로 처리하는 것이 더 낫다는 것을 깨닫게 되었다. enum MovingStatType { MST_WALK, MST_RUN, MST_RIDE, MST_MAX }; struct Stat { float hp; float movingSpeed[MST_MAX]; 배열로 묶어서 movingSpeed 관련 코드가 개선된 것까지는 좋았는데 hp와 movingSpeed는 type이 다르기 때문에 이전 글에서의 방법을 더 이상 사용할 수 없게 되었다. 둘의 type을 비교해보면 아래와 같다. typedef float Stat::*DataPtr; typedef float (Stat::*ArrayPtr)[3]; 어쨌든 두 타입이 완전히 달라졌기 때문에, 이를 일치시키지 못한다면 또 다시 switch-case의 지옥을 맛보게 될 것이다. 멤버 데이터 포인터 수준에서는 이를 해결할 수 없기..." />
+	<meta name="description" content="멤버 데이터 포인터를 사용하여 연산식 묶어내기 2 03 Oct 2012 c++ refactor -pub 이번 글에서는 Stat 자료구조 내에 배열이 있을 때 이를 어떻게 처리할지에 대해서 알아보도록 하자. Stat 코드를 작성하다보니, 이동 속도에 관해서는 각각의 변수를 따로 두는 것 보다, 배열 하나로 처리하는 것이 더 낫다는 것을 깨닫게 되었다. enum MovingStatType { MST_WALK, MST_RUN, MST_RIDE, MST_MAX }; struct Stat { float hp; float movingSpeed[MST_MAX]; 배열로 묶어서 movingSpeed 관련 코드가 개선된 것까지는 좋았는데 hp와 movingSpeed는 type이 다르기 때문에 이전 글에서의 방법을 더 이상 사용할 수 없게 되었다. 둘의 type을 비교해보면 아래와 같다. typedef float Stat::*DataPtr; typedef float (Stat::*ArrayPtr)[3]; 어쨌든 두 타입이 완전히 달라졌기 때문에, 이를 일치시키지 못한다면 또 다시 switch-case의 지옥을 맛보게 될 것이다. 멤버 데이터 포인터 수준에서는 이를 해결할 수 없기..." />
 
 	<meta http-equiv="date" content="Wednesday, 03  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,refactor,_pub" />
+	<meta name="keywords" content="c++,refactor,-pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>멤버 데이터 포인터를 사용하여 연산식 묶어내기 2</title>
@@ -50,7 +50,7 @@
 				
 					<code class="tag"><a href="/tags/#refactor">refactor</a></code>
 				
-					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
 				
 				</p>
 				
