@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="Object Database와 Value Object 22 Feb 2011 database design 프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자. 설계 1 일단 Client와 Server가 주고 받을 데이터를 담는 객체를 설계한다. 기본(primitive) type과 String, Date 등의 간단한 정보를 속성(멤버 변수)로 갖는 JavaBean 객체를 설계한다. 설계 2 Client의 요청에 대해 Server가 Database로 Query를 날려서 그 결과를 JavaBean 객체에 남아서 Client로 반환한다. 설계 3 여러 프로그램을 작성하는 과정에서 Database Table에 대해 데이터를 삽입(Insert)하거나 갱신(Update)하는 등의 경우에서 유사한 코드가 자주 중복된다. 이러한 부분을 Framework으로 묶고자 Object 기반의 Database Adapter를 설계한다. Database Table에 대응되는 객체를 설계(class)하고, 각 객체에 대해 Database Adapter의 CRUD(Insert, Select, Update, Delete)를 수행할 때 객체 내부의 Member 정보를 Reflection을..." />
+	<meta name="description" content="Object Database와 Value Object 22 Feb 2011 design database _pub 프로그램이 Client, Server의 2-tier 모델에서 Server가 Data의 persistence를 위해 database를 사용한다. 이 때 client가 요청한 정보를 server가 database로부터 반환받아 client에게 넘겨주는 framework를 작성해보자. 설계 1 일단 Client와 Server가 주고 받을 데이터를 담는 객체를 설계한다. 기본(primitive) type과 String, Date 등의 간단한 정보를 속성(멤버 변수)로 갖는 JavaBean 객체를 설계한다. 설계 2 Client의 요청에 대해 Server가 Database로 Query를 날려서 그 결과를 JavaBean 객체에 남아서 Client로 반환한다. 설계 3 여러 프로그램을 작성하는 과정에서 Database Table에 대해 데이터를 삽입(Insert)하거나 갱신(Update)하는 등의 경우에서 유사한 코드가 자주 중복된다. 이러한 부분을 Framework으로 묶고자 Object 기반의 Database Adapter를 설계한다. Database Table에 대응되는 객체를 설계(class)하고, 각 객체에 대해 Database Adapter의 CRUD(Insert, Select, Update, Delete)를 수행할 때 객체 내부의 Member 정보를..." />
 
 	<meta http-equiv="date" content="Tuesday, 22  2011 00:00:00 GMT" />
 
-	<meta name="keywords" content="database,design" />
+	<meta name="keywords" content="design,database,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>Object Database와 Value Object</title>
@@ -46,9 +46,11 @@
 				<p class="page-date">22 Feb 2011</p>
 				<p class="page-tags">
 				
+					<code class="tag"><a href="/tags/#design">design</a></code>
+				
 					<code class="tag"><a href="/tags/#database">database</a></code>
 				
-					<code class="tag"><a href="/tags/#design">design</a></code>
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

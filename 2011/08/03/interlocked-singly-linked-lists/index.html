@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="Interlocked Singly Linked Lists 03 Aug 2011 concurrency Concurrent Data Structure는 Lock을 최소화하여 동작해야 multi thread에서 해당 자료구조에 접근할 때 발생하는 부담이 최소화되어 효율적인 프로그래밍이 가능하다. 여러가지 방법이 있겠지만, 가장 간단한(?) Windows API로 제공되는 Interlocked Singly Linked Lists에 대해 보자. (이후 SLIST 라고 이야기하겠다) SLIST는 단방향(singly) Linked List로 구성된 Stack이다. MSDN 을 보면 non blocking atomic 동기화 알고리즘으로 쓰면 성능 향상에 도움이 되고 multi thread에서 사용해도 문제가 없댄다. 아무튼 이래 저래 좋다고 한다. 일단 SLIST 의 사용법을 보기에 앞서 2가지만 짚고 넘어가자. 왜 Stack 일까? 정확한 이유는 모르겠는데, 다음의 이유로 무리한 추측을 해보자. Stack이면 가장 최근에 Push했던 것이 가장 먼저 Pop된다. 즉, 굳이 멀고 먼 Memory까지 안 가도 Cache에서 적중되어 가져올 수 있는 확률이 있다. 그런데 multi thread에서 안전하게 돌아가기..." />
+	<meta name="description" content="Interlocked Singly Linked Lists 03 Aug 2011 concurrency _pub Concurrent Data Structure는 Lock을 최소화하여 동작해야 multi thread에서 해당 자료구조에 접근할 때 발생하는 부담이 최소화되어 효율적인 프로그래밍이 가능하다. 여러가지 방법이 있겠지만, 가장 간단한(?) Windows API로 제공되는 Interlocked Singly Linked Lists에 대해 보자. (이후 SLIST 라고 이야기하겠다) SLIST는 단방향(singly) Linked List로 구성된 Stack이다. MSDN 을 보면 non blocking atomic 동기화 알고리즘으로 쓰면 성능 향상에 도움이 되고 multi thread에서 사용해도 문제가 없댄다. 아무튼 이래 저래 좋다고 한다. 일단 SLIST 의 사용법을 보기에 앞서 2가지만 짚고 넘어가자. 왜 Stack 일까? 정확한 이유는 모르겠는데, 다음의 이유로 무리한 추측을 해보자. Stack이면 가장 최근에 Push했던 것이 가장 먼저 Pop된다. 즉, 굳이 멀고 먼 Memory까지 안 가도 Cache에서 적중되어 가져올 수 있는 확률이 있다. 그런데 multi thread에서 안전하게..." />
 
 	<meta http-equiv="date" content="Wednesday, 03  2011 00:00:00 GMT" />
 
-	<meta name="keywords" content="concurrency" />
+	<meta name="keywords" content="concurrency,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>Interlocked Singly Linked Lists</title>
@@ -47,6 +47,8 @@
 				<p class="page-tags">
 				
 					<code class="tag"><a href="/tags/#concurrency">concurrency</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

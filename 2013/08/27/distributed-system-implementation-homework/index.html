@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="분산 시스템 구현 과제 정리 27 Aug 2013 study distributed 뭐라도 좋으니 간단한 분산 시스템을 구현해보자! 단일 시스템과 비교하여 성능 혹은 가용성을 높이기 위해 분산 시스템을 설계해야 하는 것이니 일단 네트워크 프로그래밍은 필수이다. 효율을 높이기 위해 얼마나 작업을 잘 쪼개고 합치는가도 고민해야 하고, 장애가 발생했을 때 얼마나 복구될 수 있는지도 고민해야 한다. angdev님의 시스템 풀씨 프로그래밍 대회 채점 서버를 nodejs/c++로 구현했다. aws 위에 서비스를 올렸으며 elb, ec2를 통해 서비스를 구성하였다. elb의 health check에 채점 서버의 service를 연결하여 해당 ec2 instance가 아닌 service의 상태를 점검하도록 하였다. 그리고 front-end에서 elb를 통해 채점 service에 code를 queueing하고, 각 service는 다시 dashboard-service에 자신의 상태를 기록한다. 일단 ec2 instance에 장애가 발생하면 queue 자체가 소멸되므로 이미 제출된 데이터가 삭제될 문제가 있는데, elb 대신 sqs를 써서 해결하였다. dashboard-service에..." />
+	<meta name="description" content="분산 시스템 구현 과제 정리 27 Aug 2013 distributed study _pub 뭐라도 좋으니 간단한 분산 시스템을 구현해보자! 단일 시스템과 비교하여 성능 혹은 가용성을 높이기 위해 분산 시스템을 설계해야 하는 것이니 일단 네트워크 프로그래밍은 필수이다. 효율을 높이기 위해 얼마나 작업을 잘 쪼개고 합치는가도 고민해야 하고, 장애가 발생했을 때 얼마나 복구될 수 있는지도 고민해야 한다. angdev님의 시스템 풀씨 프로그래밍 대회 채점 서버를 nodejs/c++로 구현했다. aws 위에 서비스를 올렸으며 elb, ec2를 통해 서비스를 구성하였다. elb의 health check에 채점 서버의 service를 연결하여 해당 ec2 instance가 아닌 service의 상태를 점검하도록 하였다. 그리고 front-end에서 elb를 통해 채점 service에 code를 queueing하고, 각 service는 다시 dashboard-service에 자신의 상태를 기록한다. 일단 ec2 instance에 장애가 발생하면 queue 자체가 소멸되므로 이미 제출된 데이터가 삭제될 문제가 있는데, elb 대신 sqs를 써서 해결하였다...." />
 
 	<meta http-equiv="date" content="Tuesday, 27  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="study,distributed" />
+	<meta name="keywords" content="distributed,study,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>분산 시스템 구현 과제 정리</title>
@@ -46,9 +46,11 @@
 				<p class="page-date">27 Aug 2013</p>
 				<p class="page-tags">
 				
+					<code class="tag"><a href="/tags/#distributed">distributed</a></code>
+				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#distributed">distributed</a></code>
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

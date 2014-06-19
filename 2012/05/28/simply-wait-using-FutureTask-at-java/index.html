@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="java의 FutureTask를 사용한 간단한 수행 대기 28 May 2012 java 어떤 작업에 timeout을 주고 실행하고 싶은 경우가 있다. 예를 들어 web crawler를 만들 때에는 해당 페이지에 대한 응답이 10초정도 없을 경우에 그냥 그 페이지를 읽지 않도록 예외처리 하는 것이다. 이 글에서는 ExecutorService와 FutureTask를 사용하여 timeout 처리를 하는 간단한 예제를 소개한다. ExecutorService는 java 1.5 때 Doug Lea 아저씨가 추가한 좋은 Library이다. 이 글에서는 ThreadPool을 사용하기 위한 용도로 쓴다. FutureTask 역시 Doug Lea 아저씨가 추가한 class로 javadoc에서 그 설명을 간략히 따오면 cancellable asynchronous computation이다. 즉, 수행 Thread와 결과를 받는 Thread가 분리되고, 취소 가능하다. 이 class는 RunnableFuture를 구현하는데, 이는 Runnable와 Future 두 interface의 합성체이다. 어떤 작업에 timeout을 걸기 위해서는 적어도 수행 thread과 timeout을 걸어주는 thread가 분리되어야 한다. 간단하게 fork-join model을 생각해보자면 수행할 task는..." />
+	<meta name="description" content="java의 FutureTask를 사용한 간단한 수행 대기 28 May 2012 java _pub 어떤 작업에 timeout을 주고 실행하고 싶은 경우가 있다. 예를 들어 web crawler를 만들 때에는 해당 페이지에 대한 응답이 10초정도 없을 경우에 그냥 그 페이지를 읽지 않도록 예외처리 하는 것이다. 이 글에서는 ExecutorService와 FutureTask를 사용하여 timeout 처리를 하는 간단한 예제를 소개한다. ExecutorService는 java 1.5 때 Doug Lea 아저씨가 추가한 좋은 Library이다. 이 글에서는 ThreadPool을 사용하기 위한 용도로 쓴다. FutureTask 역시 Doug Lea 아저씨가 추가한 class로 javadoc에서 그 설명을 간략히 따오면 cancellable asynchronous computation이다. 즉, 수행 Thread와 결과를 받는 Thread가 분리되고, 취소 가능하다. 이 class는 RunnableFuture를 구현하는데, 이는 Runnable와 Future 두 interface의 합성체이다. 어떤 작업에 timeout을 걸기 위해서는 적어도 수행 thread과 timeout을 걸어주는 thread가 분리되어야 한다. 간단하게 fork-join model을 생각해보자면 수행할..." />
 
 	<meta http-equiv="date" content="Monday, 28  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="java" />
+	<meta name="keywords" content="java,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>java의 FutureTask를 사용한 간단한 수행 대기</title>
@@ -47,6 +47,8 @@
 				<p class="page-tags">
 				
 					<code class="tag"><a href="/tags/#java">java</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

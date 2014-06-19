@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="function adapter와 type inference 10 Nov 2013 study c++ template 과제는 다음의 Adapter를 만들어보자는 것이다. int sum(int a, int b) { return a + b; } void main() { Adapter&lt;int /* return-type */, int /* 1st-arg-type */, int /* 2nd-arg-type */&gt; functor1(sum, 100 /* 1st-arg */); int result1 = functor1(20); // 120 int result2 = functor1(80); // 180 } 많은 친구들이 이미 문제를 잘 풀었기 때문에 자세한 설명은 생략한다. template &lt;typename R, typename T1, typename T2&gt; struct Adapter { typedef R (*F)(T1, T2); Adapter(F func, T1 arg1) : _function(func), _arg1(arg1) {} R operator () (T2 arg2) const { return _function(_arg1, arg2); } F _function; T1 _arg1; }; 이름 잘 지어주는 것도 물론 중요하지만 이정도 코드에서는 저정도 글자만 써줘도 이해할 것..." />
+	<meta name="description" content="function adapter와 type inference 10 Nov 2013 c++ template study _pub 과제는 다음의 Adapter를 만들어보자는 것이다. int sum(int a, int b) { return a + b; } void main() { Adapter&lt;int /* return-type */, int /* 1st-arg-type */, int /* 2nd-arg-type */&gt; functor1(sum, 100 /* 1st-arg */); int result1 = functor1(20); // 120 int result2 = functor1(80); // 180 } 많은 친구들이 이미 문제를 잘 풀었기 때문에 자세한 설명은 생략한다. template &lt;typename R, typename T1, typename T2&gt; struct Adapter { typedef R (*F)(T1, T2); Adapter(F func, T1 arg1) : _function(func), _arg1(arg1) {} R operator () (T2 arg2) const { return _function(_arg1, arg2); } F _function; T1 _arg1; }; 이름 잘 지어주는 것도 물론 중요하지만 이정도 코드에서는 저정도 글자만 써줘도 이해할..." />
 
 	<meta http-equiv="date" content="Sunday, 10  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="study,c++,template" />
+	<meta name="keywords" content="c++,template,study,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>function adapter와 type inference</title>
@@ -46,11 +46,13 @@
 				<p class="page-date">10 Nov 2013</p>
 				<p class="page-tags">
 				
-					<code class="tag"><a href="/tags/#study">study</a></code>
-				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
 					<code class="tag"><a href="/tags/#template">template</a></code>
+				
+					<code class="tag"><a href="/tags/#study">study</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

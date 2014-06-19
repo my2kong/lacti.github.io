@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="template을 사용한 type간 동등성, 대입가능성 19 Jul 2011 c++ tmp runtime에 typeid를 써서 객체 type의 동등성(Same)을 확인하고, dynamic_cast를 써서 객체간의 대입가능성(Assignable)을 확인할 수 있다. 하지만 이런 것을 확인하기 위해 runtime을 소모하는 것은 너무 아까운 일이다. 고로 template을 써보자. 아래의 예제는 두 class, C1과 C2를 통해 진행된다. class C1 {}; class C2 : public C1 {}; 동등성 확인 type 간의 동등성을 확인하는 것은 매우 간단하다. template의 specialization을 쓰면 된다. template &lt;class _Type1, class _Type2&gt; struct IsSame { enum { value = false }; }; template&lt;class _Type1&gt; struct IsSame&lt;_Type1, _Type1&gt; { enum { value = true }; }; IsSame을 사용할 때, 비교하는 두 class의 type이 다르다면 위 template이 사용될 것이다. 여기의 value 값은 false다. 만약 두 type이 같다면, type이 같은 경우로 specialization..." />
+	<meta name="description" content="template을 사용한 type간 동등성, 대입가능성 19 Jul 2011 c++ template _pub runtime에 typeid를 써서 객체 type의 동등성(Same)을 확인하고, dynamic_cast를 써서 객체간의 대입가능성(Assignable)을 확인할 수 있다. 하지만 이런 것을 확인하기 위해 runtime을 소모하는 것은 너무 아까운 일이다. 고로 template을 써보자. 아래의 예제는 두 class, C1과 C2를 통해 진행된다. class C1 {}; class C2 : public C1 {}; 동등성 확인 type 간의 동등성을 확인하는 것은 매우 간단하다. template의 specialization을 쓰면 된다. template &lt;class _Type1, class _Type2&gt; struct IsSame { enum { value = false }; }; template&lt;class _Type1&gt; struct IsSame&lt;_Type1, _Type1&gt; { enum { value = true }; }; IsSame을 사용할 때, 비교하는 두 class의 type이 다르다면 위 template이 사용될 것이다. 여기의 value 값은 false다. 만약 두 type이 같다면, type이 같은 경우로..." />
 
 	<meta http-equiv="date" content="Tuesday, 19  2011 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,tmp" />
+	<meta name="keywords" content="c++,template,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>template을 사용한 type간 동등성, 대입가능성</title>
@@ -48,7 +48,9 @@
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#tmp">tmp</a></code>
+					<code class="tag"><a href="/tags/#template">template</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				
@@ -130,12 +132,12 @@ compiler는 최대한 근접한 type의 인자를 갖는 함수를 호출해준�
 				<div class="pure-g page-navigator">
 					<div class="pure-u-1-2">
 					
-						<a href="/2011/07/13/tls-initializer/" title="Tls 초기화">&laquo; Tls 초기화</a>
+						<a href="/2011/07/13/tls-initializer/" title="thread local storage 초기화">&laquo; thread local storage 초기화</a>
 					
 					</div>
 					<div class="pure-u-1-2 text-right">
 					
-						<a href="/2011/07/20/implement-call-stack-trace-at-c%2B%2B/" title="C++에서 Call Stack Trace를 만들어보자.">&raquo; C++에서 Call Stack Trace를 만들어보자.</a>
+						<a href="/2011/07/20/implement-call-stack-trace-at-c%2B%2B/" title="MSVC call stacktrace 구현">&raquo; MSVC call stacktrace 구현</a>
 					
 					</div>
 				</div>

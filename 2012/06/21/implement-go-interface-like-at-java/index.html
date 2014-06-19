@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="go interface 구현하기 21 Jun 2012 java (예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.) 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고 그냥 summerlight님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다. class A { public: void a(); void b(); void c(); }; class X { public: void a() = 0; }; class Y { public: void b() = 0; }; class Z { public void c() = 0; }; A obj; X* x = /* 어떻게든 obj랑 연결 */; x-&gt;a(); // A::a() 함수가 호출됨 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다. 하지만 암시적으로라도, 동일한..." />
+	<meta name="description" content="go interface 구현하기 21 Jun 2012 java _pub 사실 go interface가 어떤 스펙을 가졌는지는 모르겠고 그냥 summerlight님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다. class A { public: void a(); void b(); void c(); }; class X { public: void a() = 0; }; class Y { public: void b() = 0; }; class Z { public void c() = 0; }; A obj; X* x = /* 어떻게든 obj랑 연결 */; x-&gt;a(); // A::a() 함수가 호출됨 A라는 class는 a, b, c라는 함수를 가지고 있지만, 명시적으로 X, Y, Z interface를 구현하고 있지 않기 때문에 X, Y, Z pointer로 A 객체를 지칭할 수 없다. 하지만 암시적으로라도, 동일한 함수 signature가 존재한다면 interface로 지칭할 수 있게 해주는 것이 목적이다...." />
 
 	<meta http-equiv="date" content="Thursday, 21  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="java" />
+	<meta name="keywords" content="java,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>go interface 구현하기</title>
@@ -48,12 +48,12 @@
 				
 					<code class="tag"><a href="/tags/#java">java</a></code>
 				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
+				
 				</p>
 				
 				<div class="content">
-				<p><em>(예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.)</em></p>
-
-<p>사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
+				<p>사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
 그냥 <a href="https://twitter.com/summerlight00" title="summerlight00">summerlight</a>님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
 <span class="nl">public:</span> <span class="kt">void</span> <span class="n">a</span><span class="p">();</span> <span class="kt">void</span> <span class="nf">b</span><span class="p">();</span> <span class="kt">void</span> <span class="nf">c</span><span class="p">();</span>

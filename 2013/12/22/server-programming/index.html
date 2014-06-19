@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="서버 프로그래밍 22 Dec 2013 server 설계 동기화 수준과 성능(규모) 수준을 고려해서 작성한다. 완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다. 실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다. morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다. mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다. 결국 어떤 서버를 만들 것인지에 대한 기술 명세를 한 후 그에 맞는 설계/구현을 해야 한다는 것. 비동기 io와 비동기 개념을 공부한다. 간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다. 요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고 한다. 여러..." />
+	<meta name="description" content="서버 프로그래밍 22 Dec 2013 design server _pub 설계 동기화 수준과 성능(규모) 수준을 고려해서 작성한다. 완전 비동기나 느슨한 비동기 수준으로 괜찮다면 웹 서버를 사용해도 좋다. 실시간 비동기가 필요하면서 성능이 중요할 경우 직접 서버를 구현하는 편이 좋다. morpg나 fps 정도의 서버라면 stmp(single thread multiple process) 구조로 가도 좋다. mmorpg나 그 이상의 성능을 요구하는 서버라면 task parallelism 기반이면서 scaleable한 서버를 만드는 편이 좋지만 필요한 규모에 따라 적절한 수준으로 적용하면 된다. 결국 어떤 서버를 만들 것인지에 대한 기술 명세를 한 후 그에 맞는 설계/구현을 해야 한다는 것. 비동기 io와 비동기 개념을 공부한다. 간단히 application은 io(file, network 등) 작업을 kernel에게 요청(request)하고, kernel은 해당 요청이 완료(completion)되면 application에게 알려준다. 요청한 후 완료될 때까지 기다리면(blocking) 동기(sync) 작업이라고 하고, 요청해놓고 완료된 사실을 나중에 따로(poll, interrupt) 알게되면 비동기(async) 작업이라고..." />
 
 	<meta http-equiv="date" content="Sunday, 22  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="server" />
+	<meta name="keywords" content="design,server,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>서버 프로그래밍</title>
@@ -46,7 +46,11 @@
 				<p class="page-date">22 Dec 2013</p>
 				<p class="page-tags">
 				
+					<code class="tag"><a href="/tags/#design">design</a></code>
+				
 					<code class="tag"><a href="/tags/#server">server</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

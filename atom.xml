@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-18T17:04:24+00:00</updated>
+ <updated>2014-06-19T03:27:17+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -6688,9 +6688,7 @@ char, short, int, long, float, double에 대한 모든 type에 대해 ValueHolde
    <link href="http://lacti.me/2012/06/21/implement-go-interface-like-at-java/"/>
    <updated>2012-06-21T00:00:00+00:00</updated>
    <id>http://lacti.me/2012/06/21/implement-go-interface-like-at-java</id>
-   <content type="html">&lt;p&gt;&lt;em&gt;(예비군 훈련으로 모든 기력이 소진되어 차마 c++로는 못 짜고 자바로 작성함.)&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
+   <content type="html">&lt;p&gt;사실 go interface가 어떤 스펙을 가졌는지는 모르겠고
 그냥 &lt;a href=&quot;https://twitter.com/summerlight00&quot; title=&quot;summerlight00&quot;&gt;summerlight&lt;/a&gt;님께서 그걸 c++로 구현하면 재미있겠다고 해서 시작을 한건데 대충 내용은 다음과 같다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
@@ -8666,9 +8664,7 @@ Event와 Message는 정보를 담은 객체이면서, 송신/수신 객체의 �
    <link href="http://lacti.me/2011/11/15/type-dispatching-by-type-trait-class/"/>
    <updated>2011-11-15T00:00:00+00:00</updated>
    <id>http://lacti.me/2011/11/15/type-dispatching-by-type-trait-class</id>
-   <content type="html">&lt;p&gt;&lt;em&gt;적당한 제목을 못 찾아서 일단 저렇게 표기, 시간이 짧은 관계로 대충 설명한다. 이 글타래의 키워드는 일반성과 최적화이다.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;어떤 class 2개가 있다.&lt;/p&gt;
+   <content type="html">&lt;p&gt;어떤 class 2개가 있다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;big_class&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;huge_class&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -10885,11 +10881,14 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 따라서 커널 모드에서 유저 영역의 메모리에 접근하는 것은 금기시? 되어버렸고,
 적어도 죽어도 유저 모드에서 죽어라! 라는 심정으로 작업 결과를 커널 버퍼에 넣어주면, CRT (C Runtime) 함수들이 거기서 유저가 요청한 영역으로 다시 복사를 수행해주는 방법을 사용하는 것이다.&lt;/p&gt;
 
-&lt;p&gt;결국 커널에 유저 영역의 버퍼에 뭔가를 얻어오는 요청을 할 경우에는
-1. 유저 영역에 있는 API 함수 진입점에서 메모리 주소의 유효성 검사를 한다
-2. 유저 영역에 있는 API 함수에서 커널 영역에 있는 API 함수에게 요청을 한다.
-3. 커널 영역에 있는 API 함수가 결과를 커널 영역 내에 저장해둔다.
-4. 유저 영역에 있는 API 함수가 커널 영역에 있는 결과를 유저가 요청한 영역에 복사해준다.&lt;/p&gt;
+&lt;p&gt;결국 커널에 유저 영역의 버퍼에 뭔가를 얻어오는 요청을 할 경우에는&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;유저 영역에 있는 API 함수 진입점에서 메모리 주소의 유효성 검사를 한다&lt;/li&gt;
+&lt;li&gt;유저 영역에 있는 API 함수에서 커널 영역에 있는 API 함수에게 요청을 한다.&lt;/li&gt;
+&lt;li&gt;커널 영역에 있는 API 함수가 결과를 커널 영역 내에 저장해둔다.&lt;/li&gt;
+&lt;li&gt;유저 영역에 있는 API 함수가 커널 영역에 있는 결과를 유저가 요청한 영역에 복사해준다.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;따라서 API 함수는 유저 영역과 커널 영역 양 쪽으로 분할된다.&lt;br&gt;
 이렇게 되면 커널에서 잘못된 유저 메모리에 접근할 일이 없고, 접근한다고 해도 유저 영역의 API 함수 내에서 접근하기 때문에 그 프로세스만 종료되게 되는 것이다(segmentation fault)&lt;/p&gt;
@@ -10910,14 +10909,20 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 
 &lt;p&gt;위의 장황한 설명을 IO 로 초점을 맞추어 다시 이야기해보자.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;SEND 를 수행하려고 한다.&lt;/strong&gt; 그럼 유저 영역에 있는 메모리의 내용을 커널 쪽에 요청해야할 것이다.
-1. 유저 영역의 메모리가 커널 영역에 복사가 된다.(Async 함수 요청할 때)
-2. 커널 영역의 데이터를 IO 드라이버를 통해 해당 장치로 내보낸다.(사용자의 IO 요청을 처리할 때)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SEND 를 수행하려고 한다.&lt;/strong&gt; 그럼 유저 영역에 있는 메모리의 내용을 커널 쪽에 요청해야할 것이다.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;RECV 를 수행하려고 한다.&lt;/strong&gt; 그럼 커널 영역의 메모리를 거쳐서 유저 영역으로 복사해와야 한다.
-1. 유저 영역의 메모리 주소로 비동기적 Read 를 요청한다.
-2. 커널에서 IO 의 interrupt 를 받는다. interrupt handler 가 수행되고, 데이터를 보니까 아까 Read 요청한 거였네? 그러면 일단 IO 드라이버를 통해 수신 받은 데이터를 커널 영역에 복사해온다.(IO 장치의 IO 요청을 처리할 때)
-3. IO 완료 통지를 유저에게 해준다. 이 때 커널 영역에 있는 데이터가 유저가 지정했던 메모리로 다시 복사가 일어난다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;유저 영역의 메모리가 커널 영역에 복사가 된다.(Async 함수 요청할 때)&lt;/li&gt;
+&lt;li&gt;커널 영역의 데이터를 IO 드라이버를 통해 해당 장치로 내보낸다.(사용자의 IO 요청을 처리할 때)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;RECV 를 수행하려고 한다.&lt;/strong&gt; 그럼 커널 영역의 메모리를 거쳐서 유저 영역으로 복사해와야 한다.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;유저 영역의 메모리 주소로 비동기적 Read 를 요청한다.&lt;/li&gt;
+&lt;li&gt;커널에서 IO 의 interrupt 를 받는다. interrupt handler 가 수행되고, 데이터를 보니까 아까 Read 요청한 거였네? 그러면 일단 IO 드라이버를 통해 수신 받은 데이터를 커널 영역에 복사해온다.(IO 장치의 IO 요청을 처리할 때)&lt;/li&gt;
+&lt;li&gt;IO 완료 통지를 유저에게 해준다. 이 때 커널 영역에 있는 데이터가 유저가 지정했던 메모리로 다시 복사가 일어난다.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;적어도 2번 일어난다. 유저와 커널. IO 드라이버 내에서 사용하는 것까지 하면 더 일어나겠지만 그건 어쩔 수 없는 영역이니 일단 넘어가자.&lt;/p&gt;
 
@@ -10944,7 +10949,7 @@ IO 작업을 처리함에 있어서 꽤나 메모리 복사가 일어나기 때�
 (물론 지연된 수행 방식에 따라 interrupt handler 에서는 최소한의 작업만 수행하고 실질적인 IO 드라이버가 동작하는건 kernel thread 에서 수행을 하겠지만)&lt;/p&gt;
 
 &lt;p&gt;논리 메모리 주소를 CPU가 fetch 하기 위해 여러 레지스터의 도움을 받아 실제 물리 메모리 주소를 접근했을 때, 그것이 디스크에 저장되어있으면 page fault exception (soft interrupt)이 발생한다. 그러면 그걸 처리하는 interrupt handler가 수행되면서 메모리를 적당한 곳에 복구해준다.&lt;br&gt;
-&lt;del&gt;그런데 이게 IRQL 때문에 문제가 생기나?&lt;/del&gt; 아무튼 그래서 Windows 에서는 유저가 IO 요청을 하면 그 버퍼에 직접 작업하기 위해서는 그 메모리 공간을 swap out 이 불가능한 상태로 만들어준다. 이것을 &lt;strong&gt;locked page&lt;/strong&gt;라고 한다.
+&lt;del&gt;그런데 이게 IRQL 때문에 문제가 생기나?&lt;/del&gt; 아무튼 그래서 Windows에서는 유저가 IO 요청을 하면 그 버퍼에 직접 작업하기 위해서는 그 메모리 공간을 swap out이 불가능한 상태로 만들어준다. 이것을 &lt;strong&gt;locked page&lt;/strong&gt; 라고 한다.
 &lt;span style=&quot;color: #888;&quot;&gt;(비겁한 변명이지만 사실 이쪽은 아직 잘 모르겠다)&lt;/span&gt;&lt;/p&gt;
 
 &lt;p&gt;간단히 말해 유저가 요청한 버퍼 공간을 lock 을 걸어서 paging 이 안되게 하겠다는 것. 그러면 IO 요청이 언제 수행되더라도 해당 메모리가 물리 메모리에 있음을 보장할 수 있으니까 문제가 없다는 것이다.&lt;br&gt;
@@ -11796,9 +11801,7 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
    <link href="http://lacti.me/2011/08/02/context-switching-and-simultaneously/"/>
    <updated>2011-08-02T00:00:00+00:00</updated>
    <id>http://lacti.me/2011/08/02/context-switching-and-simultaneously</id>
-   <content type="html">&lt;p&gt;multi thread (or process) programming에서 가장 기초적인 개념으로 ABA Problem과 연결(되나?) 되는 기본적인 개념을 설명하고자 한다. 왜냐하면 지금은 multi process programming을 넘어 &lt;a href=&quot;http://imaso.co.kr/?doc=bbs/gnuboard.php&amp;amp;wr_id=37918&amp;amp;bo_table=article&quot;&gt;클라우드 시대&lt;/a&gt;니까! (ㅋㅋ)&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;한 개의 코어는 한 시점에 한 개의 명령을 수행한다!&lt;/strong&gt; 라는 기본 전제를 깔고 이야기를 시작해보려 한다.&lt;/p&gt;
+   <content type="html">&lt;p&gt;multi thread (or process) programming에서 가장 기초적인 개념으로 ABA Problem과 연결(되나?) 되는 기본적인 개념을 설명하고자 한다. &lt;strong&gt;한 개의 코어는 한 시점에 한 개의 명령을 수행한다!&lt;/strong&gt; 라는 기본 전제를 깔고 이야기를 시작해보려 한다.&lt;/p&gt;
 
 &lt;h3&gt;context switching&lt;/h3&gt;
 
@@ -12084,7 +12087,7 @@ Object 예제로 확인해보자.&lt;/p&gt;
  </entry>
  
  <entry>
-   <title>C++에서 Call Stack Trace를 만들어보자.</title>
+   <title>MSVC call stacktrace 구현</title>
    <link href="http://lacti.me/2011/07/20/implement-call-stack-trace-at-c%2B%2B/"/>
    <updated>2011-07-20T00:00:00+00:00</updated>
    <id>http://lacti.me/2011/07/20/implement-call-stack-trace-at-c++</id>
@@ -12309,7 +12312,7 @@ compiler는 최대한 근접한 type의 인자를 갖는 함수를 호출해준�
  </entry>
  
  <entry>
-   <title>Tls 초기화</title>
+   <title>thread local storage 초기화</title>
    <link href="http://lacti.me/2011/07/13/tls-initializer/"/>
    <updated>2011-07-13T00:00:00+00:00</updated>
    <id>http://lacti.me/2011/07/13/tls-initializer</id>
@@ -13131,13 +13134,13 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
    <link href="http://lacti.me/2011/01/09/typeof-and-container-of/"/>
    <updated>2011-01-09T00:00:00+00:00</updated>
    <id>http://lacti.me/2011/01/09/typeof-and-container-of</id>
-   <content type="html">&lt;p&gt;gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있었구나 ㄷㄷ&lt;br&gt;
+   <content type="html">&lt;p&gt;gcc의 additional standard?라고 하는데 generics를 지원하기 위한 도구가 만능 void * 이외에 이런 것도 있었다.&lt;br&gt;
 &lt;a href=&quot;http://gcc.gnu.org/onlinedocs/gcc/Typeof.html&quot;&gt;typeof&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;어떤 struct 내부 변수의 주소와 그 struct의 typename을 알 때, struct 변수의 시작 주소를 알아내는 &lt;a href=&quot;http://forum.falinux.com/zbxe/?document_srl=531954&quot;&gt;&lt;code&gt;container_of&lt;/code&gt;&lt;/a&gt;라는 매크로에 대해 동아리 친구와 잠깐 이야기했던 적이 있다.&lt;/p&gt;
 
 &lt;p&gt;간단히 설명하면 &lt;code&gt;((type *) NULL)-&amp;gt;var&lt;/code&gt;는 분명히 access violation이 나겠지만, 주소를 얻어내는 &lt;code&gt;&amp;amp;&lt;/code&gt; 연산자가 붙으면
-컴파일러에서 실행 전(!)에 주소 값을 구해주기 때문에 &lt;code&gt;&amp;amp;((type *) NULL)-&amp;gt;var&lt;/code&gt;는 해당 struct 변수에서 멤버 변수의 주소가 얼마나 떨어져있나를 알 수 있게 된다..&lt;/p&gt;
+컴파일러에서 실행 전(!)에 주소 값을 구해주기 때문에 &lt;code&gt;&amp;amp;((type *) NULL)-&amp;gt;var&lt;/code&gt;는 해당 struct 변수에서 멤버 변수의 주소가 얼마나 떨어져있나를 알 수 있게 된다.&lt;/p&gt;
 
 &lt;p&gt;해당 멤버 변수의 주소를 알게 되면, 덕분에 저 &amp;quot;떨어진 길이&amp;quot;를 역으로 빼서 struct 변수의 주소를 구할 수 있다.&lt;/p&gt;
 </content>
@@ -13167,8 +13170,6 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
 &lt;p&gt;그래서 연구실 아르바이트할 때 작성했던 io 함수들이 &lt;code&gt;size_t&lt;/code&gt;를 반환하도록 설계되어있다. (내가 그랬다 ㅠㅠ)&lt;/p&gt;
 
 &lt;p&gt;이게 buffered stream이면 문제가 복잡해진다. &lt;code&gt;read&lt;/code&gt;는 불가능해도 내부 buffer에 남아있는 것에서 자료를 뺄 수는 있으니까. &lt;code&gt;write&lt;/code&gt; 역시 내부의 자료를 보존해줄지 초기화해줄지를 고민해야하지만 Java의 Exception 에 익숙해져있다보니 막상 c로 설계를 할 때는 그런걸 고민을 하나도 안해버렸다 [......]&lt;/p&gt;
-
-&lt;p&gt;고로 지금 망. orz&lt;/p&gt;
 </content>
  </entry>
  
@@ -13179,8 +13180,6 @@ javascript에서 객체지향적 구성이 필요할까에 대해 의문이 있�
    <id>http://lacti.me/2011/01/08/closed-descriptor-and-write-when-SIGPIPE</id>
    <content type="html">&lt;p&gt;예전에도 엄청 고생했던 것인데, &lt;code&gt;socket&lt;/code&gt;이나 pipe 등에서
 &lt;code&gt;read&lt;/code&gt;와 &lt;code&gt;write&lt;/code&gt;로 IO를 수행할 때 상대쪽(opposite endpoint)이 닫혔다면 어떤 현상이 벌어질까?&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;뭐 벌어지긴 뭐가 벌어져 안되는거지&lt;/em&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;read&lt;/code&gt;는 -1을 반환한다&lt;/li&gt;
@@ -13200,8 +13199,6 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
 
 &lt;p&gt;그래서 결국 &lt;code&gt;sigaction&lt;/code&gt;으로 handler 설치해주고 작업을 해야하는데
 단, signal 함수를 써서 handler를 지정했다가는 &lt;strong&gt;os에 따라서 한번밖에 handler가 설정 안되는 경우가 있으므로 주의&lt;/strong&gt;가 필요하다.&lt;/p&gt;
-
-&lt;p&gt;이래저래 쉽지 않구나&lt;/p&gt;
 </content>
  </entry>
  
@@ -13237,14 +13234,14 @@ SIGTERM이나 SIGQUIT를 받은게 아니기 때문에 &lt;strong&gt;조용히 �
 &lt;li&gt;나는 OOP 수업의 영향으로 class declaration에서 public - protected - private 순으로 선언을 하고, public method를 선언할 때 가장 마지막 부분에 생성자 소멸자를 선언한다. &lt;strong&gt;그런데 class 선언할 때 맨 앞에 public을 빼먹었다.&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;code&gt;GetKey()&lt;/code&gt; 접근 위반 에러를 먼저 봤다면 괜찮았을텐데, &lt;code&gt;std::list&lt;/code&gt; 쪽에서 &lt;code&gt;CMyData&lt;/code&gt;의 소멸자를 호출하지 못한다는 에러만 보고 &lt;em&gt;소멸자 제대로 선언했는데!&lt;/em&gt;를 외쳤으나 &lt;code&gt;public:&lt;/code&gt;이 빠진건 보지 못했다-_-&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;GetKey()&lt;/code&gt; 접근 위반 에러를 먼저 봤다면 괜찮았을텐데, &lt;code&gt;std::list&lt;/code&gt; 쪽에서 &lt;code&gt;CMyData&lt;/code&gt;의 소멸자를 호출하지 못한다는 에러만 보고 &lt;em&gt;소멸자 제대로 선언했는데!&lt;/em&gt;를 외쳤으나 &lt;code&gt;public:&lt;/code&gt;이 빠진건 보지 못했다.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;stl container의 iterator를 사용할 때는 &lt;code&gt;begin&lt;/code&gt;으로부터 시작해서 &lt;code&gt;end&lt;/code&gt;가 아닐 때까지 반복하는거다. 그래서 당연히 &lt;code&gt;iterator != list.end();&lt;/code&gt;으로 써야하는데 대체 무슨 정신으로 저기에다가 &lt;code&gt;operator &amp;lt;&lt;/code&gt;를 써놨는지 모르겠다.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;결론은 술먹고 코딩하는 것보다 졸면서 코딩하는게 100만배는 더 해롭다는 사실.&lt;br&gt;
-저거 잡는데 1시간 반정도가 걸렸는데, 사실 잠 깨는데 1시간 걸리고 30분 동안 내가 졸면서 뭘 짜고 있었는지 파악하는게 걸린것 같다-_-&lt;/p&gt;
+저거 잡는데 1시간 반정도가 걸렸는데, 사실 잠 깨는데 1시간 걸리고 30분 동안 내가 졸면서 뭘 짜고 있었는지 파악하는게 걸린것 같다.&lt;/p&gt;
 </content>
  </entry>
  
@@ -13681,7 +13678,7 @@ Child Window는 &lt;code&gt;SetWindowPos&lt;/code&gt;나 &lt;code&gt;ShowWindow&
  </entry>
  
  <entry>
-   <title>개발중인 remotelib 중간보고</title>
+   <title>java remotelib 개발</title>
    <link href="http://lacti.me/2010/02/17/java-remotelib/"/>
    <updated>2010-02-17T00:00:00+00:00</updated>
    <id>http://lacti.me/2010/02/17/java-remotelib</id>
@@ -14330,7 +14327,7 @@ table 자체의 collation과 field의 collation은 늘 인식하고 있는 존�
    <content type="html">&lt;ul&gt;
 &lt;li&gt;boxing/unboxing이 지원되는 Java 5 이후부터 숫자형 Wrapper Class 객체에 대해 &lt;code&gt;equals&lt;/code&gt;와 == 연산자는 과연 어떻게 동작할 것인가&lt;/li&gt;
 &lt;li&gt;class 주제에 primitives라고 이야기하는 &lt;code&gt;String class&lt;/code&gt;의 &lt;code&gt;equals&lt;/code&gt;와 == 연산자는 과연 어떻게 동작할 것인가&lt;/li&gt;
-&lt;li&gt;그리고, 만약 위의 객체들이 &lt;code&gt;Vector&amp;lt;Object&amp;gt;&lt;/code&gt;에 들어가서 &lt;code&gt;Object&lt;/code&gt;로 pointing될 때, &lt;code&gt;equals&lt;/code&gt;와 == 연산자는 과연 어떻게 동작할 것인가!!!&lt;/li&gt;
+&lt;li&gt;그리고, 만약 위의 객체들이 &lt;code&gt;Vector&amp;lt;Object&amp;gt;&lt;/code&gt;에 들어가서 &lt;code&gt;Object&lt;/code&gt;로 pointing될 때, &lt;code&gt;equals&lt;/code&gt;와 == 연산자는 과연 어떻게 동작할 것인가!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3&gt;Compare Object&lt;/h3&gt;

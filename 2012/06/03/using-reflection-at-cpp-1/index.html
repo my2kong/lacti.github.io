@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="c++에서 reflection 사용하기 1 03 Jun 2012 c++ reflection mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고 있는 field의 정보를 enumerate 해야할 일이 생겼다. 그런데 c++은 reflection이 없잖아? 그렇게 고민하다가 예전에 쓴 글을 발견했다. c++에서 구조체 RTTI 정보 남기기 기본 아이디어는 다음과 같다. 각 class마다 자신의 field에 대한 정보를 갖는다. 이름과 멤버 변수 포인터 쌍을 가진다고 보면 된다. 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데, 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다. 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다. class field_t { public: field_t(std::string _name) : field_name(_name) {} template &lt;typename _FieldTy, typename _ObjTy&gt; _FieldTy&amp; ref(_ObjTy* obj) { _FieldTy* address = reinterpret_cast&lt;_FieldTy*&gt;(ptr(obj)); return *address; } const char* name() const { return field_name.c_str(); } protected: virtual void*..." />
+	<meta name="description" content="c++에서 reflection 사용하기 1 03 Jun 2012 c++ reflection _pub mmo-server에서 attribute를 json serialize하기 위해 attribute가 가지고 있는 field의 정보를 enumerate 해야할 일이 생겼다. 그런데 c++은 reflection이 없잖아? 그렇게 고민하다가 예전에 쓴 글을 발견했다. c++에서 구조체 RTTI 정보 남기기 기본 아이디어는 다음과 같다. 각 class마다 자신의 field에 대한 정보를 갖는다. 이름과 멤버 변수 포인터 쌍을 가진다고 보면 된다. 여기서 골치가 아픈건 저 field에 대한 정보를 어떻게 표기하냐인데, 멤버 변수 포인터라는 type을 좀 generic하게 관리해줄 방법이 필요하다. 제대로 하려면 코드가 복잡해질테니 대충 다음과 같이 틀만 잡았다. class field_t { public: field_t(std::string _name) : field_name(_name) {} template &lt;typename _FieldTy, typename _ObjTy&gt; _FieldTy&amp; ref(_ObjTy* obj) { _FieldTy* address = reinterpret_cast&lt;_FieldTy*&gt;(ptr(obj)); return *address; } const char* name() const { return field_name.c_str(); } protected: virtual..." />
 
 	<meta http-equiv="date" content="Sunday, 03  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="c++,reflection" />
+	<meta name="keywords" content="c++,reflection,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>c++에서 reflection 사용하기 1</title>
@@ -49,6 +49,8 @@
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
 					<code class="tag"><a href="/tags/#reflection">reflection</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

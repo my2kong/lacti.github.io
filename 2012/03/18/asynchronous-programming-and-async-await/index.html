@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="asynchronous programming과 async, await 18 Mar 2012 async 함수를 호출하는 코드를 작성한다고 해보자. synchronous하게 호출하는 방법이 있고, asynchronous하게 호출하는 방법이 있다. (보통 후자는 호출이라고 하기보다는 요청을 한다고 할 것이다) 코드를 작성하는 프로그래머 입장에서는 당연히 synchronous한 로직이 훨씬 직관적이고 이해하기 편한다. 위에서부터 아래로 코드를 읽어내리기만 해도 이게 무슨 동작을 하는 코드인지 이해하기가 쉽기 때문이다. 하지만 여러 성능적 이슈로 인해 많은 함수들이 asynchronous하게 작성된다. 이럴 synchronous한 호출 구조를 갖는 코드에 비해 로직을 이해하기 힘들어진다. (callback 의 callback 의 callback 의 ... 를 부르는 함수 구조를 읽어나가면, 어떤 상황에서 어떤 코드가 실행되는지 조차 파악하기 힘들다) 이 글에서는 간단하게 RPC(remote procedure call) 예제를 통해 위 내용을 살펴보겠다. call_result request_call(call_context ctx) { sock_write(socket_, ctx.serialize()); BYTE result_buffer[RESULT_SIZE]; sock_read(socket_, &amp;result_buffer); return call_result.parse(result_buffer); } 위 request_call이라는 함수는 함수..." />
+	<meta name="description" content="asynchronous programming과 async, await 18 Mar 2012 async _pub 함수를 호출하는 코드를 작성한다고 해보자. synchronous하게 호출하는 방법이 있고, asynchronous하게 호출하는 방법이 있다. (보통 후자는 호출이라고 하기보다는 요청을 한다고 할 것이다) 코드를 작성하는 프로그래머 입장에서는 당연히 synchronous한 로직이 훨씬 직관적이고 이해하기 편한다. 위에서부터 아래로 코드를 읽어내리기만 해도 이게 무슨 동작을 하는 코드인지 이해하기가 쉽기 때문이다. 하지만 여러 성능적 이슈로 인해 많은 함수들이 asynchronous하게 작성된다. 이럴 synchronous한 호출 구조를 갖는 코드에 비해 로직을 이해하기 힘들어진다. (callback 의 callback 의 callback 의 ... 를 부르는 함수 구조를 읽어나가면, 어떤 상황에서 어떤 코드가 실행되는지 조차 파악하기 힘들다) 이 글에서는 간단하게 RPC(remote procedure call) 예제를 통해 위 내용을 살펴보겠다. call_result request_call(call_context ctx) { sock_write(socket_, ctx.serialize()); BYTE result_buffer[RESULT_SIZE]; sock_read(socket_, &amp;result_buffer); return call_result.parse(result_buffer); } 위 request_call이라는 함수는..." />
 
 	<meta http-equiv="date" content="Sunday, 18  2012 00:00:00 GMT" />
 
-	<meta name="keywords" content="async" />
+	<meta name="keywords" content="async,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>asynchronous programming과 async, await</title>
@@ -47,6 +47,8 @@
 				<p class="page-tags">
 				
 					<code class="tag"><a href="/tags/#async">async</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				

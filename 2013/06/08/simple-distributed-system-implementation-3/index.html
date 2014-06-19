@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="분산 처리 환경 구현 3 08 Jun 2013 c# distributed rpc Github: DistWork - simpler 지난 글에서 예고한 RpcWork와 Dll 전달 방법에 대해 알아보자. (원래는 WorkGroup까지 보려고 했는데 자세한 구현은 귀찮으니 나중에 기회가 되면 쓰도록 하겠다) RPC 구현 RpcWork는 다음의 방법으로 쉽게 구현할 수 있다. [Serializable] public abstract class RpcWork&lt;TReturn&gt; : IWork { [Serializable] private class ReturnWork : IWork { private readonly RpcWork&lt;TReturn&gt; _parentWork; private readonly TReturn _returnValue; public ReturnWork(RpcWork&lt;TReturn&gt; parentWork, TReturn returnValue) { _parentWork = parentWork; _returnValue = returnValue; } public void Execute(Socket endPoint) { _parentWork.ExecuteReturn(_returnValue, endPoint); } } public void Execute(Socket endPoint) { var returnValue = ExecuteWork(endPoint); endPoint.SendWork(new ReturnWork(this, returnValue)); } protected abstract TReturn ExecuteWork(Socket endPoint); protected abstract void ExecuteReturn(TReturn returnValue, Socket endPoint); } 원격지에서 수행할 함수를 담는..." />
+	<meta name="description" content="분산 처리 환경 구현 3 08 Jun 2013 distributed c# rpc _pub Github: DistWork - simpler 지난 글에서 예고한 RpcWork와 Dll 전달 방법에 대해 알아보자. (원래는 WorkGroup까지 보려고 했는데 자세한 구현은 귀찮으니 나중에 기회가 되면 쓰도록 하겠다) RPC 구현 RpcWork는 다음의 방법으로 쉽게 구현할 수 있다. [Serializable] public abstract class RpcWork&lt;TReturn&gt; : IWork { [Serializable] private class ReturnWork : IWork { private readonly RpcWork&lt;TReturn&gt; _parentWork; private readonly TReturn _returnValue; public ReturnWork(RpcWork&lt;TReturn&gt; parentWork, TReturn returnValue) { _parentWork = parentWork; _returnValue = returnValue; } public void Execute(Socket endPoint) { _parentWork.ExecuteReturn(_returnValue, endPoint); } } public void Execute(Socket endPoint) { var returnValue = ExecuteWork(endPoint); endPoint.SendWork(new ReturnWork(this, returnValue)); } protected abstract TReturn ExecuteWork(Socket endPoint); protected abstract void ExecuteReturn(TReturn returnValue, Socket endPoint); } 원격지에서 수행할 함수를..." />
 
 	<meta http-equiv="date" content="Saturday, 08  2013 00:00:00 GMT" />
 
-	<meta name="keywords" content="c#,distributed,rpc" />
+	<meta name="keywords" content="distributed,c#,rpc,_pub" />
 
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<title>분산 처리 환경 구현 3</title>
@@ -46,11 +46,13 @@
 				<p class="page-date">08 Jun 2013</p>
 				<p class="page-tags">
 				
-					<code class="tag"><a href="/tags/#c#">c#</a></code>
-				
 					<code class="tag"><a href="/tags/#distributed">distributed</a></code>
 				
+					<code class="tag"><a href="/tags/#c#">c#</a></code>
+				
 					<code class="tag"><a href="/tags/#rpc">rpc</a></code>
+				
+					<code class="tag"><a href="/tags/#_pub">_pub</a></code>
 				
 				</p>
 				
