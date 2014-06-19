@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="환형큐의 thread unsafety 문제 23 Feb 2012 concurrency c++ -pub 어떤 자원에 대한 환형큐가 있다고 해보자. size는 2의 자승이다. void push(resource_t res) { int index = atomic_inc32(&amp;rear_) &amp; size_; array[index] = res; } resource_t pop() { int index = atomic_inc32(&amp;front_) &amp; size_; return array[index]; } 위 코드는 당연히 thread safety 하지 않다. 하지만 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자. void work(resource_t old) { push(old); // release old resource resource_t newone = pop(); // acquire new on // do some work } 예전 자원을 반환하고, 새로운 자원을 할당받아 그것으로 무슨 작업을 하는 것이다. 이렇게 되면 pop 을 부르는 시점의 thread 는 적어도 자신이 push 한 자원 1개가 반드시 존재함을 보장할 수 있으니까 문제가 생기지 않는다...." />
+	<meta name="description" content="환형큐의 thread unsafety 문제 23 Feb 2012 concurrency c++ 어떤 자원에 대한 환형큐가 있다고 해보자. size는 2의 자승이다. void push(resource_t res) { int index = atomic_inc32(&amp;rear_) &amp; size_; array[index] = res; } resource_t pop() { int index = atomic_inc32(&amp;front_) &amp; size_; return array[index]; } 위 코드는 당연히 thread safety 하지 않다. 하지만 문제가 발생하지 않도록 나름 머리를 써서 다음과 같이 위 코드를 사용한다고 해보자. void work(resource_t old) { push(old); // release old resource resource_t newone = pop(); // acquire new on // do some work } 예전 자원을 반환하고, 새로운 자원을 할당받아 그것으로 무슨 작업을 하는 것이다. 이렇게 되면 pop 을 부르는 시점의 thread 는 적어도 자신이 push 한 자원 1개가 반드시 존재함을 보장할 수 있으니까 문제가 생기지 않는다. 라고..." />
 
 	<meta http-equiv="date" content="Thursday, 23  2012 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">23 Feb 2012</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#concurrency">concurrency</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

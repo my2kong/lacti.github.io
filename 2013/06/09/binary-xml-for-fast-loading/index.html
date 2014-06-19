@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="xml 기반의 데이터시트 빨리 읽기 09 Jun 2013 optimization data -pub 지금 일하고 있는 회사에서는 모든 게임 데이터를 xml로 기술하고 있다. 서버가 시작할 때 읽게 되는 xml의 양만 본다면 대략 800~900MB로 엄청난 양을 읽어야 한다. 덕분에 서버가 저 모든 데이터시트를 읽어서 메모리에 올리는 시간만 약 4~5분이 소요가 되었고, 이 시간으로 인해 발생하는 비효율은 말할 필요가 없을 정도였다. 본 글에서는 이 문제를 해결하기 위해 어떠한 탐색 과정을 거쳤으며 결과적으로 문제를 어떻게 해결하였는지 서술하려고 한다. profiling xml parser로 expat을 사용하고 있는데 이는 SAX parser이다. 문제는 SAX 이벤트를 받아서 STL의 자료구조에 넣고 그걸 iterating하는 방법으로 사용하고 있었다는 것이다. 대충 추측하고 있는 성능 저하 요소가 몇가지 있었지만 문제를 정확히 분석하기 위해 해당 서버 바이너리를 VS2010의 profiler로 수행한 결과를 확인했다. XML Parsing XML Model에 parsing한..." />
+	<meta name="description" content="xml 기반의 데이터시트 빨리 읽기 09 Jun 2013 optimization data 지금 일하고 있는 회사에서는 모든 게임 데이터를 xml로 기술하고 있다. 서버가 시작할 때 읽게 되는 xml의 양만 본다면 대략 800~900MB로 엄청난 양을 읽어야 한다. 덕분에 서버가 저 모든 데이터시트를 읽어서 메모리에 올리는 시간만 약 4~5분이 소요가 되었고, 이 시간으로 인해 발생하는 비효율은 말할 필요가 없을 정도였다. 본 글에서는 이 문제를 해결하기 위해 어떠한 탐색 과정을 거쳤으며 결과적으로 문제를 어떻게 해결하였는지 서술하려고 한다. profiling xml parser로 expat을 사용하고 있는데 이는 SAX parser이다. 문제는 SAX 이벤트를 받아서 STL의 자료구조에 넣고 그걸 iterating하는 방법으로 사용하고 있었다는 것이다. 대충 추측하고 있는 성능 저하 요소가 몇가지 있었지만 문제를 정확히 분석하기 위해 해당 서버 바이너리를 VS2010의 profiler로 수행한 결과를 확인했다. XML Parsing XML Model에 parsing한 결과..." />
 
 	<meta http-equiv="date" content="Sunday, 09  2013 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">09 Jun 2013</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#optimization">optimization</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#data">data</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

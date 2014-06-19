@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="IO와 메모리 복사 14 Aug 2011 io memory -pub 동기와 비동기 IO 에 대해 지난번에 이야기했었다. 비동기 IO 함수 간단히 요약하면, 함수는 완료 알림 시점 때문에 동기와 비동기로 구분된다는 것이다. 동기는 함수의 완료를 반환을 통해 알린다. 따라서 요청한 작업이 끝나기 전까지는 함수가 반환되지 않는다는 것. 덕분에 작업이 다른 작업에 의존적일 경우 흐름이 멈추는(Blocking) 경우가 많다. 비동기는 함수의 완료를 반환을 통해 알리지 않는다. Callback 을 불러주든 Event나 Signal을 날려주든, 완료 통지를 가져갈 때까지 모아두든 어쨌든 요청하는 함수는 바로 반환된다. (물론 요청 즉시 바로 완료되어 끝날 수 있지만) 그래서 흐름이 안 멈춘다(Non-Blocking) 이런 것에 익숙하지 않은 이유는 여지껏 작성한 함수들이 전부 로직 함수였기 때문이다. 단순히 더하고 빼고 하는데 함수 수행이 흐름을 멈춘다고 생각하지는 않으니까. 하지만 다른 Thread, Process의 수행에 의존적이거나 장치(Device) IO에..." />
+	<meta name="description" content="IO와 메모리 복사 14 Aug 2011 io memory 동기와 비동기 IO 에 대해 지난번에 이야기했었다. 비동기 IO 함수 간단히 요약하면, 함수는 완료 알림 시점 때문에 동기와 비동기로 구분된다는 것이다. 동기는 함수의 완료를 반환을 통해 알린다. 따라서 요청한 작업이 끝나기 전까지는 함수가 반환되지 않는다는 것. 덕분에 작업이 다른 작업에 의존적일 경우 흐름이 멈추는(Blocking) 경우가 많다. 비동기는 함수의 완료를 반환을 통해 알리지 않는다. Callback 을 불러주든 Event나 Signal을 날려주든, 완료 통지를 가져갈 때까지 모아두든 어쨌든 요청하는 함수는 바로 반환된다. (물론 요청 즉시 바로 완료되어 끝날 수 있지만) 그래서 흐름이 안 멈춘다(Non-Blocking) 이런 것에 익숙하지 않은 이유는 여지껏 작성한 함수들이 전부 로직 함수였기 때문이다. 단순히 더하고 빼고 하는데 함수 수행이 흐름을 멈춘다고 생각하지는 않으니까. 하지만 다른 Thread, Process의 수행에 의존적이거나 장치(Device) IO에 대기해야한다면..." />
 
 	<meta http-equiv="date" content="Sunday, 14  2011 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">14 Aug 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#io">io</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#memory">memory</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

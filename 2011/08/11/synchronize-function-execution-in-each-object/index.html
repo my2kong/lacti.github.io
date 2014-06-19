@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="객체별 함수 수행 동기화 11 Aug 2011 concurrency c++ async -pub (주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다) 여러 Thread가 동시에 접근을 수행하는 객체를 보호하기 위해서는 어떤 방법이 있을까? lock을 건다 각 Thread들은 하나의 queue에 요청할 작업을 쌓아두고, 그 객체 전담 Thread가 그 작업들을 처리한다. Read / Write Phase를 나누어서 Read는 다같이, Write는 역시 작업을 모아 하나의 Thread만 진입하여 처리한다. lock을 걸면 당연히 속도가 떨어진다. 따라서 본 글에서는 lock을 걸지 않는 방법을 논의해볼 것이고 설계적으로 복잡한 3번 보다는 2번에 초점을 맞출 계획이다. 상황적으로 볼 때, 하나의 객체에 여러 Thread가 접근할 일은 많다. 만약 2명의 User가 Party를 맺고 사냥을 하다가, 각자 동시에 한 마리씩 몬스터를 잡았다는 message가 동시에 Server에 도착해 경험치를 각 User..." />
+	<meta name="description" content="객체별 함수 수행 동기화 11 Aug 2011 concurrency c++ async (주의, 아래 글은 Visual Studio 2010 을 쓴다는 가정하에 작성하였다. 아무튼 C++11 이 지원되어야 한다) 여러 Thread가 동시에 접근을 수행하는 객체를 보호하기 위해서는 어떤 방법이 있을까? lock을 건다 각 Thread들은 하나의 queue에 요청할 작업을 쌓아두고, 그 객체 전담 Thread가 그 작업들을 처리한다. Read / Write Phase를 나누어서 Read는 다같이, Write는 역시 작업을 모아 하나의 Thread만 진입하여 처리한다. lock을 걸면 당연히 속도가 떨어진다. 따라서 본 글에서는 lock을 걸지 않는 방법을 논의해볼 것이고 설계적으로 복잡한 3번 보다는 2번에 초점을 맞출 계획이다. 상황적으로 볼 때, 하나의 객체에 여러 Thread가 접근할 일은 많다. 만약 2명의 User가 Party를 맺고 사냥을 하다가, 각자 동시에 한 마리씩 몬스터를 잡았다는 message가 동시에 Server에 도착해 경험치를 각 User 객체에..." />
 
 	<meta http-equiv="date" content="Thursday, 11  2011 00:00:00 GMT" />
 
@@ -46,13 +46,19 @@
 				<p class="page-date">11 Aug 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#concurrency">concurrency</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
+				
+				
 					<code class="tag"><a href="/tags/#async">async</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

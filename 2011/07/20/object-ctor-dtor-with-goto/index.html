@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="객체의 생성, 소멸과 goto 이야기 20 Jul 2011 c++ -pub 생성자 소멸자 이야기 어떤 class의 생성자와 소멸자를 구현했다. 거기에서는 엄청나게 복잡한 작업을 수행한다. 예를 들면, class Object { public: Object (void) { /* 엄청 복잡한 작업 */ } ~Object (void) { /* 진짜 복잡한 작업 */ } Object (const Object&amp; other) { /* 적절한 복사 생성자 */ } Object&amp; operator = (const Object&amp; other) { /* 신통한 대입 연산자 */ } }; 그리고 저 객체를 다음과 같이 사용한다고 해보자. std::vector&lt;Object&gt; objects; for (int i = 0; i &lt; 1000; ++i) objects.push_back (objectFactory.create(i)); 무엇이 문제일까? 복사 생성자와 대입 연산자가 적절하게 잘 구현되어있다고 하자. 그러면 sallow copy 문제는 당연히 아니다. 문제는 vector 자체가 Object로 구현되어 있기 때문에 내부에 Object에 대한 배열을 갖고..." />
+	<meta name="description" content="객체의 생성, 소멸과 goto 이야기 20 Jul 2011 c++ 생성자 소멸자 이야기 어떤 class의 생성자와 소멸자를 구현했다. 거기에서는 엄청나게 복잡한 작업을 수행한다. 예를 들면, class Object { public: Object (void) { /* 엄청 복잡한 작업 */ } ~Object (void) { /* 진짜 복잡한 작업 */ } Object (const Object&amp; other) { /* 적절한 복사 생성자 */ } Object&amp; operator = (const Object&amp; other) { /* 신통한 대입 연산자 */ } }; 그리고 저 객체를 다음과 같이 사용한다고 해보자. std::vector&lt;Object&gt; objects; for (int i = 0; i &lt; 1000; ++i) objects.push_back (objectFactory.create(i)); 무엇이 문제일까? 복사 생성자와 대입 연산자가 적절하게 잘 구현되어있다고 하자. 그러면 sallow copy 문제는 당연히 아니다. 문제는 vector 자체가 Object로 구현되어 있기 때문에 내부에 Object에 대한 배열을 갖고 있을..." />
 
 	<meta http-equiv="date" content="Wednesday, 20  2011 00:00:00 GMT" />
 
@@ -46,9 +46,11 @@
 				<p class="page-date">20 Jul 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

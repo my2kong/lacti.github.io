@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="java annotation을 사용한 InstanceId 구현 02 Mar 2011 java -pub Java에서 생성하는 Object마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자. Index 발급 Group 관련해서 파일을 하나 작성하여 IndexGeneratingManager를 구성해서 발급해도 되고, 아니면 발급 받는 시점을 적절히 조절하거나 발급 함수의 인자로 Group할 Class 정보를 넣어줘도 되겠다. 하지만 본 글에서는 Java 1.5부터 추가된 Annotation을 사용하여 source code에 metadata를 추가하여 문제를 해결하는 방법을 써 보겠다. Java의 Annotation은 특정 지점(ElementType: Type, Method, Field, ...)에 특정 시점(Retention: Source, Class, Runtime)까지 유지되는 metadata이다. @interface keyword로 정의할 수 있고, 지정된 지점에 맞게 class, method, field, parameter 등에 선언될 수 있고, 이는 지정된 시점까지 유지된다. 위 문제를 해결하기 위해 새로 작성하는 IndexCategory라는 annotation은 index를 발급할 category class를 지정한다. import java.lang.annotation.ElementType; import java.lang.annotation.Retention; import java.lang.annotation.RetentionPolicy; import java.lang.annotation.Target; @Target(ElementType.TYPE) @Retention(RetentionPolicy.RUNTIME)..." />
+	<meta name="description" content="java annotation을 사용한 InstanceId 구현 02 Mar 2011 java Java에서 생성하는 Object마다 InstanceId를 부여하는 방법에 대해 고민해보고 코드를 작성해보자. Index 발급 Group 관련해서 파일을 하나 작성하여 IndexGeneratingManager를 구성해서 발급해도 되고, 아니면 발급 받는 시점을 적절히 조절하거나 발급 함수의 인자로 Group할 Class 정보를 넣어줘도 되겠다. 하지만 본 글에서는 Java 1.5부터 추가된 Annotation을 사용하여 source code에 metadata를 추가하여 문제를 해결하는 방법을 써 보겠다. Java의 Annotation은 특정 지점(ElementType: Type, Method, Field, ...)에 특정 시점(Retention: Source, Class, Runtime)까지 유지되는 metadata이다. @interface keyword로 정의할 수 있고, 지정된 지점에 맞게 class, method, field, parameter 등에 선언될 수 있고, 이는 지정된 시점까지 유지된다. 위 문제를 해결하기 위해 새로 작성하는 IndexCategory라는 annotation은 index를 발급할 category class를 지정한다. import java.lang.annotation.ElementType; import java.lang.annotation.Retention; import java.lang.annotation.RetentionPolicy; import java.lang.annotation.Target; @Target(ElementType.TYPE) @Retention(RetentionPolicy.RUNTIME) public..." />
 
 	<meta http-equiv="date" content="Wednesday, 02  2011 00:00:00 GMT" />
 
@@ -46,9 +46,11 @@
 				<p class="page-date">02 Mar 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#java">java</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

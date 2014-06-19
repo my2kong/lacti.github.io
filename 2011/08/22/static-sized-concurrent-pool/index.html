@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="Concurrent Pool (Static Size) 22 Aug 2011 concurrency c++ -pub 정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자. 핵심은 배열을 사용한다는 것. 왜냐하면 여러 thread가 접근해도 자신만의 index 지점을 접근하면 한 지점에 동시에 thread가 접근하면서 발생하는 문제가 없기 때문. 이게 동적으로 크기가 확장되면 배열의 포인터가 무효화되면서 여러 문제가 생길 수 있어 복잡하다. 따라서 정적인 크기라고 고정짓고 이야기를 해보자. Object Pool은 미리 Object들을 만들어놓고 필요할 때마다 하나씩 꺼내서 쓰겠다는 것이다. 그 이유는 객체 생성과 소멸, 메모리 할당과 해제의 비용이 아깝기 때문. (때에 따라서 객체의 초기화 비용은 중복될 수도 있다. 다시 사용하기 전에 초기화할 수도 있으니까) 따라서 미리 객체를 일정 개수만큼 만들어놓고, 필요할 때 꺼내서 쓰고, 다시 집어넣어서 재사용 가능하게 해주는 기법이 Object Pool 이라고 보면 된다. 구현과 한계 일정 크기만큼의 객체 배열을..." />
+	<meta name="description" content="Concurrent Pool (Static Size) 22 Aug 2011 concurrency c++ 정적인 크기의 Thread-safe한 (Concurrent) Object Pool을 만들어보자. 핵심은 배열을 사용한다는 것. 왜냐하면 여러 thread가 접근해도 자신만의 index 지점을 접근하면 한 지점에 동시에 thread가 접근하면서 발생하는 문제가 없기 때문. 이게 동적으로 크기가 확장되면 배열의 포인터가 무효화되면서 여러 문제가 생길 수 있어 복잡하다. 따라서 정적인 크기라고 고정짓고 이야기를 해보자. Object Pool은 미리 Object들을 만들어놓고 필요할 때마다 하나씩 꺼내서 쓰겠다는 것이다. 그 이유는 객체 생성과 소멸, 메모리 할당과 해제의 비용이 아깝기 때문. (때에 따라서 객체의 초기화 비용은 중복될 수도 있다. 다시 사용하기 전에 초기화할 수도 있으니까) 따라서 미리 객체를 일정 개수만큼 만들어놓고, 필요할 때 꺼내서 쓰고, 다시 집어넣어서 재사용 가능하게 해주는 기법이 Object Pool 이라고 보면 된다. 구현과 한계 일정 크기만큼의 객체 배열을 생성한다...." />
 
 	<meta http-equiv="date" content="Monday, 22  2011 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">22 Aug 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#concurrency">concurrency</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

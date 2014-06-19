@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="template 프로그래밍과 type erasure 10 Nov 2013 c++ template study -pub template &lt;typename _Iter, typename _FuncTy&gt; void for_each(_Iter begin, _Iter end, _FuncTy functor) { for (; begin != end; ++begin) { functor(*begin); } } void ForEach(Iterator* iter, const Functor&amp; functor) { while (iter-&gt;MoveNext()) { functor.DoIt(iter-&gt;Current()); } } 첫 번째 코드(for_each)는 _Iter, _FuncTy에 들어가는 각 type에 맞게 compile time에 모든 code가 생성(template instantiation)되어 어떤 함수가 호출될지 compile time에 결정되는 구조이고, 두 번째 코드(ForEach)는 Iterator와 Functor interface를 구현한 객체가 runtime에 ForEach() 함수로 넘어간 다음 virtual function call이 불려서 runtime에 어떤 함수가 호출될지 결정되는 구조이다. 즉, ForEach 함수는 1개이지만 for_each 함수는 부르는 type에 따라서 여러 개가 될 수 있다는 것이다. ForEach 함수는 내부에서 vfptr에 의한 함수 호출 부담이 야기되지만, for_each 함수는 그런 것..." />
+	<meta name="description" content="template 프로그래밍과 type erasure 10 Nov 2013 c++ template study template &lt;typename _Iter, typename _FuncTy&gt; void for_each(_Iter begin, _Iter end, _FuncTy functor) { for (; begin != end; ++begin) { functor(*begin); } } void ForEach(Iterator* iter, const Functor&amp; functor) { while (iter-&gt;MoveNext()) { functor.DoIt(iter-&gt;Current()); } } 첫 번째 코드(for_each)는 _Iter, _FuncTy에 들어가는 각 type에 맞게 compile time에 모든 code가 생성(template instantiation)되어 어떤 함수가 호출될지 compile time에 결정되는 구조이고, 두 번째 코드(ForEach)는 Iterator와 Functor interface를 구현한 객체가 runtime에 ForEach() 함수로 넘어간 다음 virtual function call이 불려서 runtime에 어떤 함수가 호출될지 결정되는 구조이다. 즉, ForEach 함수는 1개이지만 for_each 함수는 부르는 type에 따라서 여러 개가 될 수 있다는 것이다. ForEach 함수는 내부에서 vfptr에 의한 함수 호출 부담이 야기되지만, for_each 함수는 그런 것 없다...." />
 
 	<meta http-equiv="date" content="Sunday, 10  2013 00:00:00 GMT" />
 
@@ -46,13 +46,19 @@
 				<p class="page-date">10 Nov 2013</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#template">template</a></code>
 				
+				
+				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

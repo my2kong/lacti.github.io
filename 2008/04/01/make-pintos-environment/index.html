@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="pintos 환경 구축 01 Apr 2008 os -pub Pintos를 구동시키기 위해서는 먼저 가상 에뮬레이터가 필요하다. Open source 중에 대표적으로 Bochs와 QEMU가 있는데, 설치법이 과제 문서에 기술되어있는 Bochs를 선택하여 설치하였다. Bochs는 Open Source 프로젝트로 Sourceforge에서 그 소스를 다운받아 컴파일하여 설치할 수 있다. 파일을 받기 위해서 Sourceforge에 lynx로 접속하여 bochs-2.3.tar.gz를 다운 받았다. tar.gz 압축이므로 tar xvzf를 이용하여 압축을 풀었다. ~$ tar xvzf bochs-2.3.tar.gz 원격으로 터미널을 통해 진행할 예정이기 때문에 bochs가 terminal이 가능하고 gui가 없어도 동작할 수 있도록 컴파일해서 설치해야 했다. 따라서 configure 옵션에 --with-term과 --with-nogui를 주었다. 또 과제 문서에서 제시한 바와 같이 gdb debugging을 위해 --enable-gdb-stub을 옵션으로 주었다. ~/bochs-2.3$ ./configure --with-term --with-nogui --enable-gdb-stub 그 다음에 bochs를 make하고 설치하기 위해 make와 make install 명령을 수행했다. make install은 모든 사용자가 사용하는 전역 위치에 bochs를..." />
+	<meta name="description" content="pintos 환경 구축 01 Apr 2008 os Pintos를 구동시키기 위해서는 먼저 가상 에뮬레이터가 필요하다. Open source 중에 대표적으로 Bochs와 QEMU가 있는데, 설치법이 과제 문서에 기술되어있는 Bochs를 선택하여 설치하였다. Bochs는 Open Source 프로젝트로 Sourceforge에서 그 소스를 다운받아 컴파일하여 설치할 수 있다. 파일을 받기 위해서 Sourceforge에 lynx로 접속하여 bochs-2.3.tar.gz를 다운 받았다. tar.gz 압축이므로 tar xvzf를 이용하여 압축을 풀었다. ~$ tar xvzf bochs-2.3.tar.gz 원격으로 터미널을 통해 진행할 예정이기 때문에 bochs가 terminal이 가능하고 gui가 없어도 동작할 수 있도록 컴파일해서 설치해야 했다. 따라서 configure 옵션에 --with-term과 --with-nogui를 주었다. 또 과제 문서에서 제시한 바와 같이 gdb debugging을 위해 --enable-gdb-stub을 옵션으로 주었다. ~/bochs-2.3$ ./configure --with-term --with-nogui --enable-gdb-stub 그 다음에 bochs를 make하고 설치하기 위해 make와 make install 명령을 수행했다. make install은 모든 사용자가 사용하는 전역 위치에 bochs를 설치하기..." />
 
 	<meta http-equiv="date" content="Tuesday, 01  2008 00:00:00 GMT" />
 
@@ -46,9 +46,11 @@
 				<p class="page-date">01 Apr 2008</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#os">os</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

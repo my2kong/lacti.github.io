@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="template 인자를 상속 받기 09 Jan 2012 c++ template -pub template &lt;class _Base&gt; class MyClass : public _Base {}; 위와 같은 형태가 어떤 의미를 지니고, 어느 곳에서 사용될 수 있는지 살펴보자 일단 자신의 부모 class를 generic하게 취할 수 있다는 것은 부모의 class 와 자식의 class 간의 결합성을 어느 정도 느슨하게 준다는 의미가 있다. (인자로 무엇을 주냐에 따라 상속 구조가 바뀌니까.) 또한 부모 class의 종류에 상관없이 동일한 기능을 추가해줄 수 있다거나, 아니면 부모 class들이 동일한 interface를 가지고 있다면, 그것을 통한 기능 확장도 가능하겠다. singleton 부모 class의 종류에 상관없이 동일한 기능을 추가하는 가장 간단한 예제는 singleton이다. 아래와 같은 MyClass가 있다고 해보자. class MyClass { public: int GetValue() const { return 100; } }; 이 Class를 Singleton으로 만드려면 가장 간단한 방법은 직접 해당..." />
+	<meta name="description" content="template 인자를 상속 받기 09 Jan 2012 c++ template template &lt;class _Base&gt; class MyClass : public _Base {}; 위와 같은 형태가 어떤 의미를 지니고, 어느 곳에서 사용될 수 있는지 살펴보자 일단 자신의 부모 class를 generic하게 취할 수 있다는 것은 부모의 class 와 자식의 class 간의 결합성을 어느 정도 느슨하게 준다는 의미가 있다. (인자로 무엇을 주냐에 따라 상속 구조가 바뀌니까.) 또한 부모 class의 종류에 상관없이 동일한 기능을 추가해줄 수 있다거나, 아니면 부모 class들이 동일한 interface를 가지고 있다면, 그것을 통한 기능 확장도 가능하겠다. singleton 부모 class의 종류에 상관없이 동일한 기능을 추가하는 가장 간단한 예제는 singleton이다. 아래와 같은 MyClass가 있다고 해보자. class MyClass { public: int GetValue() const { return 100; } }; 이 Class를 Singleton으로 만드려면 가장 간단한 방법은 직접 해당 method를..." />
 
 	<meta http-equiv="date" content="Monday, 09  2012 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">09 Jan 2012</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#template">template</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

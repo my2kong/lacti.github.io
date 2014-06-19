@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="자바로 만드는 비행기 게임 3 06 Nov 2011 java game -pub 이번에는 적기의 등장과 충돌검사를 해보자. 적기는, y=0에서 등장해서 y=height까지 진행한다. 즉, 화면 위쪽에서 아래쪽으로 일직선으로 진행하도록 하자. 그러면 진행하는 y 값은 항상 동일할테니까(0 -&gt; height) 시작과 끝 x 값을 random으로 뽑으면 된다. 적기의 속도를 다양하게 한다고 한다면 원래 속도를 랜덤하게 구해서 그만큼씩 이동하게 하겠지만, 그렇게 계산해주기 귀찮으니까 등장 시간을 랜덤하게 뽑고(5초에서 10초 사이) 그 시간에 대해 랜덤한 시작좌표 ~ 끝좌표를 토대로 매 tick(100ms)마다 얼마나 이동하면 될지 delta를 구한다. class EnemyPos { Point2D delta, current; public EnemyPos(int shipHeight) { Random rand = new Random(); float lifetime = rand.nextFloat() * 50 + 50; int startX = rand.nextInt(640); int endX = rand.nextInt(640); delta = new Point2D.Float((endX - startX) / lifetime, (480 +..." />
+	<meta name="description" content="자바로 만드는 비행기 게임 3 06 Nov 2011 java game 이번에는 적기의 등장과 충돌검사를 해보자. 적기는, y=0에서 등장해서 y=height까지 진행한다. 즉, 화면 위쪽에서 아래쪽으로 일직선으로 진행하도록 하자. 그러면 진행하는 y 값은 항상 동일할테니까(0 -&gt; height) 시작과 끝 x 값을 random으로 뽑으면 된다. 적기의 속도를 다양하게 한다고 한다면 원래 속도를 랜덤하게 구해서 그만큼씩 이동하게 하겠지만, 그렇게 계산해주기 귀찮으니까 등장 시간을 랜덤하게 뽑고(5초에서 10초 사이) 그 시간에 대해 랜덤한 시작좌표 ~ 끝좌표를 토대로 매 tick(100ms)마다 얼마나 이동하면 될지 delta를 구한다. class EnemyPos { Point2D delta, current; public EnemyPos(int shipHeight) { Random rand = new Random(); float lifetime = rand.nextFloat() * 50 + 50; int startX = rand.nextInt(640); int endX = rand.nextInt(640); delta = new Point2D.Float((endX - startX) / lifetime, (480 + shipHeight..." />
 
 	<meta http-equiv="date" content="Sunday, 06  2011 00:00:00 GMT" />
 
@@ -46,11 +46,15 @@
 				<p class="page-date">06 Nov 2011</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#java">java</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#game">game</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				

@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="thread-safe한 counter 구현 04 Aug 2013 concurrency c++ study -pub 먼저 간단한 counter example을 만들어보자. 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다. const int thread_count = 128; const int loop_count = 65536; volatile int counter; void add_entry() { for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index) ++counter; } int _tmain(int argc, _TCHAR* argv[]) { std::vector&lt;std::thread&gt; threads; for (int thread_index = 0; thread_index &lt; thread_count; ++thread_index) { threads.push_back(std::thread(add_entry)); } for (auto&amp; each : threads) each.join(); std::cout &lt;&lt; &quot;expect: &quot; &lt;&lt; thread_count * loop_count &lt;&lt; std::endl; std::cout &lt;&lt; &quot;actual: &quot; &lt;&lt; counter &lt;&lt; std::endl; return 0; } c++ code 한 줄이 원자적(atomic)으로 실행된다는 보장은 없다. assembly의 한 줄도 원자적으로 실행된다는 보장은 없다(smp, micro-operation) 위 코드를 release로 빌드해보면 ++counter 부분에 대한 코드가..." />
+	<meta name="description" content="thread-safe한 counter 구현 04 Aug 2013 concurrency c++ study 먼저 간단한 counter example을 만들어보자. 문제를 확인하기 위해서 다음과 같은 코드를 작성해본다. const int thread_count = 128; const int loop_count = 65536; volatile int counter; void add_entry() { for (int loop_index = 0; loop_index &lt; loop_count; ++loop_index) ++counter; } int _tmain(int argc, _TCHAR* argv[]) { std::vector&lt;std::thread&gt; threads; for (int thread_index = 0; thread_index &lt; thread_count; ++thread_index) { threads.push_back(std::thread(add_entry)); } for (auto&amp; each : threads) each.join(); std::cout &lt;&lt; &quot;expect: &quot; &lt;&lt; thread_count * loop_count &lt;&lt; std::endl; std::cout &lt;&lt; &quot;actual: &quot; &lt;&lt; counter &lt;&lt; std::endl; return 0; } c++ code 한 줄이 원자적(atomic)으로 실행된다는 보장은 없다. assembly의 한 줄도 원자적으로 실행된다는 보장은 없다(smp, micro-operation) 위 코드를 release로 빌드해보면 ++counter 부분에 대한 코드가 assembly로..." />
 
 	<meta http-equiv="date" content="Sunday, 04  2013 00:00:00 GMT" />
 
@@ -46,13 +46,19 @@
 				<p class="page-date">04 Aug 2013</p>
 				<p class="page-tags">
 				
+				
 					<code class="tag"><a href="/tags/#concurrency">concurrency</a></code>
+				
+				
 				
 					<code class="tag"><a href="/tags/#c++">c++</a></code>
 				
+				
+				
 					<code class="tag"><a href="/tags/#study">study</a></code>
 				
-					<code class="tag"><a href="/tags/#-pub">-pub</a></code>
+				
+				
 				
 				</p>
 				
