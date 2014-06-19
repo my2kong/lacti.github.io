@@ -12,18 +12,15 @@ title: lacti's blog
 				<hr />
 				<div class="page-breaker"></div>
 					{% for post in site.posts reversed %}
-						{% assign category = post.tags | first %}
-						{% if category == tag %}
+						{% if post.tags contains '-pub' and (post.tags | first) == tag %}
 					<h1 class="page-title">{{ post.title }}</h1>
 					<p class="page-date">{{ post.date | date_to_string }}</p>
 					<p class="page-tags">
 						{% for tag in post.tags %}
 						<code class="tag"><a href="/tags/#{{tag }}">{{ tag }}</a></code>
 						{% endfor %}
-					</p>				
-					<div class="content">
-{{ post.content }}
-					</div>
+					</p>
+					<div class="content">{{ post.content }}</div>
 				<hr />
 				<div class="page-breaker"></div>
 						{% endif %}
@@ -31,4 +28,3 @@ title: lacti's blog
 				{% endfor %}
 			</div>
 		</div>
-
