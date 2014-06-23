@@ -41,15 +41,22 @@
 		<div class="pure-g">
 			<div class="pure-u-1">
 				
-				<h1 class="page-title"><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/">IT 아키텍트가 하지 말아야 할 128가지</a></h1>
-				<p class="page-date">02 Jun 2014</p>
+				<h1 class="page-title"><a href="/2014/06/18/blog-with-github-pages-and-jekyll/">github pages와 jekyll을 사용한 blog 만들기</a></h1>
+				<p class="page-date">18 Jun 2014</p>
 				<div class="content">
-<p><a href="http://www.roadbook.co.kr/73">IT 아키텍트가 하지 말아야 할 128가지</a><br> 누구도 알려주지 않았던 시스템 개발 현장의 128가지 해결책</p> <p>... 위 링크 들어가서 목차를 보면 알겠지만 정말 자극적이고 재밌는 내용으로 가득차있다.<br> 내 관심 분야에는 설계, 구축, 방법론이 포함되어 있다. 열심히는 아니지만 나름 지식을 쌓았다고 생각했...으나 이 책을 보니 아는게 하나도 없다는 것을 배웠다. 그러한 점에서는 강력 추천.</p> <p>요새 PaaS/IaaS를 보면서 느끼는게, 프로그래머 입장에서는 플랫폼이나 인프라스트럭처를 쉽게 (심지어 코드로) 제어할 수 있다는 점에서 굉장히 진입 장벽이 낮아진 느낌이다. 는 착각!</p> <p>nodejs가 나왔을 때 client-side javascript 개발자들이 이제 서버도 본인들이 코딩할 수 있다고, 서버 별거 아니라고 잘난 척을 했을 때가 있다. 그 사람들 보면서 무슨 용기와 자신감으로 저럴까라는 생각을 했었는데, Paas, IaaS로 인해 내가 플랫폼도 별거 아니군! 하고 느끼는 감정이 정확히 그것과 일치한다는 것을 이 책을...
+<p>본 글에서는 <a href="http://jekyllrb.com/">jekyll</a>과 <a href="http://travis-ci.org/">travis-ci</a>를 사용하여 <a href="http://pages.github.com/">github pages</a>에 publish하고, 이를 custom domain에 연결하여 blog를 구축하는 방법에 대해 서술한다.</p> <p><a href="http://pages.github.com/">github pages</a>는 <a href="http://github.com/">github</a>에서 제공하는 cdn으로 static page를 서비스해주는 공간이다. github page에 자세한 설명이 나와있지만 간단히 요약하면,</p> <ul> <li><em>{본인 id 혹은 그룹 id}.github.io</em> 라는 repository를 만들거나,</li> <li>프로젝트 repository에 <em>gh-pages</em> 라는 브랜치를 만든 후,</li> <li>뭔가의 파일을 올려놓으면 <strong>{...}.github.io</strong> 라는 주소로 접근이 가능하다는 것이다.</li> </ul> <p>따라서 저 공간에 html 파일을 올려놓는다면 static page를 제공할 수 있다. 따라서 블로그에 작성할 글들을 하나하나 html로 작성해서 위 repo에 push하면 블로그를 만들 수 있다는 것이다.</p> <h3>static site generator</h3> <p>글을 쓸 때마다 하나씩 html을 작성하는 것은 매우 번거로운 일이므로, site generator를 사용해보자. 본 글에서는 github pages에서 기본으로 제공해주는 <a href="http://jekyllrb.com/">jekyll</a>을 사용할 것이다.</p> <ul> <li><a href="http://jekyllrb.com/">jekyll</a> 페이지의...
 				</div>
 				<hr class="section-split" />
 
 				<div class="pure-g">
 					<div class="pure-u-1 pure-u-md-1-2 l-box">
+					
+						<h4><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/" title="IT 아키텍트가 하지 말아야 할 128가지">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="page-date">02 Jun 14</span></h4>
+						<div>IT 아키텍트가 하지 말아야 할 128가지
+누구도 알려주지 않았던 시스템 개발 현장의 128가지 해결책
+
+... 위 링크 들어가서 목차를 보면 알겠지만 정말 자극적이고 재밌는 내용으로 가득차있다.
+내 관심 분야에는 설계, 구축, 방법론이 포함되어 있다. 열심히는 아니지만 나름 지식을 쌓았다고 생각했...으나 이 책을...</div>
 					
 						<h4><a href="/2014/05/29/ndc14-tool-development/" title="팀을 구하는 툴 개발">팀을 구하는 툴 개발</a> <span class="page-date">29 May 14</span></h4>
 						<div>박경재
@@ -92,6 +99,9 @@
 스토리텔링은 하나의 세계를 구축/구현하는 작업이다.
 M1 라...</div>
 					
+					</div>
+					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
+					
 						<h4><a href="/2014/05/29/ndc14-mobile-data-mining/" title="모바일 데이터 분석">모바일 데이터 분석</a> <span class="page-date">29 May 14</span></h4>
 						<div>    [NDC 발표] 모바일 게임데이터분석 및 실전 활용  from 5Rocks 
 
@@ -116,9 +126,6 @@ M1 라...</div>
 
 
 ...</div>
-					
-					</div>
-					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
 					
 						<h4><a href="/2014/05/29/ndc14-live-methodology/" title="신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기">신입 프로그래머들의 고민을 통해 생각해보는 ...</a> <span class="page-date">29 May 14</span></h4>
 						<div>
@@ -163,21 +170,6 @@ Effective (Live) Old Project
 
 ...</div>
 					
-						<h4><a href="/2014/05/28/ndc14-rx-server-application/" title="Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기">Rx와 Functional Reactive ...</a> <span class="page-date">28 May 14</span></h4>
-						<div>    NDC14 - Rx와 Functional Reactive Programming으로 고성능 서버 만들기  from Jong Wook Kim 
-
-
-
-
-김종욱
-
-
-요약
-
-
-대세는 병렬처리, 이를 Reactive functional programming으로 풀어보자. 근데 functional 이야기 안 함
-React...</div>
-					
 					</div>
 				</div>
 				<hr class="section-split" />
@@ -189,6 +181,16 @@ React...</div>
 							
 								
 								<h4>May 2014</h4>
+							
+							<li>
+								<span>28.</span>
+								<a href="/2014/05/28/ndc14-rx-server-application/">Rx와 Functional Reactive Programming으로 고성능 서버 어플리케이션 만들기</a>
+							</li>
+						
+							
+								
+								
+								
 							
 							<li>
 								<span>28.</span>
@@ -275,16 +277,6 @@ React...</div>
 							<li>
 								<span>16.</span>
 								<a href="/2014/02/16/network-offload-error/">네트워크 offload 장애</a>
-							</li>
-						
-							
-								
-								
-								
-							
-							<li>
-								<span>14.</span>
-								<a href="/2014/02/14/secret-of-mswsock-dll/">mswsock.dll의 비밀</a>
 							</li>
 						
 						</ul>
