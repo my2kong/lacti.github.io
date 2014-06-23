@@ -6,7 +6,7 @@ tags: web -pub
 
 본 글에서는 [jekyll]과 [travis-ci]를 사용하여 [github pages]에 publish하고, 이를 custom domain에 연결하여 blog를 구축하는 방법에 대해 서술한다.
 
-[github pages]는 [github]에서 제공하는 cdn으로 static page를 서비스해주는 공간이다. github page에 자세한 설명이 나와있지만 간단히 요약하면,
+[github pages]는 [github]에서 제공하는 cdn으로 static page를 서비스해주는 공간이다. github pages에 자세한 설명이 나와있지만 간단히 요약하면,
 
 * *{본인 id 혹은 그룹 id}.github.io* 라는 repository를 만들거나,
 * 프로젝트 repository에 *gh-pages* 라는 브랜치를 만든 후,
@@ -48,11 +48,11 @@ tags: web -pub
 * [dnsever]일 경우에는 `도메인 별명(CNAME) 관리`에 들어가 목적지 도메인을 추가해주면 된다.
 * 추가할 주소는 `username.github.io`이다. 작업 후 dig 명령을 사용하여 제대로 연결되었는지 확인해볼 수 있다. 추후 변경될 수 있으므로 [Tips for configuring a cname record with your dns provider](https://help.github.com/articles/tips-for-configuring-a-cname-record-with-your-dns-provider) 페이지를 참고하는 것이 좋다.
 
-그리고 dns가 반영될 때까지 시간이 좀 흐르면 연결한 도메인으로 해당 github page를 접속해볼 수 있다.
+그리고 dns가 반영될 때까지 시간이 좀 흐르면 연결한 도메인으로 해당 github pages를 접속해볼 수 있다.
 
 ### custom jekyll
 
-github pages에 내장된 jekyll은 보안적인 이슈로 인해 plugin을 사용할 수가 없다. [참고](https://github.com/jekyll/jekyll/issues/325)
+github #s에 내장된 jekyll은 보안적인 이슈로 인해 plugin을 사용할 수가 없다. [참고](https://github.com/jekyll/jekyll/issues/325)
 
 jekyll의 기본 기능은 좀 부족해서,
 
