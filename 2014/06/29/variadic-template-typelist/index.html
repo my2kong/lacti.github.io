@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="variadic template을 사용한 typelist 구현 29 Jun 2014 c++ template typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면, conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가, hierarchical inheritance를 통한 tuple class 구현이라던가, 여러 type에 대해 작성되어야 할 boilerplate 코드를 template으로 구현한다던가 할 때 사용된다. 여러 type을 list 형태로 묶기 위해서는 개수를 알 수 없는 type 인자를 template으로 받아야 한다는 것인데, c++11 이전에는 그러한 방법이 없었기 때문에 template overloading (boost mpl)이나 typenode에 의한 linked list + macro (loki) 형태로 구현했었다. c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자. typenode를 사용한 구현 template &lt;typename Head, typename Tail&gt; struct typenode { typedef Head head_type; typedef Tail tail_type; }; loki에서는 저 typenode를 사용할 경우, 인자 4개를 받는 typelist..." />
+	<meta name="description" content="variadic template을 사용한 typelist 구현 29 Jun 2014 c++ template Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자. typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면, conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가, hierarchical inheritance를 통한 tuple class 구현이라던가, 여러 type에 대해 작성되어야 할 boilerplate 코드를 template으로 구현한다던가 할 때 사용된다. 여러 type을 list 형태로 묶기 위해서는 개수를 알 수 없는 type 인자를 template으로 받아야 한다는 것인데, c++11 이전에는 그러한 방법이 없었기 때문에 template overloading (boost mpl)이나 typenode에 의한 linked list + macro (loki) 형태로 구현했었다. c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자. typenode를 사용한 구현 MC++D에서 소개된 loki 라이브러리의 Typelist는 Typelist template class와 TYPELIST macro를 사용하여 구현된다. 본..." />
 
 	<meta http-equiv="date" content="Sunday, 29  2014 00:00:00 GMT" />
 
@@ -59,7 +59,9 @@
 				</p>
 				
 				<div class="content">
-				<p>typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,</p>
+				<p>Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.</p>
+
+<p>typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,</p>
 
 <ul>
 <li>conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가,</li>
@@ -72,6 +74,10 @@
 <p>c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자.</p>
 
 <h4>typenode를 사용한 구현</h4>
+
+<p>MC++D에서 소개된 loki 라이브러리의 Typelist는 <code>Typelist</code> template class와 <code>TYPELIST</code> macro를 사용하여 구현된다. 본 글에서는 macro가 필요없기 때문에 이름 혼동을 막기 위해 <code>typenode</code> template class와 그를 사용하는 <code>typelist</code> template class로 구현하도록 하겠다.</p>
+
+<p>일단 <code>typenode</code>를 보면 다음과 같다. <code>typenode</code>는 loki 라이브러리에서 <code>Typelist</code>로 소개된 <code>Head</code>와 <code>Tail</code>을 가지고 있는 struct와 동일하다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Head</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Tail</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">typenode</span> <span class="p">{</span>
     <span class="k">typedef</span> <span class="n">Head</span> <span class="n">head_type</span><span class="p">;</span>

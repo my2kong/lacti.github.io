@@ -4,7 +4,7 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-29T06:14:45+00:00</updated>
+ <updated>2014-06-29T06:27:17+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
@@ -17,7 +17,9 @@
    <link href="http://lacti.me/2014/06/29/variadic-template-typelist/"/>
    <updated>2014-06-29T00:00:00+00:00</updated>
    <id>http://lacti.me/2014/06/29/variadic-template-typelist</id>
-   <content type="html">&lt;p&gt;typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,&lt;/p&gt;
+   <content type="html">&lt;p&gt;Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.&lt;/p&gt;
+
+&lt;p&gt;typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가,&lt;/li&gt;
@@ -30,6 +32,10 @@
 &lt;p&gt;c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자.&lt;/p&gt;
 
 &lt;h4&gt;typenode를 사용한 구현&lt;/h4&gt;
+
+&lt;p&gt;MC++D에서 소개된 loki 라이브러리의 Typelist는 &lt;code&gt;Typelist&lt;/code&gt; template class와 &lt;code&gt;TYPELIST&lt;/code&gt; macro를 사용하여 구현된다. 본 글에서는 macro가 필요없기 때문에 이름 혼동을 막기 위해 &lt;code&gt;typenode&lt;/code&gt; template class와 그를 사용하는 &lt;code&gt;typelist&lt;/code&gt; template class로 구현하도록 하겠다.&lt;/p&gt;
+
+&lt;p&gt;일단 &lt;code&gt;typenode&lt;/code&gt;를 보면 다음과 같다. &lt;code&gt;typenode&lt;/code&gt;는 loki 라이브러리에서 &lt;code&gt;Typelist&lt;/code&gt;로 소개된 &lt;code&gt;Head&lt;/code&gt;와 &lt;code&gt;Tail&lt;/code&gt;을 가지고 있는 struct와 동일하다.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;typenode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Head&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
