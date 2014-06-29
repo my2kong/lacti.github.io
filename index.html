@@ -41,15 +41,20 @@
 		<div class="pure-g">
 			<div class="pure-u-1">
 				
-				<h1 class="page-title"><a href="/2014/06/30/dumpable-analysis/">dumpable 고찰</a></h1>
+				<h1 class="page-title"><a href="/2014/06/30/why-implements-csharp-server/">왜 c#으로 서버를 작성하려 하나?</a></h1>
 				<p class="page-date">30 Jun 2014</p>
 				<div class="content">
-<p>하재승님께서 <a href="http://lacti.me/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화</a>에서 언급하신 <a href="https://github.com/ipkn/dumpable">dumpable</a> 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 <code>operator =</code>를 사용하여 dumpable한 struct를 만들어준다.</p> <p>다만 두 가지 아쉬운 점이 있었다. </p> <ul> <li><code>dptr::alloc()</code> 함수가 thread safe하지 않다는 점</li> <li>dstring, dvector가 custom allocator를 지원하지 않는다는 점</li> <li>container의 type이 많지 않다는 점</li> </ul> <p>때문에 <a href="https://github.com/lacti/dumpable">dumpable을 fork해서</a> 문제를 고쳐보기로 했다.</p> <ul> <li>일단 <code>dptr:alloc()</code> 내의 static 변수를 thread_local로 변경해서 local_pool이 겹치지는 않도록 했다. 하나의 thread가 dumping을 하는 도중에는 다른 copy가 불가능하기 때문에 대충은 thread safe해졌다.</li> <li>custom allocator를 넣어보려고 이리저리 뜯어보니 상당히 고쳐줘야 한다. 일단 type부터 다시 재정의를 해야 할 것 같다.</li> </ul> <p>고민을 좀 해보다보니 뭔가 기존 stl container에 allocator만을 가지고 tmp를 잘 해보면 되지 않을까라는 생각이 들었다....
+<p>본 글은 동아리 친구의 질문인 <em>&#39;왜 게임 서버를 c++이 아닌 c#으로 작성하려 하냐?&#39;</em>에 대한 답변이다.</p> <p>간단히 c++과 c#의 차이를 통해 답변하면 이렇다.</p> <ul> <li>c++은 속도가 빠르다.</li> <li>c#은 기본 라이브러리가 풍부하다.</li> <li>c#은 표현력이 좋다. linq나 reflection의 도움을 받을 수도 있다.</li> <li>c#은 native에서 벌어지는 access violation 등으로부터 다소 안전하다.</li> </ul> <p>즉, c#으로 프로그래밍할 경우 c++로 할 때에 비해서 보다 편하게, 보다 안전하게 프로그래밍을 할 수 있다고 생각한다. 그렇기 때문에 c#으로 작성한다고 답변한 것이다. (물론 도메인에 의한 판단이 우선이다. 속도가 중요한 서버인데 c#으로 짜라는 고집을 부리지는 않는다.)</p> <p>게임 서버를 구현한다고 해보자. 게임 서버는 게임 + 서버이므로, 클라이언트를 처리하는 서버적 기능과 게임이적 요소를 포함하면 되겠다. 대충 다음과 같이 분류할 수 있을 것 같다.</p> <ul> <li>network: 클라이언트의 요청을 처리해야 한다.</li> <li>persistence: 클라이언트의 정보를 저장해야 한다.</li>...
 				</div>
 				<hr class="section-split" />
 
 				<div class="pure-g">
 					<div class="pure-u-1 pure-u-md-1-2 l-box">
+					
+						<h4><a href="/2014/06/30/dumpable-analysis/" title="dumpable 고찰">dumpable 고찰</a> <span class="page-date">30 Jun 14</span></h4>
+						<div>하재승님께서 던전 앤 파이터 클라이언트 로딩 속도 최적화에서 언급하신 dumpable 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 operator =를 사용하여 dumpable한 struct를 만들어준다.
+
+다만 두 가지 아쉬운 점...</div>
 					
 						<h4><a href="/2014/06/29/variadic-template-typelist/" title="variadic template을 사용한 typelist 구현">variadic template을 사용한 t...</a> <span class="page-date">29 Jun 14</span></h4>
 						<div>Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.
@@ -64,15 +69,15 @@ conversion table을 만들어서 부담...</div>
 
 github pages는 github에서 제공하는 cdn으로 static page를 서비스해주는 공간이다. github pages에...</div>
 					
+					</div>
+					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
+					
 						<h4><a href="/2014/06/02/128-things-that-it-architect-doesn-t-do/" title="IT 아키텍트가 하지 말아야 할 128가지">IT 아키텍트가 하지 말아야 할 128가지</a> <span class="page-date">02 Jun 14</span></h4>
 						<div>IT 아키텍트가 하지 말아야 할 128가지
 누구도 알려주지 않았던 시스템 개발 현장의 128가지 해결책
 
 ... 위 링크 들어가서 목차를 보면 알겠지만 정말 자극적이고 재밌는 내용으로 가득차있다.
 내 관심 분야에는 설계, 구축, 방법론이 포함되어 있다. 열심히는 아니지만 나름 지식을 쌓았다고 생각했...으나 이 책을...</div>
-					
-					</div>
-					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
 					
 						<h4><a href="/2014/05/29/ndc14-tool-development/" title="팀을 구하는 툴 개발">팀을 구하는 툴 개발</a> <span class="page-date">29 May 14</span></h4>
 						<div>박경재
@@ -115,31 +120,6 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 스토리텔링은 하나의 세계를 구축/구현하는 작업이다.
 M1 라...</div>
 					
-						<h4><a href="/2014/05/29/ndc14-mobile-data-mining/" title="모바일 데이터 분석">모바일 데이터 분석</a> <span class="page-date">29 May 14</span></h4>
-						<div>    [NDC 발표] 모바일 게임데이터분석 및 실전 활용  from 5Rocks 
-
-
-
-
-서하연
-
-
-요약
-
-
-시계열 분석 대신 시간대별 분석을 사용한다.
-유저의 특성에 따라 분석 결과를 개별적으로 적용한다.
-
-
-모바일 특성 이해하기
-
-
-모바일 특성을 이해해야 어떻게 분석할 지 알 수가 있다.
-유저의 쏠림 현상
-
-
-...</div>
-					
 					</div>
 				</div>
 				<hr class="section-split" />
@@ -151,6 +131,16 @@ M1 라...</div>
 							
 								
 								<h4>May 2014</h4>
+							
+							<li>
+								<span>29.</span>
+								<a href="/2014/05/29/ndc14-mobile-data-mining/">모바일 데이터 분석</a>
+							</li>
+						
+							
+								
+								
+								
 							
 							<li>
 								<span>29.</span>
@@ -235,16 +225,6 @@ M1 라...</div>
 							<li>
 								<span>28.</span>
 								<a href="/2014/05/28/ndc14-build-distributed-system/">분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들</a>
-							</li>
-						
-							
-								
-								
-								
-							
-							<li>
-								<span>27.</span>
-								<a href="/2014/05/27/ndc14-wcf-mobile-server/">WCF를 이용하여 쉽게 만드는 모바일 게임서버</a>
 							</li>
 						
 						</ul>
