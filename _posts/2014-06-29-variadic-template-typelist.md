@@ -58,7 +58,7 @@ struct typelist<Head, Rest...> {
 
 기존 template meta programming과 동일하게,
 
-- generic form을 먼저 선언해주고,
+- 기본 템플릿(primary template)을 먼저 선언해주고,
 - 종료 조건에 대한 specialization을 해주고,
 - 재귀적으로 푸는 일반 항에 대해 만들어주면 된다.
 
@@ -81,7 +81,7 @@ struct length<null_type> {
 };
 ```
 
-구현 방식은 typelist와 동일하다. 다만 generic form 형태에서 일반 항을 구현할 수 있기 때문에 일반 항과 종료 조건만 구현해주면 된다. 즉, `Tail`이 `null_type`이 될 때까지 1씩 더해가는 재귀적 구조라고 생각하면 되겠다.
+구현 방식은 typelist와 동일하다. 다만 primary template 형태에서 일반 항을 구현할 수 있기 때문에 일반 항과 종료 조건만 구현해주면 된다. 즉, `Tail`이 `null_type`이 될 때까지 1씩 더해가는 재귀적 구조라고 생각하면 되겠다.
 
 특정 위치에 있는 type을 가져오는 `type_at` meta function도 동일한 방법으로 구현할 수 있겠다.
 
@@ -149,7 +149,7 @@ struct typelist<First, Rest...> {
 };
 ```
 
-구현하는 방식은 위에서 언급했던 것과 크게 다르지 않다. generic form을 만들고, 종료 조건에 대해 구현하고, 일반 항을 구현한다.
+구현하는 방식은 위에서 언급했던 것과 크게 다르지 않다. primary template을 만들고, 종료 조건에 대해 구현하고, 일반 항을 구현한다.
 
 - 처음 typelist와 interface를 맞추기 위해 type으로 자기 자신을 가리키도록 했다.
 - 지금 인자를 제외한 남은 template 인자들로 다음 list를 가리키기 위한 next를 만들었다.
@@ -209,4 +209,5 @@ struct visitor<null_type, Delegator> {
 그러면 이제 typelist를 수정하는 meta function들을 구현해야 하는데 그건 다음에 해보도록 하겠다.
 
 - [Stackoverflow: Variadic variadic template templates](http://stackoverflow.com/questions/9662632/variadic-variadic-template-templates)
-- [Stackoverflow: Merge two variadic templates in one](http://stackoverflow.com/questions/16648144/merge-two-variadic-templates-in-one)
+- [Stackoverflow: Mer
+- ge two variadic templates in one](http://stackoverflow.com/questions/16648144/merge-two-variadic-templates-in-one)
