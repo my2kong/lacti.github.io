@@ -18,7 +18,7 @@ c++11에서는 variadic template이 지원되니 이 부분을 개선해보도�
 
 #### typenode를 사용한 구현
 
-```
+```cpp
 template <typename Head, typename Tail>
 struct typenode {
     typedef Head head_type;
@@ -28,7 +28,7 @@ struct typenode {
 
 loki에서는 저 `typenode`를 사용할 경우, 인자 4개를 받는 typelist 구현을 위해서는 `TYPELIST_4`와 같은 macro를 만들어서 typenode의 linked list 형태가 만들어지도록 하였다.
 
-```
+```cpp
 #define TYPELIST_1(T1) typenode<T1, null_type>
 #define TYPELIST_2(T1, T2) typenode<T2, TYPELIST_1(T1)>
 #define TYPELIST_3(T1, T2, T3) typenode<T3, TYPELIST_2(T1, T2)>
@@ -37,7 +37,7 @@ loki에서는 저 `typenode`를 사용할 경우, 인자 4개를 받는 typelist
 
 하지만 variadic template이 지원되는 c++11에서는 template 인자를 여러 개 받기 위해 저렇게 할 필요는 없다. 그냥 variadic template param을 받아서 재귀적으로 풀어주기만 하면 된다.
 
-```
+```cpp
 template <typename... T>
 struct typelist;
 
@@ -65,7 +65,7 @@ struct typelist<Head, Rest...> {
 다음으로 넘어가기 전에 비교를 위해 `length`, `type_at`, `visitor` 3가지 libs에 대해 살펴보자.  
 먼저 `length`를 보자. length는 typelist에 들어있는 type의 개수를 세는 meta function이다. (tmp에서 사용되는 template function을 meta function이라고 한다.)
 
-```
+```cpp
 template <typename TL>
 struct length {
     static const int value = 1 + length<typename TL::tail_type>::value;
@@ -81,7 +81,7 @@ struct length<null_type> {
 
 특정 위치에 있는 type을 가져오는 `type_at` meta function도 동일한 방법으로 구현할 수 있겠다.
 
-```
+```cpp
 template <typename TL, int index>
 struct type_at {
     typedef typename type_at<typename TL::tail_type, index - 1>::type type;
@@ -97,7 +97,7 @@ index를 받아야 하므로 template argument가 2개(typelist와 index)이다.
 
 마지막으로 `visitor`를 보자. visitor는 typelist에 있는 type들을 모두 한 번씩 방문하면서 인자로 넘긴 `Delegator` meta function을 호출해주는 meta function이다.
 
-```
+```cpp
 template <typename TL, template <class> class Delegator>
 struct visitor {
     static void execute() {
@@ -126,7 +126,7 @@ typenode가 없다는 것은 재귀적으로 구성된 node에 의한 list가 �
 
 일단 이는 간단히 다음과 같이 구현해볼 수 있다.
 
-```
+```cpp
 template <typename... Types>
 struct typelist;
 
@@ -154,7 +154,7 @@ struct typelist<First, Rest...> {
 그럼 이제 meta function들은 `next`를 타고 이동하고 `current`를 선택하면서 구현하면 되겠다.
 `length`를 보자.
 
-```
+```cpp
 template <typename List>
 struct length {
     static const int value = 1 + length<List::next>::value;
@@ -163,13 +163,14 @@ struct length {
 template <>
 struct length<null_type> {
     static const int value = 0;
-};```
+};
+```
 
 typenode 때와 동일하다. `tail_type` 대신 `next`로 재귀한다고 생각하면 된다.
 
 `type_at`과 `visitor`도 동일하다.
 
-```
+```cpp
 template <typename List, int index>
 struct type_at {
     typedef typename type_at<typename List::next, index - 1>::type type;
