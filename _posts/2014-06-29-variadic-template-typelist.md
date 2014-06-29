@@ -4,6 +4,8 @@ title: variadic template을 사용한 typelist 구현
 tags: c++ template -pub
 ---
 
+Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.
+
 typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,
 
 - conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가,
@@ -15,6 +17,10 @@ typelist는 type들의 list형태로 compile time에 여러 type에 대한 동�
 c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자.
 
 #### typenode를 사용한 구현
+
+MC++D에서 소개된 loki 라이브러리의 Typelist는 `Typelist` template class와 `TYPELIST` macro를 사용하여 구현된다. 본 글에서는 macro가 필요없기 때문에 이름 혼동을 막기 위해 `typenode` template class와 그를 사용하는 `typelist` template class로 구현하도록 하겠다.
+
+일단 `typenode`를 보면 다음과 같다. `typenode`는 loki 라이브러리에서 `Typelist`로 소개된 `Head`와 `Tail`을 가지고 있는 struct와 동일하다.
 
 ```cpp
 template <typename Head, typename Tail>
