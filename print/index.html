@@ -6925,9 +6925,7 @@ iterating하면서 <code>update</code> 함수를 불러준다. 이 때 type은 <
 						
 						
 				</p>
-				<div class="content"><p>MC++D 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.</p>
-
-<p>typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,</p>
+				<div class="content"><p>typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,</p>
 
 <ul>
 <li>conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가,</li>
@@ -7102,7 +7100,7 @@ iterating하면서 <code>update</code> 함수를 불러준다. 이 때 type은 <
 <h4>정리</h4>
 
 <p>전자와 후자의 가장 큰 차이점은 typenode에 의한 재귀적 list냐 아니면 variadic template 인자에 의한 선형적 list냐의 차이라고 생각된다. 이를 기반으로 수행하는 meta function들은 어차피 재귀적으로 수행되므로, 아마도 둘의 차이는 compile 시 소모되는 메모리 양이 되지 않을까 한다. 아마도 후자의 메모리 소모량이 더 적지 않을까 한다.<br>
-또한 debugging을 위해 typelist의 typename을 출력해보면 단연 후자가 보기 좋기 때문에 후자가 더 좋아보이기도 한다.</p>
+또한 debugging을 위해 typelist의 typename을 출력해보면 후자가 보기 좋기 때문에 후자가 더 좋아보이기도 한다.</p>
 
 <p>그러면 이제 typelist를 수정하는 meta function들을 구현해야 하는데 그건 다음에 해보도록 하겠다.</p>
 
