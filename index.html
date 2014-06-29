@@ -41,15 +41,23 @@
 		<div class="pure-g">
 			<div class="pure-u-1">
 				
-				<h1 class="page-title"><a href="/2014/06/29/variadic-template-typelist/">variadic template을 사용한 typelist 구현</a></h1>
-				<p class="page-date">29 Jun 2014</p>
+				<h1 class="page-title"><a href="/2014/06/30/dumpable-analysis/">dumpable 고찰</a></h1>
+				<p class="page-date">30 Jun 2014</p>
 				<div class="content">
-<p>Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.</p> <p>typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,</p> <ul> <li>conversion table을 만들어서 부담이 적은 dynamic_cast를 구현한다던가,</li> <li>hierarchical inheritance를 통한 tuple class 구현이라던가,</li> <li>여러 type에 대해 작성되어야 할 boilerplate 코드를 template으로 구현한다던가 할 때 사용된다.</li> </ul> <p>여러 type을 list 형태로 묶기 위해서는 <strong>개수를 알 수 없는</strong> type 인자를 template으로 받아야 한다는 것인데, c++11 이전에는 그러한 방법이 없었기 때문에 template overloading (boost mpl)이나 typenode에 의한 linked list + macro (loki) 형태로 구현했었다.</p> <p>c++11에서는 variadic template이 지원되니 이 부분을 개선해보도록 하자.</p> <h4>typenode를 사용한 구현</h4> <p>MC++D에서 소개된 loki 라이브러리의 Typelist는 <code>Typelist</code> template class와 <code>TYPELIST</code> macro를 사용하여 구현된다. 본 글에서는 macro가 필요없기 때문에 이름 혼동을 막기 위해...
+<p>하재승님께서 <a href="http://lacti.me/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화</a>에서 언급하신 <a href="https://github.com/ipkn/dumpable">dumpable</a> 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 <code>operator =</code>를 사용하여 dumpable한 struct를 만들어준다.</p> <p>다만 두 가지 아쉬운 점이 있었다. </p> <ul> <li><code>dptr::alloc()</code> 함수가 thread safe하지 않다는 점</li> <li>dstring, dvector가 custom allocator를 지원하지 않는다는 점</li> <li>container의 type이 많지 않다는 점</li> </ul> <p>때문에 <a href="https://github.com/lacti/dumpable">dumpable을 fork해서</a> 문제를 고쳐보기로 했다.</p> <ul> <li>일단 <code>dptr:alloc()</code> 내의 static 변수를 thread_local로 변경해서 local_pool이 겹치지는 않도록 했다. 하나의 thread가 dumping을 하는 도중에는 다른 copy가 불가능하기 때문에 대충은 thread safe해졌다.</li> <li>custom allocator를 넣어보려고 이리저리 뜯어보니 상당히 고쳐줘야 한다. 일단 type부터 다시 재정의를 해야 할 것 같다.</li> </ul> <p>고민을 좀 해보다보니 뭔가 기존 stl container에 allocator만을 가지고 tmp를 잘 해보면 되지 않을까라는 생각이 들었다....
 				</div>
 				<hr class="section-split" />
 
 				<div class="pure-g">
 					<div class="pure-u-1 pure-u-md-1-2 l-box">
+					
+						<h4><a href="/2014/06/29/variadic-template-typelist/" title="variadic template을 사용한 typelist 구현">variadic template을 사용한 t...</a> <span class="page-date">29 Jun 14</span></h4>
+						<div>Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.
+
+typelist는 type들의 list형태로 compile time에 여러 type에 대한 동일한 작업을 할 때 사용된다. 예를 들면,
+
+
+conversion table을 만들어서 부담...</div>
 					
 						<h4><a href="/2014/06/23/blog-with-github-pages-and-jekyll/" title="github pages와 jekyll을 사용한 blog 만들기">github pages와 jekyll을 사용...</a> <span class="page-date">23 Jun 14</span></h4>
 						<div>본 글에서는 jekyll과 travis-ci를 사용하여 github pages에 publish하고, 이를 custom domain에 연결하여 blog를 구축하는 방법에 대해 서술한다.
@@ -62,6 +70,9 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 
 ... 위 링크 들어가서 목차를 보면 알겠지만 정말 자극적이고 재밌는 내용으로 가득차있다.
 내 관심 분야에는 설계, 구축, 방법론이 포함되어 있다. 열심히는 아니지만 나름 지식을 쌓았다고 생각했...으나 이 책을...</div>
+					
+					</div>
+					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
 					
 						<h4><a href="/2014/05/29/ndc14-tool-development/" title="팀을 구하는 툴 개발">팀을 구하는 툴 개발</a> <span class="page-date">29 May 14</span></h4>
 						<div>박경재
@@ -78,9 +89,6 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 
 게임 개발 시 동료가 겪는 불필요한 괴로움을 극복하기 위한 툴과 마음가짐
 라이브 서비스를 하면서 고객의 불편/불만 사항은 개선하지만, 개...</div>
-					
-					</div>
-					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
 					
 						<h4><a href="/2014/05/29/ndc14-the-npc-master/" title="THE NPCM@STER - 라이브 게임에 어울리는 스토리 텔링의 접근법">THE NPCM@STER - 라이브 게임에 ...</a> <span class="page-date">29 May 14</span></h4>
 						<div>    THE_NPCMASTER_PUBLIC  from khalbora 
@@ -132,28 +140,6 @@ M1 라...</div>
 
 ...</div>
 					
-						<h4><a href="/2014/05/29/ndc14-live-methodology/" title="신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기">신입 프로그래머들의 고민을 통해 생각해보는 ...</a> <span class="page-date">29 May 14</span></h4>
-						<div>
-최진욱
-장승호
-
-
-요약
-
-
-Effective (Live) Old Project
-적절한 과제를 통해 신입 프로그래머의 실력 향상을 돕자.
-추후 라이브 상황을 고려하여 신규 때 기반을 잘 닦도록 하자.
-
-
-목표
-
-
-오래 라이브 서비스가 가능하면서 신입이 쉽게 적응할 수 있는 project를 만듭시다.
-
-
-신입은 무슨 ...</div>
-					
 					</div>
 				</div>
 				<hr class="section-split" />
@@ -165,6 +151,16 @@ Effective (Live) Old Project
 							
 								
 								<h4>May 2014</h4>
+							
+							<li>
+								<span>29.</span>
+								<a href="/2014/05/29/ndc14-live-methodology/">신입 프로그래머들의 고민을 통해 생각해보는 누구나 쉽게 적응할 수 있는 프로젝트 만들기</a>
+							</li>
+						
+							
+								
+								
+								
 							
 							<li>
 								<span>29.</span>
@@ -249,16 +245,6 @@ Effective (Live) Old Project
 							<li>
 								<span>27.</span>
 								<a href="/2014/05/27/ndc14-wcf-mobile-server/">WCF를 이용하여 쉽게 만드는 모바일 게임서버</a>
-							</li>
-						
-							
-								
-								
-								
-							
-							<li>
-								<span>27.</span>
-								<a href="/2014/05/27/ndc14-python-mobile-server/">파이썬과 친구들 - 체계적이고 빠른 모바일 게임 서버 개발을 위한 최적의 도구</a>
 							</li>
 						
 						</ul>

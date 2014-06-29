@@ -4,13 +4,93 @@
  <title>lacti</title>
  <link href="http://blog.lacti.me/atom.xml" rel="self"/>
  <link href="http://blog.lacti.me/"/>
- <updated>2014-06-29T14:42:51+00:00</updated>
+ <updated>2014-06-29T15:52:44+00:00</updated>
  <id>http://blog.lacti.me/</id>
  <author>
    <name>lacti</name>
    <email>lactrious@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>dumpable 고찰</title>
+   <link href="http://lacti.me/2014/06/30/dumpable-analysis/"/>
+   <updated>2014-06-30T00:00:00+00:00</updated>
+   <id>http://lacti.me/2014/06/30/dumpable-analysis</id>
+   <content type="html">&lt;p&gt;하재승님께서 &lt;a href=&quot;http://lacti.me/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/&quot;&gt;던전 앤 파이터 클라이언트 로딩 속도 최적화&lt;/a&gt;에서 언급하신 &lt;a href=&quot;https://github.com/ipkn/dumpable&quot;&gt;dumpable&lt;/a&gt; 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 &lt;code&gt;operator =&lt;/code&gt;를 사용하여 dumpable한 struct를 만들어준다.&lt;/p&gt;
+
+&lt;p&gt;다만 두 가지 아쉬운 점이 있었다. &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dptr::alloc()&lt;/code&gt; 함수가 thread safe하지 않다는 점&lt;/li&gt;
+&lt;li&gt;dstring, dvector가 custom allocator를 지원하지 않는다는 점&lt;/li&gt;
+&lt;li&gt;container의 type이 많지 않다는 점&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;때문에 &lt;a href=&quot;https://github.com/lacti/dumpable&quot;&gt;dumpable을 fork해서&lt;/a&gt; 문제를 고쳐보기로 했다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;일단 &lt;code&gt;dptr:alloc()&lt;/code&gt; 내의 static 변수를 thread_local로 변경해서 local_pool이 겹치지는 않도록 했다. 하나의 thread가 dumping을 하는 도중에는 다른 copy가 불가능하기 때문에 대충은 thread safe해졌다.&lt;/li&gt;
+&lt;li&gt;custom allocator를 넣어보려고 이리저리 뜯어보니 상당히 고쳐줘야 한다. 일단 type부터 다시 재정의를 해야 할 것 같다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;고민을 좀 해보다보니 뭔가 기존 stl container에 allocator만을 가지고 tmp를 잘 해보면 되지 않을까라는 생각이 들었다. 뭔가 복사할 때에만 serialize를 위한 allocator로 교체해서 그 쪽의 메모리를 할당해주면 되지 않을까!&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;data type을 정의한다. 이 data type은 serializable할 것인지 말 것인지 template param으로 bool 값을 갖는다.&lt;/li&gt;
+&lt;li&gt;data type에서 사용하는 stl container는 위 bool 값에 의해 &lt;code&gt;std::allocator&lt;/code&gt;를 쓸지 &lt;code&gt;serializble_allocator&lt;/code&gt;를 쓸지 &lt;code&gt;std::conditional&lt;/code&gt;로 결정한다.&lt;/li&gt;
+&lt;li&gt;data type은 자신의 bool 값을 rebind하여 serializable 가능한 type을 갖는다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;write&lt;/code&gt; 함수에서는 rebind된 type의 객체를 만든 후, 원본 객체로부터 복사를 유도하여 dumpable처럼 &lt;code&gt;operator =&lt;/code&gt;에 의한 복사를 유도해보도록 하자.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;결론부터 이야기하자면 성공할 수 없는 삽질이다. 좀 더 자세한 설명을 위해 코드를 보자.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ser&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;do_serialize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conditional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;do_serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;allocator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allocator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;allocator_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;allocator_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make_serializable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serializable_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;간단히 vector만 다시 정의해봤다. &lt;code&gt;do_serialize&lt;/code&gt; 값에 따라 allocator만 바꿔주는 녀석이다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;make_serializable&lt;/code&gt; 역시 별거 없고 그냥 Base type에 대해 serializable 값만 바꿔준다.(rebind)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;그리고 다음과 같이 data를 쓰려고 했다.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#define SERIALIZABLE(name) \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    template &amp;lt;bool do_serialize = false&amp;gt; \&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;    struct name : ser::make_serializable&amp;lt;name&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;SERIALIZABLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;do_serialize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같이 정의하고,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;cpp language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serializable_type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serializable_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;serializable_type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ser_obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ser_obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이런 식으로 테스트를 진행하려고 했다. 당연하지만 &lt;code&gt;data&amp;lt;true&amp;gt;&lt;/code&gt;와 &lt;code&gt;data&amp;lt;false&amp;gt;&lt;/code&gt;는 다른 type이기 때문에 &lt;code&gt;operator =&lt;/code&gt;를 바로 호출할 수가 없다. &lt;code&gt;operator =&lt;/code&gt; trick을 못 쓴다면 각 멤버에 대한 serialize 코드를 작성해주어야 한다는 것이므로 당초 목적을 달성할 수가 없다.&lt;/p&gt;
+
+&lt;p&gt;뿐만 아니라 allocator를 사용하는 방법 자체는 잘못되었다.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;container 내에는 pointer type이 많이 있는데 이는 allocator를 통해 할당 공간만 어떻게 하나로 합친다고 해서 될 수 있는 내용이 아니다.&lt;/li&gt;
+&lt;li&gt;프로그램 구동 시 처음 한 번 loading된 이후 변경이 없는 데이터의 경우 loading memory address를 강제로 고정해서 위 문제를 해결할 수 있을지는 모르겠지만, 그렇게 되면 범용적으로 사용할 수가 없다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;따라서 dumpable처럼 container도 따로 구현해야만 한다. 많은 container가 없다는 점이 조금 아쉽기는 하지만 일단 custom allocator를 사용할 수 있는 수준까지 고쳐보고 다시 고민을 더 해봐야겠다.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>variadic template을 사용한 typelist 구현</title>
