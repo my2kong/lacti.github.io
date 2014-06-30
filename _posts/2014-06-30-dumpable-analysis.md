@@ -6,7 +6,7 @@ tags: c++ template -pub
 
 하재승님께서 [던전 앤 파이터 클라이언트 로딩 속도 최적화](http://lacti.me/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/)에서 언급하신 [dumpable](https://github.com/ipkn/dumpable) 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 `operator =`를 사용하여 dumpable한 struct를 만들어준다.
 
-다만 두 가지 아쉬운 점이 있었다. 
+다만 몇 가지 아쉬운 점이 있었다. 
 
 - `dptr::alloc()` 함수가 thread safe하지 않다는 점
 - dstring, dvector가 custom allocator를 지원하지 않는다는 점
