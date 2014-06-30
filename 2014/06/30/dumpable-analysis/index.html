@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="dumpable 고찰 30 Jun 2014 c++ template 하재승님께서 던전 앤 파이터 클라이언트 로딩 속도 최적화에서 언급하신 dumpable 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 operator =를 사용하여 dumpable한 struct를 만들어준다. 다만 두 가지 아쉬운 점이 있었다. dptr::alloc() 함수가 thread safe하지 않다는 점 dstring, dvector가 custom allocator를 지원하지 않는다는 점 container의 type이 많지 않다는 점 때문에 dumpable을 fork해서 문제를 고쳐보기로 했다. 일단 dptr:alloc() 내의 static 변수를 thread_local로 변경해서 local_pool이 겹치지는 않도록 했다. 하나의 thread가 dumping을 하는 도중에는 다른 copy가 불가능하기 때문에 대충은 thread safe해졌다. custom allocator를 넣어보려고 이리저리 뜯어보니 상당히 고쳐줘야 한다. 일단 type부터 다시 재정의를 해야 할 것 같다. 고민을 좀 해보다보니 뭔가 기존 stl container에 allocator만을 가지고 tmp를 잘 해보면 되지 않을까라는 생각이 들었다. 뭔가..." />
+	<meta name="description" content="dumpable 고찰 30 Jun 2014 c++ template 하재승님께서 던전 앤 파이터 클라이언트 로딩 속도 최적화에서 언급하신 dumpable 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 operator =를 사용하여 dumpable한 struct를 만들어준다. 다만 몇 가지 아쉬운 점이 있었다. dptr::alloc() 함수가 thread safe하지 않다는 점 dstring, dvector가 custom allocator를 지원하지 않는다는 점 container의 type이 많지 않다는 점 때문에 dumpable을 fork해서 문제를 고쳐보기로 했다. 일단 dptr:alloc() 내의 static 변수를 thread_local로 변경해서 local_pool이 겹치지는 않도록 했다. 하나의 thread가 dumping을 하는 도중에는 다른 copy가 불가능하기 때문에 대충은 thread safe해졌다. custom allocator를 넣어보려고 이리저리 뜯어보니 상당히 고쳐줘야 한다. 일단 type부터 다시 재정의를 해야 할 것 같다. 고민을 좀 해보다보니 뭔가 기존 stl container에 allocator만을 가지고 tmp를 잘 해보면 되지 않을까라는 생각이 들었다. 뭔가..." />
 
 	<meta http-equiv="date" content="Monday, 30  2014 00:00:00 GMT" />
 
@@ -61,7 +61,7 @@
 				<div class="content">
 				<p>하재승님께서 <a href="http://lacti.me/2014/05/29/ndc14-dungeon-and-fighter-loader-optimization/">던전 앤 파이터 클라이언트 로딩 속도 최적화</a>에서 언급하신 <a href="https://github.com/ipkn/dumpable">dumpable</a> 라이브러리에 대한 이야기를 해보자. 이 라이브러리는 serializable memory가 가능한 dynamic container와 <code>operator =</code>를 사용하여 dumpable한 struct를 만들어준다.</p>
 
-<p>다만 두 가지 아쉬운 점이 있었다. </p>
+<p>다만 몇 가지 아쉬운 점이 있었다. </p>
 
 <ul>
 <li><code>dptr::alloc()</code> 함수가 thread safe하지 않다는 점</li>
