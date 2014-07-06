@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 왜 c#으로 서버를 작성하려 하나?
-tags: c++ template -pub
+tags: c# server -pub
 ---
 
 본 글은 동아리 친구의 질문인 *'왜 게임 서버를 c++이 아닌 c#으로 작성하려 하냐?'*에 대한 답변이다.
