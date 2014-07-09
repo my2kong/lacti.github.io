@@ -1167,7 +1167,7 @@ IO의 효율을 위해 비동기 IO를 사용했다. 그 이유는 흐름이 막
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">entry_point</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">async_work1</span><span class="p">(</span><span class="n">async_work2</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="kt">void</span> <span class="n">async_work1</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">void</span><span class="p">()</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">callback</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">void</span> <span class="nf">async_work1</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// do something</span>
     <span class="n">callback</span><span class="p">();</span>
 <span class="p">}</span>
@@ -11242,11 +11242,11 @@ Thread 2가 처음에 0을 가져와서(아직 Thread 1의 연산 결과가 반�
 				</p>
 				<div class="content"><p>어떤 자원에 대한 환형큐가 있다고 해보자. size는 2의 자승이다.</p>
 <div class="highlight"><pre><code class="cpp language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">resource_t</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rear_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">size_</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rear_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">size_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
     <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="kt">resource_t</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">front_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">size_</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">atomic_inc32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">front_</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">size_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre></div>
