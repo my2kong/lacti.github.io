@@ -32,7 +32,7 @@ void async_work1() {
 void entry_point() {
     async_work1(async_work2);
 }
-void async_work1(std::function&lt;void()&gt; callback) {
+void async_work1(std::function<void()> callback) {
     // do something
     callback();
 }

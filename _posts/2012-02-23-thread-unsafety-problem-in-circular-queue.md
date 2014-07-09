@@ -8,11 +8,11 @@ tags: concurrency c++ -pub
 
 ```cpp
 void push(resource_t res) {
-    int index = atomic_inc32(&rear_) & size_;
+    int index = atomic_inc32(&rear_) & (size_ - 1);
     array[index] = res;
 }
 resource_t pop() {
-    int index = atomic_inc32(&front_) & size_;
+    int index = atomic_inc32(&front_) & (size_ - 1);
     return array[index];
 }
 ```
