@@ -193,7 +193,7 @@ using (var reader = new BinaryReader(memoryStream))
 
 `File.ReadAllBytes()`는 c# 내장 라이브러리로 지정된 파일의 모든 bytes를 한 번에 읽어 메모리로 올린다. `BinaryReader`는 Stream 객체를 필요로 하므로 이 bytes를 Stream으로 만들어주기 위한 `MemoryStream`을 사용하는 것이다. io 비용을 처음 한 번에 다 지불하기 때문에 세 번째 예제에 비해 속도가 크게 향상된다.
 
-`BinaryReader` 때문이지만 필요하지도 않은 `MemoryStream` 객체를 만들어서 굳이 비용을 더 지불할 필요는 없다. 왜냐하면 BitConverter`가 있기 때문이다. 좀 더 개선해보자.
+`BinaryReader` 때문이지만 필요하지도 않은 `MemoryStream` 객체를 만들어서 굳이 비용을 더 지불할 필요는 없다. 왜냐하면 `BitConverter`가 있기 때문이다. 좀 더 개선해보자.
 
 #### binary reader 3
 
@@ -254,7 +254,7 @@ items.GroupBy(e => e.TemplateId).Select(e =>
 하지만 여전히 문제가 있다.
 
 - 훨씬 더 큰 양의 데이터를 다뤄야할 때에는 vm에서 허용해주는 메모리의 한계를 넘을 수도 있는데 위 구조를 적용할 수 있을까?
-- 매번 다른 자료구조에 대해서 매번 binary로 serialize해주고 deserialize해주는 코드를 작성해야 할까?
 - loading 시간을 단축했지만 그조차도 클 경우에 사용할만한 좀 더 좋은 방법이 없을까?
+- 매번 다른 자료구조에 대해서 매번 binary로 serialize해주고 deserialize해주는 코드를 작성해야 할까?
 
 이에 대해서는 추후 글에서 알아보도록 하자.
