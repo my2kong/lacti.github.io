@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="lacti">
 
-	<meta name="description" content="분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들 28 May 2014 ndc14 distributed 이호규 왜? 기획 요구가 높아짐에 따라 성능 문제가 야기됨 단일 머신으로 처리가 어려우니 분산으로 간다! network traffic, cpu, memory 등 어떻게? scale out 기능 분리 서버 상점 서버, 퀘스트 서버, ... 이런 식으로 분리 예외 처리도 어렵고 transaction 구성도 어렵다. 그냥 이렇게 안 하는게 좋겠다. 통합 독립 서버 role로 분리. 일반 서버, 던전 서버, ... 이런 식 동시성 제어 및 유지보수가 용이하다. scale up 성능보다 안정성을 위해 scale up을 사용 (?) database scale out sharding mapping table을 써서 shard 정보를 저장할 경우 caching 필수. 필요시 scale up dynamic sharding은 db-instance가 추가되었을 경우 resharding이 어렵다. transaction은 어떻게? 그냥 code로 다 구현해야 한다. cpu..." />
+	<meta name="description" content="분산서버 구축의 ABC - 대규모 분산 시스템을 구축하기 위한 실용적 예와 그 원칙들 28 May 2014 ndc14 distributed 이호규 / 발표자료 왜? 기획 요구가 높아짐에 따라 성능 문제가 야기됨 단일 머신으로 처리가 어려우니 분산으로 간다! network traffic, cpu, memory 등 어떻게? scale out 기능 분리 서버 상점 서버, 퀘스트 서버, ... 이런 식으로 분리 예외 처리도 어렵고 transaction 구성도 어렵다. 그냥 이렇게 안 하는게 좋겠다. 통합 독립 서버 role로 분리. 일반 서버, 던전 서버, ... 이런 식 동시성 제어 및 유지보수가 용이하다. scale up 성능보다 안정성을 위해 scale up을 사용 (?) database scale out sharding mapping table을 써서 shard 정보를 저장할 경우 caching 필수. 필요시 scale up dynamic sharding은 db-instance가 추가되었을 경우 resharding이 어렵다. transaction은 어떻게? 그냥 code로 다 구현해야..." />
 
 	<meta http-equiv="date" content="Wednesday, 28  2014 00:00:00 GMT" />
 
@@ -60,7 +60,7 @@
 				
 				<div class="content">
 				<ul>
-<li>이호규</li>
+<li><a href="https://twitter.com/hoblue">이호규</a> / <a href="http://www.slideshare.net/HoGyuLee/ndc14-abc">발표자료</a></li>
 </ul>
 
 <h3>왜?</h3>
@@ -238,7 +238,11 @@
 <hr>
 
 <ul>
-<li><strong>중간중간 무슨 소리인지 잘 이해가 안 되는 부분이 있었다.</strong></li>
+<li><strong>중간중간 무슨 소리인지 잘 이해가 안 되는 부분이 있었다.</strong>
+
+<ul>
+<li><a href="http://redirect.disqus.com/url?impression=e0a616e0-0aff-11e4-ae27-003048db5eee&amp;forum=3026737&amp;thread=2763589449&amp;behavior=click&amp;url=http%3A%2F%2Flacti.me%2F2014%2F05%2F28%2Fndc14-build-distributed-system%2F%23comment-1483795001%3AmwG_lKpQhTAuKYl4yhK6XJkCV2Y&amp;post=1483795001&amp;type=notification.post.moderator&amp;event=email">이해가 안 되는 부분에 대해서는 발표자님께서 댓글로 친절히 설명을 해주셨다.</a></li>
+</ul></li>
 <li>chat의 경우 시야 범위의 broadcasting이 아닌 전체 전달 같은 경우엔 독립적 기능이니 community server를 따로 두어 io를 분산시키는 방법이 유효할지 모르겠는데, broadcasting의 network io를 분리한다는 발상은 좀 이상해보인다. 차라리 io를 전담하는 server를 둔다면 모르겠는데 어차피 분산 서버를 설계하는 상황에서 그게 무슨 큰 의미가 있는지 모르겠다.</li>
 <li>singleton 이야기는 그냥 concurrency control의 어려움을 이야기하려는 것 같은데 multi threading에서 singleton을 쓰려면 lock을 전제로 하거나 tls를 이용한 replica를 생각해야 할텐데 뭘 생각하는 건지 자세히 이야기를 안 해줘서 잘 모르겠다.</li>
 <li>서비스 가용성 이야기하면서 계속 SEH 이야기를 하는데 heap corruption이 일어나거나 transaction 오류로 아이템 복사가 일어나도 SEH로 잡고 넘어갈 수 있다고 생각하는지 모르겠다.</li>
