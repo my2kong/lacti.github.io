@@ -41,15 +41,18 @@
 		<div class="pure-g">
 			<div class="pure-u-1">
 				
-				<h1 class="page-title"><a href="/2014/07/09/csharp-csv-to-binary/">c# binary 파일을 사용해 csv 파일 빨리 읽기</a></h1>
-				<p class="page-date">09 Jul 2014</p>
+				<h1 class="page-title"><a href="/2014/07/15/csharp-data-server-library-impl/">c# 데이터 서버 라이브러리 구현</a></h1>
+				<p class="page-date">15 Jul 2014</p>
 				<div class="content">
-<p>데이터 분석을 위해 데이터를 열심히 수집해서 몇 개의 csv 파일을 얻었고, 이 csv 파일들은 각각 약 1GB 정도로 조금 큰 수준이라고 해보자. 데이터베이스가 있으면 데이터를 넣고 적절한 쿼리를 넣으면 되니 편하게 작업을 진행할 수가 있다. 하지만 데이터베이스가 없는 시스템에서 이 데이터들을 분석하거나, 쿼리로는 데이터 분석을 하기가 좀 어려운 상황이라고 할 경우에는 적어도 다음의 방법을 사용하여 분석을 진행해 볼 것이다.</p> <ol> <li>csv를 parsing하여 메모리에 올린다.</li> <li>메모리에 올린 모델을 적절히 aggregation하여 원하는 결과를 찾아본다.</li> </ol> <p>각 부분에 대한 프로그램을 작성하는 것은 별로 큰 부담이 아니다. c#을 사용할 경우, 충분히 추상화된 io 함수와 문자열 라이브러리와 linq가 있기 때문이다.</p> <p>문제는 <strong>csv parsing</strong> 시간이 꽤 오래 걸린다는 것이다. 연산을 잘못하여 aggregation 로직을 수정할 경우 매번 csv parsing이 다시 일어나기 때문에 데이터 분석을 위한 시간은 계속...
+<p>지난 글에서는 csv 데이터를 binary 파일로 serialize하여 데이터의 loading 속도를 올리는 방법에 대해 알아보았다. 해당 방법은 용량이 큰 csv 파일에 대해서도 효과가 크지만, 작게 분할된 많은 csv 파일을 다시 적절한 크기의 binary 파일로 재구성하여 작업할 때 더욱 효과를 크게 느낄 수 있다.</p> <p>하지만 csv 파일의 용량이 너무 크거나, 아니면 csv 파일이 너무 많을 경우에는 해당 방법을 사용하기가 어렵다. <a href="http://stackoverflow.com/questions/1087982/single-objects-still-limited-to-2-gb-in-size-in-clr-4-0">.net vm은 x64 모드에서도 단일 객체에 대해 2GB 이상의 크기에 대한 메모리 할당 요청을 하면 <code>OutOfMemoryException</code>이 발생</a>하는데, 위 구조에서는 파일의 내용을 한 번에 <code>byte[]</code> 배열로 읽고, 그 결과물을 하나의 <code>List&lt;T&gt;</code>에 담는 구조이기 때문이다.</p> <p>또한 이렇게 loading 시간을 단축한다고 해도 원본 데이터의 크기가 아주 클 경우에는 줄어든 loading 시간도 클 수 밖에 없다. 그리고 binary로 serialize/deserialize하는 기계적인 코드를 매번 수작업으로 입력해야 하는...
 				</div>
 				<hr class="section-split" />
 
 				<div class="pure-g">
 					<div class="pure-u-1 pure-u-md-1-2 l-box">
+					
+						<h4><a href="/2014/07/09/csharp-csv-to-binary/" title="c# binary 파일을 사용해 csv 파일 빨리 읽기">c# binary 파일을 사용해 csv 파일...</a> <span class="page-date">09 Jul 14</span></h4>
+						<div>데이터 분석을 위해 데이터를 열심히 수집해서 몇 개의 csv 파일을 얻었고, 이 csv 파일들은 각각 약 1GB 정도로 조금 큰 수준이라고 해보자. 데이터베이스가 있으면 데이터를 넣고 적절한 쿼리를 넣으면 되니 편하게 작업을 진행할 수가 있다. 하지만 데이터베이스가 없는 시스템에서 이 데이터들을 분석하거나, 쿼리로는...</div>
 					
 						<h4><a href="/2014/06/30/why-implements-csharp-server/" title="왜 c#으로 서버를 작성하려 하나?">왜 c#으로 서버를 작성하려 하나?</a> <span class="page-date">30 Jun 14</span></h4>
 						<div>본 글은 동아리 친구의 질문인 &#39;왜 게임 서버를 c++이 아닌 c#으로 작성하려 하냐?&#39;에 대한 답변이다.
@@ -66,6 +69,9 @@ c#은 표현력이 좋다. linq나 reflection의 도움을 받을 수도 있...<
 
 다만 몇 가지 아쉬운 점...</div>
 					
+					</div>
+					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
+					
 						<h4><a href="/2014/06/29/variadic-template-typelist/" title="variadic template을 사용한 typelist 구현">variadic template을 사용한 t...</a> <span class="page-date">29 Jun 14</span></h4>
 						<div>Modern C++ Design 책에서 소개한 typelist를 c++11 문법인 variadic template으로 구현해보자.
 
@@ -73,9 +79,6 @@ typelist는 type들의 list형태로 compile time에 여러 type에 대한 동�
 
 
 conversion table을 만들어서 부담...</div>
-					
-					</div>
-					<div class="pure-u-1 pure-u-md-1-2 r-box r-head-div">
 					
 						<h4><a href="/2014/06/23/blog-with-github-pages-and-jekyll/" title="github pages와 jekyll을 사용한 blog 만들기">github pages와 jekyll을 사용...</a> <span class="page-date">23 Jun 14</span></h4>
 						<div>본 글에서는 jekyll과 travis-ci를 사용하여 github pages에 publish하고, 이를 custom domain에 연결하여 blog를 구축하는 방법에 대해 서술한다.
@@ -89,22 +92,6 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 ... 위 링크 들어가서 목차를 보면 알겠지만 정말 자극적이고 재밌는 내용으로 가득차있다.
 내 관심 분야에는 설계, 구축, 방법론이 포함되어 있다. 열심히는 아니지만 나름 지식을 쌓았다고 생각했...으나 이 책을...</div>
 					
-						<h4><a href="/2014/05/29/ndc14-tool-development/" title="팀을 구하는 툴 개발">팀을 구하는 툴 개발</a> <span class="page-date">29 May 14</span></h4>
-						<div>박경재
-
-요약
-
-
-적절한 툴을 만들어 작업의 비효율을 줄이고 고통받는 동료를 구원하자.
-그러기 위해서 높으신 분들은 이에 대한 필요성을 인지하고 자원 분배를 잘 하자.
-
-
-도입
-
-
-게임 개발 시 동료가 겪는 불필요한 괴로움을 극복하기 위한 툴과 마음가짐
-라이브 서비스를 하면서 고객의 불편/불만 사항은 개선하지만, 개...</div>
-					
 					</div>
 				</div>
 				<hr class="section-split" />
@@ -116,6 +103,16 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 							
 								
 								<h4>May 2014</h4>
+							
+							<li>
+								<span>29.</span>
+								<a href="/2014/05/29/ndc14-tool-development/">팀을 구하는 툴 개발</a>
+							</li>
+						
+							
+								
+								
+								
 							
 							<li>
 								<span>29.</span>
@@ -200,16 +197,6 @@ github pages는 github에서 제공하는 cdn으로 static page를 서비스해�
 							<li>
 								<span>28.</span>
 								<a href="/2014/05/28/ndc14-cloud-fail-over-process/">나이키 런더시티로 본 클라우드 서비스의 장애 복구 프로세스</a>
-							</li>
-						
-							
-								
-								
-								
-							
-							<li>
-								<span>28.</span>
-								<a href="/2014/05/28/ndc14-build-private-cloud/">모바일 게임서비스를 위한 사설 클라우드 구축/운영 분투기</a>
 							</li>
 						
 						</ul>
