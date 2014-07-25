@@ -1,0 +1,234 @@
+<Externals>
+<cr namespace="llvm" access="none" kind="class" name="StringMapIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_5372b99f023c0b6ddba14bf77710d9f5" file="3" linestart="26" lineend="26"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringMapEntryBase" id="c0680fa6632512a5d9adb0b7f68f0c6f_8dab731b0b8f38c7dee8e7b7534f2945" file="3" linestart="31" lineend="37">
+<m name="getKeyLength" id="c0680fa6632512a5d9adb0b7f68f0c6f_982ba0863fe3bdf6a0400c2fba14b276" file="3" linestart="36" lineend="36" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringMapImpl" id="c0680fa6632512a5d9adb0b7f68f0c6f_95fe65cc0c546dd02317d43886ea5646" file="3" linestart="41" lineend="107">
+<m name="empty" id="c0680fa6632512a5d9adb0b7f68f0c6f_705fd0bc25b6e241b4e3ceece6f3ac7c" file="3" linestart="98" lineend="98" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+</m>
+</cr>
+<tm namespace="llvm" access="none" depth="1" kind="class" name="StringMapEntry" id="c0680fa6632512a5d9adb0b7f68f0c6f_1c38411e33252ada00d5cb7bfe8bb8f9" file="3" linestart="112" lineend="218" previous="c0680fa6632512a5d9adb0b7f68f0c6f_1c38411e33252ada00d5cb7bfe8bb8f9">
+<template_parameters>
+<ttp name="ValueTy" id="c0680fa6632512a5d9adb0b7f68f0c6f_fb92c4914b2bfe78f673492b8d833273" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="StringMapEntry" id="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d" file="3" linestart="113" lineend="218" previous="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d">
+<base access="public">
+<rt>
+<cr id="c0680fa6632512a5d9adb0b7f68f0c6f_8dab731b0b8f38c7dee8e7b7534f2945"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="StringMapEntry" id="c0680fa6632512a5d9adb0b7f68f0c6f_65147a575b319f075ebe831331b20430" file="3" linestart="113" lineend="113"/>
+<m name="getValue" id="c0680fa6632512a5d9adb0b7f68f0c6f_afc3e876e6242d215bd890f81cf3e37a" file="3" linestart="128" lineend="128" access="public" hasbody="true" isdef="true">
+<fpt proto="ValueTy &amp;">
+<lrf>
+<ttp/>
+</lrf>
+</fpt>
+</m>
+<m name="getKeyData" id="c0680fa6632512a5d9adb0b7f68f0c6f_82a15a3e8f16ae72eeb2af3c78d8e146" file="3" linestart="135" lineend="135" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+</m>
+<m name="Create" id="c0680fa6632512a5d9adb0b7f68f0c6f_9953a818554508cfb6a466ee1f0961f5" file="3" linestart="178" lineend="180" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="StringMapEntry&lt;ValueTy&gt; *">
+<pt>
+<InjectedClassName>
+<cr id="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d"/>
+</InjectedClassName>
+</pt>
+</fpt>
+<p name="Key" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+</m>
+<m name="Destroy" id="c0680fa6632512a5d9adb0b7f68f0c6f_428a4bb7c95e205b8617ebad4c698669" file="3" linestart="214" lineend="217" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+</cr>
+</tm>
+<tm namespace="llvm" access="none" depth="1" kind="class" name="StringMap" id="c0680fa6632512a5d9adb0b7f68f0c6f_b3548dba2ce18e20d81ccf6aa9dd148a" file="3" linestart="225" lineend="411">
+<template_parameters>
+<ttp name="ValueTy" id="c0680fa6632512a5d9adb0b7f68f0c6f_82098ad4dff96b046c2122ce9f347515" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="AllocatorTy" id="c0680fa6632512a5d9adb0b7f68f0c6f_21ebbf04606b13f0eec8c13d77f1abfa" depth="" index="" proto="type-parameter-0-1">
+<rt>
+<cr id="298ee3b516b75e5e51d374f449d428e0_41f62756ce537b75de5aae58f0259c31"/>
+</rt>
+</ttp>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="StringMap" id="c0680fa6632512a5d9adb0b7f68f0c6f_3bce7924347219387e28fb482740edb4" file="3" linestart="226" lineend="411">
+<base access="public">
+<rt>
+<cr id="c0680fa6632512a5d9adb0b7f68f0c6f_95fe65cc0c546dd02317d43886ea5646"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="StringMap" id="c0680fa6632512a5d9adb0b7f68f0c6f_a72b3666d27cf0f1b09bc9a72f1edf22" file="3" linestart="226" lineend="226"/>
+<m name="end" id="c0680fa6632512a5d9adb0b7f68f0c6f_44916b86d7d4179178c1e88480711053" file="3" linestart="267" lineend="269" access="public" hasbody="true" isdef="true">
+<fpt proto="iterator">
+<Tdef>
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_5372b99f023c0b6ddba14bf77710d9f5"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</Tdef>
+</fpt>
+</m>
+<m name="find" id="c0680fa6632512a5d9adb0b7f68f0c6f_195c3ce62a279e426cc2d45576d420f0" file="3" linestart="277" lineend="281" access="public" hasbody="true" isdef="true">
+<fpt proto="iterator">
+<Tdef>
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_5372b99f023c0b6ddba14bf77710d9f5"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</Tdef>
+</fpt>
+<p name="Key" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+</m>
+<m name="insert" id="c0680fa6632512a5d9adb0b7f68f0c6f_60ef143b09df659f2fe68de333039e31" file="3" linestart="310" lineend="324" access="public" hasbody="true" isdef="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="KeyValue" proto="MapEntryTy *" isPtr="true" access2="none">
+<pt>
+<Tdef>
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</Tdef>
+</pt>
+</p>
+</m>
+<m name="remove" id="c0680fa6632512a5d9adb0b7f68f0c6f_2c6c12bc4748b1796b253b3948a89edb" file="3" linestart="380" lineend="382" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="KeyValue" proto="MapEntryTy *" isPtr="true" access2="none">
+<pt>
+<Tdef>
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</Tdef>
+</pt>
+</p>
+</m>
+</cr>
+</tm>
+<tm namespace="llvm" access="none" depth="0" kind="class" name="StringMapConstIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_ece90b665acfe37862c06769119cd311" file="3" linestart="414" lineend="457" previous="c0680fa6632512a5d9adb0b7f68f0c6f_ece90b665acfe37862c06769119cd311">
+<template_parameters>
+<ttp name="ValueTy" id="c0680fa6632512a5d9adb0b7f68f0c6f_303aa5c61cabb43b33d9819f0af3f4c5" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringMapConstIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_3c6857cb340b69af4500cecfe8f3e75c" file="3" linestart="415" lineend="457" previous="c0680fa6632512a5d9adb0b7f68f0c6f_3c6857cb340b69af4500cecfe8f3e75c">
+<cr access="public" kind="class" name="StringMapConstIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_99ce8c3d00695a109f255d77163a73e0" file="3" linestart="415" lineend="415"/>
+<m name="operator!=" id="c0680fa6632512a5d9adb0b7f68f0c6f_c186cf7699e8cf8660f1776636f886cd" file="3" linestart="439" lineend="441" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="RHS" proto="const StringMapConstIterator&lt;ValueT&gt; &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<InjectedClassName>
+<cr id="c0680fa6632512a5d9adb0b7f68f0c6f_3c6857cb340b69af4500cecfe8f3e75c"/>
+</InjectedClassName>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+</tm>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="4" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<c name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_2c12b94cfe93d23e408e72744a845b6e" file="4" linestart="40" lineend="40" copyconst="true" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="const llvm::StringRef &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+</cr>
+<tm namespace="llvm" access="none" depth="1" kind="class" name="StringMapIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_47d489633bf7d90b774648b6c9514972" file="3" linestart="459" lineend="473" previous="c0680fa6632512a5d9adb0b7f68f0c6f_47d489633bf7d90b774648b6c9514972">
+<template_parameters>
+<ttp name="ValueTy" id="c0680fa6632512a5d9adb0b7f68f0c6f_3b88fba7c620b5f4a8cb0bab44008ce4" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="StringMapIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_5372b99f023c0b6ddba14bf77710d9f5" file="3" linestart="460" lineend="473" previous="c0680fa6632512a5d9adb0b7f68f0c6f_5372b99f023c0b6ddba14bf77710d9f5">
+<base access="public">
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_3c6857cb340b69af4500cecfe8f3e75c"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+<cr access="public" kind="class" name="StringMapIterator" id="c0680fa6632512a5d9adb0b7f68f0c6f_fdd2f461b61d3f0ad93cb9d5623acdb8" file="3" linestart="460" lineend="460"/>
+<m name="operator*" id="c0680fa6632512a5d9adb0b7f68f0c6f_1d2ed60fa9f793be6d42f50fbf1f0476" file="3" linestart="467" lineend="469" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="StringMapEntry&lt;ValueTy&gt; &amp;">
+<lrf>
+<tss>
+<templatebase id="c0680fa6632512a5d9adb0b7f68f0c6f_0d6344fd9e903f465449bc3d5d815c3d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</lrf>
+</fpt>
+</m>
+</cr>
+</tm>
+<f name="_wassert" id="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" file="5" linestart="35" lineend="35" previous="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Message" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_File" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_Line" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+</Externals>

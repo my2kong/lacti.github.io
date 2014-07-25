@@ -1,0 +1,555 @@
+<Externals>
+<rc name="LLVMOpaqueMemoryBuffer" id="5afd0374c0ec6e61fa36242ea7071aa0_458d3dc5f79a525dcad5e1055bd2b180" file="3" linestart="36" lineend="36"/>
+<rc name="LLVMOpaqueModule" id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0" file="4" linestart="78" lineend="78"/>
+<rc name="LLVMOpaqueType" id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831" file="4" linestart="85" lineend="85"/>
+<rc name="LLVMOpaqueValue" id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95" file="4" linestart="92" lineend="92"/>
+<rc name="LLVMOpaqueBasicBlock" id="77b4612aedb7705a2d9522f089d04fb1_3ecf56b6b655f3414d2d9c8d0b8bf936" file="4" linestart="99" lineend="99"/>
+<f name="exit" id="17cba6e85ee945f0e4acd2e5f276ff1b_508905b7f4049a9f083c59a21f54149a" file="5" linestart="376" lineend="376" extC="true" implicit="true" access="none" storage="extern">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+</f>
+<f name="LLVMTypeOf" id="77b4612aedb7705a2d9522f089d04fb1_d9a3cd676a4fc04cbb0957d10a52f57d" file="4" linestart="1243" lineend="1243" extC="true" access="none">
+<fpt proto="LLVMTypeRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Val" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetValueName" id="77b4612aedb7705a2d9522f089d04fb1_28c58f82ce6be3e1eabc9660f5c08954" file="4" linestart="1250" lineend="1250" extC="true" access="none">
+<fpt proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+<p name="Val" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetOperand" id="77b4612aedb7705a2d9522f089d04fb1_a6e176b97d59fd78216e48bb6190c58d" file="4" linestart="1378" lineend="1378" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Val" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+<p name="Index" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f name="LLVMIsACallInst" id="77b4612aedb7705a2d9522f089d04fb1_32010e7d88975dfb383d281a0f0796e3" file="4" linestart="1304" lineend="1304" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Val" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetNumOperands" id="77b4612aedb7705a2d9522f089d04fb1_3c32d40b17e2ce411f7f0640bf10ed18" file="4" linestart="1392" lineend="1392" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="Val" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetFirstGlobal" id="77b4612aedb7705a2d9522f089d04fb1_b364aba16c9406ffa0ba0092ad5599be" file="4" linestart="1787" lineend="1787" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="M" proto="LLVMModuleRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetNextGlobal" id="77b4612aedb7705a2d9522f089d04fb1_2681396f937f95acb5043a957055546a" file="4" linestart="1789" lineend="1789" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="GlobalVar" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMIsDeclaration" id="77b4612aedb7705a2d9522f089d04fb1_afc25245fc5137865365a078e7440163" file="4" linestart="1732" lineend="1732" extC="true" access="none">
+<fpt proto="LLVMBool">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Global" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMCountBasicBlocks" id="77b4612aedb7705a2d9522f089d04fb1_92d5511bca5805643c4497418955bda9" file="4" linestart="2158" lineend="2158" extC="true" access="none">
+<fpt proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="Fn" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMDisposeMessage" id="77b4612aedb7705a2d9522f089d04fb1_2ced8e591ff279b7cc4e944f57663858" file="4" linestart="434" lineend="434" extC="true" access="none">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Message" proto="char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="char"/>
+</pt>
+</p>
+</f>
+<f name="LLVMDisposeModule" id="77b4612aedb7705a2d9522f089d04fb1_3569371d39d0801681a204310f8f1b8c" file="4" linestart="570" lineend="570" extC="true" access="none">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="M" proto="LLVMModuleRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMPrintModuleToString" id="77b4612aedb7705a2d9522f089d04fb1_701865d3a08190e92cf5c279728e6cf8" file="4" linestart="622" lineend="622" extC="true" access="none">
+<fpt proto="char *">
+<pt>
+<bt name="char"/>
+</pt>
+</fpt>
+<p name="M" proto="LLVMModuleRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetFirstFunction" id="77b4612aedb7705a2d9522f089d04fb1_fe62fbcd4b8be7067c706343f0cfeaac" file="4" linestart="694" lineend="694" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="M" proto="LLVMModuleRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetNextFunction" id="77b4612aedb7705a2d9522f089d04fb1_68288ecf30dae7958f5e3220fa2f509e" file="4" linestart="709" lineend="709" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Fn" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMPrintTypeToString" id="77b4612aedb7705a2d9522f089d04fb1_46237c4e71e3313992d72d4f7418435d" file="4" linestart="788" lineend="788" extC="true" access="none">
+<fpt proto="char *">
+<pt>
+<bt name="char"/>
+</pt>
+</fpt>
+<p name="Val" proto="LLVMTypeRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMCreateMemoryBufferWithSTDIN" id="77b4612aedb7705a2d9522f089d04fb1_c972ba9aa6571977fd0d2dac3f08400d" file="4" linestart="2762" lineend="2763" extC="true" access="none">
+<fpt proto="LLVMBool">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="OutMemBuf" proto="LLVMMemoryBufferRef *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="5afd0374c0ec6e61fa36242ea7071aa0_458d3dc5f79a525dcad5e1055bd2b180"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</pt>
+</p>
+<p name="OutMessage" proto="char **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<bt name="char"/>
+</pt>
+</pt>
+</p>
+</f>
+<f name="LLVMDisposeMemoryBuffer" id="77b4612aedb7705a2d9522f089d04fb1_5984e7743609998f36336bc25917b12f" file="4" linestart="2773" lineend="2773" extC="true" access="none">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MemBuf" proto="LLVMMemoryBufferRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="5afd0374c0ec6e61fa36242ea7071aa0_458d3dc5f79a525dcad5e1055bd2b180"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMParseBitcode" id="3dd307f62c48934b578f32cd1143c9aa_1f07b8ee110a88956831e5f9072d17ad" file="6" linestart="38" lineend="39" extC="true" access="none">
+<fpt proto="LLVMBool">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="MemBuf" proto="LLVMMemoryBufferRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="5afd0374c0ec6e61fa36242ea7071aa0_458d3dc5f79a525dcad5e1055bd2b180"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+<p name="OutModule" proto="LLVMModuleRef *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</pt>
+</p>
+<p name="OutMessage" proto="char **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<bt name="char"/>
+</pt>
+</pt>
+</p>
+</f>
+<f name="__iob_func" id="f2afefb835ec069e32b58b8b40462113_5013c562ec2ef55029a4f83c363d6d82" file="7" linestart="137" lineend="137" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="FILE *">
+<pt>
+<Tdef>
+<ety>
+<rt>
+<rc id="f2afefb835ec069e32b58b8b40462113_9b75e14604360f7936837e5997e12eba"/>
+</rt>
+</ety>
+</Tdef>
+</pt>
+</fpt>
+</f>
+<f name="fprintf" id="f2afefb835ec069e32b58b8b40462113_8006820dad779bb96e507d9f56921caa" file="7" linestart="215" lineend="215" extC="true" implicit="true" variadic="true" access="none" storage="extern">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="" proto="FILE *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<ety>
+<rt>
+<rc id="f2afefb835ec069e32b58b8b40462113_9b75e14604360f7936837e5997e12eba"/>
+</rt>
+</ety>
+</Tdef>
+</pt>
+</p>
+<p name="" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+<f name="printf" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" file="7" linestart="264" lineend="264" extC="true" implicit="true" variadic="true" access="none" storage="extern">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+<f name="puts" id="f2afefb835ec069e32b58b8b40462113_eef94dd5f10d620656c53db189cd426c" file="7" linestart="270" lineend="270" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="int">
+<bt name="int"/>
+</fpt>
+<p name="_Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+<f name="LLVMGetFirstInstruction" id="77b4612aedb7705a2d9522f089d04fb1_b65b855f527b880d6d6177c7e6b457e8" file="4" linestart="2282" lineend="2282" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="BB" proto="LLVMBasicBlockRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_3ecf56b6b655f3414d2d9c8d0b8bf936"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetNextInstruction" id="77b4612aedb7705a2d9522f089d04fb1_257b19a5919520217073ab3be99ef805" file="4" linestart="2342" lineend="2342" extC="true" access="none">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Inst" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetFirstBasicBlock" id="77b4612aedb7705a2d9522f089d04fb1_d3af3a2ceddedb2d71a6ffb6a0a7538c" file="4" linestart="2178" lineend="2178" extC="true" access="none">
+<fpt proto="LLVMBasicBlockRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_3ecf56b6b655f3414d2d9c8d0b8bf936"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="Fn" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMGetNextBasicBlock" id="77b4612aedb7705a2d9522f089d04fb1_91c1326a28b8ba586ad839a6e35f257a" file="4" linestart="2190" lineend="2190" extC="true" access="none">
+<fpt proto="LLVMBasicBlockRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_3ecf56b6b655f3414d2d9c8d0b8bf936"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="BB" proto="LLVMBasicBlockRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_3ecf56b6b655f3414d2d9c8d0b8bf936"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</p>
+</f>
+</Externals>

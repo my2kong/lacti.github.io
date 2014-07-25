@@ -1,0 +1,203 @@
+<Externals>
+<cr namespace="llvm.sys" access="none" depth="0" kind="class" name="RWMutexImpl" id="69be330a63c5d5d8926a3cbd0bd13496_0e3eac0a77861b6256f61eadcad00de0" file="3" linestart="26" lineend="82">
+<fl name="data_" id="69be330a63c5d5d8926a3cbd0bd13496_eddfdc256755c39d429af9632fba39a7" file="3" linestart="73" lineend="73" isPtr="true" isLiteral="true" access="private" proto="void *">
+<pt>
+<bt name="void"/>
+</pt>
+</fl>
+</cr>
+<cr access="none" depth="0" pod="true" kind="struct" name="_RTL_CRITICAL_SECTION" id="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7" file="4" linestart="18154" lineend="18167" previous="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7"/>
+<cr access="none" depth="0" pod="true" kind="struct" name="_RTL_SRWLOCK" id="76ffbf5404005f0a1131c200ab62c030_08294b67edaac354efaab909aeaef339" file="4" linestart="18171" lineend="18173"/>
+<cr access="none" depth="0" pod="true" kind="struct" name="HINSTANCE__" id="67cd0a0647400f00ec93fad222d7460f_b32e96600c60ce6f9f5e96e0415e5440" file="5" linestart="242" lineend="242"/>
+<f name="calloc" id="17cba6e85ee945f0e4acd2e5f276ff1b_55a9e270cdd23937e2fb4b9c323ff682" file="6" linestart="640" lineend="640" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void *">
+<pt>
+<bt name="void"/>
+</pt>
+</fpt>
+<p name="_Count" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="_Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f name="free" id="17cba6e85ee945f0e4acd2e5f276ff1b_18bce003337bbc64add8899480965a40" file="6" linestart="641" lineend="641" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Memory" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+</f>
+<f name="InitializeCriticalSection" id="59a1102e5e331baed076bd620751be0b_fec7aa9939797fb277267d1107c61612" file="7" linestart="149" lineend="154" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="lpCriticalSection" proto="LPCRITICAL_SECTION" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</p>
+</f>
+<f name="EnterCriticalSection" id="59a1102e5e331baed076bd620751be0b_63db01592e4241bc5c6edaf1b67311ae" file="7" linestart="176" lineend="181" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="lpCriticalSection" proto="LPCRITICAL_SECTION" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</p>
+</f>
+<f name="LeaveCriticalSection" id="59a1102e5e331baed076bd620751be0b_d90f2071710659cbaaa0f05338603eb9" file="7" linestart="184" lineend="189" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="lpCriticalSection" proto="LPCRITICAL_SECTION" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</p>
+</f>
+<f name="DeleteCriticalSection" id="59a1102e5e331baed076bd620751be0b_39e6904d8b145f1cd8ac02a0e53ec922" file="7" linestart="267" lineend="272" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="lpCriticalSection" proto="LPCRITICAL_SECTION" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="76ffbf5404005f0a1131c200ab62c030_5e464fd588ec0838da25b3246ac3eef7"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</p>
+</f>
+<f name="GetModuleHandleW" id="db8f24f193e3d34c62aac4b3262476af_e6b69038a40d6670ea5e8174d0ce573b" file="8" linestart="280" lineend="287" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="HMODULE">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="67cd0a0647400f00ec93fad222d7460f_b32e96600c60ce6f9f5e96e0415e5440"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</fpt>
+<p name="lpModuleName" proto="LPCWSTR" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<QualType const="true">
+<Tdef>
+<bt name="wchar_t"/>
+</Tdef>
+</QualType>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="GetProcAddress" id="db8f24f193e3d34c62aac4b3262476af_e92106f1b1600e453f482ee5480ff95d" file="8" linestart="357" lineend="363" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="FARPROC">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</fpt>
+<p name="hModule" proto="HMODULE" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<cr id="67cd0a0647400f00ec93fad222d7460f_b32e96600c60ce6f9f5e96e0415e5440"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Tdef>
+</p>
+<p name="lpProcName" proto="LPCSTR" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<QualType const="true">
+<Tdef>
+<bt name="char"/>
+</Tdef>
+</QualType>
+</pt>
+</Tdef>
+</p>
+</f>
+<v namespace="llvm" name="fpInitializeSRWLock" proto="void (*)(PSRWLOCK) __attribute__((stdcall))" isPtr="true" isLiteral="true" id="fbf3a5853d94506326df1f9838c658bf_3886973e21f9b272819f0cab2764d834" file="2" linestart="38" lineend="38" storage="static" init="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+</v>
+<v namespace="llvm" name="fpAcquireSRWLockExclusive" proto="void (*)(PSRWLOCK) __attribute__((stdcall))" isPtr="true" isLiteral="true" id="fbf3a5853d94506326df1f9838c658bf_e7856449a0ccc2fdb6224224e42171ba" file="2" linestart="39" lineend="39" storage="static" init="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+</v>
+<v namespace="llvm" name="fpAcquireSRWLockShared" proto="void (*)(PSRWLOCK) __attribute__((stdcall))" isPtr="true" isLiteral="true" id="fbf3a5853d94506326df1f9838c658bf_824eb1715189423058b477f248ad8c61" file="2" linestart="40" lineend="40" storage="static" init="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+</v>
+<v namespace="llvm" name="fpReleaseSRWLockExclusive" proto="void (*)(PSRWLOCK) __attribute__((stdcall))" isPtr="true" isLiteral="true" id="fbf3a5853d94506326df1f9838c658bf_410206661fc64d8e6e8ccc0f1cc83ee5" file="2" linestart="41" lineend="41" storage="static" init="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+</v>
+<v namespace="llvm" name="fpReleaseSRWLockShared" proto="void (*)(PSRWLOCK) __attribute__((stdcall))" isPtr="true" isLiteral="true" id="fbf3a5853d94506326df1f9838c658bf_0feb538ac02781ea4aa889380a000628" file="2" linestart="42" lineend="42" storage="static" init="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+</v>
+<v namespace="llvm" name="sHasSRW" proto="bool" isLiteral="true" isPrimitive="true" id="fbf3a5853d94506326df1f9838c658bf_3e802323a4c613d4750474bb0a59e63a" file="2" linestart="44" lineend="44" storage="static" init="true" access2="none">
+<bt name="bool"/>
+</v>
+<f namespace="llvm" name="loadSRW" id="fbf3a5853d94506326df1f9838c658bf_da4b836bc3d434d162080b5871a71e44" file="2" linestart="46" lineend="74" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+</f>
+</Externals>

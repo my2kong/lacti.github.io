@@ -1,0 +1,105 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="Pass" id="869eb5281cbe4bbe9c04eddc6bf80c98_259a7cd3a2e5188f6e09108505b16cec" file="3" linestart="82" lineend="228"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="FunctionPass" id="869eb5281cbe4bbe9c04eddc6bf80c98_c22afda9d189b1a259c3fb00bed37406" file="3" linestart="294" lineend="316">
+<base access="public">
+<rt>
+<cr id="869eb5281cbe4bbe9c04eddc6bf80c98_259a7cd3a2e5188f6e09108505b16cec"/>
+</rt>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MachineFunction" id="895a66b41661e915ba6854da2359580f_7a76e175133a980deee19d81d954fcc0" file="4" linestart="76" lineend="468" previous="57744cd473803f8e5c9b2de4877592a5_7a76e175133a980deee19d81d954fcc0"/>
+<cr namespace="llvm" access="none" depth="2" kind="class" name="MachineFunctionPass" id="76fdd02034ba5b9263bf1be865e9c7f6_96819381490f736e22cf504e136c5258" file="5" linestart="32" lineend="55" previous="e9864f37b507319dbba5c806f7b7d57d_96819381490f736e22cf504e136c5258">
+<base access="public">
+<rt>
+<cr id="869eb5281cbe4bbe9c04eddc6bf80c98_c22afda9d189b1a259c3fb00bed37406"/>
+</rt>
+</base>
+<c name="MachineFunctionPass" id="76fdd02034ba5b9263bf1be865e9c7f6_a3165b08feba5b64e55f284c5cab00d8" file="5" linestart="34" lineend="34" explicit="true" access="protected" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="ID" proto="char &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<bt name="char"/>
+</lrf>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="public" depth="2" kind="class" name="MipsTargetMachine" id="8078f26461e9b08803162fa2761212fb_f921fe6ec4bd1e5bfc77d77d7e457365" file="6" linestart="27" lineend="79" previous="f3e38a1416613d33acc33b0203c00d56_f921fe6ec4bd1e5bfc77d77d7e457365">
+<base access="public">
+<rt>
+<cr id="d4e05c6b0f4f04a6e13045c31301b1c4_a2676594cf4cbfcfe356f9f1ec58c18c"/>
+</rt>
+</base>
+<m name="resetSubtarget" id="8078f26461e9b08803162fa2761212fb_1581b85b89c1985030a0b61a9254a519" file="6" linestart="74" lineend="74" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MF" proto="llvm::MachineFunction *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="895a66b41661e915ba6854da2359580f_7a76e175133a980deee19d81d954fcc0"/>
+</rt>
+</pt>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="7" linestart="36" lineend="307" previous="e9864f37b507319dbba5c806f7b7d57d_a0739cdc4bf02ac0124031b03f4267a6">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="7" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="7" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" file="7" linestart="173" lineend="178" operator="true" access="public" hasbody="true" isdef="true">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</m>
+</cr>
+<f namespace="llvm" name="errs" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4" file="7" linestart="419" lineend="419" access="none">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+</f>
+<v namespace="llvm" name="DebugFlag" proto="bool" isLiteral="true" isPrimitive="true" id="c7165db01d2918466abdcf2e774b42d9_2cfb25844be5f04c413160994a233a67" file="8" linestart="40" lineend="40" storage="extern" access2="none">
+<bt name="bool"/>
+</v>
+<f namespace="llvm" name="isCurrentDebugType" id="c7165db01d2918466abdcf2e774b42d9_42db15a5e3071b1a315d73320fa189f1" file="8" linestart="46" lineend="46" access="none">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Type" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+</Externals>

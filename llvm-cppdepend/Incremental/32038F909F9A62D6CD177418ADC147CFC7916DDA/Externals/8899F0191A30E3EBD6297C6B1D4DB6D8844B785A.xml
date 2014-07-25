@@ -1,0 +1,228 @@
+<Externals>
+<tm namespace="llvm" access="none" depth="0" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_b57ff84e6cffc3da591e97ac8b813f93" file="3" linestart="30" lineend="179">
+<template_parameters>
+<ttp name="T" id="113b416902e0259d6681229a46a0de40_3347a291a4c46d3e179387faa83132bc" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe" file="3" linestart="31" lineend="179">
+<cr access="public" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_1a6e8165a0afeb4c07f91286556e2a58" file="3" linestart="31" lineend="31"/>
+<c name="ArrayRef&lt;T&gt;" id="113b416902e0259d6681229a46a0de40_005f4db510c1b2df8a712596a3167302" file="3" linestart="61" lineend="62" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="data" proto="const T *" isPtr="true" access2="none">
+<pt>
+<QualType const="true">
+<ttp/>
+</QualType>
+</pt>
+</p>
+<p name="length" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<initlist id="113b416902e0259d6681229a46a0de40_d9e11db41e87627347a7b31985685475"/>
+<initlist id="113b416902e0259d6681229a46a0de40_97c8e8a1ec708de56115d14489a982d0"/>
+</c>
+<m name="data" id="113b416902e0259d6681229a46a0de40_62c387595c450daa2212a9be804be962" file="3" linestart="106" lineend="106" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const T *">
+<pt>
+<QualType const="true">
+<ttp/>
+</QualType>
+</pt>
+</fpt>
+</m>
+<m name="size" id="113b416902e0259d6681229a46a0de40_631ed6fc4effb686c3ac57c93b3712f6" file="3" linestart="109" lineend="109" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+</cr>
+</tm>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="4" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<m name="data" id="6f9d54688deb2fea7e6a760a21186275_681676048dc938133e9da73a987727b4" file="4" linestart="106" lineend="106" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+</m>
+<m name="size" id="6f9d54688deb2fea7e6a760a21186275_1db9e46c2206e1f2160391dd4680612c" file="4" linestart="112" lineend="112" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="5" kind="class" name="SmallString" id="6ce41074e417303b1650ed17224da591_58ace65d1e1b91adc642e9d53587ebbd" file="5" linestart="25" lineend="293">
+<base access="public">
+<tss>
+<templatebase id="cc7c47255f6621964b49dbeb63bbaba4_a9311a36de5bf268b7e067c959560d85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="6" linestart="36" lineend="307">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="6" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="6" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_0e5d7d93bb58111a1bee2e38c8d89f69" file="6" linestart="211" lineend="211" operator="true" access="public">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Fmt" proto="const llvm::format_object_base &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="ba5a2348f6199a007dec48b731bdf4d5_99ba7d793a9784d0edbfecf061f69742"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="raw_svector_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_7f8264d6735487d69d5d4f9914eb9166" file="6" linestart="455" lineend="480">
+<base access="public">
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</base>
+<c name="raw_svector_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_798c2acedf1b0e630cc77fb3b41c8aaf" file="6" linestart="469" lineend="469" explicit="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="O" proto="SmallVectorImpl&lt;char&gt; &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<tss>
+<templatebase id="9e05b9b4de196b39d65ee2f40ed8c864_de149a278b9bdd7657798d3ddb9a06b4"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</lrf>
+</p>
+</c>
+</cr>
+<f name="memcpy" id="4943a312e91e60daa3d01ddadf69e920_69c20c9e20a0eedce3b47df1c4264e02" file="7" linestart="55" lineend="55" extC="true" access="none">
+<fpt cc="cdecl" proto="void *">
+<pt>
+<bt name="void"/>
+</pt>
+</fpt>
+<p name="_Dst" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+<p name="_Src" proto="const void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</p>
+<p name="_Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f name="memset" id="4943a312e91e60daa3d01ddadf69e920_bf40c0a1b4d8b1a89896ff3dabd943f1" file="7" linestart="94" lineend="94" extC="true" access="none">
+<fpt cc="cdecl" proto="void *">
+<pt>
+<bt name="void"/>
+</pt>
+</fpt>
+<p name="_Dst" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+<p name="_Val" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+<p name="_Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm" name="format" id="ba5a2348f6199a007dec48b731bdf4d5_231a226237aa1a20fa25002840d044a3" file="8" linestart="189" lineend="191" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="format_object1&lt;T&gt;">
+<tss>
+<templatebase id="ba5a2348f6199a007dec48b731bdf4d5_283bfba7483bea730e65fb4a1254568d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</fpt>
+<p name="Fmt" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="Val" proto="const T &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+<ft name="format" id="ba5a2348f6199a007dec48b731bdf4d5_045de09c810916770bfcb173360fb63d" file="8" linestart="188" lineend="191">
+<template_parameters>
+<ttp name="T" id="ba5a2348f6199a007dec48b731bdf4d5_cbe00d691349bd74a485f3d95be78eaa" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm" name="format" id="ba5a2348f6199a007dec48b731bdf4d5_231a226237aa1a20fa25002840d044a3" file="8" linestart="189" lineend="191" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="format_object1&lt;T&gt;">
+<tss>
+<templatebase id="ba5a2348f6199a007dec48b731bdf4d5_283bfba7483bea730e65fb4a1254568d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</fpt>
+<p name="Fmt" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="Val" proto="const T &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+</ft>
+</Externals>

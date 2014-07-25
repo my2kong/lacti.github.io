@@ -1,0 +1,169 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="3" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<c name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_a684699547c70f5902c9a02f2a7e9149" file="3" linestart="75" lineend="79" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<initlist id="6f9d54688deb2fea7e6a760a21186275_743d9d6267ce311d3bc4f27153ffcd76"/>
+</c>
+<m name="lower" id="6f9d54688deb2fea7e6a760a21186275_eca6eb1046d35781fbc3ab4081838c26" file="3" linestart="380" lineend="380" access="public">
+<fpt const="true" proto="std::string">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="4" linestart="36" lineend="307" previous="b3d79b6498e401eea6fd4a0a2ff0b44a_a0739cdc4bf02ac0124031b03f4267a6">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="4" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="4" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" file="4" linestart="173" lineend="178" operator="true" access="public" hasbody="true" isdef="true">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</m>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_39593197ecacdb6f68515e7e1505d8f1" file="4" linestart="180" lineend="183" operator="true" access="public" hasbody="true" isdef="true">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Str" proto="const std::string &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCTargetStreamer" id="7345c616ef5527975f62b8656367364b_8a911d38a7072c1c15f3e81fd916b175" file="5" linestart="71" lineend="87">
+<fl name="Streamer" id="7345c616ef5527975f62b8656367364b_b00863482fe813969929e7d50ef044f4" file="5" linestart="73" lineend="73" isLiteral="true" isRef="true" access="protected" proto="llvm::MCStreamer &amp;">
+<lrf>
+<rt>
+<cr id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+</rt>
+</lrf>
+</fl>
+<c name="MCTargetStreamer" id="7345c616ef5527975f62b8656367364b_2671078213942c7c6d28cb7be651c0ef" file="5" linestart="76" lineend="76" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="S" proto="llvm::MCStreamer &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+</rt>
+</lrf>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCStreamer" id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e" file="5" linestart="171" lineend="745" previous="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+<cr namespace="llvm" access="none" depth="2" kind="class" name="MCELFStreamer" id="93ee5ddd7bc44b127982c66c273fa016_7ac916a2a781ea79cf7d103006dbd9e4" file="6" linestart="30" lineend="106">
+<base access="public">
+<rt>
+<cr id="6a5b9a4d2d8564a0b3be1655e7274ecc_62eb7f75c715da417ab0fa5ef8360160"/>
+</rt>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="SparcInstPrinter" id="a5c15aa04b1052d9d0685eafc2e1675d_2b9e0b8be04c63ca848c1f104c6f053c" file="7" linestart="24" lineend="51">
+<base access="public">
+<rt>
+<cr id="aa5ebccb085a89578ace5960af3a8a7f_59846841785a34dc4c0b3f89038fddfd"/>
+</rt>
+</base>
+<m name="getRegisterName" id="a5c15aa04b1052d9d0685eafc2e1675d_5b5634ac5c7081196922e5cd39ec3a8c" file="7" linestart="43" lineend="43" access="public" storage="static">
+<fpt proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+<p name="RegNo" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="formatted_raw_ostream" id="938c9a8a22d0a522be534d42200ddd9c_f4275ebf583e2aed78ea052205875a7e" file="8" linestart="27" lineend="165" previous="7345c616ef5527975f62b8656367364b_f4275ebf583e2aed78ea052205875a7e">
+<base access="public">
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</base>
+</cr>
+</Externals>

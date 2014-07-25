@@ -1,0 +1,406 @@
+<Externals>
+<cr namespace="std" access="none" depth="0" kind="struct" name="pair" id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49" file="3" linestart="80" lineend="200"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="DenseMap" id="a2e0511a2f7df2d0d224b4855fe9d8ec_6c3b609a49f5ba6a1fa3fad8d9fe38bc" file="4" linestart="529" lineend="676">
+<base access="public">
+<tss>
+<templatebase id="a2e0511a2f7df2d0d224b4855fe9d8ec_4a22546c0fdab31843b17e3b8e4e7efc"/>
+<template_arguments>
+<tss>
+<templatebase id="a2e0511a2f7df2d0d224b4855fe9d8ec_6c3b609a49f5ba6a1fa3fad8d9fe38bc"/>
+<template_arguments>
+<ttp/>
+<ttp/>
+<ttp/>
+</template_arguments>
+</tss>
+<ttp/>
+<ttp/>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="5" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<c name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_2c12b94cfe93d23e408e72744a845b6e" file="5" linestart="40" lineend="40" copyconst="true" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="const llvm::StringRef &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DataExtractor" id="b8a50565da0f52888f77e20b2386f065_ed92605baa625ea0bdc719bc2d2c7017" file="6" linestart="18" lineend="351">
+<m name="getU32" id="b8a50565da0f52888f77e20b2386f065_7305dbeed81585c08187c818661815bd" file="6" linestart="232" lineend="232" access="public">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+<p name="offset_ptr" proto="uint32_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</pt>
+</p>
+</m>
+<m name="getU64" id="b8a50565da0f52888f77e20b2386f065_e829e8429fd4137efc8f38681aef5c1c" file="6" linestart="273" lineend="273" access="public">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+<p name="offset_ptr" proto="uint32_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</pt>
+</p>
+</m>
+<c name="DataExtractor" id="b8a50565da0f52888f77e20b2386f065_6d692b6d6847782bd32e66301bd6dcd5" file="6" linestart="18" lineend="18" copyconst="true" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="const llvm::DataExtractor &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="b8a50565da0f52888f77e20b2386f065_ed92605baa625ea0bdc719bc2d2c7017"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DWARFAbbreviationDeclarationSet" id="57ea833136c2da359addb44a43fad56e_7bd2e5e7ddbda9c23cc7e61534265236" file="7" linestart="20" lineend="39">
+<m name="getOffset" id="57ea833136c2da359addb44a43fad56e_d0427f25467390f4e4390b81ac2459a4" file="7" linestart="30" lineend="30" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DWARFDebugAbbrev" id="57ea833136c2da359addb44a43fad56e_651a6a66aab76356795d62e8fdd3c5a3" file="7" linestart="41" lineend="59"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="8" linestart="36" lineend="307" previous="96ed60b524dd53b8d6b92c178537632e_a0739cdc4bf02ac0124031b03f4267a6">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="8" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="8" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" file="8" linestart="173" lineend="178" operator="true" access="public" hasbody="true" isdef="true">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</m>
+<m name="operator&lt;&lt;" id="9e05b9b4de196b39d65ee2f40ed8c864_0e5d7d93bb58111a1bee2e38c8d89f69" file="8" linestart="211" lineend="211" operator="true" access="public">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Fmt" proto="const llvm::format_object_base &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="ba5a2348f6199a007dec48b731bdf4d5_99ba7d793a9784d0edbfecf061f69742"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DWARFDebugInfoEntryMinimal" id="de3e29a1043f0888f4805cd0ca22a0f6_215f5f8b8aadaa5f0165e0ffc4a94f88" file="9" linestart="29" lineend="142">
+<m name="dump" id="de3e29a1043f0888f4805cd0ca22a0f6_db1dd49be5436981dd1a5398d12fdb06" file="9" linestart="41" lineend="42" access="public">
+<fpt const="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="OS" proto="llvm::raw_ostream &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</p>
+<p name="u" proto="const llvm::DWARFUnit *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="28f3f525571181f9fe665712af7126fd_747d715ba415946cd2842c5e8561d256"/>
+</rt>
+</QualType>
+</pt>
+</p>
+<p name="recurseDepth" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+<p name="indent" proto="unsigned int" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DWARFUnit" id="28f3f525571181f9fe665712af7126fd_747d715ba415946cd2842c5e8561d256" file="10" linestart="29" lineend="159" previous="de3e29a1043f0888f4805cd0ca22a0f6_747d715ba415946cd2842c5e8561d256">
+<m name="extractImpl" id="28f3f525571181f9fe665712af7126fd_8e22114d4fcfc95bc75624e1b983250e" file="10" linestart="61" lineend="61" virtual="true" access="protected">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="debug_info" proto="llvm::DataExtractor" access2="none">
+<rt>
+<cr id="b8a50565da0f52888f77e20b2386f065_ed92605baa625ea0bdc719bc2d2c7017"/>
+</rt>
+</p>
+<p name="offset_ptr" proto="uint32_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</pt>
+</p>
+</m>
+<m name="getHeaderSize" id="28f3f525571181f9fe665712af7126fd_54ade4bfa3614482758226a57f2c85bc" file="10" linestart="63" lineend="63" virtual="true" access="protected" hasbody="true" isdef="true">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<c name="DWARFUnit" id="28f3f525571181f9fe665712af7126fd_ca464815fe14f5069446c9e824afcc5b" file="10" linestart="66" lineend="68" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="DA" proto="const llvm::DWARFDebugAbbrev *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="57ea833136c2da359addb44a43fad56e_651a6a66aab76356795d62e8fdd3c5a3"/>
+</rt>
+</QualType>
+</pt>
+</p>
+<p name="IS" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="RS" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="SS" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="SOS" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="AOS" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="M" proto="const RelocAddrMap *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<Tdef>
+<tss>
+<templatebase id="a2e0511a2f7df2d0d224b4855fe9d8ec_6c3b609a49f5ba6a1fa3fad8d9fe38bc"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+<Tdef>
+<bt name="long long"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</template_arguments>
+</tss>
+</Tdef>
+</QualType>
+</pt>
+</p>
+<p name="LE" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</c>
+<m name="getOffset" id="28f3f525571181f9fe665712af7126fd_9d2519a159f928ef22b39a57df9e46f3" file="10" linestart="104" lineend="104" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getNextUnitOffset" id="28f3f525571181f9fe665712af7126fd_35929749fa2ad3d8e2d3a6e89a5f79c4" file="10" linestart="105" lineend="105" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getLength" id="28f3f525571181f9fe665712af7126fd_c16c92a095d1492ab9ac754697ee126b" file="10" linestart="106" lineend="106" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint32_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getVersion" id="28f3f525571181f9fe665712af7126fd_20a7f6ff8d7267f0e39e4c2f44422700" file="10" linestart="107" lineend="107" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint16_t">
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getAbbreviations" id="28f3f525571181f9fe665712af7126fd_8dd28f874e56002f2fe99276e1ecd954" file="10" linestart="108" lineend="110" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const llvm::DWARFAbbreviationDeclarationSet *">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="57ea833136c2da359addb44a43fad56e_7bd2e5e7ddbda9c23cc7e61534265236"/>
+</rt>
+</QualType>
+</pt>
+</fpt>
+</m>
+<m name="getAddressByteSize" id="28f3f525571181f9fe665712af7126fd_8296fe0ad8a8c75e7da462b208bd2f23" file="10" linestart="111" lineend="111" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint8_t">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getCompileUnitDIE" id="28f3f525571181f9fe665712af7126fd_8a6f814c1329756b33962633747e8c11" file="10" linestart="118" lineend="122" access="public" hasbody="true" isdef="true">
+<fpt proto="const llvm::DWARFDebugInfoEntryMinimal *">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="de3e29a1043f0888f4805cd0ca22a0f6_215f5f8b8aadaa5f0165e0ffc4a94f88"/>
+</rt>
+</QualType>
+</pt>
+</fpt>
+<p name="extract_cu_die_only" proto="bool" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="bool"/>
+</p>
+</m>
+</cr>
+<f name="_wassert" id="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" file="11" linestart="35" lineend="35" previous="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Message" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_File" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_Line" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f namespace="llvm" name="format" id="ba5a2348f6199a007dec48b731bdf4d5_231a226237aa1a20fa25002840d044a3" file="12" linestart="189" lineend="191" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="format_object1&lt;T&gt;">
+<tss>
+<templatebase id="ba5a2348f6199a007dec48b731bdf4d5_283bfba7483bea730e65fb4a1254568d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</fpt>
+<p name="Fmt" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="Val" proto="const T &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+<ft name="format" id="ba5a2348f6199a007dec48b731bdf4d5_045de09c810916770bfcb173360fb63d" file="12" linestart="188" lineend="191">
+<template_parameters>
+<ttp name="T" id="ba5a2348f6199a007dec48b731bdf4d5_cbe00d691349bd74a485f3d95be78eaa" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm" name="format" id="ba5a2348f6199a007dec48b731bdf4d5_231a226237aa1a20fa25002840d044a3" file="12" linestart="189" lineend="191" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="format_object1&lt;T&gt;">
+<tss>
+<templatebase id="ba5a2348f6199a007dec48b731bdf4d5_283bfba7483bea730e65fb4a1254568d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</fpt>
+<p name="Fmt" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="Val" proto="const T &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+</ft>
+</Externals>

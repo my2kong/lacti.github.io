@@ -1,0 +1,279 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="9" e="9"/>
+<c f="1" b="10" e="10"/>
+<c f="1" b="11" e="11"/>
+<c f="1" b="12" e="12"/>
+<c f="1" b="13" e="13"/>
+<c f="1" b="15" e="13"/>
+<c f="1" b="19" e="19"/>
+<c f="1" b="20" e="19"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="13" e="13"/>
+<c f="2" b="15" e="13"/>
+<c f="2" b="48" e="48"/>
+<c f="2" b="50" e="48"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="69a49af56b7aa231a037faea0c80d405_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="21" lineend="48" original="">
+<cr namespace="llvm" access="none" kind="class" name="MCInst" id="69a49af56b7aa231a037faea0c80d405_4dc08c22fc67fa33e164b3e422ed7a5c" file="2" linestart="23" lineend="23" previous="a58073b6dedec8d5532f4b2835be2ded_4dc08c22fc67fa33e164b3e422ed7a5c"/>
+<cr namespace="llvm" access="none" kind="class" name="MCOperand" id="69a49af56b7aa231a037faea0c80d405_195f5572e3b72b3c4d42c040910ec05d" file="2" linestart="24" lineend="24"/>
+<cr namespace="llvm" access="none" kind="class" name="MCSubtargetInfo" id="69a49af56b7aa231a037faea0c80d405_85fb6388fd852e64748b49bf30717000" file="2" linestart="25" lineend="25" previous="a58073b6dedec8d5532f4b2835be2ded_85fb6388fd852e64748b49bf30717000"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="AMDGPUMCCodeEmitter" id="69a49af56b7aa231a037faea0c80d405_4c788fde99923b9da0677dfe11811e30" file="2" linestart="27" lineend="46">
+<base access="public">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_af4399f4437e115c3386bc7c1443e314"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="AMDGPUMCCodeEmitter" id="69a49af56b7aa231a037faea0c80d405_a231ac89d4d914ba68d2444e953d68f7" file="2" linestart="27" lineend="27"/>
+<m name="anchor" id="69a49af56b7aa231a037faea0c80d405_2f486087146bd906abeef4b492117177" file="2" linestart="28" lineend="28" virtual="true" access="private" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<Decl access="public"/>
+<m name="getBinaryCodeForInstr" id="69a49af56b7aa231a037faea0c80d405_5ea237c1874a01417cb6ebde9a9c828a" file="2" linestart="31" lineend="33" access="public">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+<p name="MI" proto="const llvm::MCInst &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_4dc08c22fc67fa33e164b3e422ed7a5c"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Fixups" proto="SmallVectorImpl&lt;llvm::MCFixup&gt; &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<tss>
+<templatebase id="9e05b9b4de196b39d65ee2f40ed8c864_de149a278b9bdd7657798d3ddb9a06b4"/>
+<template_arguments>
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_c336ef6dbf69dda20cb52e3c82e226b4"/>
+</rt>
+</template_arguments>
+</tss>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="STI" proto="const llvm::MCSubtargetInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_85fb6388fd852e64748b49bf30717000"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="getMachineOpValue" id="69a49af56b7aa231a037faea0c80d405_aeb90e3cc20b8eaeadde50f9cd717a0b" file="2" linestart="35" lineend="39" virtual="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+<p name="MI" proto="const llvm::MCInst &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_4dc08c22fc67fa33e164b3e422ed7a5c"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="MO" proto="const llvm::MCOperand &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="69a49af56b7aa231a037faea0c80d405_195f5572e3b72b3c4d42c040910ec05d"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Fixups" proto="SmallVectorImpl&lt;llvm::MCFixup&gt; &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<tss>
+<templatebase id="9e05b9b4de196b39d65ee2f40ed8c864_de149a278b9bdd7657798d3ddb9a06b4"/>
+<template_arguments>
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_c336ef6dbf69dda20cb52e3c82e226b4"/>
+</rt>
+</template_arguments>
+</tss>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="STI" proto="const llvm::MCSubtargetInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_85fb6388fd852e64748b49bf30717000"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="37" cb="72" le="39" ce="3">
+<rx lb="38" cb="5" le="38" ce="12" pvirg="true">
+<n32 lb="38" cb="12">
+<n45 lb="38" cb="12">
+<flit/>
+</n45>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="getSOPPBrEncoding" id="69a49af56b7aa231a037faea0c80d405_750f604c790dd0dfc0a0a59d011e0532" file="2" linestart="41" lineend="45" virtual="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="MI" proto="const llvm::MCInst &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_4dc08c22fc67fa33e164b3e422ed7a5c"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="OpNo" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Fixups" proto="SmallVectorImpl&lt;llvm::MCFixup&gt; &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<tss>
+<templatebase id="9e05b9b4de196b39d65ee2f40ed8c864_de149a278b9bdd7657798d3ddb9a06b4"/>
+<template_arguments>
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_c336ef6dbf69dda20cb52e3c82e226b4"/>
+</rt>
+</template_arguments>
+</tss>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="STI" proto="const llvm::MCSubtargetInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="a58073b6dedec8d5532f4b2835be2ded_85fb6388fd852e64748b49bf30717000"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="43" cb="72" le="45" ce="3">
+<rx lb="44" cb="5" le="44" ce="12" pvirg="true">
+<n32 lb="44" cb="12">
+<n45 lb="44" cb="12">
+<flit/>
+</n45>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="operator=" id="69a49af56b7aa231a037faea0c80d405_d0c3aad8bafe6aa6ae435f54a1ffea30" file="2" linestart="27" implicit="true" operator="true" access="public" inline="true" isdef="true">
+<fpt proto="llvm::AMDGPUMCCodeEmitter &amp;">
+<lrf>
+<rt>
+<cr id="69a49af56b7aa231a037faea0c80d405_4c788fde99923b9da0677dfe11811e30"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const llvm::AMDGPUMCCodeEmitter &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="69a49af56b7aa231a037faea0c80d405_4c788fde99923b9da0677dfe11811e30"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<d name="~AMDGPUMCCodeEmitter" id="69a49af56b7aa231a037faea0c80d405_40a882b65a447980a295a7e4eb6819ac" file="2" linestart="27" lineend="27" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="27" cb="7"/>
+
+</Stmt>
+</d>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="122089fab283fb8336026b8e0ee5d82c_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="17" lineend="17"/>
+<m name="anchor" id="122089fab283fb8336026b8e0ee5d82c_2f486087146bd906abeef4b492117177" file="1" linestart="20" lineend="20" previous="69a49af56b7aa231a037faea0c80d405_2f486087146bd906abeef4b492117177" access="private" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="20" cb="36" le="20" ce="37"/>
+
+</Stmt>
+</m>
+</tun>
+</Root>

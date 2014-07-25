@@ -1,0 +1,90 @@
+<Externals>
+<cr namespace="llvm" access="none" kind="class" name="SmallVectorImpl" id="6f9d54688deb2fea7e6a760a21186275_de149a278b9bdd7657798d3ddb9a06b4" file="3" linestart="22" lineend="22" previous="cc7c47255f6621964b49dbeb63bbaba4_de149a278b9bdd7657798d3ddb9a06b4"/>
+<tm namespace="llvm" access="none" depth="1" kind="class" name="SmallVectorTemplateCommon" id="cc7c47255f6621964b49dbeb63bbaba4_b2932ea06d4eaf9b9a8ed2f402413c0b" file="4" linestart="66" lineend="166">
+<template_parameters>
+<ttp name="T" id="cc7c47255f6621964b49dbeb63bbaba4_512c391b78063fbe31804a7119b1b8e8" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="" id="cc7c47255f6621964b49dbeb63bbaba4_b2932ea06d4eaf9b9a8ed2f402413c0b" depth="" index="" proto="type-parameter-0-1">
+<bt name="void"/>
+</ttp>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="SmallVectorTemplateCommon" id="cc7c47255f6621964b49dbeb63bbaba4_c15b48e58b0fefd8e93be9272aa1dd2d" file="4" linestart="67" lineend="166">
+<base access="public">
+<rt>
+<cr id="cc7c47255f6621964b49dbeb63bbaba4_13131319abf511b2f1b9e60505ee6e02"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="SmallVectorTemplateCommon" id="cc7c47255f6621964b49dbeb63bbaba4_1af8f690f8e8c2da0fc1afc45f4d5923" file="4" linestart="67" lineend="67"/>
+<m name="operator[]" id="cc7c47255f6621964b49dbeb63bbaba4_778f69a3d2313b89746fb83a6cae7f9d" file="4" linestart="140" lineend="143" operator="true" access="public" hasbody="true" isdef="true">
+<fpt proto="reference">
+<Tdef>
+<lrf>
+<ttp/>
+</lrf>
+</Tdef>
+</fpt>
+<p name="idx" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+</cr>
+</tm>
+<ctps Spec="&lt;type-parameter-0-0, true&gt;" namespace="llvm" access="none" depth="2" kind="class" name="SmallVectorTemplateBase" id="cc7c47255f6621964b49dbeb63bbaba4_a34c390d16005b5bec0a68cb6a0657af" file="4" linestart="274" lineend="339">
+<base access="public">
+<tss>
+<templatebase id="cc7c47255f6621964b49dbeb63bbaba4_c15b48e58b0fefd8e93be9272aa1dd2d"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+<m name="push_back" id="cc7c47255f6621964b49dbeb63bbaba4_828a1ece4569547a42aa16132378c2df" file="4" linestart="329" lineend="334" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Elt" proto="const T &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</m>
+</ctps>
+<cr namespace="llvm" access="none" depth="3" kind="class" name="SmallVectorImpl" id="cc7c47255f6621964b49dbeb63bbaba4_de149a278b9bdd7657798d3ddb9a06b4" file="4" linestart="346" lineend="673">
+<base access="public">
+<tss>
+<templatebase id="cc7c47255f6621964b49dbeb63bbaba4_5d2f32cd6d0b0696897b8f138233496f"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MVT" id="8082e5165c3f42665d6b82cf419bbd6a_d15e30a7911dd4275e49913b7d78fcf1" file="5" linestart="28" lineend="575" previous="789510b03b506fe79d28bc2e67bd7b33_d15e30a7911dd4275e49913b7d78fcf1">
+<e parent="8082e5165c3f42665d6b82cf419bbd6a_d15e30a7911dd4275e49913b7d78fcf1" access="public" name="SimpleValueType" id="8082e5165c3f42665d6b82cf419bbd6a_fd7482fa7d76a758a59a5a382f8a0df5" file="5" linestart="30" lineend="154" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="getVectorElementType" id="8082e5165c3f42665d6b82cf419bbd6a_c783f026be8b0bcd77478307bd8bfb58" file="5" linestart="264" lineend="310" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="llvm::MVT">
+<rt>
+<cr id="8082e5165c3f42665d6b82cf419bbd6a_d15e30a7911dd4275e49913b7d78fcf1"/>
+</rt>
+</fpt>
+</m>
+<m name="getVectorNumElements" id="8082e5165c3f42665d6b82cf419bbd6a_807396e4a85965f4c6972f06c65d3b04" file="5" linestart="312" lineend="358" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+<m name="getSizeInBits" id="8082e5165c3f42665d6b82cf419bbd6a_19108d5562d88b66a4746f70eedbf4cc" file="5" linestart="360" lineend="430" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+</cr>
+</Externals>

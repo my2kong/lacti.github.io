@@ -1,0 +1,720 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCSubtargetInfo" id="8d3106597c32b172c14281d3ca7a27f5_85fb6388fd852e64748b49bf30717000" file="5" linestart="29" lineend="135" previous="bf0e00f604504cc01afb1a81c69a4ed9_85fb6388fd852e64748b49bf30717000"/>
+<cr namespace="llvm" access="none" kind="class" name="MCContext" id="c6c8e579ec4c80fd3bfd5c18c764ca89_66d5a04d181dc2d379aee3c1da9a8316" file="6" linestart="21" lineend="21"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="7" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+<e namespace="llvm" access="none" name="MCFixupKind" id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15" file="8" linestart="23" lineend="46" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="FK_Data_4" id="276500ab2a3064a3cdd4ecc61ff8456d_e73ca658c1b7fb8b0565bb9b989078fd" file="8" linestart="26" lineend="26">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_Data_8" id="276500ab2a3064a3cdd4ecc61ff8456d_42b18ae2475b318b273bc5b82201f6dc" file="8" linestart="27" lineend="27">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_GPRel_4" id="276500ab2a3064a3cdd4ecc61ff8456d_093bd662257b8eace9b0784832e1e9b7" file="8" linestart="34" lineend="34">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FirstTargetFixupKind" id="276500ab2a3064a3cdd4ecc61ff8456d_b88062de5e5e8bd487fd27d1cc78f53e" file="8" linestart="41" lineend="41">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCFixup" id="276500ab2a3064a3cdd4ecc61ff8456d_c336ef6dbf69dda20cb52e3c82e226b4" file="8" linestart="62" lineend="109">
+<m name="getKind" id="276500ab2a3064a3cdd4ecc61ff8456d_2cff23cdcab5cb710d2295b22569ebe4" file="8" linestart="89" lineend="89" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="llvm::MCFixupKind">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</fpt>
+</m>
+</cr>
+<e namespace="llvm.Mips" access="none" name="Fixups" id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b" file="3" linestart="25" lineend="197" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="fixup_Mips_26" id="928bfb0eaae2d35009c23d40195344bf_c88fb211e61378ae463ac2fa3d2cf479" file="3" linestart="36" lineend="36">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_HI16" id="928bfb0eaae2d35009c23d40195344bf_96cefdb8c095c0c73158df5c014ad415" file="3" linestart="39" lineend="39">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_LO16" id="928bfb0eaae2d35009c23d40195344bf_eb6019c88220499b98d61543c75c0a16" file="3" linestart="42" lineend="42">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GPREL16" id="928bfb0eaae2d35009c23d40195344bf_4dc88469f9a5e94561b4d58c04fdbfd9" file="3" linestart="45" lineend="45">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_Global" id="928bfb0eaae2d35009c23d40195344bf_90d293fe3c69fdca61a9c1d240bfaa93" file="3" linestart="51" lineend="51">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_Local" id="928bfb0eaae2d35009c23d40195344bf_f55269f5ff6dd528c143967db1166121" file="3" linestart="54" lineend="54">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_PC16" id="928bfb0eaae2d35009c23d40195344bf_b7d9bf77c5ea079438bedbe071f6a0ef" file="3" linestart="57" lineend="57">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_CALL16" id="928bfb0eaae2d35009c23d40195344bf_c80fa8994e4aaf232d493d099fd056f9" file="3" linestart="60" lineend="60">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_TLSGD" id="928bfb0eaae2d35009c23d40195344bf_33e0f39a1f2a110293e8386872f51d6f" file="3" linestart="75" lineend="75">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOTTPREL" id="928bfb0eaae2d35009c23d40195344bf_aa838d9b75c81e3822db4b42a1422c1f" file="3" linestart="78" lineend="78">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_TPREL_HI" id="928bfb0eaae2d35009c23d40195344bf_9336016625004c9326b349980d154e99" file="3" linestart="81" lineend="81">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_TPREL_LO" id="928bfb0eaae2d35009c23d40195344bf_c37421c75f4978e497f52e0d6e76d982" file="3" linestart="84" lineend="84">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_TLSLDM" id="928bfb0eaae2d35009c23d40195344bf_d00361cc04c2478e728e83441a4bd2a3" file="3" linestart="87" lineend="87">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_DTPREL_HI" id="928bfb0eaae2d35009c23d40195344bf_ffe904801809428be715cbb1d6c0b452" file="3" linestart="90" lineend="90">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_DTPREL_LO" id="928bfb0eaae2d35009c23d40195344bf_3e4b358cb48cdcf016c9b3341130b49d" file="3" linestart="93" lineend="93">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_Branch_PCRel" id="928bfb0eaae2d35009c23d40195344bf_e442f2ef4d9001ff89acf8f938633051" file="3" linestart="96" lineend="96">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GPOFF_HI" id="928bfb0eaae2d35009c23d40195344bf_be51144ce675f3d96dd33177f36afe75" file="3" linestart="99" lineend="99">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GPOFF_LO" id="928bfb0eaae2d35009c23d40195344bf_11c9f88f8c72ed422945ab1dc61ea530" file="3" linestart="102" lineend="102">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_PAGE" id="928bfb0eaae2d35009c23d40195344bf_07cfd9a45b36e3c0ef945fc3a13ca2db" file="3" linestart="105" lineend="105">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_OFST" id="928bfb0eaae2d35009c23d40195344bf_17bf313fb941810e6b72f885e9c97c24" file="3" linestart="108" lineend="108">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_DISP" id="928bfb0eaae2d35009c23d40195344bf_1b149b5c1f73c7f3b1a4482bda2a51b1" file="3" linestart="111" lineend="111">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_HIGHER" id="928bfb0eaae2d35009c23d40195344bf_ccb8a716cf9170670df919f5dda7d4b6" file="3" linestart="114" lineend="114">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_HIGHEST" id="928bfb0eaae2d35009c23d40195344bf_671f99f37e639912ddcedfec56a651a9" file="3" linestart="117" lineend="117">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_HI16" id="928bfb0eaae2d35009c23d40195344bf_d101d5410b934030dd0618355c199cc2" file="3" linestart="120" lineend="120">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_GOT_LO16" id="928bfb0eaae2d35009c23d40195344bf_002ae64584590895a5fc9f783ce033c9" file="3" linestart="123" lineend="123">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_CALL_HI16" id="928bfb0eaae2d35009c23d40195344bf_a1f10d3156aaee6239ada6b0785de464" file="3" linestart="126" lineend="126">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_Mips_CALL_LO16" id="928bfb0eaae2d35009c23d40195344bf_3db8a359b420fc506831975cde935410" file="3" linestart="129" lineend="129">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PC18_S3" id="928bfb0eaae2d35009c23d40195344bf_922952ca1577d76d6ff820fe63a49737" file="3" linestart="132" lineend="132">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PC19_S2" id="928bfb0eaae2d35009c23d40195344bf_778d774f3e43526da160df8c661d8050" file="3" linestart="135" lineend="135">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PC21_S2" id="928bfb0eaae2d35009c23d40195344bf_f4c2c6bbdba625ccdbe4885d01863139" file="3" linestart="138" lineend="138">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PC26_S2" id="928bfb0eaae2d35009c23d40195344bf_557b6dc3d13200dc2a98e2ca07e56f4f" file="3" linestart="141" lineend="141">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PCHI16" id="928bfb0eaae2d35009c23d40195344bf_1dc1d45f6c241b2e9bf79fb68a23884c" file="3" linestart="144" lineend="144">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MIPS_PCLO16" id="928bfb0eaae2d35009c23d40195344bf_eee9bb163d3c52d3cc5063aa366ac6ee" file="3" linestart="147" lineend="147">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_26_S1" id="928bfb0eaae2d35009c23d40195344bf_cf5476862277e532e4b65e682c81839c" file="3" linestart="150" lineend="150">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_HI16" id="928bfb0eaae2d35009c23d40195344bf_0f45bc41f978a393a7c0892f66dfb6d3" file="3" linestart="153" lineend="153">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_LO16" id="928bfb0eaae2d35009c23d40195344bf_d729b8a007963a6ad9fda8373e06e4f2" file="3" linestart="156" lineend="156">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_GOT16" id="928bfb0eaae2d35009c23d40195344bf_53acc9f857b76afe3581c0633b3c92ce" file="3" linestart="159" lineend="159">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_PC16_S1" id="928bfb0eaae2d35009c23d40195344bf_42552c6b09a912c2f3d30ccb0a07ad1b" file="3" linestart="162" lineend="162">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_CALL16" id="928bfb0eaae2d35009c23d40195344bf_a9f329dc86f2845a1fbf1ae96fde30a3" file="3" linestart="165" lineend="165">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_GOT_DISP" id="928bfb0eaae2d35009c23d40195344bf_8032607510e12e38c709518e2536922c" file="3" linestart="168" lineend="168">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_GOT_PAGE" id="928bfb0eaae2d35009c23d40195344bf_b9b2b0fcbb3f4ab60f8e0034900b56ee" file="3" linestart="171" lineend="171">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_GOT_OFST" id="928bfb0eaae2d35009c23d40195344bf_52cb795024e65b9f973d55dc82c0f3f0" file="3" linestart="174" lineend="174">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_GD" id="928bfb0eaae2d35009c23d40195344bf_5675d9b36edd78490c59807ac32edf77" file="3" linestart="177" lineend="177">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_LDM" id="928bfb0eaae2d35009c23d40195344bf_81dbe09ae9801381486cbe48b47253b0" file="3" linestart="180" lineend="180">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_DTPREL_HI16" id="928bfb0eaae2d35009c23d40195344bf_6041b9154c1b7b641f8bd6f85a77d5ce" file="3" linestart="183" lineend="183">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_DTPREL_LO16" id="928bfb0eaae2d35009c23d40195344bf_88726ef3e8ed8d98550de4f8f9e6dcda" file="3" linestart="186" lineend="186">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_TPREL_HI16" id="928bfb0eaae2d35009c23d40195344bf_cbc8bd3237de4bbe9fe9393598265b9a" file="3" linestart="189" lineend="189">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="fixup_MICROMIPS_TLS_TPREL_LO16" id="928bfb0eaae2d35009c23d40195344bf_8ec95de1365f82292308c8ab1318e2c3" file="3" linestart="192" lineend="192">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+<ec name="LastTargetFixupKind" id="928bfb0eaae2d35009c23d40195344bf_c5ac61cda79c12f3b1e25fc6937df2e7" file="3" linestart="195" lineend="195">
+<et>
+<e id="928bfb0eaae2d35009c23d40195344bf_8cf515fb0b03fd16669d0ff8f3b5747b"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm.ELF" access="none" name="" id="63dc5295b8c49c9d3ab8f488c40b300e_291e1e99fb4e644b94adb566dd7342d6" file="9" linestart="129" lineend="312" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="EM_MIPS" id="63dc5295b8c49c9d3ab8f488c40b300e_09730b5257fc858b51b8f896369404bd" file="9" linestart="138" lineend="138">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_291e1e99fb4e644b94adb566dd7342d6"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="10" linestart="36" lineend="307" previous="b3d79b6498e401eea6fd4a0a2ff0b44a_a0739cdc4bf02ac0124031b03f4267a6">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="10" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="10" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCObjectWriter" id="d40db948024fca4b42b0715f2a933104_4e073ab275d03ee1a33c7f36dfe72918" file="11" linestart="39" lineend="196" previous="bf0e00f604504cc01afb1a81c69a4ed9_4e073ab275d03ee1a33c7f36dfe72918"/>
+<cr namespace="llvm" access="none" depth="2" kind="class" name="MCSymbolData" id="dc0fc8f2eb97706161dc0456f9cf15db_cbf1df30c08158beb6419d47fa041016" file="12" linestart="686" lineend="806" previous="dc0fc8f2eb97706161dc0456f9cf15db_cbf1df30c08158beb6419d47fa041016">
+<base access="public">
+<tss>
+<templatebase id="2e0ac8f5efaa78be4d314ff7cd8c40b6_a466399ff61d8858d0f66a7994b21846"/>
+<template_arguments>
+<rt>
+<cr id="dc0fc8f2eb97706161dc0456f9cf15db_cbf1df30c08158beb6419d47fa041016"/>
+</rt>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<e namespace="llvm.ELF" access="none" name="" id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757" file="9" linestart="886" lineend="966" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="R_MIPS_NONE" id="63dc5295b8c49c9d3ab8f488c40b300e_59d3356fbbad3260308f66a4bab6e2c1" file="9" linestart="887" lineend="887">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_32" id="63dc5295b8c49c9d3ab8f488c40b300e_7f651f1c9f337038304f30b2c72b3a65" file="9" linestart="889" lineend="889">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_26" id="63dc5295b8c49c9d3ab8f488c40b300e_bb84a847e621d614958a82060a53ad9d" file="9" linestart="891" lineend="891">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_cb6f0c6c1afc6be88d901eb2893efef2" file="9" linestart="892" lineend="892">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_f8e0c27b32c87a0057d6708b4c371978" file="9" linestart="893" lineend="893">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GPREL16" id="63dc5295b8c49c9d3ab8f488c40b300e_13ebdc2d0607552e9f7f29555acec010" file="9" linestart="894" lineend="894">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT16" id="63dc5295b8c49c9d3ab8f488c40b300e_8ef149c1502a2c839e82e9ef0a24653c" file="9" linestart="896" lineend="896">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PC16" id="63dc5295b8c49c9d3ab8f488c40b300e_12d441ee8059dd6c9711c5e1224484c6" file="9" linestart="897" lineend="897">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_CALL16" id="63dc5295b8c49c9d3ab8f488c40b300e_8be68ea04fa9b67c803e45ab8d92bf79" file="9" linestart="898" lineend="898">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GPREL32" id="63dc5295b8c49c9d3ab8f488c40b300e_37f13c591a03840b030ea77a0f3045c4" file="9" linestart="899" lineend="899">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_64" id="63dc5295b8c49c9d3ab8f488c40b300e_271c69842fcb83a877f05b8fc94d2490" file="9" linestart="904" lineend="904">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT_DISP" id="63dc5295b8c49c9d3ab8f488c40b300e_690e3462eed288d7bd59ed5972a3b432" file="9" linestart="905" lineend="905">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT_PAGE" id="63dc5295b8c49c9d3ab8f488c40b300e_8170832dec5628ae27d4d5044ed39664" file="9" linestart="906" lineend="906">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT_OFST" id="63dc5295b8c49c9d3ab8f488c40b300e_79c69de2356b35ca187a06d239df31eb" file="9" linestart="907" lineend="907">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_89e426aa5c71e3e9f23121b227323884" file="9" linestart="908" lineend="908">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_GOT_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_2497bd45015837ab4829ebf58a41369a" file="9" linestart="909" lineend="909">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_SUB" id="63dc5295b8c49c9d3ab8f488c40b300e_e715986b947b3bf4a6240f3d25e81788" file="9" linestart="910" lineend="910">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_HIGHER" id="63dc5295b8c49c9d3ab8f488c40b300e_f176a1b845f5f613e848ebf37c47a02b" file="9" linestart="914" lineend="914">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_HIGHEST" id="63dc5295b8c49c9d3ab8f488c40b300e_ebfacf866f282dd10c18ce03393952cf" file="9" linestart="915" lineend="915">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_CALL_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_568a1bf4837effbd7fe210e2cb5d2ac0" file="9" linestart="916" lineend="916">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_CALL_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_fab0f31af3087a0d167fd655c6ce7896" file="9" linestart="917" lineend="917">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_GD" id="63dc5295b8c49c9d3ab8f488c40b300e_bb1d14f1bfc9523f943fbe9ed6cd4d4d" file="9" linestart="928" lineend="928">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_LDM" id="63dc5295b8c49c9d3ab8f488c40b300e_90e87a2258e361e86980692f823e3dc5" file="9" linestart="929" lineend="929">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_DTPREL_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_7f6b0f242cb5e02a3d81eed1187a59d4" file="9" linestart="930" lineend="930">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_DTPREL_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_215359769f958e5b2584d6def4bfa10a" file="9" linestart="931" lineend="931">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_GOTTPREL" id="63dc5295b8c49c9d3ab8f488c40b300e_7305e88c49d75d59810ac3392604f71b" file="9" linestart="932" lineend="932">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_TPREL_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_cd68eeae7c90a7a52613182b9018f042" file="9" linestart="935" lineend="935">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_TLS_TPREL_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_774e6f57f6c5ebac0bddc8a9b827c25f" file="9" linestart="936" lineend="936">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PC21_S2" id="63dc5295b8c49c9d3ab8f488c40b300e_b0a5f5cd8c3cdbb5862467206fe3e7b8" file="9" linestart="938" lineend="938">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PC26_S2" id="63dc5295b8c49c9d3ab8f488c40b300e_e9e3a3ca94c6ff081ddec5c8cfff25ac" file="9" linestart="939" lineend="939">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PC18_S3" id="63dc5295b8c49c9d3ab8f488c40b300e_bdcd82d968d3223f22c935dd298e46d4" file="9" linestart="940" lineend="940">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PC19_S2" id="63dc5295b8c49c9d3ab8f488c40b300e_f7a7733c47ef82fbde1fb7e4a5808c0e" file="9" linestart="941" lineend="941">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PCHI16" id="63dc5295b8c49c9d3ab8f488c40b300e_4f8718e3c755f7d2a9492d2b04266b68" file="9" linestart="942" lineend="942">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS_PCLO16" id="63dc5295b8c49c9d3ab8f488c40b300e_1940c0884b9ec05db4952563be901a59" file="9" linestart="943" lineend="943">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS16_GOT16" id="63dc5295b8c49c9d3ab8f488c40b300e_ca816082c577d565dbd8e95af7e37b78" file="9" linestart="944" lineend="944">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS16_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_9a7ab565265f27b268d28fd52e9deef5" file="9" linestart="945" lineend="945">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MIPS16_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_38d151f3d54c3b1baa308e459f32468e" file="9" linestart="946" lineend="946">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_26_S1" id="63dc5295b8c49c9d3ab8f488c40b300e_0505eab415d6ab70d373cd9388d71460" file="9" linestart="949" lineend="949">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_6b0cb62baaca3c53ba7381c1ee5a49ca" file="9" linestart="950" lineend="950">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_5455a5c812381d056c50690b41b47c3c" file="9" linestart="951" lineend="951">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_GOT16" id="63dc5295b8c49c9d3ab8f488c40b300e_a79760511c5635cfa3ac0044f74560d9" file="9" linestart="952" lineend="952">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_PC16_S1" id="63dc5295b8c49c9d3ab8f488c40b300e_8ac2fdd10e51d3b9bf9f8ddad4489ff8" file="9" linestart="953" lineend="953">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_CALL16" id="63dc5295b8c49c9d3ab8f488c40b300e_e7b359b5ece634edc3c41dad9277a533" file="9" linestart="954" lineend="954">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_GOT_DISP" id="63dc5295b8c49c9d3ab8f488c40b300e_2fc2a5201e4568780fe96421306c1d7d" file="9" linestart="955" lineend="955">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_GOT_PAGE" id="63dc5295b8c49c9d3ab8f488c40b300e_2abdf760f58d4d05ab7d0f5620e4e74c" file="9" linestart="956" lineend="956">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_GOT_OFST" id="63dc5295b8c49c9d3ab8f488c40b300e_791ce9c27fc71f1f26e7ae8ed81c960e" file="9" linestart="957" lineend="957">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_GD" id="63dc5295b8c49c9d3ab8f488c40b300e_c40353e17564cb797fce938fa99d606f" file="9" linestart="958" lineend="958">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_LDM" id="63dc5295b8c49c9d3ab8f488c40b300e_d3ead8e7c3c43cbc0a45b3bd5171ce30" file="9" linestart="959" lineend="959">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_DTPREL_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_1bb45a3d43f6c0873fb46d7e6c64c7e5" file="9" linestart="960" lineend="960">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_DTPREL_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_20e879d16e02f0c1a111e1a4422bcf73" file="9" linestart="961" lineend="961">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_TPREL_HI16" id="63dc5295b8c49c9d3ab8f488c40b300e_8d426af35a43c4b9be211e1c6ee3af57" file="9" linestart="962" lineend="962">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+<ec name="R_MICROMIPS_TLS_TPREL_LO16" id="63dc5295b8c49c9d3ab8f488c40b300e_214ae255b145ebf1731f8f65fa46e8fe" file="9" linestart="963" lineend="963">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_900b1eabc4c37011e992506a27552757"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCELFObjectTargetWriter" id="b9142abdda6ca248bbac93f3abe1da5b_9cb4741c953455f9c563ab422e05183c" file="13" linestart="28" lineend="108">
+<c name="MCELFObjectTargetWriter" id="b9142abdda6ca248bbac93f3abe1da5b_a263dc42acf35d3521966631da7775df" file="13" linestart="37" lineend="39" access="protected">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Is64Bit_" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="OSABI_" proto="uint8_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</p>
+<p name="EMachine_" proto="uint16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</p>
+<p name="HasRelocationAddend" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="IsN64" proto="bool" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="bool"/>
+</p>
+</c>
+<m name="isN64" id="b9142abdda6ca248bbac93f3abe1da5b_b83137d97714890e2fd54da3310a9283" file="13" linestart="67" lineend="67" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+</m>
+<m name="setRType" id="b9142abdda6ca248bbac93f3abe1da5b_4331285b9fd4868a2011321e4d500de4" file="13" linestart="96" lineend="98" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="Value" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+<p name="Type" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+<m name="setRType2" id="b9142abdda6ca248bbac93f3abe1da5b_8fdad74a19f0356b7665ab572d77a49c" file="13" linestart="99" lineend="101" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="Value" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+<p name="Type" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+<m name="setRType3" id="b9142abdda6ca248bbac93f3abe1da5b_df16cbfc4ce9badce202a1791836be11" file="13" linestart="102" lineend="104" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="Value" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+<p name="Type" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCValue" id="13e13b9be279deef3bbf637a92f93d60_23c62a56b77ff5aca3493abea0aeaa3b" file="14" linestart="43" lineend="86" previous="b9142abdda6ca248bbac93f3abe1da5b_23c62a56b77ff5aca3493abea0aeaa3b"/>
+<f namespace="llvm" name="llvm_unreachable_internal" id="4490f7744b0eb140a59a313798e92590_041af46f83dd11078969ec645bc14a67" file="15" linestart="84" lineend="86" access="none">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="msg" proto="const char *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="file" proto="const char *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="line" proto="unsigned int" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f namespace="llvm" name="createELFObjectWriter" id="b9142abdda6ca248bbac93f3abe1da5b_88161fe3bbfbed99632978ab82e5c980" file="13" linestart="115" lineend="116" access="none">
+<fpt proto="llvm::MCObjectWriter *">
+<pt>
+<rt>
+<cr id="d40db948024fca4b42b0715f2a933104_4e073ab275d03ee1a33c7f36dfe72918"/>
+</rt>
+</pt>
+</fpt>
+<p name="MOTW" proto="llvm::MCELFObjectTargetWriter *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="b9142abdda6ca248bbac93f3abe1da5b_9cb4741c953455f9c563ab422e05183c"/>
+</rt>
+</pt>
+</p>
+<p name="OS" proto="llvm::raw_ostream &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</p>
+<p name="IsLittleEndian" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</f>
+</Externals>

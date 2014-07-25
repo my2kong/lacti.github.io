@@ -1,0 +1,960 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="9" e="9"/>
+<c f="1" b="10" e="10"/>
+<c f="1" b="11" e="11"/>
+<c f="1" b="12" e="12"/>
+<c f="1" b="13" e="13"/>
+<c f="1" b="15" e="13"/>
+<c f="1" b="27" e="27"/>
+<c f="1" b="28" e="28"/>
+<c f="1" b="29" e="28"/>
+<c f="1" b="75" e="75"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="13" e="13"/>
+<c f="2" b="15" e="13"/>
+<c f="2" b="37" e="37"/>
+<c f="2" b="39" e="37"/>
+</Comments>
+<Macros>
+<m f="2" bl="30" bc="1" el="30" ec="1"/>
+<m f="2" bl="31" bc="1" el="31" ec="1"/>
+</Macros>
+<tun>
+<ns name="llvm" id="272f6636247d7424962c3670485cc9c6_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="20" lineend="37" original="">
+<f namespace="llvm" name="PrintWarning" id="272f6636247d7424962c3670485cc9c6_9ca92e41697fd3c8bae795aac9481b0b" file="2" linestart="22" lineend="22" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="WarningLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintWarning" id="272f6636247d7424962c3670485cc9c6_4549bc81565917a6942f083778bf8db5" file="2" linestart="23" lineend="23" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Loc" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintWarning" id="272f6636247d7424962c3670485cc9c6_aa46a8a47556a2b9610f34f8dbcfecad" file="2" linestart="24" lineend="24" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintError" id="272f6636247d7424962c3670485cc9c6_c2eb288e16f8eab82f912525a30dd122" file="2" linestart="26" lineend="26" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="ErrorLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintError" id="272f6636247d7424962c3670485cc9c6_02096532513186570c13053697177165" file="2" linestart="27" lineend="27" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Loc" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintError" id="272f6636247d7424962c3670485cc9c6_2d888d351580702ed291da570385a875" file="2" linestart="28" lineend="28" access="none" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintFatalError" id="272f6636247d7424962c3670485cc9c6_9ff6ab051d72fbc6a97a020e91ac925c" file="2" linestart="30" lineend="30" access="none" hasbody="true">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f namespace="llvm" name="PrintFatalError" id="272f6636247d7424962c3670485cc9c6_f5dd949827e87d7b9231fa48d3adf83d" file="2" linestart="31" lineend="32" access="none" hasbody="true">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="ErrorLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<v namespace="llvm" name="SrcMgr" proto="llvm::SourceMgr" id="272f6636247d7424962c3670485cc9c6_54057bc1bfbb0bf3947f17b7df49098c" file="2" linestart="34" lineend="34" storage="extern" access2="none">
+<rt>
+<cr id="ba8643cda43d4c1617bcce1a388c2606_6454f4a3041bbacc1d896ece46579f2b"/>
+</rt>
+<Stmt>
+
+</Stmt>
+</v>
+<v namespace="llvm" name="ErrorsPrinted" proto="unsigned int" isLiteral="true" isPrimitive="true" id="272f6636247d7424962c3670485cc9c6_bdc29cafaa66163e1e6d413a8bfb7964" file="2" linestart="35" lineend="35" storage="extern" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</v>
+</ns>
+<ns name="llvm" id="3968a49179f1d7646371715daf556097_544dadc8774ac7e8cdf9804c9bca3e1f" file="1" linestart="20" lineend="75" original="">
+<v namespace="llvm" name="SrcMgr" proto="llvm::SourceMgr" id="3968a49179f1d7646371715daf556097_54057bc1bfbb0bf3947f17b7df49098c" file="1" linestart="22" lineend="22" previous="272f6636247d7424962c3670485cc9c6_54057bc1bfbb0bf3947f17b7df49098c" init="true" access2="none">
+<rt>
+<cr id="ba8643cda43d4c1617bcce1a388c2606_6454f4a3041bbacc1d896ece46579f2b"/>
+</rt>
+<Stmt>
+<n10 lb="22" cb="11">
+<typeptr id="ba8643cda43d4c1617bcce1a388c2606_a1323c962649e2be516c00d6d0ba3be8"/>
+<temp/>
+</n10>
+
+</Stmt>
+</v>
+<v namespace="llvm" name="ErrorsPrinted" proto="unsigned int" isLiteral="true" isPrimitive="true" id="3968a49179f1d7646371715daf556097_bdc29cafaa66163e1e6d413a8bfb7964" file="1" linestart="23" lineend="23" previous="272f6636247d7424962c3670485cc9c6_bdc29cafaa66163e1e6d413a8bfb7964" init="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+<n32 lb="23" cb="26">
+<n45 lb="23" cb="26">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</v>
+<f namespace="llvm" name="PrintMessage" id="3968a49179f1d7646371715daf556097_b5e204e9ebb36e73029665dbbac38211" file="1" linestart="25" lineend="39" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Loc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Kind" proto="SourceMgr::DiagKind" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="ba8643cda43d4c1617bcce1a388c2606_622b55707ed2f57c311aa7a350fd5985"/>
+</et>
+</ety>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="26" cb="44" le="39" ce="1">
+<if lb="29" cb="3" le="30" ce="7">
+<xop lb="29" cb="7" le="29" ce="26" kind="==">
+<n32 lb="29" cb="7">
+<n32 lb="29" cb="7">
+<drx lb="29" cb="7" kind="lvalue" nm="Kind"/>
+</n32>
+</n32>
+<n32 lb="29" cb="15" le="29" ce="26">
+<drx lb="29" cb="15" le="29" ce="26" id="ba8643cda43d4c1617bcce1a388c2606_11a96b50f94394902b793dd966082faf" nm="DK_Error"/>
+</n32>
+</xop>
+<uo lb="30" cb="5" le="30" ce="7" kind="++">
+<drx lb="30" cb="7" kind="lvalue" id="3968a49179f1d7646371715daf556097_bdc29cafaa66163e1e6d413a8bfb7964" nm="ErrorsPrinted"/>
+</uo>
+</if>
+<dst lb="32" cb="3" le="32" ce="16">
+<exp pvirg="true"/>
+<Var nm="NullLoc" value="true">
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+<n10 lb="32" cb="9">
+<typeptr id="64805ad729d2da7126ad9f4ebb82b0b1_d851778b17bf1de76560cd216ece9eb3"/>
+<temp/>
+</n10>
+</Var>
+</dst>
+<if lb="33" cb="3" le="34" ce="11">
+<mce lb="33" cb="7" le="33" ce="17" nbparm="0" id="113b416902e0259d6681229a46a0de40_62764dfbafa6153dcd8f272f5780de1b">
+<exp pvirg="true"/>
+<mex lb="33" cb="7" le="33" ce="11" id="113b416902e0259d6681229a46a0de40_62764dfbafa6153dcd8f272f5780de1b" nm="empty" point="1">
+<n32 lb="33" cb="7">
+<drx lb="33" cb="7" kind="lvalue" nm="Loc"/>
+</n32>
+</mex>
+</mce>
+<ocx lb="34" cb="5" le="34" ce="11" nbparm="2" id="113b416902e0259d6681229a46a0de40_eb601d2c385bba7c4fec902b93b0c9e7">
+<exp pvirg="true"/>
+<n32 lb="34" cb="9">
+<drx lb="34" cb="9" kind="lvalue" id="113b416902e0259d6681229a46a0de40_eb601d2c385bba7c4fec902b93b0c9e7" nm="operator="/>
+</n32>
+<drx lb="34" cb="5" kind="lvalue" nm="Loc"/>
+<mte lb="34" cb="11">
+<exp pvirg="true"/>
+<n32 lb="34" cb="11">
+<n10 lb="34" cb="11">
+<typeptr id="113b416902e0259d6681229a46a0de40_3c57e8ce0c3627e0bef1cdbff462e616">
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="34" cb="11">
+<drx lb="34" cb="11" kind="lvalue" nm="NullLoc"/>
+</n32>
+</n10>
+</n32>
+</mte>
+</ocx>
+</if>
+<mce lb="35" cb="3" le="35" ce="45" nbparm="6" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3">
+<exp pvirg="true"/>
+<mex lb="35" cb="3" le="35" ce="10" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3" nm="PrintMessage" point="1">
+<n32 lb="35" cb="3">
+<drx lb="35" cb="3" kind="lvalue" id="3968a49179f1d7646371715daf556097_54057bc1bfbb0bf3947f17b7df49098c" nm="SrcMgr"/>
+</n32>
+</mex>
+<n10 lb="35" cb="23" le="35" ce="33">
+<typeptr id="64805ad729d2da7126ad9f4ebb82b0b1_70911a3dc8c3abca3dac21f7ff3c2407"/>
+<temp/>
+<mce lb="35" cb="23" le="35" ce="33" nbparm="0" id="113b416902e0259d6681229a46a0de40_81cc1c707bac08d31026a450b3d8c2a1">
+<exp pvirg="true"/>
+<mex lb="35" cb="23" le="35" ce="27" id="113b416902e0259d6681229a46a0de40_81cc1c707bac08d31026a450b3d8c2a1" nm="front" point="1">
+<n32 lb="35" cb="23">
+<drx lb="35" cb="23" kind="lvalue" nm="Loc"/>
+</n32>
+</mex>
+</mce>
+</n10>
+<n32 lb="35" cb="36">
+<drx lb="35" cb="36" kind="lvalue" nm="Kind"/>
+</n32>
+<drx lb="35" cb="42" kind="lvalue" nm="Msg"/>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+</mce>
+<fx lb="36" cb="3" le="38" ce="55">
+<dst lb="36" cb="8" le="36" ce="22">
+<exp pvirg="true"/>
+<Var nm="i" value="true">
+<bt name="unsigned int"/>
+<n32 lb="36" cb="21">
+<n45 lb="36" cb="21">
+<flit/>
+</n45>
+</n32>
+</Var>
+</dst>
+<xop lb="36" cb="24" le="36" ce="37" kind="&lt;">
+<n32 lb="36" cb="24">
+<drx lb="36" cb="24" kind="lvalue" nm="i"/>
+</n32>
+<mce lb="36" cb="28" le="36" ce="37" nbparm="0" id="113b416902e0259d6681229a46a0de40_631ed6fc4effb686c3ac57c93b3712f6">
+<exp pvirg="true"/>
+<mex lb="36" cb="28" le="36" ce="32" id="113b416902e0259d6681229a46a0de40_631ed6fc4effb686c3ac57c93b3712f6" nm="size" point="1">
+<n32 lb="36" cb="28">
+<drx lb="36" cb="28" kind="lvalue" nm="Loc"/>
+</n32>
+</mex>
+</mce>
+</xop>
+<uo lb="36" cb="40" le="36" ce="42" kind="++">
+<drx lb="36" cb="42" kind="lvalue" nm="i"/>
+</uo>
+<mce lb="37" cb="5" le="38" ce="55" nbparm="6" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3">
+<exp pvirg="true"/>
+<mex lb="37" cb="5" le="37" ce="12" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3" nm="PrintMessage" point="1">
+<n32 lb="37" cb="5">
+<drx lb="37" cb="5" kind="lvalue" id="3968a49179f1d7646371715daf556097_54057bc1bfbb0bf3947f17b7df49098c" nm="SrcMgr"/>
+</n32>
+</mex>
+<n10 lb="37" cb="25" le="37" ce="30">
+<typeptr id="64805ad729d2da7126ad9f4ebb82b0b1_70911a3dc8c3abca3dac21f7ff3c2407"/>
+<temp/>
+<ocx lb="37" cb="25" le="37" ce="30" nbparm="2" id="113b416902e0259d6681229a46a0de40_075f1ca940652a1f1250833cc0291cc0">
+<exp pvirg="true"/>
+<n32 lb="37" cb="28" le="37" ce="30">
+<drx lb="37" cb="28" le="37" ce="30" kind="lvalue" id="113b416902e0259d6681229a46a0de40_075f1ca940652a1f1250833cc0291cc0" nm="operator[]"/>
+</n32>
+<n32 lb="37" cb="25">
+<drx lb="37" cb="25" kind="lvalue" nm="Loc"/>
+</n32>
+<n32 lb="37" cb="29">
+<drx lb="37" cb="29" kind="lvalue" nm="i"/>
+</n32>
+</ocx>
+</n10>
+<drx lb="37" cb="33" le="37" ce="44" id="ba8643cda43d4c1617bcce1a388c2606_76fc2b7558bb2dc63c9820a1df4d3e26" nm="DK_Note"/>
+<mte lb="38" cb="25">
+<exp pvirg="true"/>
+<n10 lb="38" cb="25">
+<typeptr id="96ed60b524dd53b8d6b92c178537632e_50b43c2334b5224aebb38bf975bda87b"/>
+<temp/>
+<n32 lb="38" cb="25">
+<n52 lb="38" cb="25">
+<slit/>
+</n52>
+</n32>
+</n10>
+</mte>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+</mce>
+</fx>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintWarning" id="3968a49179f1d7646371715daf556097_9ca92e41697fd3c8bae795aac9481b0b" file="1" linestart="41" lineend="43" previous="272f6636247d7424962c3670485cc9c6_9ca92e41697fd3c8bae795aac9481b0b" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="WarningLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="41" cb="65" le="43" ce="1">
+<ce lb="42" cb="3" le="42" ce="54" nbparm="3" id="3968a49179f1d7646371715daf556097_b5e204e9ebb36e73029665dbbac38211">
+<exp pvirg="true"/>
+<n32 lb="42" cb="3">
+<drx lb="42" cb="3" kind="lvalue" id="3968a49179f1d7646371715daf556097_b5e204e9ebb36e73029665dbbac38211" nm="PrintMessage"/>
+</n32>
+<n10 lb="42" cb="16">
+<typeptr id="113b416902e0259d6681229a46a0de40_1905bd4b146cf62ac4992517e7267d53">
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="42" cb="16">
+<drx lb="42" cb="16" kind="lvalue" nm="WarningLoc"/>
+</n32>
+</n10>
+<drx lb="42" cb="28" le="42" ce="39" id="ba8643cda43d4c1617bcce1a388c2606_823ad2f1e2b3d5f46807c72bfbc76666" nm="DK_Warning"/>
+<drx lb="42" cb="51" kind="lvalue" nm="Msg"/>
+</ce>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintWarning" id="3968a49179f1d7646371715daf556097_4549bc81565917a6942f083778bf8db5" file="1" linestart="45" lineend="47" previous="272f6636247d7424962c3670485cc9c6_4549bc81565917a6942f083778bf8db5" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Loc" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="45" cb="54" le="47" ce="1">
+<mce lb="46" cb="3" le="46" ce="77" nbparm="6" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3">
+<exp pvirg="true"/>
+<mex lb="46" cb="3" le="46" ce="10" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3" nm="PrintMessage" point="1">
+<n32 lb="46" cb="3">
+<drx lb="46" cb="3" kind="lvalue" id="3968a49179f1d7646371715daf556097_54057bc1bfbb0bf3947f17b7df49098c" nm="SrcMgr"/>
+</n32>
+</mex>
+<n10 lb="46" cb="23" le="46" ce="48">
+<typeptr id="64805ad729d2da7126ad9f4ebb82b0b1_58a45668ea7634542e7869950622ef4f"/>
+<temp/>
+<mte lb="46" cb="23" le="46" ce="48">
+<exp pvirg="true"/>
+<ce lb="46" cb="23" le="46" ce="48" nbparm="1" id="64805ad729d2da7126ad9f4ebb82b0b1_2d95c82457508a4534c917dc7b153f3e">
+<exp pvirg="true"/>
+<n32 lb="46" cb="23" le="46" ce="30">
+<drx lb="46" cb="23" le="46" ce="30" kind="lvalue" id="64805ad729d2da7126ad9f4ebb82b0b1_2d95c82457508a4534c917dc7b153f3e" nm="getFromPointer"/>
+</n32>
+<n32 lb="46" cb="45">
+<drx lb="46" cb="45" kind="lvalue" nm="Loc"/>
+</n32>
+</ce>
+</mte>
+</n10>
+<drx lb="46" cb="51" le="46" ce="62" id="ba8643cda43d4c1617bcce1a388c2606_823ad2f1e2b3d5f46807c72bfbc76666" nm="DK_Warning"/>
+<drx lb="46" cb="74" kind="lvalue" nm="Msg"/>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+</mce>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintWarning" id="3968a49179f1d7646371715daf556097_aa46a8a47556a2b9610f34f8dbcfecad" file="1" linestart="49" lineend="51" previous="272f6636247d7424962c3670485cc9c6_aa46a8a47556a2b9610f34f8dbcfecad" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="49" cb="37" le="51" ce="1">
+<ocx lb="50" cb="3" le="50" ce="34" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="50" cb="31">
+<drx lb="50" cb="31" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ocx lb="50" cb="3" le="50" ce="27" nbparm="2" id="96ed60b524dd53b8d6b92c178537632e_9c51318c0b7f01606050fbd522cfd38b">
+<exp pvirg="true"/>
+<n32 lb="50" cb="24">
+<drx lb="50" cb="24" kind="lvalue" id="96ed60b524dd53b8d6b92c178537632e_9c51318c0b7f01606050fbd522cfd38b" nm="operator&lt;&lt;"/>
+</n32>
+<ocx lb="50" cb="3" le="50" ce="13" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="50" cb="10">
+<drx lb="50" cb="10" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ce lb="50" cb="3" le="50" ce="8" nbparm="0" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4">
+<exp pvirg="true"/>
+<n32 lb="50" cb="3">
+<drx lb="50" cb="3" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4" nm="errs"/>
+</n32>
+</ce>
+<n32 lb="50" cb="13">
+<n52 lb="50" cb="13">
+<slit/>
+</n52>
+</n32>
+</ocx>
+<drx lb="50" cb="27" kind="lvalue" nm="Msg"/>
+</ocx>
+<n32 lb="50" cb="34">
+<n52 lb="50" cb="34">
+<slit/>
+</n52>
+</n32>
+</ocx>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintError" id="3968a49179f1d7646371715daf556097_c2eb288e16f8eab82f912525a30dd122" file="1" linestart="53" lineend="55" previous="272f6636247d7424962c3670485cc9c6_c2eb288e16f8eab82f912525a30dd122" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="ErrorLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="53" cb="61" le="55" ce="1">
+<ce lb="54" cb="3" le="54" ce="50" nbparm="3" id="3968a49179f1d7646371715daf556097_b5e204e9ebb36e73029665dbbac38211">
+<exp pvirg="true"/>
+<n32 lb="54" cb="3">
+<drx lb="54" cb="3" kind="lvalue" id="3968a49179f1d7646371715daf556097_b5e204e9ebb36e73029665dbbac38211" nm="PrintMessage"/>
+</n32>
+<n10 lb="54" cb="16">
+<typeptr id="113b416902e0259d6681229a46a0de40_1905bd4b146cf62ac4992517e7267d53">
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="54" cb="16">
+<drx lb="54" cb="16" kind="lvalue" nm="ErrorLoc"/>
+</n32>
+</n10>
+<drx lb="54" cb="26" le="54" ce="37" id="ba8643cda43d4c1617bcce1a388c2606_11a96b50f94394902b793dd966082faf" nm="DK_Error"/>
+<drx lb="54" cb="47" kind="lvalue" nm="Msg"/>
+</ce>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintError" id="3968a49179f1d7646371715daf556097_02096532513186570c13053697177165" file="1" linestart="57" lineend="59" previous="272f6636247d7424962c3670485cc9c6_02096532513186570c13053697177165" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Loc" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="57" cb="52" le="59" ce="1">
+<mce lb="58" cb="3" le="58" ce="75" nbparm="6" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3">
+<exp pvirg="true"/>
+<mex lb="58" cb="3" le="58" ce="10" id="ba8643cda43d4c1617bcce1a388c2606_c5fc5bf09a3dd5f105320cdd265f4cf3" nm="PrintMessage" point="1">
+<n32 lb="58" cb="3">
+<drx lb="58" cb="3" kind="lvalue" id="3968a49179f1d7646371715daf556097_54057bc1bfbb0bf3947f17b7df49098c" nm="SrcMgr"/>
+</n32>
+</mex>
+<n10 lb="58" cb="23" le="58" ce="48">
+<typeptr id="64805ad729d2da7126ad9f4ebb82b0b1_58a45668ea7634542e7869950622ef4f"/>
+<temp/>
+<mte lb="58" cb="23" le="58" ce="48">
+<exp pvirg="true"/>
+<ce lb="58" cb="23" le="58" ce="48" nbparm="1" id="64805ad729d2da7126ad9f4ebb82b0b1_2d95c82457508a4534c917dc7b153f3e">
+<exp pvirg="true"/>
+<n32 lb="58" cb="23" le="58" ce="30">
+<drx lb="58" cb="23" le="58" ce="30" kind="lvalue" id="64805ad729d2da7126ad9f4ebb82b0b1_2d95c82457508a4534c917dc7b153f3e" nm="getFromPointer"/>
+</n32>
+<n32 lb="58" cb="45">
+<drx lb="58" cb="45" kind="lvalue" nm="Loc"/>
+</n32>
+</ce>
+</mte>
+</n10>
+<drx lb="58" cb="51" le="58" ce="62" id="ba8643cda43d4c1617bcce1a388c2606_11a96b50f94394902b793dd966082faf" nm="DK_Error"/>
+<drx lb="58" cb="72" kind="lvalue" nm="Msg"/>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+<n12>
+<exp pvirg="true"/>
+</n12>
+</mce>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintError" id="3968a49179f1d7646371715daf556097_2d888d351580702ed291da570385a875" file="1" linestart="61" lineend="63" previous="272f6636247d7424962c3670485cc9c6_2d888d351580702ed291da570385a875" access="none" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="61" cb="35" le="63" ce="1">
+<ocx lb="62" cb="3" le="62" ce="32" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="62" cb="29">
+<drx lb="62" cb="29" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ocx lb="62" cb="3" le="62" ce="25" nbparm="2" id="96ed60b524dd53b8d6b92c178537632e_9c51318c0b7f01606050fbd522cfd38b">
+<exp pvirg="true"/>
+<n32 lb="62" cb="22">
+<drx lb="62" cb="22" kind="lvalue" id="96ed60b524dd53b8d6b92c178537632e_9c51318c0b7f01606050fbd522cfd38b" nm="operator&lt;&lt;"/>
+</n32>
+<ocx lb="62" cb="3" le="62" ce="13" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="62" cb="10">
+<drx lb="62" cb="10" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ce lb="62" cb="3" le="62" ce="8" nbparm="0" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4">
+<exp pvirg="true"/>
+<n32 lb="62" cb="3">
+<drx lb="62" cb="3" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4" nm="errs"/>
+</n32>
+</ce>
+<n32 lb="62" cb="13">
+<n52 lb="62" cb="13">
+<slit/>
+</n52>
+</n32>
+</ocx>
+<drx lb="62" cb="25" kind="lvalue" nm="Msg"/>
+</ocx>
+<n32 lb="62" cb="32">
+<n52 lb="62" cb="32">
+<slit/>
+</n52>
+</n32>
+</ocx>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintFatalError" id="3968a49179f1d7646371715daf556097_9ff6ab051d72fbc6a97a020e91ac925c" file="1" linestart="65" lineend="68" previous="272f6636247d7424962c3670485cc9c6_9ff6ab051d72fbc6a97a020e91ac925c" access="none" hasbody="true" isdef="true">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="65" cb="40" le="68" ce="1">
+<ce lb="66" cb="3" le="66" ce="17" nbparm="1" id="272f6636247d7424962c3670485cc9c6_2d888d351580702ed291da570385a875">
+<exp pvirg="true"/>
+<n32 lb="66" cb="3">
+<drx lb="66" cb="3" kind="lvalue" id="272f6636247d7424962c3670485cc9c6_2d888d351580702ed291da570385a875" nm="PrintError"/>
+</n32>
+<drx lb="66" cb="14" kind="lvalue" nm="Msg"/>
+</ce>
+<ce lb="67" cb="3" le="67" ce="14" nbparm="1" id="17cba6e85ee945f0e4acd2e5f276ff1b_508905b7f4049a9f083c59a21f54149a">
+<exp pvirg="true"/>
+<n32 lb="67" cb="3" le="67" ce="8">
+<drx lb="67" cb="3" le="67" ce="8" kind="lvalue" id="17cba6e85ee945f0e4acd2e5f276ff1b_508905b7f4049a9f083c59a21f54149a" nm="exit"/>
+</n32>
+<n45 lb="67" cb="13">
+<flit/>
+</n45>
+</ce>
+</u>
+
+</Stmt>
+</f>
+<f namespace="llvm" name="PrintFatalError" id="3968a49179f1d7646371715daf556097_f5dd949827e87d7b9231fa48d3adf83d" file="1" linestart="70" lineend="73" previous="272f6636247d7424962c3670485cc9c6_f5dd949827e87d7b9231fa48d3adf83d" access="none" hasbody="true" isdef="true">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="ErrorLoc" proto="ArrayRef&lt;llvm::SMLoc&gt;" isLiteral="true" access2="none">
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</tss>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Msg" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="70" cb="66" le="73" ce="1">
+<ce lb="71" cb="3" le="71" ce="27" nbparm="2" id="272f6636247d7424962c3670485cc9c6_c2eb288e16f8eab82f912525a30dd122">
+<exp pvirg="true"/>
+<n32 lb="71" cb="3">
+<drx lb="71" cb="3" kind="lvalue" id="272f6636247d7424962c3670485cc9c6_c2eb288e16f8eab82f912525a30dd122" nm="PrintError"/>
+</n32>
+<n10 lb="71" cb="14">
+<typeptr id="113b416902e0259d6681229a46a0de40_1905bd4b146cf62ac4992517e7267d53">
+<template_arguments>
+<rt>
+<cr id="64805ad729d2da7126ad9f4ebb82b0b1_a0acbaff59ef7e9691c24981988e88cd"/>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="71" cb="14">
+<drx lb="71" cb="14" kind="lvalue" nm="ErrorLoc"/>
+</n32>
+</n10>
+<drx lb="71" cb="24" kind="lvalue" nm="Msg"/>
+</ce>
+<ce lb="72" cb="3" le="72" ce="14" nbparm="1" id="17cba6e85ee945f0e4acd2e5f276ff1b_508905b7f4049a9f083c59a21f54149a">
+<exp pvirg="true"/>
+<n32 lb="72" cb="3" le="72" ce="8">
+<drx lb="72" cb="3" le="72" ce="8" kind="lvalue" id="17cba6e85ee945f0e4acd2e5f276ff1b_508905b7f4049a9f083c59a21f54149a" nm="exit"/>
+</n32>
+<n45 lb="72" cb="13">
+<flit/>
+</n45>
+</ce>
+</u>
+
+</Stmt>
+</f>
+</ns>
+</tun>
+</Root>

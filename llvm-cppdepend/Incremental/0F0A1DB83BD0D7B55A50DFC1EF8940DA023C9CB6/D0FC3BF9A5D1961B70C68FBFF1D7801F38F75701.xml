@@ -1,0 +1,736 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="10" e="8"/>
+<c f="1" b="14" e="14"/>
+<c f="1" b="15" e="14"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="10" e="8"/>
+<c f="2" b="24" e="24"/>
+<c f="2" b="25" e="24"/>
+<c f="2" b="26" e="26"/>
+<c f="2" b="27" e="27"/>
+<c f="2" b="28" e="28"/>
+<c f="2" b="29" e="28"/>
+<c f="2" b="78" e="78"/>
+<c f="2" b="80" e="78"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="0e056969099e25669692dfe0cdb58d9e_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="16" lineend="78" original="">
+<ns name="Hexagon" id="0e056969099e25669692dfe0cdb58d9e_4023eded00c98bd4b9d08f1a1401553b" file="2" linestart="18" lineend="21">
+<v namespace="llvm.Hexagon" name="StartPacket" proto="const unsigned int" const="true" isLiteral="true" isPrimitive="true" id="0e056969099e25669692dfe0cdb58d9e_3bcc77006c5d837e702db726fe989a7d" file="2" linestart="19" lineend="19" init="true" access2="none">
+<QualType const="true">
+<bt name="unsigned int"/>
+</QualType>
+<Stmt>
+<n32 lb="19" cb="38">
+<n45 lb="19" cb="38">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</v>
+<v namespace="llvm.Hexagon" name="EndPacket" proto="const unsigned int" const="true" isLiteral="true" isPrimitive="true" id="0e056969099e25669692dfe0cdb58d9e_4f2bda3ab2b044a301868bc3f2cb5838" file="2" linestart="20" lineend="20" init="true" access2="none">
+<QualType const="true">
+<bt name="unsigned int"/>
+</QualType>
+<Stmt>
+<n32 lb="20" cb="36">
+<n45 lb="20" cb="36">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</v>
+</ns>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="HexagonMachineFunctionInfo" id="0e056969099e25669692dfe0cdb58d9e_e42c3e75efbcf27cb63b6d1a1a31d92b" file="2" linestart="25" lineend="77">
+<base access="public">
+<rt>
+<cr id="895a66b41661e915ba6854da2359580f_b05565980b07b5f5585e3c8b28eeaef6"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="HexagonMachineFunctionInfo" id="0e056969099e25669692dfe0cdb58d9e_1db1c081baba05eb3af693b1cb41f79a" file="2" linestart="25" lineend="25"/>
+<fl name="SRetReturnReg" id="0e056969099e25669692dfe0cdb58d9e_3bfe0c39f1e51ccee73c66e58b578fdc" file="2" linestart="29" lineend="29" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="AllocaAdjustInsts" id="0e056969099e25669692dfe0cdb58d9e_86f952c34f8af5b65e1bc77e3eb381f6" file="2" linestart="30" lineend="30" access="private" proto="std::vector&lt;MachineInstr *&gt;">
+<ety>
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b"/>
+<template_arguments>
+<pt>
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</pt>
+</template_arguments>
+</tss>
+</ety>
+</fl>
+<fl name="VarArgsFrameIndex" id="0e056969099e25669692dfe0cdb58d9e_5517bc32d08af9e4386bb048298c3117" file="2" linestart="31" lineend="31" isLiteral="true" access="private" proto="int">
+<bt name="int"/>
+</fl>
+<fl name="HasClobberLR" id="0e056969099e25669692dfe0cdb58d9e_05fdf6a70be98afec2a55da4fe963aaf" file="2" linestart="32" lineend="32" isLiteral="true" access="private" proto="bool">
+<bt name="bool"/>
+</fl>
+<fl name="HasEHReturn" id="0e056969099e25669692dfe0cdb58d9e_707c5e358d0d9afe44f08a81108755ec" file="2" linestart="33" lineend="33" isLiteral="true" access="private" proto="bool">
+<bt name="bool"/>
+</fl>
+<fl name="PacketInfo" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" file="2" linestart="34" lineend="34" access="private" proto="std::map&lt;const MachineInstr *, unsigned int&gt;">
+<ety>
+<tss>
+<templatebase id="543b91aff9d74024059e00771cc90e52_af53dcb0381442ba69b706cfd90f0e4b"/>
+<template_arguments>
+<pt>
+<QualType const="true">
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</QualType>
+</pt>
+<bt name="unsigned int"/>
+</template_arguments>
+</tss>
+</ety>
+</fl>
+<m name="anchor" id="0e056969099e25669692dfe0cdb58d9e_89965438c49a65941b3552308bc73705" file="2" linestart="35" lineend="35" virtual="true" access="private" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<Decl access="public"/>
+<c name="HexagonMachineFunctionInfo" id="0e056969099e25669692dfe0cdb58d9e_718462abc03178de828d8ee231cb7957" file="2" linestart="38" lineend="39" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<BaseInit>
+<n10 lb="38" cb="3">
+<typeptr id="895a66b41661e915ba6854da2359580f_d80cd21311f62ecc8ffb33cbab23d777"/>
+<temp/>
+</n10>
+
+</BaseInit>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_3bfe0c39f1e51ccee73c66e58b578fdc">
+<Stmt>
+<n32 lb="38" cb="48">
+<n45 lb="38" cb="48">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_05fdf6a70be98afec2a55da4fe963aaf">
+<Stmt>
+<n32 lb="38" cb="65">
+<n45 lb="38" cb="65"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_707c5e358d0d9afe44f08a81108755ec">
+<Stmt>
+<n9 lb="39" cb="17"/>
+
+</Stmt>
+</initlist>
+<Stmt>
+<u lb="39" cb="24" le="39" ce="25"/>
+
+</Stmt>
+</c>
+<c name="HexagonMachineFunctionInfo" id="0e056969099e25669692dfe0cdb58d9e_2d6bb11e78d1f6ee01381505351f6ac8" file="2" linestart="41" lineend="43" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MF" proto="llvm::MachineFunction &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="895a66b41661e915ba6854da2359580f_7a76e175133a980deee19d81d954fcc0"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<BaseInit>
+<n10 lb="41" cb="3">
+<typeptr id="895a66b41661e915ba6854da2359580f_d80cd21311f62ecc8ffb33cbab23d777"/>
+<temp/>
+</n10>
+
+</BaseInit>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_3bfe0c39f1e51ccee73c66e58b578fdc">
+<Stmt>
+<n32 lb="41" cb="67">
+<n45 lb="41" cb="67">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_05fdf6a70be98afec2a55da4fe963aaf">
+<Stmt>
+<n32 lb="42" cb="66">
+<n45 lb="42" cb="66"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="0e056969099e25669692dfe0cdb58d9e_707c5e358d0d9afe44f08a81108755ec">
+<Stmt>
+<n9 lb="43" cb="65"/>
+
+</Stmt>
+</initlist>
+<Stmt>
+<u lb="43" cb="72" le="43" ce="73"/>
+
+</Stmt>
+</c>
+<m name="getSRetReturnReg" id="0e056969099e25669692dfe0cdb58d9e_977e3b6283b9ca208860b9056e99ecef" file="2" linestart="45" lineend="45" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="45" cb="37" le="45" ce="61">
+<rx lb="45" cb="39" le="45" ce="46" pvirg="true">
+<n32 lb="45" cb="46">
+<mex lb="45" cb="46" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_3bfe0c39f1e51ccee73c66e58b578fdc" nm="SRetReturnReg" arrow="1">
+<n19 lb="45" cb="46"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setSRetReturnReg" id="0e056969099e25669692dfe0cdb58d9e_154d20d89cfce07273cb25bd5b17e5e0" file="2" linestart="46" lineend="46" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Reg" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="46" cb="39" le="46" ce="62">
+<xop lb="46" cb="41" le="46" ce="57" kind="=">
+<mex lb="46" cb="41" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_3bfe0c39f1e51ccee73c66e58b578fdc" nm="SRetReturnReg" arrow="1">
+<n19 lb="46" cb="41"/>
+</mex>
+<n32 lb="46" cb="57">
+<drx lb="46" cb="57" kind="lvalue" nm="Reg"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="addAllocaAdjustInst" id="0e056969099e25669692dfe0cdb58d9e_2975f050d057bda2ad6a3907e339aa8e" file="2" linestart="48" lineend="50" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MI" proto="llvm::MachineInstr *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="48" cb="46" le="50" ce="3">
+<mce lb="49" cb="5" le="49" ce="35" nbparm="1" id="78cb3cbcc032150b6a85b2f30813c812_1c83e7b73b142304d6ba2d86ad19d7c1">
+<exp pvirg="true"/>
+<mex lb="49" cb="5" le="49" ce="23" id="78cb3cbcc032150b6a85b2f30813c812_1c83e7b73b142304d6ba2d86ad19d7c1" nm="push_back" point="1">
+<mex lb="49" cb="5" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_86f952c34f8af5b65e1bc77e3eb381f6" nm="AllocaAdjustInsts" arrow="1">
+<n19 lb="49" cb="5"/>
+</mex>
+</mex>
+<n32 lb="49" cb="33">
+<drx lb="49" cb="33" kind="lvalue" nm="MI"/>
+</n32>
+</mce>
+</u>
+
+</Stmt>
+</m>
+<m name="getAllocaAdjustInsts" id="0e056969099e25669692dfe0cdb58d9e_66936a5656579ea38a9507decef577df" file="2" linestart="51" lineend="53" access="public" hasbody="true" isdef="true">
+<fpt proto="const std::vector&lt;MachineInstr *&gt; &amp;">
+<lrf>
+<QualType const="true">
+<ety>
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b"/>
+<template_arguments>
+<pt>
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</pt>
+</template_arguments>
+</tss>
+</ety>
+</QualType>
+</lrf>
+</fpt>
+<Stmt>
+<u lb="51" cb="60" le="53" ce="3">
+<rx lb="52" cb="5" le="52" ce="12" pvirg="true">
+<n32 lb="52" cb="12">
+<mex lb="52" cb="12" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_86f952c34f8af5b65e1bc77e3eb381f6" nm="AllocaAdjustInsts" arrow="1">
+<n19 lb="52" cb="12"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setVarArgsFrameIndex" id="0e056969099e25669692dfe0cdb58d9e_b0b8ca93bec68bab1e2de2bf50397a05" file="2" linestart="55" lineend="55" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="v" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="55" cb="36" le="55" ce="61">
+<xop lb="55" cb="38" le="55" ce="58" kind="=">
+<mex lb="55" cb="38" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_5517bc32d08af9e4386bb048298c3117" nm="VarArgsFrameIndex" arrow="1">
+<n19 lb="55" cb="38"/>
+</mex>
+<n32 lb="55" cb="58">
+<drx lb="55" cb="58" kind="lvalue" nm="v"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getVarArgsFrameIndex" id="0e056969099e25669692dfe0cdb58d9e_c060f60509a8a77ea6ce32d75358da32" file="2" linestart="56" lineend="56" access="public" hasbody="true" isdef="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="56" cb="30" le="56" ce="58">
+<rx lb="56" cb="32" le="56" ce="39" pvirg="true">
+<n32 lb="56" cb="39">
+<mex lb="56" cb="39" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_5517bc32d08af9e4386bb048298c3117" nm="VarArgsFrameIndex" arrow="1">
+<n19 lb="56" cb="39"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setStartPacket" id="0e056969099e25669692dfe0cdb58d9e_9a1ba57339de012d90b83063e2bff25f" file="2" linestart="58" lineend="60" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MI" proto="llvm::MachineInstr *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="58" cb="41" le="60" ce="3">
+<cao lb="59" cb="5" le="59" ce="32" kind="|=">
+<ocx lb="59" cb="5" le="59" ce="18" nbparm="2" id="543b91aff9d74024059e00771cc90e52_1afe3a918eb9d87b292b9873cf6e8cbb">
+<exp pvirg="true"/>
+<n32 lb="59" cb="15" le="59" ce="18">
+<drx lb="59" cb="15" le="59" ce="18" kind="lvalue" id="543b91aff9d74024059e00771cc90e52_1afe3a918eb9d87b292b9873cf6e8cbb" nm="operator[]"/>
+</n32>
+<mex lb="59" cb="5" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="59" cb="5"/>
+</mex>
+<mte lb="59" cb="16">
+<exp pvirg="true"/>
+<n32 lb="59" cb="16">
+<n32 lb="59" cb="16">
+<drx lb="59" cb="16" kind="lvalue" nm="MI"/>
+</n32>
+</n32>
+</mte>
+</ocx>
+<n32 lb="59" cb="23" le="59" ce="32">
+<drx lb="59" cb="23" le="59" ce="32" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_3bcc77006c5d837e702db726fe989a7d" nm="StartPacket"/>
+</n32>
+</cao>
+</u>
+
+</Stmt>
+</m>
+<m name="setEndPacket" id="0e056969099e25669692dfe0cdb58d9e_f3b76c4de0b519c9f6ecfd086f02cd37" file="2" linestart="61" lineend="63" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MI" proto="llvm::MachineInstr *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="61" cb="41" le="63" ce="3">
+<cao lb="62" cb="5" le="62" ce="32" kind="|=">
+<ocx lb="62" cb="5" le="62" ce="18" nbparm="2" id="543b91aff9d74024059e00771cc90e52_1afe3a918eb9d87b292b9873cf6e8cbb">
+<exp pvirg="true"/>
+<n32 lb="62" cb="15" le="62" ce="18">
+<drx lb="62" cb="15" le="62" ce="18" kind="lvalue" id="543b91aff9d74024059e00771cc90e52_1afe3a918eb9d87b292b9873cf6e8cbb" nm="operator[]"/>
+</n32>
+<mex lb="62" cb="5" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="62" cb="5"/>
+</mex>
+<mte lb="62" cb="16">
+<exp pvirg="true"/>
+<n32 lb="62" cb="16">
+<n32 lb="62" cb="16">
+<drx lb="62" cb="16" kind="lvalue" nm="MI"/>
+</n32>
+</n32>
+</mte>
+</ocx>
+<n32 lb="62" cb="23" le="62" ce="32">
+<drx lb="62" cb="23" le="62" ce="32" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_4f2bda3ab2b044a301868bc3f2cb5838" nm="EndPacket"/>
+</n32>
+</cao>
+</u>
+
+</Stmt>
+</m>
+<m name="isStartPacket" id="0e056969099e25669692dfe0cdb58d9e_ffe82341fc9c7a852224c1779ce4bdfc" file="2" linestart="64" lineend="67" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="MI" proto="const llvm::MachineInstr *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="64" cb="52" le="67" ce="3">
+<rx lb="65" cb="5" le="66" ce="65" pvirg="true">
+<n37 lb="65" cb="12" le="66" ce="65">
+<n46 lb="65" cb="12" le="66" ce="65">
+<exp pvirg="true"/>
+<xop lb="65" cb="13" le="66" ce="64" kind="&amp;&amp;">
+<n32 lb="65" cb="13" le="65" ce="32">
+<mce lb="65" cb="13" le="65" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_928c891a6c4ab7869059ab48ad66525f">
+<exp pvirg="true"/>
+<mex lb="65" cb="13" le="65" ce="24" id="8070363a27881d4727dcaa96ac073104_928c891a6c4ab7869059ab48ad66525f" nm="count" point="1">
+<n32 lb="65" cb="13">
+<mex lb="65" cb="13" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="65" cb="13"/>
+</mex>
+</n32>
+</mex>
+<n32 lb="65" cb="30">
+<drx lb="65" cb="30" kind="lvalue" nm="MI"/>
+</n32>
+</mce>
+</n32>
+<n32 lb="66" cb="13" le="66" ce="64">
+<n46 lb="66" cb="13" le="66" ce="64">
+<exp pvirg="true"/>
+<xop lb="66" cb="14" le="66" ce="53" kind="&amp;">
+<n32 lb="66" cb="14" le="66" ce="35">
+<mex lb="66" cb="14" le="66" ce="35" kind="lvalue" id="a32934a7929d7a50ec111aa40bc74d41_baa302102c51c9664d2a1b64bdaa08dd" nm="second" arrow="1">
+<ocx lb="66" cb="14" le="66" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_17f2bb6227dcd444fbc83e0ccd36f666">
+<exp pvirg="true"/>
+<n32 lb="66" cb="33">
+<drx lb="66" cb="33" kind="lvalue" id="8070363a27881d4727dcaa96ac073104_17f2bb6227dcd444fbc83e0ccd36f666" nm="operator-&gt;"/>
+</n32>
+<n32 lb="66" cb="14" le="66" ce="32">
+<n8 lb="66" cb="14" le="66" ce="32" >
+<temp/>
+<mce lb="66" cb="14" le="66" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_896c5b5701b660e6f3488c1e6ea7c8d4">
+<exp pvirg="true"/>
+<mex lb="66" cb="14" le="66" ce="25" id="8070363a27881d4727dcaa96ac073104_896c5b5701b660e6f3488c1e6ea7c8d4" nm="find" point="1">
+<n32 lb="66" cb="14">
+<mex lb="66" cb="14" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="66" cb="14"/>
+</mex>
+</n32>
+</mex>
+<n32 lb="66" cb="30">
+<drx lb="66" cb="30" kind="lvalue" nm="MI"/>
+</n32>
+</mce>
+</n8>
+</n32>
+</ocx>
+</mex>
+</n32>
+<n32 lb="66" cb="44" le="66" ce="53">
+<drx lb="66" cb="44" le="66" ce="53" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_3bcc77006c5d837e702db726fe989a7d" nm="StartPacket"/>
+</n32>
+</xop>
+</n46>
+</n32>
+</xop>
+</n46>
+</n37>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="isEndPacket" id="0e056969099e25669692dfe0cdb58d9e_09fbfcfdcde73ebd1007640aa39b7381" file="2" linestart="68" lineend="71" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="MI" proto="const llvm::MachineInstr *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="d038367435b7928d04997491e912d58d_6044ca844a7ec5fb9a6c63d2c45cb3c4"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="68" cb="50" le="71" ce="3">
+<rx lb="69" cb="5" le="70" ce="63" pvirg="true">
+<n37 lb="69" cb="12" le="70" ce="63">
+<n46 lb="69" cb="12" le="70" ce="63">
+<exp pvirg="true"/>
+<xop lb="69" cb="13" le="70" ce="62" kind="&amp;&amp;">
+<n32 lb="69" cb="13" le="69" ce="32">
+<mce lb="69" cb="13" le="69" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_928c891a6c4ab7869059ab48ad66525f">
+<exp pvirg="true"/>
+<mex lb="69" cb="13" le="69" ce="24" id="8070363a27881d4727dcaa96ac073104_928c891a6c4ab7869059ab48ad66525f" nm="count" point="1">
+<n32 lb="69" cb="13">
+<mex lb="69" cb="13" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="69" cb="13"/>
+</mex>
+</n32>
+</mex>
+<n32 lb="69" cb="30">
+<drx lb="69" cb="30" kind="lvalue" nm="MI"/>
+</n32>
+</mce>
+</n32>
+<n32 lb="70" cb="13" le="70" ce="62">
+<n46 lb="70" cb="13" le="70" ce="62">
+<exp pvirg="true"/>
+<xop lb="70" cb="14" le="70" ce="53" kind="&amp;">
+<n32 lb="70" cb="14" le="70" ce="35">
+<mex lb="70" cb="14" le="70" ce="35" kind="lvalue" id="a32934a7929d7a50ec111aa40bc74d41_baa302102c51c9664d2a1b64bdaa08dd" nm="second" arrow="1">
+<ocx lb="70" cb="14" le="70" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_17f2bb6227dcd444fbc83e0ccd36f666">
+<exp pvirg="true"/>
+<n32 lb="70" cb="33">
+<drx lb="70" cb="33" kind="lvalue" id="8070363a27881d4727dcaa96ac073104_17f2bb6227dcd444fbc83e0ccd36f666" nm="operator-&gt;"/>
+</n32>
+<n32 lb="70" cb="14" le="70" ce="32">
+<n8 lb="70" cb="14" le="70" ce="32" >
+<temp/>
+<mce lb="70" cb="14" le="70" ce="32" nbparm="1" id="8070363a27881d4727dcaa96ac073104_896c5b5701b660e6f3488c1e6ea7c8d4">
+<exp pvirg="true"/>
+<mex lb="70" cb="14" le="70" ce="25" id="8070363a27881d4727dcaa96ac073104_896c5b5701b660e6f3488c1e6ea7c8d4" nm="find" point="1">
+<n32 lb="70" cb="14">
+<mex lb="70" cb="14" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_b4b9c3705a362e971dbc4d4761e25cd7" nm="PacketInfo" arrow="1">
+<n19 lb="70" cb="14"/>
+</mex>
+</n32>
+</mex>
+<n32 lb="70" cb="30">
+<drx lb="70" cb="30" kind="lvalue" nm="MI"/>
+</n32>
+</mce>
+</n8>
+</n32>
+</ocx>
+</mex>
+</n32>
+<n32 lb="70" cb="44" le="70" ce="53">
+<drx lb="70" cb="44" le="70" ce="53" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_4f2bda3ab2b044a301868bc3f2cb5838" nm="EndPacket"/>
+</n32>
+</xop>
+</n46>
+</n32>
+</xop>
+</n46>
+</n37>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setHasClobberLR" id="0e056969099e25669692dfe0cdb58d9e_e6b265c0f86a456f036999480e6a8b07" file="2" linestart="72" lineend="72" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="v" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="72" cb="32" le="72" ce="53">
+<xop lb="72" cb="34" le="72" ce="49" kind="=">
+<mex lb="72" cb="34" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_05fdf6a70be98afec2a55da4fe963aaf" nm="HasClobberLR" arrow="1">
+<n19 lb="72" cb="34"/>
+</mex>
+<n32 lb="72" cb="49">
+<drx lb="72" cb="49" kind="lvalue" nm="v"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="hasClobberLR" id="0e056969099e25669692dfe0cdb58d9e_3d78f9aaf3f74ddbdd23059889a5a103" file="2" linestart="73" lineend="73" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<Stmt>
+<u lb="73" cb="29" le="73" ce="52">
+<rx lb="73" cb="31" le="73" ce="38" pvirg="true">
+<n32 lb="73" cb="38">
+<mex lb="73" cb="38" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_05fdf6a70be98afec2a55da4fe963aaf" nm="HasClobberLR" arrow="1">
+<n19 lb="73" cb="38"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="hasEHReturn" id="0e056969099e25669692dfe0cdb58d9e_3c4e4b310fcf57ab727f87d05ac56722" file="2" linestart="75" lineend="75" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<Stmt>
+<u lb="75" cb="28" le="75" ce="50">
+<rx lb="75" cb="30" le="75" ce="37" pvirg="true">
+<n32 lb="75" cb="37">
+<mex lb="75" cb="37" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_707c5e358d0d9afe44f08a81108755ec" nm="HasEHReturn" arrow="1">
+<n19 lb="75" cb="37"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setHasEHReturn" id="0e056969099e25669692dfe0cdb58d9e_7bfada777066c11dc157906ad48ca2ef" file="2" linestart="76" lineend="76" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="H" proto="bool" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="bool"/>
+<Stmt>
+<n9 lb="76" cb="32"/>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="76" cb="38" le="76" ce="57">
+<xop lb="76" cb="40" le="76" ce="54" kind="=">
+<mex lb="76" cb="40" kind="lvalue" id="0e056969099e25669692dfe0cdb58d9e_707c5e358d0d9afe44f08a81108755ec" nm="HasEHReturn" arrow="1">
+<n19 lb="76" cb="40"/>
+</mex>
+<n32 lb="76" cb="54">
+<drx lb="76" cb="54" kind="lvalue" nm="H"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="operator=" id="0e056969099e25669692dfe0cdb58d9e_a61c82c6144cf0c76fdf47ae7eae7115" file="2" linestart="25" implicit="true" operator="true" access="public" inline="true">
+<fpt proto="llvm::HexagonMachineFunctionInfo &amp;">
+<lrf>
+<rt>
+<cr id="0e056969099e25669692dfe0cdb58d9e_e42c3e75efbcf27cb63b6d1a1a31d92b"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const llvm::HexagonMachineFunctionInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="0e056969099e25669692dfe0cdb58d9e_e42c3e75efbcf27cb63b6d1a1a31d92b"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<d name="~HexagonMachineFunctionInfo" id="0e056969099e25669692dfe0cdb58d9e_3a549b894aca51147d1c2eab5da39ced" file="2" linestart="25" lineend="25" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+<exception_specifiers nothrow="true"/>
+</fpt>
+<Stmt>
+<u lb="25" cb="7"/>
+
+</Stmt>
+</d>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="1a78cd877e1330e4403507129cfa7d87_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="12" lineend="12"/>
+<m name="anchor" id="1a78cd877e1330e4403507129cfa7d87_89965438c49a65941b3552308bc73705" file="1" linestart="15" lineend="15" previous="0e056969099e25669692dfe0cdb58d9e_89965438c49a65941b3552308bc73705" access="private" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="15" cb="43" le="15" ce="44"/>
+
+</Stmt>
+</m>
+</tun>
+</Root>

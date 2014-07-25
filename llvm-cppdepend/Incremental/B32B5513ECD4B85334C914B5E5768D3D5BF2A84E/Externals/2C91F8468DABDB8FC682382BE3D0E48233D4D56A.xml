@@ -1,0 +1,405 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="4" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+<cr namespace="llvm" access="none" kind="class" name="MCAsmBackend" id="124db5ff9b4b756244b3a97299b94935_349d511eccf30687ee1a1b76545b88ad" file="2" linestart="22" lineend="22"/>
+<cr namespace="llvm" access="none" kind="class" name="MCCodeEmitter" id="124db5ff9b4b756244b3a97299b94935_af4399f4437e115c3386bc7c1443e314" file="2" linestart="23" lineend="23"/>
+<cr namespace="llvm" access="none" kind="class" name="MCContext" id="124db5ff9b4b756244b3a97299b94935_66d5a04d181dc2d379aee3c1da9a8316" file="2" linestart="24" lineend="24"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="5" linestart="36" lineend="307" previous="124db5ff9b4b756244b3a97299b94935_a0739cdc4bf02ac0124031b03f4267a6">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="5" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="5" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+</cr>
+<cr namespace="llvm" access="none" kind="class" name="MCSection" id="c86d8a7a7f1ceeae189fc3b3e5b77305_5fb7e0e6e120711160b38941d7fba4c4" file="6" linestart="34" lineend="34"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCAsmInfo" id="b2b9336dfe6b80bb5834e13979c78f51_43771e107e7fa3238760a2416c843e80" file="7" linestart="58" lineend="515"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="AMDGPUMCAsmInfo" id="51d2a189f55906a81bbe0a7d09927d87_efb885733dbd198fe843e256c63b3328" file="3" linestart="22" lineend="26">
+<base access="public">
+<rt>
+<cr id="b2b9336dfe6b80bb5834e13979c78f51_43771e107e7fa3238760a2416c843e80"/>
+</rt>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCInstPrinter" id="aa5ebccb085a89578ace5960af3a8a7f_59846841785a34dc4c0b3f89038fddfd" file="8" linestart="33" lineend="104"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="AMDGPUInstPrinter" id="8d6dfaa3fd10bf22ba7e2670eafe989b_0677cc8d41b60c1f027f31c0f2b3ddf1" file="9" linestart="22" lineend="64">
+<base access="public">
+<rt>
+<cr id="aa5ebccb085a89578ace5960af3a8a7f_59846841785a34dc4c0b3f89038fddfd"/>
+</rt>
+</base>
+<c name="AMDGPUInstPrinter" id="8d6dfaa3fd10bf22ba7e2670eafe989b_dc34359f04bb0faa980ee4c5635a7f39" file="9" linestart="24" lineend="26" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MAI" proto="const llvm::MCAsmInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="b2b9336dfe6b80bb5834e13979c78f51_43771e107e7fa3238760a2416c843e80"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+<p name="MII" proto="const llvm::MCInstrInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="d6b10d7686695b47468ecfa764698418_3154168936e3cc4a9a27a3297d84f582"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+<p name="MRI" proto="const llvm::MCRegisterInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="ae72dec5e45591990dac31159522f29e_7954e37c4b10f3a785d361edefa9f2d1"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCCodeGenInfo" id="1785f98b0c7d40f5b168cfa02b042ae6_247b78f7b573dd1082685826b6afaf2a" file="10" linestart="22" lineend="48">
+<m name="InitMCCodeGenInfo" id="1785f98b0c7d40f5b168cfa02b042ae6_b000c7ec60836907f311fcba95962e28" file="10" linestart="36" lineend="38" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="RM" proto="Reloc::Model" isLiteral="true" init="true" access2="none">
+<ety>
+<et>
+<e id="45c615104112f38418593d19b274cd4b_a2b6b8f0ba69f43cee919492ae0b7119"/>
+</et>
+</ety>
+</p>
+<p name="CM" proto="CodeModel::Model" isLiteral="true" init="true" access2="none">
+<ety>
+<et>
+<e id="45c615104112f38418593d19b274cd4b_ac9e84aea24165865cd2c8840f9c428a"/>
+</et>
+</ety>
+</p>
+<p name="OL" proto="CodeGenOpt::Level" isLiteral="true" init="true" access2="none">
+<ety>
+<et>
+<e id="45c615104112f38418593d19b274cd4b_0b0f3000a15bf2f9868b7887fbc0ad22"/>
+</et>
+</ety>
+</p>
+</m>
+<c name="MCCodeGenInfo" id="1785f98b0c7d40f5b168cfa02b042ae6_5f639ee0639908ab30901dd45ce323b4" file="10" linestart="22" lineend="22" implicit="true" access="public" inline="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCRegisterInfo" id="ae72dec5e45591990dac31159522f29e_7954e37c4b10f3a785d361edefa9f2d1" file="11" linestart="135" lineend="430" previous="aa5ebccb085a89578ace5960af3a8a7f_7954e37c4b10f3a785d361edefa9f2d1">
+<c name="MCRegisterInfo" id="ae72dec5e45591990dac31159522f29e_452245794251abda44769abc05f950f3" file="11" linestart="135" lineend="135" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCSubtargetInfo" id="8d3106597c32b172c14281d3ca7a27f5_85fb6388fd852e64748b49bf30717000" file="12" linestart="29" lineend="135" previous="124db5ff9b4b756244b3a97299b94935_85fb6388fd852e64748b49bf30717000">
+<c name="MCSubtargetInfo" id="8d3106597c32b172c14281d3ca7a27f5_504452802b93ed6dc7d78caba1d66592" file="12" linestart="29" lineend="29" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCInstrInfo" id="d6b10d7686695b47468ecfa764698418_3154168936e3cc4a9a27a3297d84f582" file="13" linestart="26" lineend="58" previous="aa5ebccb085a89578ace5960af3a8a7f_3154168936e3cc4a9a27a3297d84f582">
+<c name="MCInstrInfo" id="d6b10d7686695b47468ecfa764698418_16003ab7e680cf4ffcfe0b4c8904b322" file="13" linestart="26" lineend="26" implicit="true" access="public" inline="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCObjectWriter" id="d40db948024fca4b42b0715f2a933104_4e073ab275d03ee1a33c7f36dfe72918" file="14" linestart="39" lineend="196" previous="124db5ff9b4b756244b3a97299b94935_4e073ab275d03ee1a33c7f36dfe72918"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCStreamer" id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e" file="15" linestart="171" lineend="745" previous="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="Target" id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61" file="16" linestart="76" lineend="494" previous="124db5ff9b4b756244b3a97299b94935_85d396bdb7770902808a18c6f2b3bb61"/>
+<cr namespace="llvm" access="none" depth="0" pod="true" kind="struct" name="TargetRegistry" id="24b645364dfef939b676955407994880_11810a2a2b307a0d74252dacd131f9d7" file="16" linestart="497" lineend="821" previous="24b645364dfef939b676955407994880_11810a2a2b307a0d74252dacd131f9d7">
+<m name="RegisterMCCodeGenInfo" id="24b645364dfef939b676955407994880_27fad57ae138ef4c3a317c83f7968834" file="16" linestart="614" lineend="617" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCCodeGenInfoCtorFnTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCInstrInfo" id="24b645364dfef939b676955407994880_d0637a50d4d40f5b1ad5748cdb36eef6" file="16" linestart="628" lineend="630" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCInstrInfoCtorFnTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCRegInfo" id="24b645364dfef939b676955407994880_c15144f99459013ee579697c9555f67b" file="16" linestart="648" lineend="650" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCRegInfoCtorFnTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCSubtargetInfo" id="24b645364dfef939b676955407994880_4ef07d842f7e520530e1d1702f2b8552" file="16" linestart="661" lineend="664" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCSubtargetInfoCtorFnTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCAsmBackend" id="24b645364dfef939b676955407994880_9069a4f357bf732f3fb4bfa5a7e1230f" file="16" linestart="689" lineend="691" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCAsmBackendCtorTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCInstPrinter" id="24b645364dfef939b676955407994880_b71bec74501a04455092d503dbf30ea1" file="16" linestart="742" lineend="745" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCInstPrinterCtorTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCCodeEmitter" id="24b645364dfef939b676955407994880_67e14fecf91ed5f46e3615428fa718fd" file="16" linestart="756" lineend="759" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCCodeEmitterCtorTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+<m name="RegisterMCObjectStreamer" id="24b645364dfef939b676955407994880_f041ce7279a4a9df222bfcefe5677cfa" file="16" linestart="770" lineend="773" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+<p name="Fn" proto="Target::MCObjectStreamerCtorTy" isPtr="true" isLiteral="true" access2="none">
+<ety>
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</ety>
+</p>
+</m>
+</cr>
+<tm namespace="llvm" access="none" depth="0" kind="struct" name="RegisterMCAsmInfo" id="24b645364dfef939b676955407994880_4cfb2420b7c38b89e3c8640f56095a70" file="16" linestart="855" lineend="865">
+<template_parameters>
+<ttp name="MCAsmInfoImpl" id="24b645364dfef939b676955407994880_e9c3148d741bfc9c0e51175970544948" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="0" kind="struct" name="RegisterMCAsmInfo" id="24b645364dfef939b676955407994880_16f73f3728a9ae6ec628b083fbb6b075" file="16" linestart="856" lineend="865">
+<cr access="public" kind="struct" name="RegisterMCAsmInfo" id="24b645364dfef939b676955407994880_f1831ef53fad4f23a1fdd0e82f0b467d" file="16" linestart="856" lineend="856"/>
+<c name="RegisterMCAsmInfo&lt;MCAsmInfoImpl&gt;" id="24b645364dfef939b676955407994880_307b620e0c70c1448202126138383a6e" file="16" linestart="857" lineend="859" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="T" proto="llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</lrf>
+</p>
+</c>
+</cr>
+</tm>
+<v namespace="llvm" name="TheAMDGPUTarget" proto="llvm::Target" id="124db5ff9b4b756244b3a97299b94935_cdd13be29e83ce8b98a50532d9b0c808" file="2" linestart="32" lineend="32" storage="extern" access2="none">
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</v>
+<f namespace="llvm" name="createAMDGPUAsmBackend" id="124db5ff9b4b756244b3a97299b94935_53001191a2dfd60618a7ddf81425e38e" file="2" linestart="43" lineend="44" access="none">
+<fpt proto="llvm::MCAsmBackend *">
+<pt>
+<rt>
+<cr id="124db5ff9b4b756244b3a97299b94935_349d511eccf30687ee1a1b76545b88ad"/>
+</rt>
+</pt>
+</fpt>
+<p name="T" proto="const llvm::Target &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="24b645364dfef939b676955407994880_85d396bdb7770902808a18c6f2b3bb61"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+<p name="MRI" proto="const llvm::MCRegisterInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="ae72dec5e45591990dac31159522f29e_7954e37c4b10f3a785d361edefa9f2d1"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+<p name="TT" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+<p name="CPU" proto="llvm::StringRef" access2="none">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</p>
+</f>
+<f namespace="llvm" name="createELFStreamer" id="7345c616ef5527975f62b8656367364b_4a78886fdc2e1b6b34f96da06208e287" file="15" linestart="784" lineend="786" access="none">
+<fpt proto="llvm::MCStreamer *">
+<pt>
+<rt>
+<cr id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+</rt>
+</pt>
+</fpt>
+<p name="Ctx" proto="llvm::MCContext &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="124db5ff9b4b756244b3a97299b94935_66d5a04d181dc2d379aee3c1da9a8316"/>
+</rt>
+</lrf>
+</p>
+<p name="TAB" proto="llvm::MCAsmBackend &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="124db5ff9b4b756244b3a97299b94935_349d511eccf30687ee1a1b76545b88ad"/>
+</rt>
+</lrf>
+</p>
+<p name="OS" proto="llvm::raw_ostream &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</p>
+<p name="CE" proto="llvm::MCCodeEmitter *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="124db5ff9b4b756244b3a97299b94935_af4399f4437e115c3386bc7c1443e314"/>
+</rt>
+</pt>
+</p>
+<p name="RelaxAll" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="NoExecStack" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</f>
+</Externals>

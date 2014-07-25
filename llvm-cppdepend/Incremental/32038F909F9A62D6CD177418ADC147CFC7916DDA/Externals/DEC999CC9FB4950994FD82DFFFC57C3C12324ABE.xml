@@ -1,0 +1,176 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="3" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<m name="data" id="6f9d54688deb2fea7e6a760a21186275_681676048dc938133e9da73a987727b4" file="3" linestart="106" lineend="106" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+</m>
+<m name="size" id="6f9d54688deb2fea7e6a760a21186275_1db9e46c2206e1f2160391dd4680612c" file="3" linestart="112" lineend="112" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<m name="operator[]" id="6f9d54688deb2fea7e6a760a21186275_5627d776bd1cf2d748cfe957358537a5" file="3" linestart="196" lineend="199" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="char">
+<bt name="char"/>
+</fpt>
+<p name="Index" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+</cr>
+<e access="none" name="ConversionResult" id="587cc6a5d61b659e8f82685d0a737808_03bf2240cf993fa2b868d63a2db61e16" file="4" linestart="118" lineend="123" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="conversionOK" id="587cc6a5d61b659e8f82685d0a737808_e29eb2acce7b6c42b86230720bcca704" file="4" linestart="119" lineend="119">
+<et>
+<e id="587cc6a5d61b659e8f82685d0a737808_03bf2240cf993fa2b868d63a2db61e16"/>
+</et>
+</ec>
+</e>
+<e access="none" name="ConversionFlags" id="587cc6a5d61b659e8f82685d0a737808_e5797c5bd5016a1fdb1f0e72259d6dd9" file="4" linestart="125" lineend="128" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="strictConversion" id="587cc6a5d61b659e8f82685d0a737808_f15cffc85e3f135da83db3752ddf0e8f" file="4" linestart="126" lineend="126">
+<et>
+<e id="587cc6a5d61b659e8f82685d0a737808_e5797c5bd5016a1fdb1f0e72259d6dd9"/>
+</et>
+</ec>
+</e>
+<tm namespace="llvm" access="none" depth="0" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_b57ff84e6cffc3da591e97ac8b813f93" file="5" linestart="30" lineend="179">
+<template_parameters>
+<ttp name="T" id="113b416902e0259d6681229a46a0de40_3347a291a4c46d3e179387faa83132bc" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe" file="5" linestart="31" lineend="179">
+<cr access="public" kind="class" name="ArrayRef" id="113b416902e0259d6681229a46a0de40_1a6e8165a0afeb4c07f91286556e2a58" file="5" linestart="31" lineend="31"/>
+<ft name="ArrayRef&lt;T&gt;" id="113b416902e0259d6681229a46a0de40_783f8dd26ea661344eeb3566abc5dc16" file="5" linestart="82" lineend="84">
+<template_parameters/>
+<c name="ArrayRef&lt;T&gt;" id="113b416902e0259d6681229a46a0de40_1379591c1ae330416299b3e07ac6e6e5" file="5" linestart="83" lineend="84" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Arr" proto="const T (&amp;)[N]" isRef="true" access2="none">
+<lrf>
+<Paren/>
+</lrf>
+</p>
+<initlist id="113b416902e0259d6681229a46a0de40_d9e11db41e87627347a7b31985685475"/>
+<initlist id="113b416902e0259d6681229a46a0de40_97c8e8a1ec708de56115d14489a982d0"/>
+</c>
+</ft>
+</cr>
+</tm>
+<cr namespace="llvm.sys" access="none" depth="0" pod="true" kind="struct" name="UnicodeCharRange" id="c0285866fb489b5e2272958af4b325f6_dd5840756cf5d4affcbb9a778e4ec2bf" file="6" linestart="27" lineend="30"/>
+<cr namespace="llvm.sys" access="none" depth="0" kind="class" name="UnicodeCharSet" id="c0285866fb489b5e2272958af4b325f6_f2d24fb6700c181c8b92a6f180d6ddc4" file="6" linestart="42" lineend="91">
+<c name="UnicodeCharSet" id="c0285866fb489b5e2272958af4b325f6_94175d531d236534d834945c9640fcf8" file="6" linestart="53" lineend="55" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Ranges" proto="CharRanges" isLiteral="true" access2="none">
+<Tdef>
+<tss>
+<templatebase id="113b416902e0259d6681229a46a0de40_9196a70d687392c7cc4c8aa003d5e4fe"/>
+<template_arguments>
+<rt>
+<cr id="c0285866fb489b5e2272958af4b325f6_dd5840756cf5d4affcbb9a778e4ec2bf"/>
+</rt>
+</template_arguments>
+</tss>
+</Tdef>
+</p>
+<initlist id="c0285866fb489b5e2272958af4b325f6_d4e438359a39213de830bb8230161143"/>
+</c>
+<m name="contains" id="c0285866fb489b5e2272958af4b325f6_986191e39fde15a996ca0fae30454936" file="6" linestart="59" lineend="61" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="C" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+</cr>
+<f name="ConvertUTF8toUTF32" id="587cc6a5d61b659e8f82685d0a737808_86becb84fff92542ffd77363a5e6d7db" file="4" linestart="151" lineend="153" extC="true" access="none">
+<fpt proto="ConversionResult">
+<Tdef>
+<ety>
+<et>
+<e id="587cc6a5d61b659e8f82685d0a737808_03bf2240cf993fa2b868d63a2db61e16"/>
+</et>
+</ety>
+</Tdef>
+</fpt>
+<p name="sourceStart" proto="const UTF8 **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<QualType const="true">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</QualType>
+</pt>
+</pt>
+</p>
+<p name="sourceEnd" proto="const UTF8 *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</QualType>
+</pt>
+</p>
+<p name="targetStart" proto="UTF32 **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</pt>
+</pt>
+</p>
+<p name="targetEnd" proto="UTF32 *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</pt>
+</p>
+<p name="flags" proto="ConversionFlags" isLiteral="true" access2="none">
+<Tdef>
+<ety>
+<et>
+<e id="587cc6a5d61b659e8f82685d0a737808_e5797c5bd5016a1fdb1f0e72259d6dd9"/>
+</et>
+</ety>
+</Tdef>
+</p>
+</f>
+<f name="getNumBytesForUTF8" id="587cc6a5d61b659e8f82685d0a737808_5db074e7a90f3abe983ba85024678d59" file="4" linestart="175" lineend="175" extC="true" access="none">
+<fpt proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<p name="firstByte" proto="UTF8" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</p>
+</f>
+</Externals>

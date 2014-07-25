@@ -1,0 +1,619 @@
+<Externals>
+<cr namespace="std" access="none" depth="1" kind="struct" name="char_traits" id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639" file="3" linestart="260" lineend="263">
+<base access="public">
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_0e14667e7fa909cae787013e4a665cda"/>
+<template_arguments>
+<ttp/>
+<bt name="long"/>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="std" access="none" depth="1" kind="class" name="allocator" id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85" file="4" linestart="507" lineend="614" previous="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<base access="public">
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_88cdcaf24b75beed0de34443253840d2"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+<tm parent="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85" access="none" depth="0" pod="true" kind="struct" name="rebind" id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_38c2be5a786a253bb82af3c54854f921" file="4" linestart="536" lineend="540">
+<template_parameters>
+<ttp name="_Other" id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_5cb4d687f09ee7cb5b3575605cef20a8" depth="" index="" proto="type-parameter-1-0"/>
+</template_parameters>
+</tm>
+</cr>
+<cr namespace="std" access="none" depth="3" kind="class" name="basic_string" id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb" file="5" linestart="692" lineend="2297" previous="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb">
+<base access="public">
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_fd6b90577893febf1782c3472e44b788"/>
+<template_arguments>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_15e8cc19f33496752ccbe61f65b7379c"/>
+<template_arguments>
+<ttp/>
+<ttp/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="llvm" access="none" kind="class" name="MCContext" id="c6c8e579ec4c80fd3bfd5c18c764ca89_66d5a04d181dc2d379aee3c1da9a8316" file="6" linestart="21" lineend="21"/>
+<cr namespace="llvm" access="none" kind="class" name="MCStreamer" id="c6c8e579ec4c80fd3bfd5c18c764ca89_d43ee9d6c82592155c8c2c9057faef5e" file="6" linestart="24" lineend="24"/>
+<cr namespace="llvm" access="none" kind="class" name="raw_ostream" id="c6c8e579ec4c80fd3bfd5c18c764ca89_a0739cdc4bf02ac0124031b03f4267a6" file="6" linestart="27" lineend="27"/>
+<e parent="c6c8e579ec4c80fd3bfd5c18c764ca89_d043d8f39b4e1243ba83b654d7bdd0e2" access="public" name="VariantKind" id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2" file="6" linestart="154" lineend="270" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="VK_None" id="c6c8e579ec4c80fd3bfd5c18c764ca89_ef9bf682feadacdc249e6f2cd4488776" file="6" linestart="155" lineend="155">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_GOT" id="c6c8e579ec4c80fd3bfd5c18c764ca89_a7bb39dfece40991292f60ced31a6631" file="6" linestart="158" lineend="158">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_GOTOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_29de1dbbc0d8c8c1b7c45a0ef5c447ae" file="6" linestart="159" lineend="159">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_GOTPCREL" id="c6c8e579ec4c80fd3bfd5c18c764ca89_7f20cdddfcf8301656a7ad33f981d1a2" file="6" linestart="160" lineend="160">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_GOTTPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_26fd2a7dbd85408ce7ebfac34eb74c9e" file="6" linestart="161" lineend="161">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_INDNTPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_43fbb403d7cd67b487b9b92fa8fd8bf9" file="6" linestart="162" lineend="162">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_NTPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_0d03f1efb357bd26e237f2fbb1685f4e" file="6" linestart="163" lineend="163">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_GOTNTPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_f99a66e5b5f388be7e7ea2fec5bfad6e" file="6" linestart="164" lineend="164">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_PLT" id="c6c8e579ec4c80fd3bfd5c18c764ca89_6f10767892ad34a3375c48f1df7ece36" file="6" linestart="165" lineend="165">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_TLSGD" id="c6c8e579ec4c80fd3bfd5c18c764ca89_d80c582107f9f9c7e55356238a1d6ba4" file="6" linestart="166" lineend="166">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_TLSLD" id="c6c8e579ec4c80fd3bfd5c18c764ca89_b8bca9035cfcb3a98e99076015a01a9e" file="6" linestart="167" lineend="167">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_TLSLDM" id="c6c8e579ec4c80fd3bfd5c18c764ca89_2295d5ddb2dfef0d6bcd68827e201e75" file="6" linestart="168" lineend="168">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_TPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_d023f48bd5a51f247c2541319ef87cb0" file="6" linestart="169" lineend="169">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+<ec name="VK_DTPOFF" id="c6c8e579ec4c80fd3bfd5c18c764ca89_79c8ccc08f7c1ddb252931969c61025e" file="6" linestart="170" lineend="170">
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="7" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+<e namespace="llvm" access="none" name="MCFixupKind" id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15" file="8" linestart="23" lineend="46" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="FK_Data_1" id="276500ab2a3064a3cdd4ecc61ff8456d_1a7f4dbfc66674e2c3776e45dcced05b" file="8" linestart="24" lineend="24">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_Data_2" id="276500ab2a3064a3cdd4ecc61ff8456d_a1cdcf45495856d9d2071f5245878809" file="8" linestart="25" lineend="25">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_Data_4" id="276500ab2a3064a3cdd4ecc61ff8456d_e73ca658c1b7fb8b0565bb9b989078fd" file="8" linestart="26" lineend="26">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_Data_8" id="276500ab2a3064a3cdd4ecc61ff8456d_42b18ae2475b318b273bc5b82201f6dc" file="8" linestart="27" lineend="27">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_PCRel_1" id="276500ab2a3064a3cdd4ecc61ff8456d_4c5e8e4c51a30a9191135c41b499a6e7" file="8" linestart="28" lineend="28">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_PCRel_2" id="276500ab2a3064a3cdd4ecc61ff8456d_8009fd91f12b92211b5e6c14d9e2a5a7" file="8" linestart="29" lineend="29">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_PCRel_4" id="276500ab2a3064a3cdd4ecc61ff8456d_b3fc6b573afcf74d7f4f4dde39b74fc6" file="8" linestart="30" lineend="30">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+<ec name="FK_PCRel_8" id="276500ab2a3064a3cdd4ecc61ff8456d_639653eba5f32c1bb7a1e7ba60b93881" file="8" linestart="31" lineend="31">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCFixup" id="276500ab2a3064a3cdd4ecc61ff8456d_c336ef6dbf69dda20cb52e3c82e226b4" file="8" linestart="62" lineend="109">
+<m name="getKind" id="276500ab2a3064a3cdd4ecc61ff8456d_2cff23cdcab5cb710d2295b22569ebe4" file="8" linestart="89" lineend="89" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="llvm::MCFixupKind">
+<et>
+<e id="276500ab2a3064a3cdd4ecc61ff8456d_66c16f09b25c6304aad905e503994a15"/>
+</et>
+</fpt>
+</m>
+</cr>
+<e namespace="llvm.X86" access="none" name="Fixups" id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3" file="9" linestart="17" lineend="30" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="reloc_riprel_4byte" id="f14bf2214f8c487461e86652abf03136_caaeba1d3b5126ae03f413be94bb5361" file="9" linestart="18" lineend="18">
+<et>
+<e id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3"/>
+</et>
+</ec>
+<ec name="reloc_riprel_4byte_movq_load" id="f14bf2214f8c487461e86652abf03136_78da9fab41bcde1ff53fb13c97d9ae69" file="9" linestart="19" lineend="19">
+<et>
+<e id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3"/>
+</et>
+</ec>
+<ec name="reloc_signed_4byte" id="f14bf2214f8c487461e86652abf03136_eee4be40398e5a2865ffee9132804610" file="9" linestart="20" lineend="20">
+<et>
+<e id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3"/>
+</et>
+</ec>
+<ec name="reloc_global_offset_table" id="f14bf2214f8c487461e86652abf03136_fd1abda1a64c71f6aeda248e70dfcd03" file="9" linestart="23" lineend="23">
+<et>
+<e id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3"/>
+</et>
+</ec>
+<ec name="reloc_global_offset_table8" id="f14bf2214f8c487461e86652abf03136_a422be2382d23bdd77532a1b7bf5e582" file="9" linestart="26" lineend="26">
+<et>
+<e id="f14bf2214f8c487461e86652abf03136_16f89ff229b483e1f31171934ec942c3"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="Triple" id="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" file="10" linestart="44" lineend="540" previous="7e2f639c99379107de68afe8e73fe429_f187657d74874d999705b05021f1c276">
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="ArchType" id="9306b6949f28c3a31f519bc736944721_d8019e7981fdff08ef820c6ae0a5cabc" file="10" linestart="46" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="SubArchType" id="9306b6949f28c3a31f519bc736944721_1f123fb2b8bcf2c5c4e9e0e0db89f182" file="10" linestart="80" lineend="94" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="VendorType" id="9306b6949f28c3a31f519bc736944721_03d000bc186a81a04a07ee6220de1ea3" file="10" linestart="95" lineend="109" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="OSType" id="9306b6949f28c3a31f519bc736944721_211cb18d2e246b8e474742c5300177af" file="10" linestart="110" lineend="137" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="EnvironmentType" id="9306b6949f28c3a31f519bc736944721_420a151cfb6deb2886189570d483dba7" file="10" linestart="138" lineend="153" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9306b6949f28c3a31f519bc736944721_f187657d74874d999705b05021f1c276" access="public" name="ObjectFormatType" id="9306b6949f28c3a31f519bc736944721_0b1bc9043ee44d12fa11e527ae7a7cee" file="10" linestart="154" lineend="160" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+</cr>
+<e namespace="llvm.ELF" access="none" name="" id="63dc5295b8c49c9d3ab8f488c40b300e_291e1e99fb4e644b94adb566dd7342d6" file="11" linestart="129" lineend="312" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="EM_386" id="63dc5295b8c49c9d3ab8f488c40b300e_01322e0874416de6a8b808c9d272151f" file="11" linestart="133" lineend="133">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_291e1e99fb4e644b94adb566dd7342d6"/>
+</et>
+</ec>
+<ec name="EM_X86_64" id="63dc5295b8c49c9d3ab8f488c40b300e_9bce6a69d617d9e112af1419ef7972e9" file="11" linestart="175" lineend="175">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_291e1e99fb4e644b94adb566dd7342d6"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm.ELF" access="none" name="" id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947" file="11" linestart="354" lineend="393" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="R_X86_64_64" id="63dc5295b8c49c9d3ab8f488c40b300e_2f322ed3c6a8a8d26513f75bcae65e07" file="11" linestart="356" lineend="356">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_PC32" id="63dc5295b8c49c9d3ab8f488c40b300e_dc1121329b57216f7afe15592bd71465" file="11" linestart="357" lineend="357">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOT32" id="63dc5295b8c49c9d3ab8f488c40b300e_f813959fd5f39956b1483c0f45a8526f" file="11" linestart="358" lineend="358">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_PLT32" id="63dc5295b8c49c9d3ab8f488c40b300e_229b9f0ca52a75c46533537248bb8db9" file="11" linestart="359" lineend="359">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOTPCREL" id="63dc5295b8c49c9d3ab8f488c40b300e_151bca19b33499694fef7d532e6684c9" file="11" linestart="364" lineend="364">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_32" id="63dc5295b8c49c9d3ab8f488c40b300e_611a47b2166af9df366e044745347d31" file="11" linestart="365" lineend="365">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_32S" id="63dc5295b8c49c9d3ab8f488c40b300e_88f159d8d68cbe5da0a656ae772e84d4" file="11" linestart="366" lineend="366">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_16" id="63dc5295b8c49c9d3ab8f488c40b300e_3c604cd9dbc91f0d59428d69619a7d6d" file="11" linestart="367" lineend="367">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_PC16" id="63dc5295b8c49c9d3ab8f488c40b300e_cc854cdab49eb3e3039e4b0daf64a6f3" file="11" linestart="368" lineend="368">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_8" id="63dc5295b8c49c9d3ab8f488c40b300e_e92fc114dd727011cb95fca466e78234" file="11" linestart="369" lineend="369">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_PC8" id="63dc5295b8c49c9d3ab8f488c40b300e_e6db40da1fb65e3597b2f39eafd59fa0" file="11" linestart="370" lineend="370">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_DTPOFF64" id="63dc5295b8c49c9d3ab8f488c40b300e_2a590d2ee4b65654e3fbc36f6a5327d3" file="11" linestart="372" lineend="372">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_TPOFF64" id="63dc5295b8c49c9d3ab8f488c40b300e_2be9cb8977f822ecd7bebf991bc60d9b" file="11" linestart="373" lineend="373">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_TLSGD" id="63dc5295b8c49c9d3ab8f488c40b300e_650162b248be5d9bdb58f3bf197c6a07" file="11" linestart="374" lineend="374">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_TLSLD" id="63dc5295b8c49c9d3ab8f488c40b300e_66ce98f589b288f00d66e186e6481967" file="11" linestart="375" lineend="375">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_DTPOFF32" id="63dc5295b8c49c9d3ab8f488c40b300e_bc248c2c93e8c366c9923616a18c2853" file="11" linestart="376" lineend="376">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOTTPOFF" id="63dc5295b8c49c9d3ab8f488c40b300e_daacafa01960ed02da3f3a8bc042f763" file="11" linestart="377" lineend="377">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_TPOFF32" id="63dc5295b8c49c9d3ab8f488c40b300e_d7254113baa0896661941b03215cbc18" file="11" linestart="378" lineend="378">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_PC64" id="63dc5295b8c49c9d3ab8f488c40b300e_27f883328a0108b48dce551312c532c7" file="11" linestart="379" lineend="379">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOTOFF64" id="63dc5295b8c49c9d3ab8f488c40b300e_78bacdcaf5523bda550f837148768f39" file="11" linestart="380" lineend="380">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOTPC32" id="63dc5295b8c49c9d3ab8f488c40b300e_b87e93d5a2e9d7cd7e0d2859ccdd5a9b" file="11" linestart="381" lineend="381">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOT64" id="63dc5295b8c49c9d3ab8f488c40b300e_3869999f6b41f6a0d6b884c8b687cb27" file="11" linestart="382" lineend="382">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+<ec name="R_X86_64_GOTPC64" id="63dc5295b8c49c9d3ab8f488c40b300e_2ee155f499f2ccff8b52c67e58678d2b" file="11" linestart="384" lineend="384">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_64a57b07070fb0532ebfbc1fb6c87947"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm.ELF" access="none" name="" id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e" file="11" linestart="397" lineend="439" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="R_386_32" id="63dc5295b8c49c9d3ab8f488c40b300e_59438c0fe20921a921c49419da4fa500" file="11" linestart="399" lineend="399">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_PC32" id="63dc5295b8c49c9d3ab8f488c40b300e_19dcf578cb60adcfa2c0bc3d53ffe812" file="11" linestart="400" lineend="400">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_GOT32" id="63dc5295b8c49c9d3ab8f488c40b300e_a40065de486f03e618835b0bc519c54c" file="11" linestart="401" lineend="401">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_PLT32" id="63dc5295b8c49c9d3ab8f488c40b300e_7a556d5cf9867409a6983b74616c9b31" file="11" linestart="402" lineend="402">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_GOTOFF" id="63dc5295b8c49c9d3ab8f488c40b300e_d0f8ca8b989fbdccce4fdd6a8f82840f" file="11" linestart="407" lineend="407">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_GOTPC" id="63dc5295b8c49c9d3ab8f488c40b300e_98aa8ba384b113c7e3234e93dcadb3c1" file="11" linestart="408" lineend="408">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_IE" id="63dc5295b8c49c9d3ab8f488c40b300e_96202dc1de66df8da3ffde70dd5e0101" file="11" linestart="411" lineend="411">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_GOTIE" id="63dc5295b8c49c9d3ab8f488c40b300e_49af17f715b3e9a8586ddd3c020c5688" file="11" linestart="412" lineend="412">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_LE" id="63dc5295b8c49c9d3ab8f488c40b300e_93a0d12226c0f3a331a9d86c6daeaa3b" file="11" linestart="413" lineend="413">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_GD" id="63dc5295b8c49c9d3ab8f488c40b300e_21ac7cadcd805c5871598c5c33955d79" file="11" linestart="414" lineend="414">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_LDM" id="63dc5295b8c49c9d3ab8f488c40b300e_e210a04515fc874f0f60d8a7b7a15dd9" file="11" linestart="415" lineend="415">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_16" id="63dc5295b8c49c9d3ab8f488c40b300e_cb55cf1ce6399d88a16b7cbb18a1de13" file="11" linestart="416" lineend="416">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_PC16" id="63dc5295b8c49c9d3ab8f488c40b300e_347390bb0d1505508eb4ad642eb89ca5" file="11" linestart="417" lineend="417">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_8" id="63dc5295b8c49c9d3ab8f488c40b300e_79170bc3766addb1697b6de281d12aad" file="11" linestart="418" lineend="418">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_PC8" id="63dc5295b8c49c9d3ab8f488c40b300e_044e59c38652aefeeb553039bb35c181" file="11" linestart="419" lineend="419">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_LDO_32" id="63dc5295b8c49c9d3ab8f488c40b300e_89b1014f3cf86b77432ab0a0a558c3a0" file="11" linestart="428" lineend="428">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_IE_32" id="63dc5295b8c49c9d3ab8f488c40b300e_04de4562eccce6246437d611080ff0a0" file="11" linestart="429" lineend="429">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+<ec name="R_386_TLS_LE_32" id="63dc5295b8c49c9d3ab8f488c40b300e_1d6cea83eb955ea29b209cf838cd860b" file="11" linestart="430" lineend="430">
+<et>
+<e id="63dc5295b8c49c9d3ab8f488c40b300e_7d9672177ae15a4733004a925f53a59e"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCELFObjectTargetWriter" id="b9142abdda6ca248bbac93f3abe1da5b_9cb4741c953455f9c563ab422e05183c" file="12" linestart="28" lineend="108">
+<c name="MCELFObjectTargetWriter" id="b9142abdda6ca248bbac93f3abe1da5b_a263dc42acf35d3521966631da7775df" file="12" linestart="37" lineend="39" access="protected">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Is64Bit_" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="OSABI_" proto="uint8_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</p>
+<p name="EMachine_" proto="uint16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</p>
+<p name="HasRelocationAddend" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="IsN64" proto="bool" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="bool"/>
+</p>
+</c>
+<m name="getEMachine" id="b9142abdda6ca248bbac93f3abe1da5b_7ee1970c6409cbfc007e73830eb0993a" file="12" linestart="64" lineend="64" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint16_t">
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCValue" id="13e13b9be279deef3bbf637a92f93d60_23c62a56b77ff5aca3493abea0aeaa3b" file="13" linestart="43" lineend="86" previous="b9142abdda6ca248bbac93f3abe1da5b_23c62a56b77ff5aca3493abea0aeaa3b">
+<m name="getAccessVariant" id="13e13b9be279deef3bbf637a92f93d60_1cb8379d64f52bf81f4b2d5e591723ed" file="13" linestart="63" lineend="63" access="public">
+<fpt const="true" proto="MCSymbolRefExpr::VariantKind">
+<ety>
+<et>
+<e id="c6c8e579ec4c80fd3bfd5c18c764ca89_6662be659f79004fccceaef83f1554e2"/>
+</et>
+</ety>
+</fpt>
+</m>
+</cr>
+<f namespace="llvm" name="llvm_unreachable_internal" id="4490f7744b0eb140a59a313798e92590_041af46f83dd11078969ec645bc14a67" file="14" linestart="84" lineend="86" access="none">
+<fpt noreturn="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="msg" proto="const char *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="file" proto="const char *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="line" proto="unsigned int" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f name="_wassert" id="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" file="15" linestart="35" lineend="35" previous="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Message" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_File" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_Line" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f namespace="llvm" name="createELFObjectWriter" id="b9142abdda6ca248bbac93f3abe1da5b_88161fe3bbfbed99632978ab82e5c980" file="12" linestart="115" lineend="116" access="none">
+<fpt proto="llvm::MCObjectWriter *">
+<pt>
+<rt>
+<cr id="7e2f639c99379107de68afe8e73fe429_4e073ab275d03ee1a33c7f36dfe72918"/>
+</rt>
+</pt>
+</fpt>
+<p name="MOTW" proto="llvm::MCELFObjectTargetWriter *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="b9142abdda6ca248bbac93f3abe1da5b_9cb4741c953455f9c563ab422e05183c"/>
+</rt>
+</pt>
+</p>
+<p name="OS" proto="llvm::raw_ostream &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="c6c8e579ec4c80fd3bfd5c18c764ca89_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</p>
+<p name="IsLittleEndian" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</f>
+</Externals>
