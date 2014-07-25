@@ -1,0 +1,242 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="RPCChannel" id="80181264ed5d456e9bc69d01628d12ca_39bb937ffd2de27b2a6a73b0b3522e3d" file="2" linestart="23" lineend="45">
+<m name="createClient" id="80181264ed5d456e9bc69d01628d12ca_97eec0c2a64d24b8fbc0169c8c0831e9" file="2" linestart="36" lineend="36" access="public" hasbody="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+</m>
+<m name="WriteBytes" id="80181264ed5d456e9bc69d01628d12ca_24b24ee5a769db8593f699c2d56d1274" file="2" linestart="41" lineend="41" access="public" hasbody="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Data" proto="const void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</p>
+<p name="Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+<m name="ReadBytes" id="80181264ed5d456e9bc69d01628d12ca_7b2851682e6d0d43e3d8a53b52bf8602" file="2" linestart="42" lineend="42" access="public" hasbody="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Data" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+<p name="Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+</cr>
+<cr namespace="llvm.sys" access="none" depth="0" pod="true" kind="class" name="Memory" id="ba7e38cf933ff2454bc4d5c3996bee3a_1991a4aaa5b3f31c3a6ecc6d0ce022f6" file="3" linestart="45" lineend="157" previous="ba7e38cf933ff2454bc4d5c3996bee3a_1991a4aaa5b3f31c3a6ecc6d0ce022f6">
+<e parent="ba7e38cf933ff2454bc4d5c3996bee3a_1991a4aaa5b3f31c3a6ecc6d0ce022f6" access="public" name="ProtectionFlags" id="ba7e38cf933ff2454bc4d5c3996bee3a_37897c8261b88c44bc08117c68d212f7" file="3" linestart="47" lineend="51" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="InvalidateInstructionCache" id="ba7e38cf933ff2454bc4d5c3996bee3a_ba9a89d87d9c494cf42a0533ab1beb27" file="3" linestart="138" lineend="138" access="public" storage="static">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Addr" proto="const void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</p>
+<p name="Len" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="RemoteTarget" id="a63376189c20393f42fbeaa55070cf30_429bf1a3779c4eae6b626a0ecfd801b4" file="4" linestart="27" lineend="118">
+<m name="allocateSpace" id="a63376189c20393f42fbeaa55070cf30_577cacd8e7658a87562b3ac877bd99bd" file="4" linestart="47" lineend="49" virtual="true" access="public">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="Alignment" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+<p name="Address" proto="uint64_t &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</lrf>
+</p>
+</m>
+<m name="isAllocatedMemory" id="a63376189c20393f42fbeaa55070cf30_6ecb4b418e595333e63b3df917c219c0" file="4" linestart="51" lineend="61" access="public" hasbody="true" isdef="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Address" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="Size" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+<m name="executeCode" id="a63376189c20393f42fbeaa55070cf30_6cd2e4ee415c495660a0972056162cfa" file="4" linestart="96" lineend="97" virtual="true" access="public">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="Address" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="RetVal" proto="int &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<bt name="int"/>
+</lrf>
+</p>
+</m>
+<m name="stop" id="a63376189c20393f42fbeaa55070cf30_bc1255a7228f52dbec8b5e9ac87d3bbd" file="4" linestart="110" lineend="110" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<c name="RemoteTarget" id="a63376189c20393f42fbeaa55070cf30_6c04732f2564694f5b58f4ed90c6b4b7" file="4" linestart="112" lineend="112" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<initlist id="a63376189c20393f42fbeaa55070cf30_aff21f8d69810e549602cde1834f19d6"/>
+<initlist id="a63376189c20393f42fbeaa55070cf30_09e88e0ba9a3682c13321d25c4691ddc"/>
+</c>
+</cr>
+<e namespace="llvm" access="none" name="LLIMessageType" id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685" file="5" linestart="61" lineend="75" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="LLI_Error" id="b016176b94f8e6d2f36ae913ba3d8cab_db3d90080c560137bb7eef0ab32a5d6f" file="5" linestart="62" lineend="62">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_ChildActive" id="b016176b94f8e6d2f36ae913ba3d8cab_e70ee4d541631a425bd0529469437535" file="5" linestart="63" lineend="63">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_AllocateSpace" id="b016176b94f8e6d2f36ae913ba3d8cab_2e279789b7d1541497c829fe8da1013f" file="5" linestart="64" lineend="64">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_AllocationResult" id="b016176b94f8e6d2f36ae913ba3d8cab_e040de15414a51411947aeccb7711262" file="5" linestart="65" lineend="65">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_LoadCodeSection" id="b016176b94f8e6d2f36ae913ba3d8cab_b99d2c14ebb8c481c817fe64574bcab1" file="5" linestart="67" lineend="67">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_LoadDataSection" id="b016176b94f8e6d2f36ae913ba3d8cab_0e0329c9039d9c8007f5a1f98e3d9301" file="5" linestart="68" lineend="68">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_LoadResult" id="b016176b94f8e6d2f36ae913ba3d8cab_4c3f019899fcf91769dfffaa4dfc8521" file="5" linestart="69" lineend="69">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_Execute" id="b016176b94f8e6d2f36ae913ba3d8cab_9d55f7c4cb38bd3a18058a9d9f009527" file="5" linestart="71" lineend="71">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_ExecutionResult" id="b016176b94f8e6d2f36ae913ba3d8cab_5209330bd79da120d8e6f4ac5c13586c" file="5" linestart="72" lineend="72">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+<ec name="LLI_Terminate" id="b016176b94f8e6d2f36ae913ba3d8cab_7d0c4763ccd24841ec1c4bc6bc2f8861" file="5" linestart="74" lineend="74">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_ed68c7562808c9ccc8e1ff526ebcd685"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm" access="none" name="LLIMessageStatus" id="b016176b94f8e6d2f36ae913ba3d8cab_34c56863aa46e0debd1cc0d78e3357ef" file="5" linestart="77" lineend="81" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="LLI_Status_Success" id="b016176b94f8e6d2f36ae913ba3d8cab_92f1ca60f6192a2a66e947a38af6ae18" file="5" linestart="78" lineend="78">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_34c56863aa46e0debd1cc0d78e3357ef"/>
+</et>
+</ec>
+<ec name="LLI_Status_NotAllocated" id="b016176b94f8e6d2f36ae913ba3d8cab_eb80259eb802a04b8cd42abe6e614bd8" file="5" linestart="79" lineend="79">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_34c56863aa46e0debd1cc0d78e3357ef"/>
+</et>
+</ec>
+<ec name="LLI_Status_IncompleteMsg" id="b016176b94f8e6d2f36ae913ba3d8cab_302872e694ea5db2477cb3bc9aeaf831" file="5" linestart="80" lineend="80">
+<et>
+<e id="b016176b94f8e6d2f36ae913ba3d8cab_34c56863aa46e0debd1cc0d78e3357ef"/>
+</et>
+</ec>
+</e>
+<cr access="none" depth="0" kind="class" name="LLIChildTarget" id="2442a5c37a73a2b4f3cb760124452b79_19fe0b5ab2515dac76cd4c71d0c0fd40" file="1" linestart="14" lineend="45">
+<c name="LLIChildTarget" id="2442a5c37a73a2b4f3cb760124452b79_beb60170177575aee3ab2bdc686dbe4b" file="1" linestart="14" lineend="14" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<f name="_wassert" id="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" file="6" linestart="35" lineend="35" previous="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Message" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_File" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_Line" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+</Externals>

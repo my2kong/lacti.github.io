@@ -1,0 +1,456 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="AsmPrinterHandler" id="1499f0e9e0845c3521332b7effc023d5_fbe788e4df309e3ca7c82b85f46f1ddd" file="3" linestart="28" lineend="54"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="EHStreamer" id="26c715dd8f98c3f4ea4b498001168b58_2a6b83ea06c754be1fbf28abd0615689" file="4" linestart="31" lineend="134">
+<base access="public">
+<rt>
+<cr id="1499f0e9e0845c3521332b7effc023d5_fbe788e4df309e3ca7c82b85f46f1ddd"/>
+</rt>
+</base>
+<fl name="Asm" id="26c715dd8f98c3f4ea4b498001168b58_c5acc5d7b958de103ee3d06941295b41" file="4" linestart="34" lineend="34" isPtr="true" isLiteral="true" access="protected" proto="llvm::AsmPrinter *">
+<pt>
+<rt>
+<cr id="67d9eb8049a3afaa59b7545110adc6d4_6580dee968da8d01dcc1d0f208944f7e"/>
+</rt>
+</pt>
+</fl>
+<fl name="MMI" id="26c715dd8f98c3f4ea4b498001168b58_de4c1dd1a41e346e09c3be70d752f87b" file="4" linestart="37" lineend="37" isPtr="true" isLiteral="true" access="protected" proto="llvm::MachineModuleInfo *">
+<pt>
+<rt>
+<cr id="7274dc1179d249fb1ee335f096149952_692516297c31b417853dc7481e521b9e"/>
+</rt>
+</pt>
+</fl>
+<m name="emitExceptionTable" id="26c715dd8f98c3f4ea4b498001168b58_fe7961a3eceed84b41e0dc885538731b" file="4" linestart="112" lineend="112" access="protected">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<c name="EHStreamer" id="26c715dd8f98c3f4ea4b498001168b58_84c4c9f315b20b122dbb93481d9aa945" file="4" linestart="117" lineend="117" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="A" proto="llvm::AsmPrinter *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="67d9eb8049a3afaa59b7545110adc6d4_6580dee968da8d01dcc1d0f208944f7e"/>
+</rt>
+</pt>
+</p>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="Twine" id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1" file="5" linestart="81" lineend="468" previous="4490f7744b0eb140a59a313798e92590_46cf5923592f996d8ef1b14f5b0584b1">
+<e parent="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1" access="private" name="NodeKind" id="96ed60b524dd53b8d6b92c178537632e_f5ee09ecf1a87b364cf9f617fb8f8103" file="5" linestart="83" lineend="131" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<c name="Twine" id="96ed60b524dd53b8d6b92c178537632e_50b43c2334b5224aebb38bf975bda87b" file="5" linestart="267" lineend="276" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<initlist id="96ed60b524dd53b8d6b92c178537632e_b509228a1e60ab9abca2fb455c8dad53"/>
+</c>
+<c name="Twine" id="96ed60b524dd53b8d6b92c178537632e_6310050652cbf45dcd0f23fdb275f017" file="5" linestart="81" lineend="81" copyconst="true" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="const llvm::Twine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+</cr>
+<tm namespace="std" access="none" depth="3" kind="class" name="vector" id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b" file="6" linestart="647" lineend="1783">
+<template_parameters>
+<ttp name="_Ty" id="78cb3cbcc032150b6a85b2f30813c812_4d7373ffb16edf838a9e31b6a15123d0" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="_Alloc" id="78cb3cbcc032150b6a85b2f30813c812_a64350a4dca23860ec579d1ba0da5aed" depth="" index="" proto="type-parameter-0-1">
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<ttp/>
+</template_arguments>
+</tss>
+</ttp>
+</template_parameters>
+<cr namespace="std" access="none" depth="3" kind="class" name="vector" id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b" file="6" linestart="649" lineend="1783">
+<base access="public">
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_05d3bbcccbfa4b3b58c141a4ec6ed389"/>
+<template_arguments>
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_6a7cfa317aaf33a284de4e9d43f7bf95"/>
+<template_arguments>
+<ttp/>
+<ttp/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</base>
+<cr access="public" kind="class" name="vector" id="78cb3cbcc032150b6a85b2f30813c812_c48c2bde2c144b6d614d5912fe2271ba" file="6" linestart="649" lineend="649"/>
+<m name="empty" id="78cb3cbcc032150b6a85b2f30813c812_94d90d3271dcb9c2b9e8e93c180a0ef6" file="6" linestart="1156" lineend="1159" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+<exception_specifiers nothrow="true"/>
+</fpt>
+</m>
+<m name="operator[]" id="78cb3cbcc032150b6a85b2f30813c812_ef8d8f319c8e9feff2e4932bbcf63dcf" file="6" linestart="1180" lineend="1194" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const_reference">
+<Tdef>
+<DependentName/>
+</Tdef>
+</fpt>
+<p name="_Pos" proto="size_type" access2="none">
+<Tdef>
+<DependentName/>
+</Tdef>
+</p>
+</m>
+</cr>
+</tm>
+<cr namespace="llvm" access="none" depth="3" kind="class" name="AsmPrinter" id="67d9eb8049a3afaa59b7545110adc6d4_6580dee968da8d01dcc1d0f208944f7e" file="7" linestart="61" lineend="511" previous="26c715dd8f98c3f4ea4b498001168b58_6580dee968da8d01dcc1d0f208944f7e">
+<base access="public">
+<rt>
+<cr id="76fdd02034ba5b9263bf1be865e9c7f6_96819381490f736e22cf504e136c5258"/>
+</rt>
+</base>
+<fl name="TM" id="67d9eb8049a3afaa59b7545110adc6d4_fe4f51bce37ea3594aa958c52f2af663" file="7" linestart="65" lineend="65" isLiteral="true" isRef="true" access="public" proto="llvm::TargetMachine &amp;">
+<lrf>
+<rt>
+<cr id="56a2ed46996833ffb2fcd2bcfc4de7da_a26dab456e12d7a9bfc4c2cb193bcaff"/>
+</rt>
+</lrf>
+</fl>
+<fl name="OutStreamer" id="67d9eb8049a3afaa59b7545110adc6d4_ac1013df9af2510d33d734b3d5339700" file="7" linestart="79" lineend="79" isLiteral="true" isRef="true" access="public" proto="llvm::MCStreamer &amp;">
+<lrf>
+<rt>
+<cr id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e"/>
+</rt>
+</lrf>
+</fl>
+<fl name="Mang" id="67d9eb8049a3afaa59b7545110adc6d4_ef1a2b857b35b393e46377cf5782a0d0" file="7" linestart="89" lineend="89" isPtr="true" isLiteral="true" access="public" proto="llvm::Mangler *">
+<pt>
+<rt>
+<cr id="d96ae8ed17e50b0aad3e3d779c79428e_cd698c83db4bd2eff7d77b247e9ca4f5"/>
+</rt>
+</pt>
+</fl>
+<fl name="CurrentFnSym" id="67d9eb8049a3afaa59b7545110adc6d4_460839025379932a5d906d6f21b5338c" file="7" linestart="94" lineend="94" isPtr="true" isLiteral="true" access="public" proto="llvm::MCSymbol *">
+<pt>
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</pt>
+</fl>
+<m name="getFunctionNumber" id="67d9eb8049a3afaa59b7545110adc6d4_6c6273b703e717bf10b84711ad7706da" file="7" linestart="142" lineend="142" access="public">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+<m name="getObjFileLowering" id="67d9eb8049a3afaa59b7545110adc6d4_587d5e10d4cb745a6885f3a23f480a80" file="7" linestart="145" lineend="145" access="public">
+<fpt const="true" proto="const llvm::TargetLoweringObjectFile &amp;">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="89980c9574ab735d925b950152f54e86_05f4395cf5f7b74eb42a3b922d16f998"/>
+</rt>
+</QualType>
+</lrf>
+</fpt>
+</m>
+<e parent="67d9eb8049a3afaa59b7545110adc6d4_6580dee968da8d01dcc1d0f208944f7e" access="public" name="CFIMoveType" id="67d9eb8049a3afaa59b7545110adc6d4_9845ba6add235a002d9935f714fc30d1" file="7" linestart="206" lineend="206" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<m name="needsSEHMoves" id="67d9eb8049a3afaa59b7545110adc6d4_7726dca7010d3048a156d9d986a58e03" file="7" linestart="209" lineend="209" access="public">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+</m>
+<m name="GetTempSymbol" id="67d9eb8049a3afaa59b7545110adc6d4_4420bfa4ad398f4f6a03fb6ff53bccc6" file="7" linestart="302" lineend="302" access="public">
+<fpt const="true" proto="llvm::MCSymbol *">
+<pt>
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</pt>
+</fpt>
+<p name="Name" proto="llvm::Twine" access2="none">
+<rt>
+<cr id="96ed60b524dd53b8d6b92c178537632e_46cf5923592f996d8ef1b14f5b0584b1"/>
+</rt>
+</p>
+<p name="ID" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</m>
+</cr>
+<e namespace="llvm.dwarf" access="none" name="Constants" id="b9ebd51a2a93cddba506c28533a60962_1a55d2a024324e858344e014bfeaa7ab" file="8" linestart="749" lineend="771" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="DW_EH_PE_omit" id="b9ebd51a2a93cddba506c28533a60962_a2c9880bf87e21cea62659ab45c48eda" file="8" linestart="755" lineend="755">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_1a55d2a024324e858344e014bfeaa7ab"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MachineFunction" id="895a66b41661e915ba6854da2359580f_7a76e175133a980deee19d81d954fcc0" file="9" linestart="76" lineend="468" previous="dc2fe1ce3eab105adc926f5848f1baa6_7a76e175133a980deee19d81d954fcc0"/>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="ARMTargetStreamer" id="7345c616ef5527975f62b8656367364b_3704dec55f03bb5112d781cb97b6b807" file="10" linestart="112" lineend="160" previous="72a5fb5c2b9b23e7aabc7a6ef20a3fa5_3704dec55f03bb5112d781cb97b6b807">
+<base access="public">
+<rt>
+<cr id="7345c616ef5527975f62b8656367364b_8a911d38a7072c1c15f3e81fd916b175"/>
+</rt>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCStreamer" id="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e" file="10" linestart="171" lineend="745" previous="7345c616ef5527975f62b8656367364b_d43ee9d6c82592155c8c2c9057faef5e">
+<m name="PushSection" id="7345c616ef5527975f62b8656367364b_3ce5352a487131fa5c88a15ca2d7b2a7" file="10" linestart="320" lineend="323" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="PopSection" id="7345c616ef5527975f62b8656367364b_c238017de0877243354bf60ea56a7e59" file="10" linestart="329" lineend="338" access="public" hasbody="true" isdef="true">
+<fpt proto="bool">
+<bt name="bool"/>
+</fpt>
+</m>
+<m name="EmitLabel" id="7345c616ef5527975f62b8656367364b_74b0d57334423a992c32821b56868161" file="10" linestart="394" lineend="394" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Symbol" proto="llvm::MCSymbol *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</pt>
+</p>
+</m>
+<m name="EmitWinCFIStartProc" id="7345c616ef5527975f62b8656367364b_ff8eb1bf30c91b7d99afdab86bedae81" file="10" linestart="698" lineend="698" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Symbol" proto="const llvm::MCSymbol *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</QualType>
+</pt>
+</p>
+</m>
+<m name="EmitWinCFIEndProc" id="7345c616ef5527975f62b8656367364b_846be7c37a5171c4b6e1858cacd0d24e" file="10" linestart="699" lineend="699" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="EmitWinEHHandler" id="7345c616ef5527975f62b8656367364b_dcacbc37f8131b8494c3d3c30326359d" file="10" linestart="710" lineend="710" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Sym" proto="const llvm::MCSymbol *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</QualType>
+</pt>
+</p>
+<p name="Unwind" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+<p name="Except" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</m>
+<m name="EmitWinEHHandlerData" id="7345c616ef5527975f62b8656367364b_6dac66a860bb95f56bdca5d56d36c04f" file="10" linestart="711" lineend="711" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="3" kind="class" name="MachineModuleInfo" id="7274dc1179d249fb1ee335f096149952_692516297c31b417853dc7481e521b9e" file="11" linestart="97" lineend="413" previous="895a66b41661e915ba6854da2359580f_692516297c31b417853dc7481e521b9e">
+<base access="public">
+<rt>
+<cr id="869eb5281cbe4bbe9c04eddc6bf80c98_2804853088167aaf2137d30cee564d9a"/>
+</rt>
+</base>
+<m name="getPersonalityIndex" id="7274dc1179d249fb1ee335f096149952_c8e174976e1cdde9d69c00f46a7d35c3" file="11" linestart="299" lineend="299" access="public">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+<m name="getPersonalities" id="7274dc1179d249fb1ee335f096149952_54ff6272c5b11575ebe5a30ceeb2e149" file="11" linestart="302" lineend="304" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const std::vector&lt;const Function *&gt; &amp;">
+<lrf>
+<QualType const="true">
+<ety>
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b"/>
+<template_arguments>
+<pt>
+<QualType const="true">
+<rt>
+<cr id="e43b680db66eb84907a187ef5febec89_c576018f16bd5ed52ec4fb4f94ef3d73"/>
+</rt>
+</QualType>
+</pt>
+</template_arguments>
+</tss>
+</ety>
+</QualType>
+</lrf>
+</fpt>
+</m>
+<m name="TidyLandingPads" id="7274dc1179d249fb1ee335f096149952_3c4e8c274f79cecce84c482f5b45cff9" file="11" linestart="337" lineend="337" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="LPMap" proto="DenseMap&lt;llvm::MCSymbol *, uintptr_t&gt; *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<tss>
+<templatebase id="a2e0511a2f7df2d0d224b4855fe9d8ec_6c3b609a49f5ba6a1fa3fad8d9fe38bc"/>
+<template_arguments>
+<pt>
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</pt>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</template_arguments>
+</tss>
+</pt>
+</p>
+</m>
+<m name="getLandingPads" id="7274dc1179d249fb1ee335f096149952_e8f57a7d337bae8280d345251eb68f48" file="11" linestart="341" lineend="343" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const std::vector&lt;LandingPadInfo&gt; &amp;">
+<lrf>
+<QualType const="true">
+<ety>
+<tss>
+<templatebase id="78cb3cbcc032150b6a85b2f30813c812_3d0ab7465d6b9448b8c01dc907d3e25b"/>
+<template_arguments>
+<rt>
+<cr id="7274dc1179d249fb1ee335f096149952_89a92b75930316fcf7b20fc935384089"/>
+</rt>
+</template_arguments>
+</tss>
+</ety>
+</QualType>
+</lrf>
+</fpt>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="6" kind="class" name="Function" id="e43b680db66eb84907a187ef5febec89_c576018f16bd5ed52ec4fb4f94ef3d73" file="12" linestart="71" lineend="510" previous="895a66b41661e915ba6854da2359580f_c576018f16bd5ed52ec4fb4f94ef3d73">
+<base access="public">
+<rt>
+<cr id="4c9d5a773464e849cef0356686c606a4_07304a16e308f5d0f1908a1fda171d39"/>
+</rt>
+</base>
+<base access="public">
+<tss>
+<templatebase id="2e0ac8f5efaa78be4d314ff7cd8c40b6_a466399ff61d8858d0f66a7994b21846"/>
+<template_arguments>
+<rt>
+<cr id="e43b680db66eb84907a187ef5febec89_c576018f16bd5ed52ec4fb4f94ef3d73"/>
+</rt>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCSymbol" id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea" file="13" linestart="33" lineend="157" previous="b2b9336dfe6b80bb5834e13979c78f51_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MCObjectFileInfo" id="eb759b96df36817be967f2c2b85787c2_9b794b903f03e3a34dc1a4c2af6b0ae3" file="14" linestart="25" lineend="386" previous="0521a692a6291d3af05cf9d97c086513_9b794b903f03e3a34dc1a4c2af6b0ae3">
+<m name="getPersonalityEncoding" id="eb759b96df36817be967f2c2b85787c2_c419a3fb9dd16f607401a35a3753b514" file="14" linestart="208" lineend="208" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+<m name="getLSDAEncoding" id="eb759b96df36817be967f2c2b85787c2_554ad439070a401e59b0a094826dad61" file="14" linestart="209" lineend="209" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+</m>
+<e parent="eb759b96df36817be967f2c2b85787c2_9b794b903f03e3a34dc1a4c2af6b0ae3" access="public" name="Environment" id="eb759b96df36817be967f2c2b85787c2_38ee86feeb55c03c0f149fc9d878433c" file="14" linestart="360" lineend="360" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="TargetLoweringObjectFile" id="89980c9574ab735d925b950152f54e86_05f4395cf5f7b74eb42a3b922d16f998" file="15" linestart="36" lineend="164" previous="67d9eb8049a3afaa59b7545110adc6d4_05f4395cf5f7b74eb42a3b922d16f998">
+<base access="public">
+<rt>
+<cr id="eb759b96df36817be967f2c2b85787c2_9b794b903f03e3a34dc1a4c2af6b0ae3"/>
+</rt>
+</base>
+<m name="getCFIPersonalitySymbol" id="89980c9574ab735d925b950152f54e86_11cdc432af6459bf5caa5af4a837eba5" file="15" linestart="125" lineend="128" virtual="true" access="public">
+<fpt const="true" proto="llvm::MCSymbol *">
+<pt>
+<rt>
+<cr id="72923913e303ae46e643e8378c86badb_a4b7885e159e2a7bcf4cb7e2efdfe4ea"/>
+</rt>
+</pt>
+</fpt>
+<p name="GV" proto="const llvm::GlobalValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="084c2ed8c98649564b1d29142f0bddcf_c2081526ef5d29a0931b3b477d0568e9"/>
+</rt>
+</QualType>
+</pt>
+</p>
+<p name="Mang" proto="llvm::Mangler &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="d96ae8ed17e50b0aad3e3d779c79428e_cd698c83db4bd2eff7d77b247e9ca4f5"/>
+</rt>
+</lrf>
+</p>
+<p name="TM" proto="const llvm::TargetMachine &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="56a2ed46996833ffb2fcd2bcfc4de7da_a26dab456e12d7a9bfc4c2cb193bcaff"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+<p name="MMI" proto="llvm::MachineModuleInfo *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="7274dc1179d249fb1ee335f096149952_692516297c31b417853dc7481e521b9e"/>
+</rt>
+</pt>
+</p>
+</m>
+</cr>
+</Externals>

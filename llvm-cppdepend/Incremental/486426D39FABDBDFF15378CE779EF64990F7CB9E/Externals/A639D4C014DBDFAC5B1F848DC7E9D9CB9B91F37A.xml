@@ -1,0 +1,800 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33" file="2" linestart="40" lineend="521" previous="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33">
+<c name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_a684699547c70f5902c9a02f2a7e9149" file="2" linestart="75" lineend="79" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<initlist id="6f9d54688deb2fea7e6a760a21186275_743d9d6267ce311d3bc4f27153ffcd76"/>
+</c>
+<c name="StringRef" id="6f9d54688deb2fea7e6a760a21186275_1cde07128879fdd147febaf099861744" file="2" linestart="40" lineend="40" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="llvm::StringRef &amp;&amp;" isRef="true" isLiteral="true" access2="none">
+<rrf>
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</rrf>
+</p>
+</c>
+</cr>
+<tm namespace="std" access="none" kind="struct" name="default_delete" id="32ee2f37450bb59c9285f016557f98ab_604f1078b743f975a1b18033e3721fd8" file="3" linestart="25" lineend="26">
+<template_parameters>
+<ttp name="_Ty" id="32ee2f37450bb59c9285f016557f98ab_5f9dc35a9fa1766148077a9dfd420633" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<cr namespace="std" access="none" kind="struct" name="default_delete" id="32ee2f37450bb59c9285f016557f98ab_604f1078b743f975a1b18033e3721fd8" file="3" linestart="26" lineend="26"/>
+</tm>
+<tm namespace="std" access="none" depth="1" kind="class" name="unique_ptr" id="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37" file="3" linestart="1325" lineend="1488" previous="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37">
+<template_parameters>
+<ttp name="_Ty" id="32ee2f37450bb59c9285f016557f98ab_17c4d5c2ffb1b98c7d8e43e75330cc2e" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="_Dx" id="32ee2f37450bb59c9285f016557f98ab_933c62f2775e1cff0e59e331a5cc62e8" depth="" index="" proto="type-parameter-0-1"/>
+</template_parameters>
+<cr namespace="std" access="none" depth="1" kind="class" name="unique_ptr" id="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37" file="3" linestart="1327" lineend="1488" previous="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37">
+<base access="private">
+<tss>
+<templatebase id="32ee2f37450bb59c9285f016557f98ab_45cbe9bceefc5bcae1adaf215e120fc6"/>
+<template_arguments>
+<ttp/>
+<ttp/>
+</template_arguments>
+</tss>
+</base>
+<cr access="public" kind="class" name="unique_ptr" id="32ee2f37450bb59c9285f016557f98ab_6059aea4db0889cf48a52425f1982dfc" file="3" linestart="1327" lineend="1327"/>
+<c name="unique_ptr&lt;_Ty, _Dx&gt;" id="32ee2f37450bb59c9285f016557f98ab_a3963fd2b54345f7833a0c87afbef192" file="3" linestart="1385" lineend="1389" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+<exception_specifiers nothrow="true"/>
+</fpt>
+<p name="_Right" proto="unique_ptr&lt;_Ty, _Dx&gt; &amp;&amp;" isRef="true" access2="none">
+<rrf>
+<InjectedClassName>
+<cr id="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37"/>
+</InjectedClassName>
+</rrf>
+</p>
+</c>
+<m name="operator*" id="32ee2f37450bb59c9285f016557f98ab_9f2776ca313abe86f63a6928cf3a2d05" file="3" linestart="1451" lineend="1454" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="typename add_reference&lt;_Ty&gt;::type">
+<DependentName/>
+</fpt>
+</m>
+<m name="operator-&gt;" id="32ee2f37450bb59c9285f016557f98ab_82e5fc364b0eff63c61e1dadded69328" file="3" linestart="1456" lineend="1459" operator="true" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="pointer">
+<Tdef>
+<DependentName/>
+</Tdef>
+<exception_specifiers nothrow="true"/>
+</fpt>
+</m>
+</cr>
+</tm>
+<e namespace="llvm.dwarf" access="none" name="Tag" id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f" file="4" linestart="70" lineend="147" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</integer_type>
+<ec name="DW_TAG_member" id="b9ebd51a2a93cddba506c28533a60962_bb428b5a70300ec6bd0d8d3d7d0fa71f" file="4" linestart="79" lineend="79">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_pointer_type" id="b9ebd51a2a93cddba506c28533a60962_3a828e67ad7566ab0ec9446ccce24076" file="4" linestart="80" lineend="80">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_reference_type" id="b9ebd51a2a93cddba506c28533a60962_2bf2ce41fb90db73218abbb5a6c2ec57" file="4" linestart="81" lineend="81">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_compile_unit" id="b9ebd51a2a93cddba506c28533a60962_fe0b4d456d98f839ef1fa5bedffe43a6" file="4" linestart="82" lineend="82">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_structure_type" id="b9ebd51a2a93cddba506c28533a60962_5362d917a101524c639c905b4af5d8a8" file="4" linestart="84" lineend="84">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_ptr_to_member_type" id="b9ebd51a2a93cddba506c28533a60962_47ee5ca2945823376903ffc9b3dd7f2f" file="4" linestart="95" lineend="95">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_base_type" id="b9ebd51a2a93cddba506c28533a60962_37631055fe2b485d2fcc138bbb7fca6e" file="4" linestart="100" lineend="100">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_const_type" id="b9ebd51a2a93cddba506c28533a60962_d8fa5ea7c6b121b844324f8bca6fe0e1" file="4" linestart="102" lineend="102">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_subprogram" id="b9ebd51a2a93cddba506c28533a60962_c3401fe7a32b47bdde35210c6f186aeb" file="4" linestart="110" lineend="110">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_namespace" id="b9ebd51a2a93cddba506c28533a60962_708745bc191527580f78937785a786a3" file="4" linestart="121" lineend="121">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+<ec name="DW_TAG_rvalue_reference_type" id="b9ebd51a2a93cddba506c28533a60962_eeaf06a075a30e105e93a95e6491579f" file="4" linestart="129" lineend="129">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm.dwarf" access="none" name="Attribute" id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134" file="4" linestart="177" lineend="341" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</integer_type>
+<ec name="DW_AT_name" id="b9ebd51a2a93cddba506c28533a60962_0d0f2b59a6f8aed092ff0bde11a3410c" file="4" linestart="181" lineend="181">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_byte_size" id="b9ebd51a2a93cddba506c28533a60962_b6f06f76af038abdc6a953206f1b8543" file="4" linestart="183" lineend="183">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_const_value" id="b9ebd51a2a93cddba506c28533a60962_bd9ee256c4c9d55e88630a46a5ebc38c" file="4" linestart="197" lineend="197">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_containing_type" id="b9ebd51a2a93cddba506c28533a60962_ce011c57a87c07eeab0d74552992f89a" file="4" linestart="198" lineend="198">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_data_member_location" id="b9ebd51a2a93cddba506c28533a60962_086876f80df79ac8397f20cfb378d0d3" file="4" linestart="216" lineend="216">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_decl_file" id="b9ebd51a2a93cddba506c28533a60962_c9a1ff2f72fb6253febf1803a188065a" file="4" linestart="218" lineend="218">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_decl_line" id="b9ebd51a2a93cddba506c28533a60962_3b49c262e01a007011cc131d0f7c922f" file="4" linestart="219" lineend="219">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_declaration" id="b9ebd51a2a93cddba506c28533a60962_0b4b6d67dc182a85348a6bf5f58eb66d" file="4" linestart="220" lineend="220">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_encoding" id="b9ebd51a2a93cddba506c28533a60962_38549b5bb6010c69b24f556bfaa08f59" file="4" linestart="222" lineend="222">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_external" id="b9ebd51a2a93cddba506c28533a60962_fcb56cafd1f21517f41af899a4bd27e0" file="4" linestart="223" lineend="223">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_type" id="b9ebd51a2a93cddba506c28533a60962_64fc0a9a86de595df44c8d1ca0251823" file="4" linestart="233" lineend="233">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+<ec name="DW_AT_linkage_name" id="b9ebd51a2a93cddba506c28533a60962_97fddc4db95ae63f8508e73b63bc3d64" file="4" linestart="270" lineend="270">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ec>
+</e>
+<e namespace="llvm.dwarf" access="none" name="Form" id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b" file="4" linestart="343" lineend="374" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<Tdef>
+<bt name="unsigned short"/>
+</Tdef>
+</integer_type>
+<ec name="DW_FORM_block1" id="b9ebd51a2a93cddba506c28533a60962_51040ca93ae5be7fdfbcd03a92fcc06d" file="4" linestart="353" lineend="353">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+<ec name="DW_FORM_data1" id="b9ebd51a2a93cddba506c28533a60962_8a33c499817b87e26e0c9fe4c4cf4eaa" file="4" linestart="354" lineend="354">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+<ec name="DW_FORM_sdata" id="b9ebd51a2a93cddba506c28533a60962_37f8682e7ddf68ab4ab79810c340c6de" file="4" linestart="356" lineend="356">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+<ec name="DW_FORM_strp" id="b9ebd51a2a93cddba506c28533a60962_97e7fb84d5710a5a15aafb4ec5233d60" file="4" linestart="357" lineend="357">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+<ec name="DW_FORM_ref4" id="b9ebd51a2a93cddba506c28533a60962_d9fcf4180f145b15251fd84f964f4ab9" file="4" linestart="362" lineend="362">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+<ec name="DW_FORM_flag_present" id="b9ebd51a2a93cddba506c28533a60962_f7a6e27b3bf828afc59526864914a99c" file="4" linestart="368" lineend="368">
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ec>
+</e>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DIEHash" id="5eed397aa25b70400b2b937304260247_53c2bdec876cd604117cab064a87829d" file="5" linestart="28" lineend="166">
+<c name="DIEHash" id="5eed397aa25b70400b2b937304260247_ae7b64e8d94bdb4dbcbbce438d0b85e0" file="5" linestart="92" lineend="92" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="A" proto="llvm::AsmPrinter *" isPtr="true" isLiteral="true" init="true" access2="none">
+<pt>
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_6580dee968da8d01dcc1d0f208944f7e"/>
+</rt>
+</pt>
+</p>
+<initlist id="5eed397aa25b70400b2b937304260247_5cc3edbb3582c72da89234709aa53ffe"/>
+</c>
+<m name="computeTypeSignature" id="5eed397aa25b70400b2b937304260247_fd860a4ab2e2abee9613898c420d0f80" file="5" linestart="101" lineend="101" access="public">
+<fpt proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+<p name="Die" proto="const llvm::DIE &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a0fe37917b6c4145e5424bda99e48f01"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="DIE" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a0fe37917b6c4145e5424bda99e48f01" file="6" linestart="111" lineend="196">
+<c name="DIE" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a62fff6b0ee467c03d3a8cd76f6d373b" file="6" linestart="147" lineend="149" explicit="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Tag" proto="dwarf::Tag" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_7dc236f0605f635fd51119592a1fe38f"/>
+</et>
+</ety>
+</p>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_10a07f0aa18c3592eed992cb14f8d813"/>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3aa7ecd3d93c683404a7d0843435f03f"/>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_b4795b690417f53033e2b038150a6890"/>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_c8dce6c79c782bb5939d128869bcac7e"/>
+</c>
+<m name="addValue" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_02abb604c33c89442b8751f7be446e10" file="6" linestart="174" lineend="177" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Attribute" proto="dwarf::Attribute" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_0d6642d91c81550ad8f6415b118d4134"/>
+</et>
+</ety>
+</p>
+<p name="Form" proto="dwarf::Form" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="b9ebd51a2a93cddba506c28533a60962_6308b9648a37f98582d99e54fe4aef7b"/>
+</et>
+</ety>
+</p>
+<p name="Value" proto="llvm::DIEValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</pt>
+</p>
+</m>
+<m name="addChild" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_8d081a1e6968fd2614bf36bfc5cd36b7" file="6" linestart="181" lineend="186" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Child" proto="std::unique_ptr&lt;DIE&gt;" access2="none">
+<ety>
+<tss>
+<templatebase id="32ee2f37450bb59c9285f016557f98ab_1e604289ea34d6bd69454849772d0a37"/>
+<template_arguments>
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a0fe37917b6c4145e5424bda99e48f01"/>
+</rt>
+</template_arguments>
+</tss>
+</ety>
+</p>
+</m>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="DIEInteger" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_6a0374f27bbe3583e3507327e70a543d" file="6" linestart="248" lineend="292">
+<base access="public">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</base>
+<c name="DIEInteger" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_16d35567939c834294b3ae38e6ce077c" file="6" linestart="252" lineend="252" explicit="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="I" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_8a6c4d9d368b11f45383f8018bbfcb1d"/>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="DIEString" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_9fa85f35d6727c37019eebeebfb7d0cf" file="6" linestart="382" lineend="407">
+<base access="public">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</base>
+<c name="DIEString" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_8ac41eaab3df5ae4611c967321888a71" file="6" linestart="387" lineend="388" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Acc" proto="const llvm::DIEValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</QualType>
+</pt>
+</p>
+<p name="S" proto="const llvm::StringRef" const="true" access2="none">
+<QualType const="true">
+<rt>
+<cr id="6f9d54688deb2fea7e6a760a21186275_1025e290e4030296f4991e57e4952f33"/>
+</rt>
+</QualType>
+</p>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_286a9c4b102efb46c3a3c947ed09fa53"/>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_e430fbbafd6c252b7d62fb1160620ed8"/>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="DIEEntry" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_4823a65bc2993dd70c9f58428c74512d" file="6" linestart="413" lineend="442">
+<base access="public">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</base>
+<c name="DIEEntry" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_d2bff954b04cc63ea61d2d6dac98fa7e" file="6" linestart="417" lineend="418" explicit="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="E" proto="llvm::DIE &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a0fe37917b6c4145e5424bda99e48f01"/>
+</rt>
+</lrf>
+</p>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_0971366549cc92fb1f3a0d296976d7ab"/>
+</c>
+</cr>
+<cr namespace="llvm" access="none" depth="1" kind="class" name="DIEBlock" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_02fe1d45384458e2ad07eeaf96ff157c" file="6" linestart="518" lineend="553">
+<base access="public">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_3cb1cd6f4b90cc75c70c5f042a957e09"/>
+</rt>
+</base>
+<base access="public">
+<rt>
+<cr id="5f2366d8f1d2fc60fc5e6fdff292cdb3_a0fe37917b6c4145e5424bda99e48f01"/>
+</rt>
+</base>
+<c name="DIEBlock" id="5f2366d8f1d2fc60fc5e6fdff292cdb3_faf3199e32d11e20d8698919c164826b" file="6" linestart="521" lineend="521" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<initlist id="5f2366d8f1d2fc60fc5e6fdff292cdb3_f4bfbdc3c9200b9a8b95421129391b47"/>
+</c>
+</cr>
+<cr namespace="testing" access="none" depth="0" kind="class" name="Message" id="d6da877cd43d9ea62976e055cbb7a3f4_a57271b22cdb2fdb3d50588243bf5562" file="7" linestart="82" lineend="221" previous="361592d094a324447c0b12d8c282c7d5_a57271b22cdb2fdb3d50588243bf5562">
+<c name="Message" id="d6da877cd43d9ea62976e055cbb7a3f4_21a3d36d55284f1d8751ec8cddd8c404" file="7" linestart="94" lineend="98" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<initlist id="d6da877cd43d9ea62976e055cbb7a3f4_b337e99236191cea06ced5fb66037052"/>
+</c>
+</cr>
+<e parent="562ee964b610e766d302b8dfed46fd41_5f4fb82d9196d416897f8942199b65f3" access="public" name="Type" id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1" file="8" linestart="51" lineend="55" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="kFatalFailure" id="562ee964b610e766d302b8dfed46fd41_eacd07025a4b6e36b1bcec4641b342a0" file="8" linestart="54" lineend="54">
+<et>
+<e id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1"/>
+</et>
+</ec>
+</e>
+<cr namespace="testing" access="none" depth="0" kind="class" name="AssertionResult" id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d" file="9" linestart="265" lineend="321" previous="361592d094a324447c0b12d8c282c7d5_1b0b5edb5a536c8577b46f6e0d5d791d">
+<c name="AssertionResult" id="0dc4cd8d4d61c13ddce2ee0effc89eca_90376d02aab3f76734cce9b29267f2af" file="9" linestart="269" lineend="269" copyconst="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="other" proto="const testing::AssertionResult &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+<cv name="operator bool" id="0dc4cd8d4d61c13ddce2ee0effc89eca_c2f20ab10b1a1c248f08973b7014d633" file="9" linestart="274" lineend="274" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+</cv>
+<m name="failure_message" id="0dc4cd8d4d61c13ddce2ee0effc89eca_50b6fa066d3e0d41ee32ad34528c8103" file="9" linestart="288" lineend="288" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+</m>
+</cr>
+<cr namespace="testing" access="none" depth="0" kind="class" name="Test" id="0dc4cd8d4d61c13ddce2ee0effc89eca_964ac3d325bf97cf954384b45d20b6e8" file="9" linestart="356" lineend="463" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_964ac3d325bf97cf954384b45d20b6e8">
+<m name="SetUpTestCase" id="0dc4cd8d4d61c13ddce2ee0effc89eca_9a9dc2bca30077fcc6a89530f92e1339" file="9" linestart="374" lineend="374" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="TearDownTestCase" id="0dc4cd8d4d61c13ddce2ee0effc89eca_d2e5bc6dcdf9b44bb09113afda19cad7" file="9" linestart="382" lineend="382" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<c name="Test" id="0dc4cd8d4d61c13ddce2ee0effc89eca_84d92362fbd4a41dfcdd762261a24cf5" file="9" linestart="411" lineend="411" access="protected">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="testing" access="none" depth="0" kind="class" name="TestInfo" id="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e" file="9" linestart="625" lineend="735" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e"/>
+<tm namespace="testing.internal" access="none" depth="0" pod="true" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_350bece42c7c2286ac893ed2f9905d9f" file="9" linestart="1346" lineend="1372">
+<template_parameters/>
+<cr namespace="testing.internal" access="none" depth="0" pod="true" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_9f03c6b4788c855604a1b39f6bd8c43f" file="9" linestart="1347" lineend="1372">
+<cr access="public" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_07febb784a13e0e5d35719b4531e86a5" file="9" linestart="1347" lineend="1347"/>
+<ft name="Compare" id="0dc4cd8d4d61c13ddce2ee0effc89eca_54323f0a38144261d59641f516370cec" file="9" linestart="1350" lineend="1357">
+<template_parameters>
+<ttp name="T1" id="0dc4cd8d4d61c13ddce2ee0effc89eca_81567f84e62214361ffb26585bf6df11" depth="" index="" proto="type-parameter-1-0"/>
+<ttp name="T2" id="0dc4cd8d4d61c13ddce2ee0effc89eca_2230f6b110d39b1dbbe144486c06d097" depth="" index="" proto="type-parameter-1-1"/>
+</template_parameters>
+<m name="Compare" id="0dc4cd8d4d61c13ddce2ee0effc89eca_032d369924e43a9a8eb727d96d7cd8b0" file="9" linestart="1351" lineend="1357" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="testing::AssertionResult">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</fpt>
+<p name="expected_expression" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="actual_expression" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="expected" proto="const T1 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="actual" proto="const T2 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</m>
+</ft>
+</cr>
+</tm>
+<cr namespace="testing.internal" access="none" depth="0" kind="class" name="AssertHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_7260371f7d6759cab9d4e4b45f795755" file="9" linestart="1594" lineend="1631" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_7260371f7d6759cab9d4e4b45f795755">
+<c name="AssertHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_5f3bae04f063d84394fe9d50198f2c6a" file="9" linestart="1597" lineend="1600" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="type" proto="TestPartResult::Type" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1"/>
+</et>
+</ety>
+</p>
+<p name="file" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="line" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+<p name="message" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</c>
+<m name="operator=" id="0dc4cd8d4d61c13ddce2ee0effc89eca_7c7803b0e3e57d066468d0bec8cde703" file="9" linestart="1605" lineend="1605" operator="true" access="public">
+<fpt const="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="message" proto="const testing::Message &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="d6da877cd43d9ea62976e055cbb7a3f4_a57271b22cdb2fdb3d50588243bf5562"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<f namespace="std" name="move" id="a2850672c1f580da0a7967af66af6824_ef2d962e769229049b375e6f7e221217" file="10" linestart="1516" lineend="1521" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="typename remove_reference&lt;_Ty&gt;::type &amp;&amp;">
+<rrf>
+<DependentName/>
+</rrf>
+<exception_specifiers nothrow="true"/>
+</fpt>
+<p name="_Arg" proto="_Ty &amp;&amp;" isRef="true" access2="none">
+<rrf>
+<ttp/>
+</rrf>
+</p>
+</f>
+<ft name="move" id="a2850672c1f580da0a7967af66af6824_159b0b00cb466d4c35a29a37152a3d7d" file="10" linestart="1516" lineend="1521">
+<template_parameters>
+<ttp name="_Ty" id="a2850672c1f580da0a7967af66af6824_9e571a43e54210b2c426d4c26bfbac4d" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="std" name="move" id="a2850672c1f580da0a7967af66af6824_ef2d962e769229049b375e6f7e221217" file="10" linestart="1516" lineend="1521" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="typename remove_reference&lt;_Ty&gt;::type &amp;&amp;">
+<rrf>
+<DependentName/>
+</rrf>
+<exception_specifiers nothrow="true"/>
+</fpt>
+<p name="_Arg" proto="_Ty &amp;&amp;" isRef="true" access2="none">
+<rrf>
+<ttp/>
+</rrf>
+</p>
+</f>
+</ft>
+<f namespace="llvm" name="make_unique" id="1135cd25965ca1fcacc9a319c3dc73ac_17e6d9ec897679e2454d6dbf62387811" file="11" linestart="392" lineend="395" access="none" hasbody="true" isdef="true">
+<fpt proto="typename std::enable_if&lt;!std::is_array&lt;T&gt;::value, std::unique_ptr&lt;T&gt; &gt;::type">
+<DependentName/>
+</fpt>
+<p name="args" proto="Args &amp;&amp;..." access2="none">
+<PackExpansion/>
+</p>
+</f>
+<ft name="make_unique" id="1135cd25965ca1fcacc9a319c3dc73ac_e632a1a401782d96a094eac50a2111c0" file="11" linestart="391" lineend="395">
+<template_parameters>
+<ttp name="T" id="1135cd25965ca1fcacc9a319c3dc73ac_17c445c93b22152f4ceea3a964954a59" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="Args" id="1135cd25965ca1fcacc9a319c3dc73ac_c1eee010edae16d8ea39e6b7aaa2393d" depth="" index="" proto="type-parameter-0-1"/>
+</template_parameters>
+<f namespace="llvm" name="make_unique" id="1135cd25965ca1fcacc9a319c3dc73ac_17e6d9ec897679e2454d6dbf62387811" file="11" linestart="392" lineend="395" access="none" hasbody="true" isdef="true">
+<fpt proto="typename std::enable_if&lt;!std::is_array&lt;T&gt;::value, std::unique_ptr&lt;T&gt; &gt;::type">
+<DependentName/>
+</fpt>
+<p name="args" proto="Args &amp;&amp;..." access2="none">
+<PackExpansion/>
+</p>
+</f>
+</ft>
+<f namespace="testing.internal" name="GetTestTypeId" id="361592d094a324447c0b12d8c282c7d5_e8ecc4c7ff1c3d40cce55780474106a4" file="12" linestart="534" lineend="534" access="none">
+<fpt proto="TypeId">
+<Tdef>
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</Tdef>
+</fpt>
+</f>
+<f namespace="testing.internal" name="MakeAndRegisterTestInfo" id="361592d094a324447c0b12d8c282c7d5_c94e15073fa33c9f81254abdf66926e3" file="12" linestart="595" lineend="602" access="none">
+<fpt proto="testing::TestInfo *">
+<pt>
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e"/>
+</rt>
+</pt>
+</fpt>
+<p name="test_case_name" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="name" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="type_param" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="value_param" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="fixture_class_id" proto="TypeId" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</Tdef>
+</p>
+<p name="set_up_tc" proto="SetUpTestCaseFunc" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+<p name="tear_down_tc" proto="TearDownTestCaseFunc" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+<p name="factory" proto="testing::internal::TestFactoryBase *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="361592d094a324447c0b12d8c282c7d5_ebebd0ac8a5c6834880cc16f32b5b90a"/>
+</rt>
+</pt>
+</p>
+</f>
+<f namespace="testing.internal" name="CmpHelperNE" id="0dc4cd8d4d61c13ddce2ee0effc89eca_da7a63d659b452a95633044c38cec6f2" file="9" linestart="1448" lineend="1448" access="none" hasbody="true" isdef="true">
+<fpt proto="testing::AssertionResult">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</fpt>
+<p name="expr1" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="expr2" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="val1" proto="const T1 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="val2" proto="const T2 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+<ft name="CmpHelperNE" id="0dc4cd8d4d61c13ddce2ee0effc89eca_e0ff2624d3f1ccaecb9fd3e859b61b95" file="9" linestart="1448" lineend="1448">
+<template_parameters>
+<ttp name="T1" id="0dc4cd8d4d61c13ddce2ee0effc89eca_2ce2c7209379b9473c9c4a0d13d91d23" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="T2" id="0dc4cd8d4d61c13ddce2ee0effc89eca_b0149e1f3bf9f6d845ad6c39ef88616c" depth="" index="" proto="type-parameter-0-1"/>
+</template_parameters>
+<f namespace="testing.internal" name="CmpHelperNE" id="0dc4cd8d4d61c13ddce2ee0effc89eca_da7a63d659b452a95633044c38cec6f2" file="9" linestart="1448" lineend="1448" access="none" hasbody="true" isdef="true">
+<fpt proto="testing::AssertionResult">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</fpt>
+<p name="expr1" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="expr2" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="val1" proto="const T1 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="val2" proto="const T2 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+</ft>
+</Externals>

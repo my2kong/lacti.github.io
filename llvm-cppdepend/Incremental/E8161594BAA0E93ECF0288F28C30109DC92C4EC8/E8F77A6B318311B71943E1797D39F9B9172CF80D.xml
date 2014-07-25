@@ -1,0 +1,919 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="9" e="9"/>
+<c f="1" b="10" e="10"/>
+<c f="1" b="11" e="11"/>
+<c f="1" b="12" e="12"/>
+<c f="1" b="14" e="12"/>
+<c f="1" b="60" e="60"/>
+<c f="1" b="61" e="60"/>
+<c f="1" b="66" e="66"/>
+<c f="1" b="67" e="67"/>
+<c f="1" b="68" e="67"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="13" e="13"/>
+<c f="2" b="14" e="14"/>
+<c f="2" b="15" e="15"/>
+<c f="2" b="16" e="16"/>
+<c f="2" b="17" e="17"/>
+<c f="2" b="18" e="18"/>
+<c f="2" b="19" e="19"/>
+<c f="2" b="20" e="20"/>
+<c f="2" b="22" e="20"/>
+<c f="2" b="33" e="33"/>
+<c f="2" b="34" e="34"/>
+<c f="2" b="35" e="35"/>
+<c f="2" b="36" e="36"/>
+<c f="2" b="37" e="36"/>
+<c f="2" b="43" e="43"/>
+<c f="2" b="44" e="44"/>
+<c f="2" b="45" e="45"/>
+<c f="2" b="46" e="46"/>
+<c f="2" b="47" e="46"/>
+<c f="2" b="53" e="53"/>
+<c f="2" b="54" e="54"/>
+<c f="2" b="55" e="55"/>
+<c f="2" b="56" e="56"/>
+<c f="2" b="57" e="57"/>
+<c f="2" b="58" e="58"/>
+<c f="2" b="59" e="59"/>
+<c f="2" b="60" e="59"/>
+<c f="2" b="66" e="66"/>
+<c f="2" b="67" e="67"/>
+<c f="2" b="68" e="68"/>
+<c f="2" b="69" e="69"/>
+<c f="2" b="70" e="69"/>
+<c f="2" b="82" e="82"/>
+<c f="2" b="83" e="82"/>
+<c f="2" b="90" e="90"/>
+<c f="2" b="92" e="90"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="aedb34b5fb6a5b9339b572321afe1dc7_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="27" lineend="90">
+<cr namespace="llvm" access="none" kind="class" name="LLVMContext" id="aedb34b5fb6a5b9339b572321afe1dc7_8c6ba1df3c8faa83eacea07a763e4ffc" file="2" linestart="29" lineend="29"/>
+<cr namespace="llvm" access="none" kind="class" name="Value" id="aedb34b5fb6a5b9339b572321afe1dc7_ab8dea4acf561d75e8b5e1a44610701a" file="2" linestart="30" lineend="30"/>
+<cr namespace="llvm" access="none" depth="0" pod="true" kind="struct" name="LeakDetector" id="aedb34b5fb6a5b9339b572321afe1dc7_26b7c73b7d6705173764c7ce522b91c2" file="2" linestart="32" lineend="88">
+<cr access="public" kind="struct" name="LeakDetector" id="aedb34b5fb6a5b9339b572321afe1dc7_113ffbb57e72527d635deda5be52ba60" file="2" linestart="32" lineend="32"/>
+<m name="addGarbageObject" id="aedb34b5fb6a5b9339b572321afe1dc7_0213944a58c13f4efc6187d5b57ca0f1" file="2" linestart="37" lineend="41" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="37" cb="46" le="41" ce="3">
+<ce lb="39" cb="5" le="39" ce="32" nbparm="1" id="aedb34b5fb6a5b9339b572321afe1dc7_ea15424af1e8c41071954ab61780e99c">
+<exp pvirg="true"/>
+<n32 lb="39" cb="5">
+<drx lb="39" cb="5" kind="lvalue" id="aedb34b5fb6a5b9339b572321afe1dc7_ea15424af1e8c41071954ab61780e99c" nm="addGarbageObjectImpl"/>
+</n32>
+<n32 lb="39" cb="26">
+<drx lb="39" cb="26" kind="lvalue" nm="Object"/>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<m name="removeGarbageObject" id="aedb34b5fb6a5b9339b572321afe1dc7_17b3986a96fd0d2b6c7dd484ffd4a127" file="2" linestart="47" lineend="51" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="47" cb="49" le="51" ce="3">
+<ce lb="49" cb="5" le="49" ce="35" nbparm="1" id="aedb34b5fb6a5b9339b572321afe1dc7_4a2f92613a1512842983dcd2e7d3b1e9">
+<exp pvirg="true"/>
+<n32 lb="49" cb="5">
+<drx lb="49" cb="5" kind="lvalue" id="aedb34b5fb6a5b9339b572321afe1dc7_4a2f92613a1512842983dcd2e7d3b1e9" nm="removeGarbageObjectImpl"/>
+</n32>
+<n32 lb="49" cb="29">
+<drx lb="49" cb="29" kind="lvalue" nm="Object"/>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<m name="checkForGarbage" id="aedb34b5fb6a5b9339b572321afe1dc7_c52ccd95c0bec6f5481edb95d0bafcb0" file="2" linestart="60" lineend="64" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="C" proto="llvm::LLVMContext &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="4d11bad3983984f39852cc0c8c10fb2b_8c6ba1df3c8faa83eacea07a763e4ffc"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Message" proto="const std::string &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="60" cb="75" le="64" ce="3">
+<ce lb="62" cb="5" le="62" ce="35" nbparm="2" id="aedb34b5fb6a5b9339b572321afe1dc7_d9b70fab506febe66f1a8cefcd6e6c0a">
+<exp pvirg="true"/>
+<n32 lb="62" cb="5">
+<drx lb="62" cb="5" kind="lvalue" id="aedb34b5fb6a5b9339b572321afe1dc7_d9b70fab506febe66f1a8cefcd6e6c0a" nm="checkForGarbageImpl"/>
+</n32>
+<drx lb="62" cb="25" kind="lvalue" nm="C"/>
+<drx lb="62" cb="28" kind="lvalue" nm="Message"/>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<m name="addGarbageObject" id="aedb34b5fb6a5b9339b572321afe1dc7_b75feea0f9ad2c9ad8681f1c5b73e2e4" file="2" linestart="70" lineend="74" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="70" cb="53" le="74" ce="3">
+<ce lb="72" cb="5" le="72" ce="32" nbparm="1" id="aedb34b5fb6a5b9339b572321afe1dc7_3b970bc35ce5aa10bcb80af1202b1d31">
+<exp pvirg="true"/>
+<n32 lb="72" cb="5">
+<drx lb="72" cb="5" kind="lvalue" id="aedb34b5fb6a5b9339b572321afe1dc7_3b970bc35ce5aa10bcb80af1202b1d31" nm="addGarbageObjectImpl"/>
+</n32>
+<n32 lb="72" cb="26">
+<drx lb="72" cb="26" kind="lvalue" nm="Object"/>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<m name="removeGarbageObject" id="aedb34b5fb6a5b9339b572321afe1dc7_caab014df4837ffff2dc81f8e05d6246" file="2" linestart="75" lineend="79" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="75" cb="56" le="79" ce="3">
+<ce lb="77" cb="5" le="77" ce="35" nbparm="1" id="aedb34b5fb6a5b9339b572321afe1dc7_cc649951fdd986c46359ee83920005ef">
+<exp pvirg="true"/>
+<n32 lb="77" cb="5">
+<drx lb="77" cb="5" kind="lvalue" id="aedb34b5fb6a5b9339b572321afe1dc7_cc649951fdd986c46359ee83920005ef" nm="removeGarbageObjectImpl"/>
+</n32>
+<n32 lb="77" cb="29">
+<drx lb="77" cb="29" kind="lvalue" nm="Object"/>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<Decl access="private"/>
+<m name="addGarbageObjectImpl" id="aedb34b5fb6a5b9339b572321afe1dc7_3b970bc35ce5aa10bcb80af1202b1d31" file="2" linestart="83" lineend="83" access="private" storage="static" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="removeGarbageObjectImpl" id="aedb34b5fb6a5b9339b572321afe1dc7_cc649951fdd986c46359ee83920005ef" file="2" linestart="84" lineend="84" access="private" storage="static" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="addGarbageObjectImpl" id="aedb34b5fb6a5b9339b572321afe1dc7_ea15424af1e8c41071954ab61780e99c" file="2" linestart="85" lineend="85" access="private" storage="static" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="removeGarbageObjectImpl" id="aedb34b5fb6a5b9339b572321afe1dc7_4a2f92613a1512842983dcd2e7d3b1e9" file="2" linestart="86" lineend="86" access="private" storage="static" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="checkForGarbageImpl" id="aedb34b5fb6a5b9339b572321afe1dc7_d9b70fab506febe66f1a8cefcd6e6c0a" file="2" linestart="87" lineend="87" access="private" storage="static" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="C" proto="llvm::LLVMContext &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="4d11bad3983984f39852cc0c8c10fb2b_8c6ba1df3c8faa83eacea07a763e4ffc"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Message" proto="const std::string &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="1acc11eff0690378a21b7fc933cbc306_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="22" lineend="22"/>
+<v name="ObjectsLock" proto="ManagedStatic&lt;sys::SmartMutex&lt;true&gt;&gt;" isLiteral="true" id="1acc11eff0690378a21b7fc933cbc306_5b5435885fc3e8092534d5a0e64c2f1c" file="1" linestart="24" lineend="24" storage="static" init="true" access2="none">
+<tss>
+<templatebase id="3159ba36c60b0e7c899778da4ff17f9b_4e8ab3e06dca5e4bf32c2b067cafbeec"/>
+<template_arguments>
+<ety>
+<tss>
+<templatebase id="7515a577ed3c2c3601c6e2c79cffde43_f150f52e38c94ef505d82e41662b57e8"/>
+<template_arguments>
+<Stmt>
+<n9 lb="24" cb="38"/>
+
+</Stmt>
+</template_arguments>
+</tss>
+</ety>
+</template_arguments>
+</tss>
+<Stmt>
+<n10 lb="24" cb="46">
+<typeptr id="3159ba36c60b0e7c899778da4ff17f9b_f5c5ed1f8ed79f2545a3649b796f6647">
+<template_arguments>
+<rt>
+<cts id="7515a577ed3c2c3601c6e2c79cffde43_a0dbf1d1eba365edbf7d82ef5faa9aed">
+<template_arguments>
+<integer value="1"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+</n10>
+
+</Stmt>
+</v>
+<v name="Objects" proto="ManagedStatic&lt;LeakDetectorImpl&lt;void&gt;&gt;" isLiteral="true" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" file="1" linestart="25" lineend="25" storage="static" init="true" access2="none">
+<tss>
+<templatebase id="3159ba36c60b0e7c899778da4ff17f9b_4e8ab3e06dca5e4bf32c2b067cafbeec"/>
+<template_arguments>
+<tss>
+<templatebase id="3e54d3ae5e7c2145c5f7d19c7c39991c_9234c34a618d5796026e62e5a9e648c4"/>
+<template_arguments>
+<bt name="void"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+<Stmt>
+<n10 lb="25" cb="47">
+<typeptr id="3159ba36c60b0e7c899778da4ff17f9b_6d8009c4becc7ec11556565f67b0549e">
+<template_arguments>
+<rt>
+<cts id="3e54d3ae5e7c2145c5f7d19c7c39991c_2bd1dfb64ee835bcc42a454e0a56f88c">
+<template_arguments>
+<bt name="void"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+</n10>
+
+</Stmt>
+</v>
+<f name="clearGarbage" id="1acc11eff0690378a21b7fc933cbc306_a2e39830d7bb2eda2a10ec4f2e7383b0" file="1" linestart="27" lineend="30" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Context" proto="llvm::LLVMContext &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="4d11bad3983984f39852cc0c8c10fb2b_8c6ba1df3c8faa83eacea07a763e4ffc"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="27" cb="48" le="30" ce="1">
+<mce lb="28" cb="3" le="28" ce="18" nbparm="0" id="3e54d3ae5e7c2145c5f7d19c7c39991c_00ca3bda5fc0015bb02a00b337b517ec">
+<exp pvirg="true"/>
+<mex lb="28" cb="3" le="28" ce="12" id="3e54d3ae5e7c2145c5f7d19c7c39991c_00ca3bda5fc0015bb02a00b337b517ec" nm="clear" arrow="1">
+<ocx lb="28" cb="3" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce">
+<exp pvirg="true"/>
+<n32 lb="28" cb="10">
+<drx lb="28" cb="10" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce" nm="operator-&gt;"/>
+</n32>
+<drx lb="28" cb="3" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" nm="Objects"/>
+</ocx>
+</mex>
+</mce>
+<mce lb="29" cb="3" le="29" ce="36" nbparm="0" id="3e54d3ae5e7c2145c5f7d19c7c39991c_00ca3bda5fc0015bb02a00b337b517ec">
+<exp pvirg="true"/>
+<mex lb="29" cb="3" le="29" ce="30" id="3e54d3ae5e7c2145c5f7d19c7c39991c_00ca3bda5fc0015bb02a00b337b517ec" nm="clear" point="1">
+<mex lb="29" cb="3" le="29" ce="18" kind="lvalue" id="64d031ac47120de6db1aaa13bbd9466f_2e5dd39c542f9cddac90c786417fb7d2" nm="LLVMObjects" arrow="1">
+<n32 lb="29" cb="3" le="29" ce="11">
+<mex lb="29" cb="3" le="29" ce="11" kind="lvalue" id="4d11bad3983984f39852cc0c8c10fb2b_45732e92f327ebb3b313e66c2c9f9562" nm="pImpl" point="1">
+<drx lb="29" cb="3" kind="lvalue" nm="Context"/>
+</mex>
+</n32>
+</mex>
+</mex>
+</mce>
+</u>
+
+</Stmt>
+</f>
+<m name="addGarbageObjectImpl" id="1acc11eff0690378a21b7fc933cbc306_ea15424af1e8c41071954ab61780e99c" file="1" linestart="32" lineend="35" previous="aedb34b5fb6a5b9339b572321afe1dc7_ea15424af1e8c41071954ab61780e99c" access="private" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="32" cb="55" le="35" ce="1">
+<dst lb="33" cb="3" le="33" ce="48">
+<exp pvirg="true"/>
+<Var nm="Lock" value="true">
+<ety>
+<tss>
+<templatebase id="7515a577ed3c2c3601c6e2c79cffde43_85d70b96fd8e9eb01d7ca01c1f3d0547"/>
+<template_arguments>
+<Stmt>
+<n9 lb="33" cb="24"/>
+
+</Stmt>
+</template_arguments>
+</tss>
+</ety>
+<n10 lb="33" cb="30" le="33" ce="47">
+<typeptr id="7515a577ed3c2c3601c6e2c79cffde43_194f428e9adf5ca1b3f008585ac1648a">
+<template_arguments>
+<integer value="1"/>
+</template_arguments>
+</typeptr>
+<temp/>
+<ocx lb="33" cb="35" le="33" ce="36" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8">
+<exp pvirg="true"/>
+<n32 lb="33" cb="35">
+<drx lb="33" cb="35" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8" nm="operator*"/>
+</n32>
+<drx lb="33" cb="36" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_5b5435885fc3e8092534d5a0e64c2f1c" nm="ObjectsLock"/>
+</ocx>
+</n10>
+</Var>
+</dst>
+<mce lb="34" cb="3" le="34" ce="29" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e98863a71d361f6f46a3baea3b313e1">
+<exp pvirg="true"/>
+<mex lb="34" cb="3" le="34" ce="12" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e98863a71d361f6f46a3baea3b313e1" nm="addGarbage" arrow="1">
+<ocx lb="34" cb="3" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce">
+<exp pvirg="true"/>
+<n32 lb="34" cb="10">
+<drx lb="34" cb="10" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce" nm="operator-&gt;"/>
+</n32>
+<drx lb="34" cb="3" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" nm="Objects"/>
+</ocx>
+</mex>
+<n32 lb="34" cb="23">
+<n32 lb="34" cb="23">
+<drx lb="34" cb="23" kind="lvalue" nm="Object"/>
+</n32>
+</n32>
+</mce>
+</u>
+
+</Stmt>
+</m>
+<m name="addGarbageObjectImpl" id="1acc11eff0690378a21b7fc933cbc306_3b970bc35ce5aa10bcb80af1202b1d31" file="1" linestart="37" lineend="40" previous="aedb34b5fb6a5b9339b572321afe1dc7_3b970bc35ce5aa10bcb80af1202b1d31" access="private" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="37" cb="62" le="40" ce="1">
+<dst lb="38" cb="3" le="38" ce="54">
+<exp pvirg="true"/>
+<Var nm="pImpl">
+<pt>
+<rt>
+<cr id="64d031ac47120de6db1aaa13bbd9466f_f58da78f05623c14bc0a3b468edf8608"/>
+</rt>
+</pt>
+<n32 lb="38" cb="28" le="38" ce="49">
+<mex lb="38" cb="28" le="38" ce="49" kind="lvalue" id="4d11bad3983984f39852cc0c8c10fb2b_45732e92f327ebb3b313e66c2c9f9562" nm="pImpl" point="1">
+<mce lb="38" cb="28" le="38" ce="47" nbparm="0" id="1a20cb4b434e61015125af247194183f_18b13329e9a94595412124a60ba0fcdd">
+<exp pvirg="true"/>
+<mex lb="38" cb="28" le="38" ce="36" id="1a20cb4b434e61015125af247194183f_18b13329e9a94595412124a60ba0fcdd" nm="getContext" arrow="1">
+<n32 lb="38" cb="28">
+<drx lb="38" cb="28" kind="lvalue" nm="Object"/>
+</n32>
+</mex>
+</mce>
+</mex>
+</n32>
+</Var>
+</dst>
+<mce lb="39" cb="3" le="39" ce="39" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e98863a71d361f6f46a3baea3b313e1">
+<exp pvirg="true"/>
+<mex lb="39" cb="3" le="39" ce="22" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e98863a71d361f6f46a3baea3b313e1" nm="addGarbage" point="1">
+<mex lb="39" cb="3" le="39" ce="10" kind="lvalue" id="64d031ac47120de6db1aaa13bbd9466f_2e5dd39c542f9cddac90c786417fb7d2" nm="LLVMObjects" arrow="1">
+<n32 lb="39" cb="3">
+<drx lb="39" cb="3" kind="lvalue" nm="pImpl"/>
+</n32>
+</mex>
+</mex>
+<n32 lb="39" cb="33">
+<drx lb="39" cb="33" kind="lvalue" nm="Object"/>
+</n32>
+</mce>
+</u>
+
+</Stmt>
+</m>
+<m name="removeGarbageObjectImpl" id="1acc11eff0690378a21b7fc933cbc306_4a2f92613a1512842983dcd2e7d3b1e9" file="1" linestart="42" lineend="45" previous="aedb34b5fb6a5b9339b572321afe1dc7_4a2f92613a1512842983dcd2e7d3b1e9" access="private" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="42" cb="58" le="45" ce="1">
+<dst lb="43" cb="3" le="43" ce="48">
+<exp pvirg="true"/>
+<Var nm="Lock" value="true">
+<ety>
+<tss>
+<templatebase id="7515a577ed3c2c3601c6e2c79cffde43_85d70b96fd8e9eb01d7ca01c1f3d0547"/>
+<template_arguments>
+<Stmt>
+<n9 lb="43" cb="24"/>
+
+</Stmt>
+</template_arguments>
+</tss>
+</ety>
+<n10 lb="43" cb="30" le="43" ce="47">
+<typeptr id="7515a577ed3c2c3601c6e2c79cffde43_194f428e9adf5ca1b3f008585ac1648a">
+<template_arguments>
+<integer value="1"/>
+</template_arguments>
+</typeptr>
+<temp/>
+<ocx lb="43" cb="35" le="43" ce="36" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8">
+<exp pvirg="true"/>
+<n32 lb="43" cb="35">
+<drx lb="43" cb="35" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8" nm="operator*"/>
+</n32>
+<drx lb="43" cb="36" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_5b5435885fc3e8092534d5a0e64c2f1c" nm="ObjectsLock"/>
+</ocx>
+</n10>
+</Var>
+</dst>
+<mce lb="44" cb="3" le="44" ce="32" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_dea4ff1bcd4b67389795291a6363bbf1">
+<exp pvirg="true"/>
+<mex lb="44" cb="3" le="44" ce="12" id="3e54d3ae5e7c2145c5f7d19c7c39991c_dea4ff1bcd4b67389795291a6363bbf1" nm="removeGarbage" arrow="1">
+<ocx lb="44" cb="3" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce">
+<exp pvirg="true"/>
+<n32 lb="44" cb="10">
+<drx lb="44" cb="10" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce" nm="operator-&gt;"/>
+</n32>
+<drx lb="44" cb="3" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" nm="Objects"/>
+</ocx>
+</mex>
+<n32 lb="44" cb="26">
+<n32 lb="44" cb="26">
+<drx lb="44" cb="26" kind="lvalue" nm="Object"/>
+</n32>
+</n32>
+</mce>
+</u>
+
+</Stmt>
+</m>
+<m name="removeGarbageObjectImpl" id="1acc11eff0690378a21b7fc933cbc306_cc649951fdd986c46359ee83920005ef" file="1" linestart="47" lineend="50" previous="aedb34b5fb6a5b9339b572321afe1dc7_cc649951fdd986c46359ee83920005ef" access="private" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Object" proto="const llvm::Value *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="1a20cb4b434e61015125af247194183f_ab8dea4acf561d75e8b5e1a44610701a"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="47" cb="65" le="50" ce="1">
+<dst lb="48" cb="3" le="48" ce="54">
+<exp pvirg="true"/>
+<Var nm="pImpl">
+<pt>
+<rt>
+<cr id="64d031ac47120de6db1aaa13bbd9466f_f58da78f05623c14bc0a3b468edf8608"/>
+</rt>
+</pt>
+<n32 lb="48" cb="28" le="48" ce="49">
+<mex lb="48" cb="28" le="48" ce="49" kind="lvalue" id="4d11bad3983984f39852cc0c8c10fb2b_45732e92f327ebb3b313e66c2c9f9562" nm="pImpl" point="1">
+<mce lb="48" cb="28" le="48" ce="47" nbparm="0" id="1a20cb4b434e61015125af247194183f_18b13329e9a94595412124a60ba0fcdd">
+<exp pvirg="true"/>
+<mex lb="48" cb="28" le="48" ce="36" id="1a20cb4b434e61015125af247194183f_18b13329e9a94595412124a60ba0fcdd" nm="getContext" arrow="1">
+<n32 lb="48" cb="28">
+<drx lb="48" cb="28" kind="lvalue" nm="Object"/>
+</n32>
+</mex>
+</mce>
+</mex>
+</n32>
+</Var>
+</dst>
+<mce lb="49" cb="3" le="49" ce="42" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_dea4ff1bcd4b67389795291a6363bbf1">
+<exp pvirg="true"/>
+<mex lb="49" cb="3" le="49" ce="22" id="3e54d3ae5e7c2145c5f7d19c7c39991c_dea4ff1bcd4b67389795291a6363bbf1" nm="removeGarbage" point="1">
+<mex lb="49" cb="3" le="49" ce="10" kind="lvalue" id="64d031ac47120de6db1aaa13bbd9466f_2e5dd39c542f9cddac90c786417fb7d2" nm="LLVMObjects" arrow="1">
+<n32 lb="49" cb="3">
+<drx lb="49" cb="3" kind="lvalue" nm="pImpl"/>
+</n32>
+</mex>
+</mex>
+<n32 lb="49" cb="36">
+<drx lb="49" cb="36" kind="lvalue" nm="Object"/>
+</n32>
+</mce>
+</u>
+
+</Stmt>
+</m>
+<m name="checkForGarbageImpl" id="1acc11eff0690378a21b7fc933cbc306_d9b70fab506febe66f1a8cefcd6e6c0a" file="1" linestart="52" lineend="69" previous="aedb34b5fb6a5b9339b572321afe1dc7_d9b70fab506febe66f1a8cefcd6e6c0a" access="private" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Context" proto="llvm::LLVMContext &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="4d11bad3983984f39852cc0c8c10fb2b_8c6ba1df3c8faa83eacea07a763e4ffc"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="Message" proto="const std::string &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="53" cb="68" le="69" ce="1">
+<dst lb="54" cb="3" le="54" ce="41">
+<exp pvirg="true"/>
+<Var nm="pImpl">
+<pt>
+<rt>
+<cr id="64d031ac47120de6db1aaa13bbd9466f_f58da78f05623c14bc0a3b468edf8608"/>
+</rt>
+</pt>
+<n32 lb="54" cb="28" le="54" ce="36">
+<mex lb="54" cb="28" le="54" ce="36" kind="lvalue" id="4d11bad3983984f39852cc0c8c10fb2b_45732e92f327ebb3b313e66c2c9f9562" nm="pImpl" point="1">
+<drx lb="54" cb="28" kind="lvalue" nm="Context"/>
+</mex>
+</n32>
+</Var>
+</dst>
+<dst lb="55" cb="3" le="55" ce="48">
+<exp pvirg="true"/>
+<Var nm="Lock" value="true">
+<ety>
+<tss>
+<templatebase id="7515a577ed3c2c3601c6e2c79cffde43_85d70b96fd8e9eb01d7ca01c1f3d0547"/>
+<template_arguments>
+<Stmt>
+<n9 lb="55" cb="24"/>
+
+</Stmt>
+</template_arguments>
+</tss>
+</ety>
+<n10 lb="55" cb="30" le="55" ce="47">
+<typeptr id="7515a577ed3c2c3601c6e2c79cffde43_194f428e9adf5ca1b3f008585ac1648a">
+<template_arguments>
+<integer value="1"/>
+</template_arguments>
+</typeptr>
+<temp/>
+<ocx lb="55" cb="35" le="55" ce="36" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8">
+<exp pvirg="true"/>
+<n32 lb="55" cb="35">
+<drx lb="55" cb="35" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_6d2eeafbccbc736482f3c3b668a578a8" nm="operator*"/>
+</n32>
+<drx lb="55" cb="36" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_5b5435885fc3e8092534d5a0e64c2f1c" nm="ObjectsLock"/>
+</ocx>
+</n10>
+</Var>
+</dst>
+<mce lb="57" cb="3" le="57" ce="29" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e51086f277ef6082a07f18f13a3e33b">
+<exp pvirg="true"/>
+<mex lb="57" cb="3" le="57" ce="12" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e51086f277ef6082a07f18f13a3e33b" nm="setName" arrow="1">
+<ocx lb="57" cb="3" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce">
+<exp pvirg="true"/>
+<n32 lb="57" cb="10">
+<drx lb="57" cb="10" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce" nm="operator-&gt;"/>
+</n32>
+<drx lb="57" cb="3" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" nm="Objects"/>
+</ocx>
+</mex>
+<n32 lb="57" cb="20">
+<n52 lb="57" cb="20">
+<slit/>
+</n52>
+</n32>
+</mce>
+<mce lb="58" cb="3" le="58" ce="36" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e51086f277ef6082a07f18f13a3e33b">
+<exp pvirg="true"/>
+<mex lb="58" cb="3" le="58" ce="22" id="3e54d3ae5e7c2145c5f7d19c7c39991c_8e51086f277ef6082a07f18f13a3e33b" nm="setName" point="1">
+<mex lb="58" cb="3" le="58" ce="10" kind="lvalue" id="64d031ac47120de6db1aaa13bbd9466f_2e5dd39c542f9cddac90c786417fb7d2" nm="LLVMObjects" arrow="1">
+<n32 lb="58" cb="3">
+<drx lb="58" cb="3" kind="lvalue" nm="pImpl"/>
+</n32>
+</mex>
+</mex>
+<n32 lb="58" cb="30">
+<n52 lb="58" cb="30">
+<slit/>
+</n52>
+</n32>
+</mce>
+<if lb="61" cb="3" le="64" ce="15">
+<n32 lb="61" cb="7" le="62" ce="44">
+<xop lb="61" cb="7" le="62" ce="44" kind="|">
+<n32 lb="61" cb="7" le="61" ce="34">
+<mce lb="61" cb="7" le="61" ce="34" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_08fa3f91bfa1467b9266e48e3462fd3d">
+<exp pvirg="true"/>
+<mex lb="61" cb="7" le="61" ce="16" id="3e54d3ae5e7c2145c5f7d19c7c39991c_08fa3f91bfa1467b9266e48e3462fd3d" nm="hasGarbage" arrow="1">
+<ocx lb="61" cb="7" nbparm="1" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce">
+<exp pvirg="true"/>
+<n32 lb="61" cb="14">
+<drx lb="61" cb="14" kind="lvalue" id="3159ba36c60b0e7c899778da4ff17f9b_9da2626063ad15e2c5563e6fa8e7bfce" nm="operator-&gt;"/>
+</n32>
+<drx lb="61" cb="7" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_3026ed95b419451871c8cf291b37055e" nm="Objects"/>
+</ocx>
+</mex>
+<drx lb="61" cb="27" kind="lvalue" nm="Message"/>
+</mce>
+</n32>
+<n32 lb="62" cb="7" le="62" ce="44">
+<mce lb="62" cb="7" le="62" ce="44" nbparm="1" id="3e54d3ae5e7c2145c5f7d19c7c39991c_08fa3f91bfa1467b9266e48e3462fd3d">
+<exp pvirg="true"/>
+<mex lb="62" cb="7" le="62" ce="26" id="3e54d3ae5e7c2145c5f7d19c7c39991c_08fa3f91bfa1467b9266e48e3462fd3d" nm="hasGarbage" point="1">
+<mex lb="62" cb="7" le="62" ce="14" kind="lvalue" id="64d031ac47120de6db1aaa13bbd9466f_2e5dd39c542f9cddac90c786417fb7d2" nm="LLVMObjects" arrow="1">
+<n32 lb="62" cb="7">
+<drx lb="62" cb="7" kind="lvalue" nm="pImpl"/>
+</n32>
+</mex>
+</mex>
+<drx lb="62" cb="37" kind="lvalue" nm="Message"/>
+</mce>
+</n32>
+</xop>
+</n32>
+<ocx lb="63" cb="5" le="64" ce="15" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="64" cb="12">
+<drx lb="64" cb="12" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ocx lb="63" cb="5" le="63" ce="15" nbparm="2" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155">
+<exp pvirg="true"/>
+<n32 lb="63" cb="12">
+<drx lb="63" cb="12" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_b0d4dbe1c8712404df1fedbfab9f2155" nm="operator&lt;&lt;"/>
+</n32>
+<ce lb="63" cb="5" le="63" ce="10" nbparm="0" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4">
+<exp pvirg="true"/>
+<n32 lb="63" cb="5">
+<drx lb="63" cb="5" kind="lvalue" id="9e05b9b4de196b39d65ee2f40ed8c864_6b42814282bee146e5f5ee124264e8a4" nm="errs"/>
+</n32>
+</ce>
+<n32 lb="63" cb="15">
+<n52 lb="63" cb="15">
+<slit/>
+</n52>
+</n32>
+</ocx>
+<n32 lb="64" cb="15">
+<n52 lb="64" cb="15">
+<slit/>
+</n52>
+</n32>
+</ocx>
+</if>
+<ce lb="68" cb="3" le="68" ce="23" nbparm="1" id="1acc11eff0690378a21b7fc933cbc306_a2e39830d7bb2eda2a10ec4f2e7383b0">
+<exp pvirg="true"/>
+<n32 lb="68" cb="3">
+<drx lb="68" cb="3" kind="lvalue" id="1acc11eff0690378a21b7fc933cbc306_a2e39830d7bb2eda2a10ec4f2e7383b0" nm="clearGarbage"/>
+</n32>
+<drx lb="68" cb="16" kind="lvalue" nm="Context"/>
+</ce>
+</u>
+
+</Stmt>
+</m>
+</tun>
+</Root>

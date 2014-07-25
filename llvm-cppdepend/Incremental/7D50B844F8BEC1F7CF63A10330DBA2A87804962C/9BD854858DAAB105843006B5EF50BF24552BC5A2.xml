@@ -1,0 +1,928 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="10" e="8"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="14" e="12"/>
+<c f="2" b="21" e="21"/>
+<c f="2" b="22" e="22"/>
+<c f="2" b="23" e="22"/>
+<c f="2" b="26" e="26"/>
+<c f="2" b="27" e="27"/>
+<c f="2" b="28" e="28"/>
+<c f="2" b="29" e="29"/>
+<c f="2" b="30" e="29"/>
+<c f="2" b="32" e="32"/>
+<c f="2" b="33" e="33"/>
+<c f="2" b="34" e="33"/>
+<c f="2" b="36" e="36"/>
+<c f="2" b="37" e="37"/>
+<c f="2" b="38" e="38"/>
+<c f="2" b="39" e="38"/>
+<c f="2" b="41" e="41"/>
+<c f="2" b="42" e="41"/>
+<c f="2" b="44" e="44"/>
+<c f="2" b="45" e="45"/>
+<c f="2" b="46" e="45"/>
+<c f="2" b="48" e="48"/>
+<c f="2" b="49" e="49"/>
+<c f="2" b="50" e="50"/>
+<c f="2" b="51" e="50"/>
+<c f="2" b="53" e="53"/>
+<c f="2" b="54" e="54"/>
+<c f="2" b="55" e="55"/>
+<c f="2" b="56" e="55"/>
+<c f="2" b="58" e="58"/>
+<c f="2" b="59" e="58"/>
+<c f="2" b="60" e="60"/>
+<c f="2" b="61" e="60"/>
+<c f="2" b="62" e="62"/>
+<c f="2" b="63" e="62"/>
+<c f="2" b="64" e="64"/>
+<c f="2" b="65" e="64"/>
+<c f="2" b="66" e="66"/>
+<c f="2" b="67" e="67"/>
+<c f="2" b="68" e="67"/>
+<c f="2" b="69" e="69"/>
+<c f="2" b="70" e="69"/>
+<c f="2" b="143" e="143"/>
+<c f="2" b="145" e="143"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="1e98b26dbcb3709eeb17338e7ef10b05_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="19" lineend="143" original="">
+<cr namespace="llvm" access="none" depth="1" kind="class" name="X86MachineFunctionInfo" id="1e98b26dbcb3709eeb17338e7ef10b05_fd68518454fe763e43e11259db91ecd4" file="2" linestart="23" lineend="141">
+<base access="public">
+<rt>
+<cr id="895a66b41661e915ba6854da2359580f_b05565980b07b5f5585e3c8b28eeaef6"/>
+</rt>
+</base>
+<cr access="public" kind="class" name="X86MachineFunctionInfo" id="1e98b26dbcb3709eeb17338e7ef10b05_e7de8a3ae4898245bf9c6a715d61935b" file="2" linestart="23" lineend="23"/>
+<m name="anchor" id="1e98b26dbcb3709eeb17338e7ef10b05_e833babd17860c24657837e2b46f4a4c" file="2" linestart="24" lineend="24" virtual="true" access="private" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<fl name="ForceFramePointer" id="1e98b26dbcb3709eeb17338e7ef10b05_49f057630ef367e48821a1002a949469" file="2" linestart="30" lineend="30" isLiteral="true" access="private" proto="bool">
+<bt name="bool"/>
+</fl>
+<fl name="CalleeSavedFrameSize" id="1e98b26dbcb3709eeb17338e7ef10b05_1b5c040754d785ecc55a5c03cef32704" file="2" linestart="34" lineend="34" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="BytesToPopOnReturn" id="1e98b26dbcb3709eeb17338e7ef10b05_14cdb108bccf172290eb5fdbf83a7b20" file="2" linestart="39" lineend="39" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="ReturnAddrIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_106501a0743bc2be6e416f1bd1cb5fb1" file="2" linestart="42" lineend="42" isLiteral="true" access="private" proto="int">
+<bt name="int"/>
+</fl>
+<fl name="TailCallReturnAddrDelta" id="1e98b26dbcb3709eeb17338e7ef10b05_1dbf39b9cfb4cffce5d8ad94dbca39e4" file="2" linestart="46" lineend="46" isLiteral="true" access="private" proto="int">
+<bt name="int"/>
+</fl>
+<fl name="SRetReturnReg" id="1e98b26dbcb3709eeb17338e7ef10b05_929203c03fc1e3b6c21db96ef660b0a6" file="2" linestart="51" lineend="51" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="GlobalBaseReg" id="1e98b26dbcb3709eeb17338e7ef10b05_dbd34aa01e4f1b5c764257359fc71a97" file="2" linestart="56" lineend="56" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="VarArgsFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_66cc1a45add5d69ca8424cd0f8786f80" file="2" linestart="59" lineend="59" isLiteral="true" access="private" proto="int">
+<bt name="int"/>
+</fl>
+<fl name="RegSaveFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_772af00b0a182028c07d9dae464dd470" file="2" linestart="61" lineend="61" isLiteral="true" access="private" proto="int">
+<bt name="int"/>
+</fl>
+<fl name="VarArgsGPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_5356632afb22a0c3f2cbcefc5fe4a98b" file="2" linestart="63" lineend="63" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="VarArgsFPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_20517d07613678c669fac574414629a0" file="2" linestart="65" lineend="65" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="ArgumentStackSize" id="1e98b26dbcb3709eeb17338e7ef10b05_7842a38355111e08aca4f820904865b9" file="2" linestart="68" lineend="68" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<fl name="NumLocalDynamics" id="1e98b26dbcb3709eeb17338e7ef10b05_0b55e778b343572234a00506ae7b919d" file="2" linestart="70" lineend="70" isLiteral="true" access="private" proto="unsigned int">
+<bt name="unsigned int"/>
+</fl>
+<Decl access="public"/>
+<c name="X86MachineFunctionInfo" id="1e98b26dbcb3709eeb17338e7ef10b05_022745271004b9a28dc098f877b22702" file="2" linestart="73" lineend="85" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<BaseInit>
+<n10 lb="73" cb="3">
+<typeptr id="895a66b41661e915ba6854da2359580f_d80cd21311f62ecc8ffb33cbab23d777"/>
+<temp/>
+</n10>
+
+</BaseInit>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_49f057630ef367e48821a1002a949469">
+<Stmt>
+<n9 lb="73" cb="48"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_1b5c040754d785ecc55a5c03cef32704">
+<Stmt>
+<n32 lb="74" cb="51">
+<n45 lb="74" cb="51">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_14cdb108bccf172290eb5fdbf83a7b20">
+<Stmt>
+<n32 lb="75" cb="49">
+<n45 lb="75" cb="49"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_106501a0743bc2be6e416f1bd1cb5fb1">
+<Stmt>
+<n45 lb="76" cb="46"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_1dbf39b9cfb4cffce5d8ad94dbca39e4">
+<Stmt>
+<n45 lb="77" cb="54"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_929203c03fc1e3b6c21db96ef660b0a6">
+<Stmt>
+<n32 lb="78" cb="44">
+<n45 lb="78" cb="44"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_dbd34aa01e4f1b5c764257359fc71a97">
+<Stmt>
+<n32 lb="79" cb="44">
+<n45 lb="79" cb="44"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_66cc1a45add5d69ca8424cd0f8786f80">
+<Stmt>
+<n45 lb="80" cb="48"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_772af00b0a182028c07d9dae464dd470">
+<Stmt>
+<n45 lb="81" cb="48"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_5356632afb22a0c3f2cbcefc5fe4a98b">
+<Stmt>
+<n32 lb="82" cb="46">
+<n45 lb="82" cb="46"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_20517d07613678c669fac574414629a0">
+<Stmt>
+<n32 lb="83" cb="46">
+<n45 lb="83" cb="46"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_7842a38355111e08aca4f820904865b9">
+<Stmt>
+<n32 lb="84" cb="48">
+<n45 lb="84" cb="48"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_0b55e778b343572234a00506ae7b919d">
+<Stmt>
+<n32 lb="85" cb="47">
+<n45 lb="85" cb="47"/>
+</n32>
+
+</Stmt>
+</initlist>
+<Stmt>
+<u lb="85" cb="50" le="85" ce="51"/>
+
+</Stmt>
+</c>
+<c name="X86MachineFunctionInfo" id="1e98b26dbcb3709eeb17338e7ef10b05_a5ef2d080b47442d42f2129049bbd8a5" file="2" linestart="87" lineend="100" explicit="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="MF" proto="llvm::MachineFunction &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<rt>
+<cr id="895a66b41661e915ba6854da2359580f_7a76e175133a980deee19d81d954fcc0"/>
+</rt>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+<BaseInit>
+<n10 lb="87" cb="12">
+<typeptr id="895a66b41661e915ba6854da2359580f_d80cd21311f62ecc8ffb33cbab23d777"/>
+<temp/>
+</n10>
+
+</BaseInit>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_49f057630ef367e48821a1002a949469">
+<Stmt>
+<n9 lb="88" cb="25"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_1b5c040754d785ecc55a5c03cef32704">
+<Stmt>
+<n32 lb="89" cb="28">
+<n45 lb="89" cb="28">
+<flit/>
+</n45>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_14cdb108bccf172290eb5fdbf83a7b20">
+<Stmt>
+<n32 lb="90" cb="26">
+<n45 lb="90" cb="26"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_106501a0743bc2be6e416f1bd1cb5fb1">
+<Stmt>
+<n45 lb="91" cb="23"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_1dbf39b9cfb4cffce5d8ad94dbca39e4">
+<Stmt>
+<n45 lb="92" cb="31"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_929203c03fc1e3b6c21db96ef660b0a6">
+<Stmt>
+<n32 lb="93" cb="21">
+<n45 lb="93" cb="21"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_dbd34aa01e4f1b5c764257359fc71a97">
+<Stmt>
+<n32 lb="94" cb="21">
+<n45 lb="94" cb="21"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_66cc1a45add5d69ca8424cd0f8786f80">
+<Stmt>
+<n45 lb="95" cb="25"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_772af00b0a182028c07d9dae464dd470">
+<Stmt>
+<n45 lb="96" cb="25"/>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_5356632afb22a0c3f2cbcefc5fe4a98b">
+<Stmt>
+<n32 lb="97" cb="23">
+<n45 lb="97" cb="23"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_20517d07613678c669fac574414629a0">
+<Stmt>
+<n32 lb="98" cb="23">
+<n45 lb="98" cb="23"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_7842a38355111e08aca4f820904865b9">
+<Stmt>
+<n32 lb="99" cb="25">
+<n45 lb="99" cb="25"/>
+</n32>
+
+</Stmt>
+</initlist>
+<initlist id="1e98b26dbcb3709eeb17338e7ef10b05_0b55e778b343572234a00506ae7b919d">
+<Stmt>
+<n32 lb="100" cb="24">
+<n45 lb="100" cb="24"/>
+</n32>
+
+</Stmt>
+</initlist>
+<Stmt>
+<u lb="100" cb="27" le="100" ce="28"/>
+
+</Stmt>
+</c>
+<m name="getForceFramePointer" id="1e98b26dbcb3709eeb17338e7ef10b05_e233bcfa38d71fa10b061e43914fcc1a" file="2" linestart="102" lineend="102" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<Stmt>
+<u lb="102" cb="37" le="102" ce="64">
+<rx lb="102" cb="39" le="102" ce="46" pvirg="true">
+<n32 lb="102" cb="46">
+<mex lb="102" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_49f057630ef367e48821a1002a949469" nm="ForceFramePointer" arrow="1">
+<n19 lb="102" cb="46"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setForceFramePointer" id="1e98b26dbcb3709eeb17338e7ef10b05_54cb955ff8e9c6e1f569263316e81fa3" file="2" linestart="103" lineend="103" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="forceFP" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="103" cb="43" le="103" ce="74">
+<xop lb="103" cb="45" le="103" ce="65" kind="=">
+<mex lb="103" cb="45" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_49f057630ef367e48821a1002a949469" nm="ForceFramePointer" arrow="1">
+<n19 lb="103" cb="45"/>
+</mex>
+<n32 lb="103" cb="65">
+<drx lb="103" cb="65" kind="lvalue" nm="forceFP"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getCalleeSavedFrameSize" id="1e98b26dbcb3709eeb17338e7ef10b05_e5dc3c6f86a791c8165124a35c13bb0a" file="2" linestart="105" lineend="105" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="105" cb="44" le="105" ce="75">
+<rx lb="105" cb="46" le="105" ce="53" pvirg="true">
+<n32 lb="105" cb="53">
+<mex lb="105" cb="53" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_1b5c040754d785ecc55a5c03cef32704" nm="CalleeSavedFrameSize" arrow="1">
+<n19 lb="105" cb="53"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setCalleeSavedFrameSize" id="1e98b26dbcb3709eeb17338e7ef10b05_69e2c09fb7f89b262106f1f28ed7d2de" file="2" linestart="106" lineend="106" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="bytes" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="106" cb="48" le="106" ce="80">
+<xop lb="106" cb="50" le="106" ce="73" kind="=">
+<mex lb="106" cb="50" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_1b5c040754d785ecc55a5c03cef32704" nm="CalleeSavedFrameSize" arrow="1">
+<n19 lb="106" cb="50"/>
+</mex>
+<n32 lb="106" cb="73">
+<drx lb="106" cb="73" kind="lvalue" nm="bytes"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getBytesToPopOnReturn" id="1e98b26dbcb3709eeb17338e7ef10b05_86ca6baedfbff5dd676098d9efd1c9af" file="2" linestart="108" lineend="108" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="108" cb="42" le="108" ce="71">
+<rx lb="108" cb="44" le="108" ce="51" pvirg="true">
+<n32 lb="108" cb="51">
+<mex lb="108" cb="51" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_14cdb108bccf172290eb5fdbf83a7b20" nm="BytesToPopOnReturn" arrow="1">
+<n19 lb="108" cb="51"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setBytesToPopOnReturn" id="1e98b26dbcb3709eeb17338e7ef10b05_df92f8f7695fb18a342c1f90ba1753d0" file="2" linestart="109" lineend="109" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="bytes" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="109" cb="47" le="109" ce="76">
+<xop lb="109" cb="49" le="109" ce="70" kind="=">
+<mex lb="109" cb="49" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_14cdb108bccf172290eb5fdbf83a7b20" nm="BytesToPopOnReturn" arrow="1">
+<n19 lb="109" cb="49"/>
+</mex>
+<n32 lb="109" cb="70">
+<drx lb="109" cb="70" kind="lvalue" nm="bytes"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getRAIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_fc2f37dd79107a4aea28d49b7b1d55b6" file="2" linestart="111" lineend="111" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="111" cb="26" le="111" ce="52">
+<rx lb="111" cb="28" le="111" ce="35" pvirg="true">
+<n32 lb="111" cb="35">
+<mex lb="111" cb="35" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_106501a0743bc2be6e416f1bd1cb5fb1" nm="ReturnAddrIndex" arrow="1">
+<n19 lb="111" cb="35"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setRAIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_d802c4caeca7174b3955d4f37a616305" file="2" linestart="112" lineend="112" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Index" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="112" cb="30" le="112" ce="57">
+<xop lb="112" cb="32" le="112" ce="50" kind="=">
+<mex lb="112" cb="32" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_106501a0743bc2be6e416f1bd1cb5fb1" nm="ReturnAddrIndex" arrow="1">
+<n19 lb="112" cb="32"/>
+</mex>
+<n32 lb="112" cb="50">
+<drx lb="112" cb="50" kind="lvalue" nm="Index"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getTCReturnAddrDelta" id="1e98b26dbcb3709eeb17338e7ef10b05_1fc3a55f2df2758ee9143596464fd0fb" file="2" linestart="114" lineend="114" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="114" cb="36" le="114" ce="70">
+<rx lb="114" cb="38" le="114" ce="45" pvirg="true">
+<n32 lb="114" cb="45">
+<mex lb="114" cb="45" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_1dbf39b9cfb4cffce5d8ad94dbca39e4" nm="TailCallReturnAddrDelta" arrow="1">
+<n19 lb="114" cb="45"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setTCReturnAddrDelta" id="1e98b26dbcb3709eeb17338e7ef10b05_98667a106964fd849667d0d49954404c" file="2" linestart="115" lineend="115" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="delta" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="115" cb="40" le="115" ce="73">
+<xop lb="115" cb="41" le="115" ce="67" kind="=">
+<mex lb="115" cb="41" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_1dbf39b9cfb4cffce5d8ad94dbca39e4" nm="TailCallReturnAddrDelta" arrow="1">
+<n19 lb="115" cb="41"/>
+</mex>
+<n32 lb="115" cb="67">
+<drx lb="115" cb="67" kind="lvalue" nm="delta"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getSRetReturnReg" id="1e98b26dbcb3709eeb17338e7ef10b05_04f7d97678d1bda9e23791367d5bc794" file="2" linestart="117" lineend="117" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="117" cb="37" le="117" ce="61">
+<rx lb="117" cb="39" le="117" ce="46" pvirg="true">
+<n32 lb="117" cb="46">
+<mex lb="117" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_929203c03fc1e3b6c21db96ef660b0a6" nm="SRetReturnReg" arrow="1">
+<n19 lb="117" cb="46"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setSRetReturnReg" id="1e98b26dbcb3709eeb17338e7ef10b05_7126dca14585a051f5d76aac398ab2bb" file="2" linestart="118" lineend="118" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Reg" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="118" cb="39" le="118" ce="62">
+<xop lb="118" cb="41" le="118" ce="57" kind="=">
+<mex lb="118" cb="41" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_929203c03fc1e3b6c21db96ef660b0a6" nm="SRetReturnReg" arrow="1">
+<n19 lb="118" cb="41"/>
+</mex>
+<n32 lb="118" cb="57">
+<drx lb="118" cb="57" kind="lvalue" nm="Reg"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getGlobalBaseReg" id="1e98b26dbcb3709eeb17338e7ef10b05_cec6a115a9981756055c9523522cd336" file="2" linestart="120" lineend="120" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="120" cb="37" le="120" ce="61">
+<rx lb="120" cb="39" le="120" ce="46" pvirg="true">
+<n32 lb="120" cb="46">
+<mex lb="120" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_dbd34aa01e4f1b5c764257359fc71a97" nm="GlobalBaseReg" arrow="1">
+<n19 lb="120" cb="46"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setGlobalBaseReg" id="1e98b26dbcb3709eeb17338e7ef10b05_7feb64fda30c269ff7399749028d4e1b" file="2" linestart="121" lineend="121" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Reg" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="121" cb="39" le="121" ce="62">
+<xop lb="121" cb="41" le="121" ce="57" kind="=">
+<mex lb="121" cb="41" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_dbd34aa01e4f1b5c764257359fc71a97" nm="GlobalBaseReg" arrow="1">
+<n19 lb="121" cb="41"/>
+</mex>
+<n32 lb="121" cb="57">
+<drx lb="121" cb="57" kind="lvalue" nm="Reg"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getVarArgsFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_0454019d03d32216844387c925372c34" file="2" linestart="123" lineend="123" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="123" cb="36" le="123" ce="64">
+<rx lb="123" cb="38" le="123" ce="45" pvirg="true">
+<n32 lb="123" cb="45">
+<mex lb="123" cb="45" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_66cc1a45add5d69ca8424cd0f8786f80" nm="VarArgsFrameIndex" arrow="1">
+<n19 lb="123" cb="45"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setVarArgsFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_02fb6762c2ab66627533e865d8a96949" file="2" linestart="124" lineend="124" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Idx" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="124" cb="38" le="124" ce="65">
+<xop lb="124" cb="40" le="124" ce="60" kind="=">
+<mex lb="124" cb="40" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_66cc1a45add5d69ca8424cd0f8786f80" nm="VarArgsFrameIndex" arrow="1">
+<n19 lb="124" cb="40"/>
+</mex>
+<n32 lb="124" cb="60">
+<drx lb="124" cb="60" kind="lvalue" nm="Idx"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getRegSaveFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_4d86ea888829a806cbd4930edefba603" file="2" linestart="126" lineend="126" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="126" cb="36" le="126" ce="64">
+<rx lb="126" cb="38" le="126" ce="45" pvirg="true">
+<n32 lb="126" cb="45">
+<mex lb="126" cb="45" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_772af00b0a182028c07d9dae464dd470" nm="RegSaveFrameIndex" arrow="1">
+<n19 lb="126" cb="45"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setRegSaveFrameIndex" id="1e98b26dbcb3709eeb17338e7ef10b05_aa7df801d182046187d2e79799145957" file="2" linestart="127" lineend="127" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Idx" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="127" cb="38" le="127" ce="65">
+<xop lb="127" cb="40" le="127" ce="60" kind="=">
+<mex lb="127" cb="40" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_772af00b0a182028c07d9dae464dd470" nm="RegSaveFrameIndex" arrow="1">
+<n19 lb="127" cb="40"/>
+</mex>
+<n32 lb="127" cb="60">
+<drx lb="127" cb="60" kind="lvalue" nm="Idx"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getVarArgsGPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_9cfa23744fa0eb32f86346ecd83e3764" file="2" linestart="129" lineend="129" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="129" cb="39" le="129" ce="65">
+<rx lb="129" cb="41" le="129" ce="48" pvirg="true">
+<n32 lb="129" cb="48">
+<mex lb="129" cb="48" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_5356632afb22a0c3f2cbcefc5fe4a98b" nm="VarArgsGPOffset" arrow="1">
+<n19 lb="129" cb="48"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setVarArgsGPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_deaec3c1d9331a68e663d9ebfb2a7ca9" file="2" linestart="130" lineend="130" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Offset" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="130" cb="44" le="130" ce="72">
+<xop lb="130" cb="46" le="130" ce="64" kind="=">
+<mex lb="130" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_5356632afb22a0c3f2cbcefc5fe4a98b" nm="VarArgsGPOffset" arrow="1">
+<n19 lb="130" cb="46"/>
+</mex>
+<n32 lb="130" cb="64">
+<drx lb="130" cb="64" kind="lvalue" nm="Offset"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getVarArgsFPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_75d0217995dc075664176d7e8584b28b" file="2" linestart="132" lineend="132" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="132" cb="39" le="132" ce="65">
+<rx lb="132" cb="41" le="132" ce="48" pvirg="true">
+<n32 lb="132" cb="48">
+<mex lb="132" cb="48" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_20517d07613678c669fac574414629a0" nm="VarArgsFPOffset" arrow="1">
+<n19 lb="132" cb="48"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setVarArgsFPOffset" id="1e98b26dbcb3709eeb17338e7ef10b05_2c13f637e0f49681ccf9721abc15042e" file="2" linestart="133" lineend="133" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="Offset" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="133" cb="44" le="133" ce="72">
+<xop lb="133" cb="46" le="133" ce="64" kind="=">
+<mex lb="133" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_20517d07613678c669fac574414629a0" nm="VarArgsFPOffset" arrow="1">
+<n19 lb="133" cb="46"/>
+</mex>
+<n32 lb="133" cb="64">
+<drx lb="133" cb="64" kind="lvalue" nm="Offset"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getArgumentStackSize" id="1e98b26dbcb3709eeb17338e7ef10b05_9e250ba7dce19f0da2df1dd133f96935" file="2" linestart="135" lineend="135" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="135" cb="41" le="135" ce="69">
+<rx lb="135" cb="43" le="135" ce="50" pvirg="true">
+<n32 lb="135" cb="50">
+<mex lb="135" cb="50" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_7842a38355111e08aca4f820904865b9" nm="ArgumentStackSize" arrow="1">
+<n19 lb="135" cb="50"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="setArgumentStackSize" id="1e98b26dbcb3709eeb17338e7ef10b05_493476161818d790eac4b019fd6a1fab" file="2" linestart="136" lineend="136" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="size" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="136" cb="44" le="136" ce="72">
+<xop lb="136" cb="46" le="136" ce="66" kind="=">
+<mex lb="136" cb="46" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_7842a38355111e08aca4f820904865b9" nm="ArgumentStackSize" arrow="1">
+<n19 lb="136" cb="46"/>
+</mex>
+<n32 lb="136" cb="66">
+<drx lb="136" cb="66" kind="lvalue" nm="size"/>
+</n32>
+</xop>
+</u>
+
+</Stmt>
+</m>
+<m name="getNumLocalDynamicTLSAccesses" id="1e98b26dbcb3709eeb17338e7ef10b05_36e84347defb9f1027bfb2f5ce81cdba" file="2" linestart="138" lineend="138" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="unsigned int">
+<bt name="unsigned int"/>
+</fpt>
+<Stmt>
+<u lb="138" cb="50" le="138" ce="77">
+<rx lb="138" cb="52" le="138" ce="59" pvirg="true">
+<n32 lb="138" cb="59">
+<mex lb="138" cb="59" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_0b55e778b343572234a00506ae7b919d" nm="NumLocalDynamics" arrow="1">
+<n19 lb="138" cb="59"/>
+</mex>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="incNumLocalDynamicTLSAccesses" id="1e98b26dbcb3709eeb17338e7ef10b05_361d8ed42b0f45494fc4200ed274ccfa" file="2" linestart="139" lineend="139" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="139" cb="40" le="139" ce="62">
+<uo lb="139" cb="42" le="139" ce="44" kind="++">
+<mex lb="139" cb="44" kind="lvalue" id="1e98b26dbcb3709eeb17338e7ef10b05_0b55e778b343572234a00506ae7b919d" nm="NumLocalDynamics" arrow="1">
+<n19 lb="139" cb="44"/>
+</mex>
+</uo>
+</u>
+
+</Stmt>
+</m>
+<m name="operator=" id="1e98b26dbcb3709eeb17338e7ef10b05_53854e5e4e60f9309adfaee19367bf11" file="2" linestart="23" implicit="true" operator="true" access="public" inline="true">
+<fpt proto="llvm::X86MachineFunctionInfo &amp;">
+<lrf>
+<rt>
+<cr id="1e98b26dbcb3709eeb17338e7ef10b05_fd68518454fe763e43e11259db91ecd4"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const llvm::X86MachineFunctionInfo &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="1e98b26dbcb3709eeb17338e7ef10b05_fd68518454fe763e43e11259db91ecd4"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<d name="~X86MachineFunctionInfo" id="1e98b26dbcb3709eeb17338e7ef10b05_d0f17a4e50b6efd470bcb9f0553bf60a" file="2" linestart="23" lineend="23" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="23" cb="7"/>
+
+</Stmt>
+</d>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="5ee76c5648f89fb15a93f174f13d8f98_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="12" lineend="12"/>
+<m name="anchor" id="5ee76c5648f89fb15a93f174f13d8f98_e833babd17860c24657837e2b46f4a4c" file="1" linestart="14" lineend="14" previous="1e98b26dbcb3709eeb17338e7ef10b05_e833babd17860c24657837e2b46f4a4c" access="private" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="14" cb="39" le="14" ce="41"/>
+
+</Stmt>
+</m>
+</tun>
+</Root>

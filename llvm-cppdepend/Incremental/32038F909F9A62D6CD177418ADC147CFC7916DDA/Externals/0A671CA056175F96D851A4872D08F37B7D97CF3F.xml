@@ -1,0 +1,102 @@
+<Externals>
+<cr namespace="llvm.sys" access="none" depth="0" kind="class" name="ThreadLocalImpl" id="864a117e8297c1e10d79a1f971541515_bc661f5c31f1674e3bc425aac83d6e07" file="3" linestart="25" lineend="41">
+<cr parent="864a117e8297c1e10d79a1f971541515_bc661f5c31f1674e3bc425aac83d6e07" access="private" depth="0" pod="true" kind="union" name="" id="864a117e8297c1e10d79a1f971541515_cdd8da5e589b7895aaca4845e1abfc88" file="3" linestart="31" lineend="34">
+<fl name="data" id="864a117e8297c1e10d79a1f971541515_9e671796d38c4a44879e3cbfc9f0f5d5" file="3" linestart="32" lineend="32" isArray="true" isLiteral="true" access="public" proto="char [8]">
+<at>
+<bt name="char"/>
+</at>
+</fl>
+</cr>
+<fl name="" id="864a117e8297c1e10d79a1f971541515_783bcf35e2761388e19cf30b63772999" file="3" linestart="31" lineend="31" isLiteral="true" access="private" proto="llvm::sys::ThreadLocalImpl::&lt;anonymous union at C:\Users\lacti\Desktop\llvm\include\llvm/Support/ThreadLocal.h:31:7&gt;">
+<rt>
+<cr id="864a117e8297c1e10d79a1f971541515_cdd8da5e589b7895aaca4845e1abfc88"/>
+</rt>
+</fl>
+<m name="setInstance" id="864a117e8297c1e10d79a1f971541515_33df91dd37763998c756166349418af5" file="3" linestart="38" lineend="38" access="public" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="d" proto="const void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</p>
+</m>
+</cr>
+<f name="_wassert" id="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" file="4" linestart="35" lineend="35" previous="31c357693d52ae274c14f087014287c4_3e40221a11a600da08b516cdee0dac93" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="_Message" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_File" proto="const wchar_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="wchar_t"/>
+</QualType>
+</pt>
+</p>
+<p name="_Line" proto="unsigned int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="unsigned int"/>
+</p>
+</f>
+<f name="TlsAlloc" id="7c3f588186e6e5cc5102f416c85e05d7_405b77395243982d12313535cf4b81a2" file="5" linestart="356" lineend="361" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="DWORD">
+<Tdef>
+<bt name="unsigned long"/>
+</Tdef>
+</fpt>
+</f>
+<f name="TlsGetValue" id="7c3f588186e6e5cc5102f416c85e05d7_bc7ea63ec12a10d48d0f5aaa251c7a91" file="5" linestart="364" lineend="369" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="LPVOID">
+<Tdef>
+<pt>
+<bt name="void"/>
+</pt>
+</Tdef>
+</fpt>
+<p name="dwTlsIndex" proto="DWORD" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long"/>
+</Tdef>
+</p>
+</f>
+<f name="TlsSetValue" id="7c3f588186e6e5cc5102f416c85e05d7_7295898efcf81b5a7599d46180aa5612" file="5" linestart="372" lineend="378" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="BOOL">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="dwTlsIndex" proto="DWORD" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long"/>
+</Tdef>
+</p>
+<p name="lpTlsValue" proto="LPVOID" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<bt name="void"/>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="TlsFree" id="7c3f588186e6e5cc5102f416c85e05d7_469d52f29408aecc710b3c00c7991354" file="5" linestart="381" lineend="386" extC="true" imported="true" access="none">
+<fpt cc="x86_stdcall" proto="BOOL">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="dwTlsIndex" proto="DWORD" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long"/>
+</Tdef>
+</p>
+</f>
+</Externals>

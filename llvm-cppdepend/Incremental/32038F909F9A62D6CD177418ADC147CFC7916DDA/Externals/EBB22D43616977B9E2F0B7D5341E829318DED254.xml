@@ -1,0 +1,146 @@
+<Externals>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" file="3" linestart="36" lineend="307">
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="private" name="BufferKind" id="9e05b9b4de196b39d65ee2f40ed8c864_d14135abd14074ad8990bfb6eb9264fa" file="3" linestart="61" lineend="65" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<e parent="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6" access="public" name="Colors" id="9e05b9b4de196b39d65ee2f40ed8c864_da75c9a3a04c1a30d8d4a49cb44eb31a" file="3" linestart="69" lineend="79" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+</e>
+<c name="raw_ostream" id="9e05b9b4de196b39d65ee2f40ed8c864_a5403acfa9ec0a25b0601986dec6ce1f" file="3" linestart="81" lineend="85" explicit="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="unbuffered" proto="bool" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<bt name="bool"/>
+</p>
+<initlist id="9e05b9b4de196b39d65ee2f40ed8c864_9878f2a3b6d8e22806197c44235d79f6"/>
+</c>
+<m name="tell" id="9e05b9b4de196b39d65ee2f40ed8c864_1513540c5a5854b514ed07b1f5dcd2a1" file="3" linestart="90" lineend="90" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+</m>
+<m name="GetNumBytesInBuffer" id="9e05b9b4de196b39d65ee2f40ed8c864_ce847f52094149e3b2c7bd0c889cccf9" file="3" linestart="126" lineend="128" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+</m>
+<m name="flush" id="9e05b9b4de196b39d65ee2f40ed8c864_6844211f74b951d51b9cea3559c87a02" file="3" linestart="134" lineend="137" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="write" id="9e05b9b4de196b39d65ee2f40ed8c864_9aea9c1028a900926d3e6067ac6f4e6e" file="3" linestart="208" lineend="208" access="public">
+<fpt proto="llvm::raw_ostream &amp;">
+<lrf>
+<rt>
+<cr id="9e05b9b4de196b39d65ee2f40ed8c864_a0739cdc4bf02ac0124031b03f4267a6"/>
+</rt>
+</lrf>
+</fpt>
+<p name="Ptr" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</m>
+</cr>
+<f name="memcpy" id="cdea8aa8302602a6a955aadc09f445e4_69c20c9e20a0eedce3b47df1c4264e02" file="4" linestart="1248" lineend="1248" extC="true" access="none">
+<fpt cc="cdecl" proto="void *">
+<pt>
+<bt name="void"/>
+</pt>
+</fpt>
+<p name="_Dst" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+<p name="_Src" proto="const void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</p>
+<p name="_Size" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f name="strlen" id="4943a312e91e60daa3d01ddadf69e920_e42c32a191fd0e5e4028cbe2abba7964" file="5" linestart="121" lineend="121" extC="true" access="none">
+<fpt cc="cdecl" proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+<p name="_Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+<f namespace="std" name="min" id="94a7e75d7a66258cfa0b786887370f56_38c8355ac882a332f0a120942632a687" file="6" linestart="4115" lineend="4122" access="none" inline="true" hasbody="true" isdef="true">
+<Paren/>
+<p name="_Left" proto="const _Ty &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="_Right" proto="const _Ty &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+<ft name="min" id="94a7e75d7a66258cfa0b786887370f56_09a506c5090f5b76fa0fe76cd91170f1" file="6" linestart="4115" lineend="4122">
+<template_parameters>
+<ttp name="_Ty" id="94a7e75d7a66258cfa0b786887370f56_3d9a6f6e3cf36c1552956d19a7b297ab" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="std" name="min" id="94a7e75d7a66258cfa0b786887370f56_38c8355ac882a332f0a120942632a687" file="6" linestart="4115" lineend="4122" access="none" inline="true" hasbody="true" isdef="true">
+<Paren/>
+<p name="_Left" proto="const _Ty &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="_Right" proto="const _Ty &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</f>
+</ft>
+</Externals>

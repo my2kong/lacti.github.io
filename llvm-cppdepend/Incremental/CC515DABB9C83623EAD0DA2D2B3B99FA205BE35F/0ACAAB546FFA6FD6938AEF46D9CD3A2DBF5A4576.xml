@@ -1,0 +1,1295 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="14"/>
+<c f="1" b="16" e="14"/>
+</Comments>
+<Macros>
+<m f="1" bl="36" bc="3" el="36" ec="34"/>
+<m f="1" bl="45" bc="22" el="45" ec="22"/>
+<m f="1" bl="61" bc="16" el="61" ec="16"/>
+<m f="1" bl="75" bc="16" el="75" ec="16"/>
+<m f="1" bl="89" bc="16" el="89" ec="16"/>
+<m f="1" bl="92" bc="20" el="92" ec="20"/>
+<m f="1" bl="94" bc="16" el="94" ec="16"/>
+<m f="1" bl="105" bc="12" el="105" ec="12"/>
+</Macros>
+<Comments>
+<c f="2" b="1" e="12"/>
+<c f="2" b="13" e="12"/>
+<c f="2" b="16" e="16"/>
+<c f="2" b="17" e="16"/>
+<c f="2" b="19" e="19"/>
+<c f="2" b="20" e="19"/>
+<c f="2" b="24" e="24"/>
+<c f="2" b="25" e="24"/>
+<c f="2" b="27" e="27"/>
+<c f="2" b="28" e="27"/>
+<c f="2" b="30" e="30"/>
+<c f="2" b="31" e="30"/>
+<c f="2" b="34" e="34"/>
+<c f="2" b="35" e="34"/>
+</Comments>
+<Macros/>
+<tun>
+<f name="tokenize_stdin" id="81e999517a8b47d923a0be0b49f4695c_62293af33a3bf92f88e4db3c56fa5d11" file="2" linestart="17" lineend="17" extC="true" access="none">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="cb" proto="void (*)(char **, int)" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Paren/>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</f>
+<f name="module_dump" id="81e999517a8b47d923a0be0b49f4695c_6ae92e6657bceb0b3c2323b4f5d4d35f" file="2" linestart="20" lineend="20" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="module_list_functions" id="81e999517a8b47d923a0be0b49f4695c_8f47473f1a9e4b2751534a4fe3ff2807" file="2" linestart="21" lineend="21" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="module_list_globals" id="81e999517a8b47d923a0be0b49f4695c_786139adae46098e4b3f1094cca501e7" file="2" linestart="22" lineend="22" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="calc" id="81e999517a8b47d923a0be0b49f4695c_cad3bb4e1f307f816bef0429a69e13bb" file="2" linestart="25" lineend="25" extC="true" access="none" hasbody="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="disassemble" id="81e999517a8b47d923a0be0b49f4695c_f3724cf67d9d481db10829865d02c1f2" file="2" linestart="28" lineend="28" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="object_list_sections" id="81e999517a8b47d923a0be0b49f4695c_b9b5d0fac4c23b268ef37c26ba0f1f74" file="2" linestart="31" lineend="31" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="object_list_symbols" id="81e999517a8b47d923a0be0b49f4695c_cbf2f9168e68e33dc67e6b3b3df9c926" file="2" linestart="32" lineend="32" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<f name="targets_list" id="81e999517a8b47d923a0be0b49f4695c_9abdf44225f9283abb0c6fb6aedcc57b" file="2" linestart="35" lineend="35" extC="true" access="none">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+</f>
+<tyd name="binop_func_t" id="ec5ae30de3563a98c9c2843191114748_156f6921aa9a501a735a9ae3afc45669" file="1" linestart="23" lineend="24">
+<pt>
+<Paren/>
+</pt>
+</tyd>
+<f name="op_to_opcode" id="ec5ae30de3563a98c9c2843191114748_1dcae6e47b6c184faab668ea07e06034" file="1" linestart="26" lineend="38" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="LLVMOpcode">
+<Tdef>
+<ety>
+<et>
+<e id="77b4612aedb7705a2d9522f089d04fb1_e81921c6b06cdf4e547f1665a35bb7b2"/>
+</et>
+</ety>
+</Tdef>
+</fpt>
+<p name="op" proto="char" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="char"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="26" cb="41" le="38" ce="1">
+<sy lb="27" cb="3" le="35" ce="3">
+<n32 lb="27" cb="11">
+<n32 lb="27" cb="11">
+<drx lb="27" cb="11" kind="lvalue" nm="op"/>
+</n32>
+</n32>
+<u lb="27" cb="15" le="35" ce="3">
+<cax lb="28" cb="3" le="28" ce="20">
+<lt lb="28" cb="8">
+<slit/>
+</lt>
+<rx lb="28" cb="13" le="28" ce="20" pvirg="true">
+<n32 lb="28" cb="20">
+<drx lb="28" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_21a42cd5d38d2561efd80f525dd53494" nm="LLVMAdd"/>
+</n32>
+</rx>
+</cax>
+<cax lb="29" cb="3" le="29" ce="20">
+<lt lb="29" cb="8">
+<slit/>
+</lt>
+<rx lb="29" cb="13" le="29" ce="20" pvirg="true">
+<n32 lb="29" cb="20">
+<drx lb="29" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_78847ed4e4b50e561459353fd90abb27" nm="LLVMSub"/>
+</n32>
+</rx>
+</cax>
+<cax lb="30" cb="3" le="30" ce="20">
+<lt lb="30" cb="8">
+<slit/>
+</lt>
+<rx lb="30" cb="13" le="30" ce="20" pvirg="true">
+<n32 lb="30" cb="20">
+<drx lb="30" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_9074cddba7ff09de2af8975e8e91b27a" nm="LLVMMul"/>
+</n32>
+</rx>
+</cax>
+<cax lb="31" cb="3" le="31" ce="20">
+<lt lb="31" cb="8">
+<slit/>
+</lt>
+<rx lb="31" cb="13" le="31" ce="20" pvirg="true">
+<n32 lb="31" cb="20">
+<drx lb="31" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_c0f8575b04079f99eac87701dd88e8f3" nm="LLVMSDiv"/>
+</n32>
+</rx>
+</cax>
+<cax lb="32" cb="3" le="32" ce="20">
+<lt lb="32" cb="8">
+<slit/>
+</lt>
+<rx lb="32" cb="13" le="32" ce="20" pvirg="true">
+<n32 lb="32" cb="20">
+<drx lb="32" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_f1e4ed354717f9a0785543ce64bf909c" nm="LLVMAnd"/>
+</n32>
+</rx>
+</cax>
+<cax lb="33" cb="3" le="33" ce="20">
+<lt lb="33" cb="8">
+<slit/>
+</lt>
+<rx lb="33" cb="13" le="33" ce="20" pvirg="true">
+<n32 lb="33" cb="20">
+<drx lb="33" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_5109003086abc3a1ce9d742b2ce70980" nm="LLVMOr"/>
+</n32>
+</rx>
+</cax>
+<cax lb="34" cb="3" le="34" ce="20">
+<lt lb="34" cb="8">
+<slit/>
+</lt>
+<rx lb="34" cb="13" le="34" ce="20" pvirg="true">
+<n32 lb="34" cb="20">
+<drx lb="34" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_63154cd975efcf571bc982067ee7e65e" nm="LLVMXor"/>
+</n32>
+</rx>
+</cax>
+</u>
+</sy>
+<ocast lb="36" cb="3" le="36" ce="3">
+<bt name="void"/>
+<n46 lb="36" cb="3" le="36" ce="3">
+<exp pvirg="true"/>
+<xop lb="36" cb="3" le="36" ce="3" kind="||">
+<n46 lb="36" cb="3" le="36" ce="3">
+<exp pvirg="true"/>
+<uo lb="36" cb="3" le="36" ce="3" kind="!">
+<uo lb="36" cb="3" le="36" ce="3" kind="!">
+<n46 lb="36" cb="3" le="36" ce="3">
+<exp pvirg="true"/>
+<xop lb="36" cb="3" le="36" ce="3" kind="&amp;&amp;">
+<n45 lb="36" cb="3">
+<flit/>
+</n45>
+<n32 lb="36" cb="3">
+<n52 lb="36" cb="3">
+<slit/>
+</n52>
+</n32>
+</xop>
+</n46>
+</uo>
+</uo>
+</n46>
+<n46 lb="36" cb="3" le="36" ce="3">
+<exp pvirg="true"/>
+<xop lb="36" cb="3" le="36" ce="3" kind=",">
+<ce lb="36" cb="3" le="36" ce="3" nbparm="3" id="31c357693d52ae274c14f087014287c4_0093bf11d561b2a8f60b05b9fedd21cd">
+<exp pvirg="true"/>
+<n32 lb="36" cb="3">
+<drx lb="36" cb="3" id="31c357693d52ae274c14f087014287c4_0093bf11d561b2a8f60b05b9fedd21cd" nm="_wassert"/>
+</n32>
+<n32 lb="36" cb="3">
+<n32 lb="36" cb="3">
+<n52 lb="36" cb="3">
+<slit/>
+</n52>
+</n32>
+</n32>
+<n32 lb="36" cb="3">
+<n32 lb="36" cb="3">
+<n52 lb="36" cb="3">
+<slit/>
+</n52>
+</n32>
+</n32>
+<n32 lb="36" cb="3">
+<n45 lb="36" cb="3">
+<flit/>
+</n45>
+</n32>
+</ce>
+<n45 lb="36" cb="3"/>
+</xop>
+</n46>
+</xop>
+</n46>
+</ocast>
+<rx lb="37" cb="3" le="37" ce="10" pvirg="true">
+<n32 lb="37" cb="10">
+<n45 lb="37" cb="10"/>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</f>
+<f name="build_from_tokens" id="ec5ae30de3563a98c9c2843191114748_6f746b514c8c07cd2d3fc3fd90abaef8" file="1" linestart="42" lineend="111" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="LLVMValueRef">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</fpt>
+<p name="tokens" proto="char **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<bt name="char"/>
+</pt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="ntokens" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="builder" proto="LLVMBuilderRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_de75b7fa69a722b64d39b4ff9f0c6be2"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="param" proto="LLVMValueRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="44" cb="59" le="111" ce="1">
+<dst lb="45" cb="3" le="45" ce="32">
+<exp pvirg="true"/>
+<Var nm="stack" value="true">
+<at>
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</at>
+</Var>
+</dst>
+<dst lb="46" cb="3" le="46" ce="16">
+<exp pvirg="true"/>
+<Var nm="depth" value="true">
+<bt name="int"/>
+<n45 lb="46" cb="15">
+<flit/>
+</n45>
+</Var>
+</dst>
+<dst lb="47" cb="3" le="47" ce="8">
+<exp pvirg="true"/>
+<Var nm="i" value="true">
+<bt name="int"/>
+</Var>
+</dst>
+<fx lb="49" cb="3" le="101" ce="3">
+<xop lb="49" cb="8" le="49" ce="12" kind="=">
+<drx lb="49" cb="8" kind="lvalue" nm="i"/>
+<n45 lb="49" cb="12"/>
+</xop>
+<xop lb="49" cb="15" le="49" ce="19" kind="&lt;">
+<n32 lb="49" cb="15">
+<drx lb="49" cb="15" kind="lvalue" nm="i"/>
+</n32>
+<n32 lb="49" cb="19">
+<drx lb="49" cb="19" kind="lvalue" nm="ntokens"/>
+</n32>
+</xop>
+<uo lb="49" cb="28" le="49" ce="29" kind="++">
+<drx lb="49" cb="28" kind="lvalue" nm="i"/>
+</uo>
+<u lb="49" cb="33" le="101" ce="3">
+<dst lb="50" cb="5" le="50" ce="28">
+<exp pvirg="true"/>
+<Var nm="tok" value="true">
+<bt name="char"/>
+<n32 lb="50" cb="16" le="50" ce="27">
+<n2 lb="50" cb="16" le="50" ce="27">
+<exp pvirg="true"/>
+<n32 lb="50" cb="16" le="50" ce="24">
+<n2 lb="50" cb="16" le="50" ce="24">
+<exp pvirg="true"/>
+<n32 lb="50" cb="16">
+<drx lb="50" cb="16" kind="lvalue" nm="tokens"/>
+</n32>
+<n32 lb="50" cb="23">
+<drx lb="50" cb="23" kind="lvalue" nm="i"/>
+</n32>
+</n2>
+</n32>
+<n45 lb="50" cb="26"/>
+</n2>
+</n32>
+</Var>
+</dst>
+<sy lb="51" cb="5" le="100" ce="5">
+<n32 lb="51" cb="13">
+<n32 lb="51" cb="13">
+<drx lb="51" cb="13" kind="lvalue" nm="tok"/>
+</n32>
+</n32>
+<u lb="51" cb="18" le="100" ce="5">
+<cax lb="52" cb="5" le="62" ce="7">
+<lt lb="52" cb="10">
+<slit/>
+</lt>
+<cax lb="53" cb="5" le="62" ce="7">
+<lt lb="53" cb="10">
+<slit/>
+</lt>
+<cax lb="54" cb="5" le="62" ce="7">
+<lt lb="54" cb="10">
+<slit/>
+</lt>
+<cax lb="55" cb="5" le="62" ce="7">
+<lt lb="55" cb="10">
+<slit/>
+</lt>
+<cax lb="56" cb="5" le="62" ce="7">
+<lt lb="56" cb="10">
+<slit/>
+</lt>
+<cax lb="57" cb="5" le="62" ce="7">
+<lt lb="57" cb="10">
+<slit/>
+</lt>
+<cax lb="58" cb="5" le="62" ce="7">
+<lt lb="58" cb="10">
+<slit/>
+</lt>
+<if lb="59" cb="7" le="62" ce="7">
+<xop lb="59" cb="11" le="59" ce="19" kind="&lt;">
+<n32 lb="59" cb="11">
+<drx lb="59" cb="11" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="59" cb="19">
+<flit/>
+</n45>
+</xop>
+<u lb="59" cb="22" le="62" ce="7">
+<ce lb="60" cb="9" le="60" ce="35" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="60" cb="9">
+<drx lb="60" cb="9" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="60" cb="16">
+<n32 lb="60" cb="16">
+<n52 lb="60" cb="16">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+<rx lb="61" cb="9" le="61" ce="16" pvirg="true">
+<n32 lb="61" cb="16" le="61" ce="16">
+<n46 lb="61" cb="16" le="61" ce="16">
+<exp pvirg="true"/>
+<ocast lb="61" cb="16" le="61" ce="16">
+<pt>
+<bt name="void"/>
+</pt>
+<n45 lb="61" cb="16"/>
+</ocast>
+</n46>
+</n32>
+</rx>
+</u>
+</if>
+</cax>
+</cax>
+</cax>
+</cax>
+</cax>
+</cax>
+</cax>
+<xop lb="64" cb="7" le="65" ce="79" kind="=">
+<n2 lb="64" cb="7" le="64" ce="22">
+<exp pvirg="true"/>
+<n32 lb="64" cb="7">
+<drx lb="64" cb="7" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="64" cb="13" le="64" ce="21" kind="-">
+<n32 lb="64" cb="13">
+<drx lb="64" cb="13" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="64" cb="21"/>
+</xop>
+</n2>
+<ce lb="64" cb="26" le="65" ce="79" nbparm="5" id="77b4612aedb7705a2d9522f089d04fb1_72bfe85f24fe670e6d746a86b97d2f0b">
+<exp pvirg="true"/>
+<n32 lb="64" cb="26">
+<drx lb="64" cb="26" id="77b4612aedb7705a2d9522f089d04fb1_72bfe85f24fe670e6d746a86b97d2f0b" nm="LLVMBuildBinOp"/>
+</n32>
+<n32 lb="64" cb="41">
+<drx lb="64" cb="41" kind="lvalue" nm="builder"/>
+</n32>
+<ce lb="64" cb="50" le="64" ce="66" nbparm="1" id="ec5ae30de3563a98c9c2843191114748_1dcae6e47b6c184faab668ea07e06034">
+<exp pvirg="true"/>
+<n32 lb="64" cb="50">
+<drx lb="64" cb="50" id="ec5ae30de3563a98c9c2843191114748_1dcae6e47b6c184faab668ea07e06034" nm="op_to_opcode"/>
+</n32>
+<n32 lb="64" cb="63">
+<drx lb="64" cb="63" kind="lvalue" nm="tok"/>
+</n32>
+</ce>
+<n32 lb="65" cb="41" le="65" ce="56">
+<n2 lb="65" cb="41" le="65" ce="56">
+<exp pvirg="true"/>
+<n32 lb="65" cb="41">
+<drx lb="65" cb="41" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="65" cb="47" le="65" ce="55" kind="-">
+<n32 lb="65" cb="47">
+<drx lb="65" cb="47" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="65" cb="55">
+<flit/>
+</n45>
+</xop>
+</n2>
+</n32>
+<n32 lb="65" cb="59" le="65" ce="74">
+<n2 lb="65" cb="59" le="65" ce="74">
+<exp pvirg="true"/>
+<n32 lb="65" cb="59">
+<drx lb="65" cb="59" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="65" cb="65" le="65" ce="73" kind="-">
+<n32 lb="65" cb="65">
+<drx lb="65" cb="65" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="65" cb="73"/>
+</xop>
+</n2>
+</n32>
+<n32 lb="65" cb="77">
+<n32 lb="65" cb="77">
+<n52 lb="65" cb="77">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+</xop>
+<uo lb="66" cb="7" le="66" ce="12" kind="--">
+<drx lb="66" cb="7" kind="lvalue" nm="depth"/>
+</uo>
+<bks lb="68" cb="7"/>
+<cax lb="70" cb="5" le="82" ce="5">
+<lt lb="70" cb="10">
+<slit/>
+</lt>
+<u lb="70" cb="15" le="82" ce="5">
+<dst lb="71" cb="7" le="71" ce="23">
+<exp pvirg="true"/>
+<Var nm="off">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Var>
+</dst>
+<if lb="73" cb="7" le="76" ce="7">
+<xop lb="73" cb="11" le="73" ce="19" kind="&lt;">
+<n32 lb="73" cb="11">
+<drx lb="73" cb="11" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="73" cb="19"/>
+</xop>
+<u lb="73" cb="22" le="76" ce="7">
+<ce lb="74" cb="9" le="74" ce="35" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="74" cb="9">
+<drx lb="74" cb="9" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="74" cb="16">
+<n32 lb="74" cb="16">
+<n52 lb="74" cb="16"/>
+</n32>
+</n32>
+</ce>
+<rx lb="75" cb="9" le="75" ce="16" pvirg="true">
+<n32 lb="75" cb="16" le="75" ce="16">
+<n46 lb="75" cb="16" le="75" ce="16">
+<exp pvirg="true"/>
+<ocast lb="75" cb="16" le="75" ce="16">
+<pt>
+<bt name="void"/>
+</pt>
+<n45 lb="75" cb="16"/>
+</ocast>
+</n46>
+</n32>
+</rx>
+</u>
+</if>
+<xop lb="78" cb="7" le="78" ce="66" kind="=">
+<drx lb="78" cb="7" kind="lvalue" nm="off"/>
+<ce lb="78" cb="13" le="78" ce="66" nbparm="5" id="77b4612aedb7705a2d9522f089d04fb1_b84abec555fb55db396dc9f80273ddcd">
+<exp pvirg="true"/>
+<n32 lb="78" cb="13">
+<drx lb="78" cb="13" id="77b4612aedb7705a2d9522f089d04fb1_b84abec555fb55db396dc9f80273ddcd" nm="LLVMBuildGEP"/>
+</n32>
+<n32 lb="78" cb="26">
+<drx lb="78" cb="26" kind="lvalue" nm="builder"/>
+</n32>
+<n32 lb="78" cb="35">
+<drx lb="78" cb="35" kind="lvalue" nm="param"/>
+</n32>
+<uo lb="78" cb="42" le="78" ce="58" kind="&amp;">
+<n2 lb="78" cb="43" le="78" ce="58">
+<exp pvirg="true"/>
+<n32 lb="78" cb="43">
+<drx lb="78" cb="43" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="78" cb="49" le="78" ce="57" kind="-">
+<n32 lb="78" cb="49">
+<drx lb="78" cb="49" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="78" cb="57"/>
+</xop>
+</n2>
+</uo>
+<n32 lb="78" cb="61">
+<n45 lb="78" cb="61"/>
+</n32>
+<n32 lb="78" cb="64">
+<n32 lb="78" cb="64">
+<n52 lb="78" cb="64"/>
+</n32>
+</n32>
+</ce>
+</xop>
+<xop lb="79" cb="7" le="79" ce="56" kind="=">
+<n2 lb="79" cb="7" le="79" ce="22">
+<exp pvirg="true"/>
+<n32 lb="79" cb="7">
+<drx lb="79" cb="7" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="79" cb="13" le="79" ce="21" kind="-">
+<n32 lb="79" cb="13">
+<drx lb="79" cb="13" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="79" cb="21"/>
+</xop>
+</n2>
+<ce lb="79" cb="26" le="79" ce="56" nbparm="3" id="77b4612aedb7705a2d9522f089d04fb1_810c42c96773b1d04ced87afe8291a81">
+<exp pvirg="true"/>
+<n32 lb="79" cb="26">
+<drx lb="79" cb="26" id="77b4612aedb7705a2d9522f089d04fb1_810c42c96773b1d04ced87afe8291a81" nm="LLVMBuildLoad"/>
+</n32>
+<n32 lb="79" cb="40">
+<drx lb="79" cb="40" kind="lvalue" nm="builder"/>
+</n32>
+<n32 lb="79" cb="49">
+<drx lb="79" cb="49" kind="lvalue" nm="off"/>
+</n32>
+<n32 lb="79" cb="54">
+<n32 lb="79" cb="54">
+<n52 lb="79" cb="54"/>
+</n32>
+</n32>
+</ce>
+</xop>
+<bks lb="81" cb="7"/>
+</u>
+</cax>
+<dx lb="84" cb="5" le="99" ce="5">
+<u lb="84" cb="14" le="99" ce="5">
+<dst lb="85" cb="7" le="85" ce="16">
+<exp pvirg="true"/>
+<Var nm="end">
+<pt>
+<bt name="char"/>
+</pt>
+</Var>
+</dst>
+<dst lb="86" cb="7" le="86" ce="44">
+<exp pvirg="true"/>
+<Var nm="val" value="true">
+<bt name="long"/>
+<ce lb="86" cb="18" le="86" ce="43" nbparm="3" id="17cba6e85ee945f0e4acd2e5f276ff1b_a959f91635665900917d89afa38ebd8a">
+<exp pvirg="true"/>
+<n32 lb="86" cb="18">
+<drx lb="86" cb="18" id="17cba6e85ee945f0e4acd2e5f276ff1b_a959f91635665900917d89afa38ebd8a" nm="strtol"/>
+</n32>
+<n32 lb="86" cb="25" le="86" ce="33">
+<n32 lb="86" cb="25" le="86" ce="33">
+<n2 lb="86" cb="25" le="86" ce="33">
+<exp pvirg="true"/>
+<n32 lb="86" cb="25">
+<drx lb="86" cb="25" kind="lvalue" nm="tokens"/>
+</n32>
+<n32 lb="86" cb="32">
+<drx lb="86" cb="32" kind="lvalue" nm="i"/>
+</n32>
+</n2>
+</n32>
+</n32>
+<uo lb="86" cb="36" le="86" ce="37" kind="&amp;">
+<drx lb="86" cb="37" kind="lvalue" nm="end"/>
+</uo>
+<n45 lb="86" cb="42"/>
+</ce>
+</Var>
+</dst>
+<if lb="87" cb="7" le="90" ce="7">
+<xop lb="87" cb="11" le="87" ce="21" kind="!=">
+<n32 lb="87" cb="11" le="87" ce="16">
+<n32 lb="87" cb="11" le="87" ce="16">
+<n2 lb="87" cb="11" le="87" ce="16">
+<exp pvirg="true"/>
+<n32 lb="87" cb="11">
+<drx lb="87" cb="11" kind="lvalue" nm="end"/>
+</n32>
+<n45 lb="87" cb="15"/>
+</n2>
+</n32>
+</n32>
+<lt lb="87" cb="21">
+<slit/>
+</lt>
+</xop>
+<u lb="87" cb="27" le="90" ce="7">
+<ce lb="88" cb="9" le="88" ce="40" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="88" cb="9">
+<drx lb="88" cb="9" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="88" cb="16">
+<n32 lb="88" cb="16">
+<n52 lb="88" cb="16">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+<rx lb="89" cb="9" le="89" ce="16" pvirg="true">
+<n32 lb="89" cb="16" le="89" ce="16">
+<n46 lb="89" cb="16" le="89" ce="16">
+<exp pvirg="true"/>
+<ocast lb="89" cb="16" le="89" ce="16">
+<pt>
+<bt name="void"/>
+</pt>
+<n45 lb="89" cb="16"/>
+</ocast>
+</n46>
+</n32>
+</rx>
+</u>
+</if>
+<if lb="92" cb="7" le="95" ce="7">
+<xop lb="92" cb="11" le="92" ce="20" kind="&gt;=">
+<n32 lb="92" cb="11">
+<drx lb="92" cb="11" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="92" cb="20">
+<flit/>
+</n45>
+</xop>
+<u lb="92" cb="31" le="95" ce="7">
+<ce lb="93" cb="9" le="93" ce="34" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="93" cb="9">
+<drx lb="93" cb="9" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="93" cb="16">
+<n32 lb="93" cb="16">
+<n52 lb="93" cb="16">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+<rx lb="94" cb="9" le="94" ce="16" pvirg="true">
+<n32 lb="94" cb="16" le="94" ce="16">
+<n46 lb="94" cb="16" le="94" ce="16">
+<exp pvirg="true"/>
+<ocast lb="94" cb="16" le="94" ce="16">
+<pt>
+<bt name="void"/>
+</pt>
+<n45 lb="94" cb="16"/>
+</ocast>
+</n46>
+</n32>
+</rx>
+</u>
+</if>
+<xop lb="97" cb="7" le="97" ce="60" kind="=">
+<n2 lb="97" cb="7" le="97" ce="20">
+<exp pvirg="true"/>
+<n32 lb="97" cb="7">
+<drx lb="97" cb="7" kind="lvalue" nm="stack"/>
+</n32>
+<uo lb="97" cb="13" le="97" ce="18" kind="++">
+<drx lb="97" cb="13" kind="lvalue" nm="depth"/>
+</uo>
+</n2>
+<ce lb="97" cb="24" le="97" ce="60" nbparm="3" id="77b4612aedb7705a2d9522f089d04fb1_19f4563c4dc69eb7c2157636bafba22c">
+<exp pvirg="true"/>
+<n32 lb="97" cb="24">
+<drx lb="97" cb="24" id="77b4612aedb7705a2d9522f089d04fb1_19f4563c4dc69eb7c2157636bafba22c" nm="LLVMConstInt"/>
+</n32>
+<ce lb="97" cb="37" le="97" ce="51" nbparm="0" id="77b4612aedb7705a2d9522f089d04fb1_fbe21cc7f7cc5cf862eb11bb057decfa">
+<exp pvirg="true"/>
+<n32 lb="97" cb="37">
+<drx lb="97" cb="37" id="77b4612aedb7705a2d9522f089d04fb1_fbe21cc7f7cc5cf862eb11bb057decfa" nm="LLVMInt64Type"/>
+</n32>
+</ce>
+<n32 lb="97" cb="54">
+<n32 lb="97" cb="54">
+<drx lb="97" cb="54" kind="lvalue" nm="val"/>
+</n32>
+</n32>
+<n45 lb="97" cb="59"/>
+</ce>
+</xop>
+<bks lb="98" cb="7"/>
+</u>
+</dx>
+</u>
+</sy>
+</u>
+</fx>
+<if lb="103" cb="3" le="106" ce="3">
+<xop lb="103" cb="7" le="103" ce="15" kind="&lt;">
+<n32 lb="103" cb="7">
+<drx lb="103" cb="7" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="103" cb="15"/>
+</xop>
+<u lb="103" cb="18" le="106" ce="3">
+<ce lb="104" cb="5" le="104" ce="41" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="104" cb="5">
+<drx lb="104" cb="5" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="104" cb="12">
+<n32 lb="104" cb="12">
+<n52 lb="104" cb="12">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+<rx lb="105" cb="5" le="105" ce="12" pvirg="true">
+<n32 lb="105" cb="12" le="105" ce="12">
+<n46 lb="105" cb="12" le="105" ce="12">
+<exp pvirg="true"/>
+<ocast lb="105" cb="12" le="105" ce="12">
+<pt>
+<bt name="void"/>
+</pt>
+<n45 lb="105" cb="12"/>
+</ocast>
+</n46>
+</n32>
+</rx>
+</u>
+</if>
+<ce lb="108" cb="3" le="108" ce="41" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_2099550dc65fbe89c748aa379d6b350d">
+<exp pvirg="true"/>
+<n32 lb="108" cb="3">
+<drx lb="108" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_2099550dc65fbe89c748aa379d6b350d" nm="LLVMBuildRet"/>
+</n32>
+<n32 lb="108" cb="16">
+<drx lb="108" cb="16" kind="lvalue" nm="builder"/>
+</n32>
+<n32 lb="108" cb="25" le="108" ce="40">
+<n2 lb="108" cb="25" le="108" ce="40">
+<exp pvirg="true"/>
+<n32 lb="108" cb="25">
+<drx lb="108" cb="25" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="108" cb="31" le="108" ce="39" kind="-">
+<n32 lb="108" cb="31">
+<drx lb="108" cb="31" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="108" cb="39"/>
+</xop>
+</n2>
+</n32>
+</ce>
+<rx lb="110" cb="3" le="110" ce="25" pvirg="true">
+<n32 lb="110" cb="10" le="110" ce="25">
+<n2 lb="110" cb="10" le="110" ce="25">
+<exp pvirg="true"/>
+<n32 lb="110" cb="10">
+<drx lb="110" cb="10" kind="lvalue" nm="stack"/>
+</n32>
+<xop lb="110" cb="16" le="110" ce="24" kind="-">
+<n32 lb="110" cb="16">
+<drx lb="110" cb="16" kind="lvalue" nm="depth"/>
+</n32>
+<n45 lb="110" cb="24"/>
+</xop>
+</n2>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</f>
+<f name="handle_line" id="ec5ae30de3563a98c9c2843191114748_ca335805d2aac211639eba9f52d9b2db" file="1" linestart="113" lineend="141" access="none" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="tokens" proto="char **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<bt name="char"/>
+</pt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="ntokens" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="113" cb="53" le="141" ce="1">
+<dst lb="114" cb="3" le="114" ce="25">
+<exp pvirg="true"/>
+<Var nm="name">
+<pt>
+<bt name="char"/>
+</pt>
+<n32 lb="114" cb="16" le="114" ce="24">
+<n2 lb="114" cb="16" le="114" ce="24">
+<exp pvirg="true"/>
+<n32 lb="114" cb="16">
+<drx lb="114" cb="16" kind="lvalue" nm="tokens"/>
+</n32>
+<n45 lb="114" cb="23">
+<flit/>
+</n45>
+</n2>
+</n32>
+</Var>
+</dst>
+<dst lb="115" cb="3" le="115" ce="21">
+<exp pvirg="true"/>
+<Var nm="param">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Var>
+</dst>
+<dst lb="116" cb="3" le="116" ce="19">
+<exp pvirg="true"/>
+<Var nm="res">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Var>
+</dst>
+<dst lb="118" cb="3" le="118" ce="51">
+<exp pvirg="true"/>
+<Var nm="M">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_dca4f8f7e46453bd9e92f739170b27d0"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="118" cb="21" le="118" ce="50" nbparm="1" id="77b4612aedb7705a2d9522f089d04fb1_a438552b6f4e5b3d7083d659ef910566">
+<exp pvirg="true"/>
+<n32 lb="118" cb="21">
+<drx lb="118" cb="21" id="77b4612aedb7705a2d9522f089d04fb1_a438552b6f4e5b3d7083d659ef910566" nm="LLVMModuleCreateWithName"/>
+</n32>
+<n32 lb="118" cb="46">
+<n32 lb="118" cb="46">
+<drx lb="118" cb="46" kind="lvalue" nm="name"/>
+</n32>
+</n32>
+</ce>
+</Var>
+</dst>
+<dst lb="120" cb="3" le="120" ce="38">
+<exp pvirg="true"/>
+<Var nm="I64ty">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="120" cb="23" le="120" ce="37" nbparm="0" id="77b4612aedb7705a2d9522f089d04fb1_fbe21cc7f7cc5cf862eb11bb057decfa">
+<exp pvirg="true"/>
+<n32 lb="120" cb="23">
+<drx lb="120" cb="23" id="77b4612aedb7705a2d9522f089d04fb1_fbe21cc7f7cc5cf862eb11bb057decfa" nm="LLVMInt64Type"/>
+</n32>
+</ce>
+</Var>
+</dst>
+<dst lb="121" cb="3" le="121" ce="51">
+<exp pvirg="true"/>
+<Var nm="I64Ptrty">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="121" cb="26" le="121" ce="50" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_d7ba892ba27674339c5a6cceb33fbca3">
+<exp pvirg="true"/>
+<n32 lb="121" cb="26">
+<drx lb="121" cb="26" id="77b4612aedb7705a2d9522f089d04fb1_d7ba892ba27674339c5a6cceb33fbca3" nm="LLVMPointerType"/>
+</n32>
+<n32 lb="121" cb="42">
+<drx lb="121" cb="42" kind="lvalue" nm="I64ty"/>
+</n32>
+<n32 lb="121" cb="49">
+<n45 lb="121" cb="49"/>
+</n32>
+</ce>
+</Var>
+</dst>
+<dst lb="122" cb="3" le="122" ce="61">
+<exp pvirg="true"/>
+<Var nm="Fty">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_45930d2cc71dfd56532e1b362eaef831"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="122" cb="21" le="122" ce="60" nbparm="4" id="77b4612aedb7705a2d9522f089d04fb1_f1b0740f65cc5dff7a0192f6f0cc37da">
+<exp pvirg="true"/>
+<n32 lb="122" cb="21">
+<drx lb="122" cb="21" id="77b4612aedb7705a2d9522f089d04fb1_f1b0740f65cc5dff7a0192f6f0cc37da" nm="LLVMFunctionType"/>
+</n32>
+<n32 lb="122" cb="38">
+<drx lb="122" cb="38" kind="lvalue" nm="I64ty"/>
+</n32>
+<uo lb="122" cb="45" le="122" ce="46" kind="&amp;">
+<drx lb="122" cb="46" kind="lvalue" nm="I64Ptrty"/>
+</uo>
+<n32 lb="122" cb="56">
+<n45 lb="122" cb="56">
+<flit/>
+</n45>
+</n32>
+<n45 lb="122" cb="59"/>
+</ce>
+</Var>
+</dst>
+<dst lb="124" cb="3" le="124" ce="49">
+<exp pvirg="true"/>
+<Var nm="F">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_21413dd6ecaaa70d239d5705d31fee95"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="124" cb="20" le="124" ce="48" nbparm="3" id="77b4612aedb7705a2d9522f089d04fb1_0c50b2a076e7533dd1a0dcb054d54b13">
+<exp pvirg="true"/>
+<n32 lb="124" cb="20">
+<drx lb="124" cb="20" id="77b4612aedb7705a2d9522f089d04fb1_0c50b2a076e7533dd1a0dcb054d54b13" nm="LLVMAddFunction"/>
+</n32>
+<n32 lb="124" cb="36">
+<drx lb="124" cb="36" kind="lvalue" nm="M"/>
+</n32>
+<n32 lb="124" cb="39">
+<n32 lb="124" cb="39">
+<drx lb="124" cb="39" kind="lvalue" nm="name"/>
+</n32>
+</n32>
+<n32 lb="124" cb="45">
+<drx lb="124" cb="45" kind="lvalue" nm="Fty"/>
+</n32>
+</ce>
+</Var>
+</dst>
+<dst lb="125" cb="3" le="125" ce="47">
+<exp pvirg="true"/>
+<Var nm="builder">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="77b4612aedb7705a2d9522f089d04fb1_de75b7fa69a722b64d39b4ff9f0c6be2"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+<ce lb="125" cb="28" le="125" ce="46" nbparm="0" id="77b4612aedb7705a2d9522f089d04fb1_61400d44811049625a57c8fcc62d334b">
+<exp pvirg="true"/>
+<n32 lb="125" cb="28">
+<drx lb="125" cb="28" id="77b4612aedb7705a2d9522f089d04fb1_61400d44811049625a57c8fcc62d334b" nm="LLVMCreateBuilder"/>
+</n32>
+</ce>
+</Var>
+</dst>
+<ce lb="126" cb="3" le="126" ce="69" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_0795c8c621bada40bdda7f6e5cb0ae3d">
+<exp pvirg="true"/>
+<n32 lb="126" cb="3">
+<drx lb="126" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_0795c8c621bada40bdda7f6e5cb0ae3d" nm="LLVMPositionBuilderAtEnd"/>
+</n32>
+<n32 lb="126" cb="28">
+<drx lb="126" cb="28" kind="lvalue" nm="builder"/>
+</n32>
+<ce lb="126" cb="37" le="126" ce="68" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_81cc95d935638b1477b86e792a1bd2f8">
+<exp pvirg="true"/>
+<n32 lb="126" cb="37">
+<drx lb="126" cb="37" id="77b4612aedb7705a2d9522f089d04fb1_81cc95d935638b1477b86e792a1bd2f8" nm="LLVMAppendBasicBlock"/>
+</n32>
+<n32 lb="126" cb="58">
+<drx lb="126" cb="58" kind="lvalue" nm="F"/>
+</n32>
+<n32 lb="126" cb="61">
+<n32 lb="126" cb="61">
+<n52 lb="126" cb="61">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+</ce>
+<ce lb="128" cb="3" le="128" ce="26" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_92cd22ec2bdfc0ef52733e5f4db53908">
+<exp pvirg="true"/>
+<n32 lb="128" cb="3">
+<drx lb="128" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_92cd22ec2bdfc0ef52733e5f4db53908" nm="LLVMGetParams"/>
+</n32>
+<n32 lb="128" cb="17">
+<drx lb="128" cb="17" kind="lvalue" nm="F"/>
+</n32>
+<uo lb="128" cb="20" le="128" ce="21" kind="&amp;">
+<drx lb="128" cb="21" kind="lvalue" nm="param"/>
+</uo>
+</ce>
+<ce lb="129" cb="3" le="129" ce="31" nbparm="2" id="77b4612aedb7705a2d9522f089d04fb1_bccce518983d88212b875d0f6bb8ead7">
+<exp pvirg="true"/>
+<n32 lb="129" cb="3">
+<drx lb="129" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_bccce518983d88212b875d0f6bb8ead7" nm="LLVMSetValueName"/>
+</n32>
+<n32 lb="129" cb="20">
+<drx lb="129" cb="20" kind="lvalue" nm="param"/>
+</n32>
+<n32 lb="129" cb="27">
+<n32 lb="129" cb="27">
+<n52 lb="129" cb="27">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+<xop lb="131" cb="3" le="131" ce="66" kind="=">
+<drx lb="131" cb="3" kind="lvalue" nm="res"/>
+<ce lb="131" cb="9" le="131" ce="66" nbparm="4" id="ec5ae30de3563a98c9c2843191114748_6f746b514c8c07cd2d3fc3fd90abaef8">
+<exp pvirg="true"/>
+<n32 lb="131" cb="9">
+<drx lb="131" cb="9" id="ec5ae30de3563a98c9c2843191114748_6f746b514c8c07cd2d3fc3fd90abaef8" nm="build_from_tokens"/>
+</n32>
+<xop lb="131" cb="27" le="131" ce="36" kind="+">
+<n32 lb="131" cb="27">
+<drx lb="131" cb="27" kind="lvalue" nm="tokens"/>
+</n32>
+<n45 lb="131" cb="36"/>
+</xop>
+<xop lb="131" cb="39" le="131" ce="49" kind="-">
+<n32 lb="131" cb="39">
+<drx lb="131" cb="39" kind="lvalue" nm="ntokens"/>
+</n32>
+<n45 lb="131" cb="49"/>
+</xop>
+<n32 lb="131" cb="52">
+<drx lb="131" cb="52" kind="lvalue" nm="builder"/>
+</n32>
+<n32 lb="131" cb="61">
+<drx lb="131" cb="61" kind="lvalue" nm="param"/>
+</n32>
+</ce>
+</xop>
+<if lb="132" cb="3" le="136" ce="3">
+<n32 lb="132" cb="7">
+<drx lb="132" cb="7" kind="lvalue" nm="res"/>
+</n32>
+<u lb="132" cb="12" le="136" ce="3">
+<dst lb="133" cb="5" le="133" ce="45">
+<exp pvirg="true"/>
+<Var nm="irstr">
+<pt>
+<bt name="char"/>
+</pt>
+<ce lb="133" cb="19" le="133" ce="44" nbparm="1" id="77b4612aedb7705a2d9522f089d04fb1_701865d3a08190e92cf5c279728e6cf8">
+<exp pvirg="true"/>
+<n32 lb="133" cb="19">
+<drx lb="133" cb="19" id="77b4612aedb7705a2d9522f089d04fb1_701865d3a08190e92cf5c279728e6cf8" nm="LLVMPrintModuleToString"/>
+</n32>
+<n32 lb="133" cb="43">
+<drx lb="133" cb="43" kind="lvalue" nm="M"/>
+</n32>
+</ce>
+</Var>
+</dst>
+<ce lb="134" cb="5" le="134" ce="15" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_eef94dd5f10d620656c53db189cd426c">
+<exp pvirg="true"/>
+<n32 lb="134" cb="5">
+<drx lb="134" cb="5" id="f2afefb835ec069e32b58b8b40462113_eef94dd5f10d620656c53db189cd426c" nm="puts"/>
+</n32>
+<n32 lb="134" cb="10">
+<n32 lb="134" cb="10">
+<drx lb="134" cb="10" kind="lvalue" nm="irstr"/>
+</n32>
+</n32>
+</ce>
+<ce lb="135" cb="5" le="135" ce="29" nbparm="1" id="77b4612aedb7705a2d9522f089d04fb1_2ced8e591ff279b7cc4e944f57663858">
+<exp pvirg="true"/>
+<n32 lb="135" cb="5">
+<drx lb="135" cb="5" id="77b4612aedb7705a2d9522f089d04fb1_2ced8e591ff279b7cc4e944f57663858" nm="LLVMDisposeMessage"/>
+</n32>
+<n32 lb="135" cb="24">
+<drx lb="135" cb="24" kind="lvalue" nm="irstr"/>
+</n32>
+</ce>
+</u>
+</if>
+<ce lb="138" cb="3" le="138" ce="29" nbparm="1" id="77b4612aedb7705a2d9522f089d04fb1_4505c14e994ac31abf71f805e59eb336">
+<exp pvirg="true"/>
+<n32 lb="138" cb="3">
+<drx lb="138" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_4505c14e994ac31abf71f805e59eb336" nm="LLVMDisposeBuilder"/>
+</n32>
+<n32 lb="138" cb="22">
+<drx lb="138" cb="22" kind="lvalue" nm="builder"/>
+</n32>
+</ce>
+<ce lb="140" cb="3" le="140" ce="22" nbparm="1" id="77b4612aedb7705a2d9522f089d04fb1_3569371d39d0801681a204310f8f1b8c">
+<exp pvirg="true"/>
+<n32 lb="140" cb="3">
+<drx lb="140" cb="3" id="77b4612aedb7705a2d9522f089d04fb1_3569371d39d0801681a204310f8f1b8c" nm="LLVMDisposeModule"/>
+</n32>
+<n32 lb="140" cb="21">
+<drx lb="140" cb="21" kind="lvalue" nm="M"/>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</f>
+<f name="calc" id="ec5ae30de3563a98c9c2843191114748_cad3bb4e1f307f816bef0429a69e13bb" file="1" linestart="143" lineend="148" previous="81e999517a8b47d923a0be0b49f4695c_cad3bb4e1f307f816bef0429a69e13bb" extC="true" access="none" hasbody="true" isdef="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="143" cb="16" le="148" ce="1">
+<ce lb="145" cb="3" le="145" ce="29" nbparm="1" id="81e999517a8b47d923a0be0b49f4695c_62293af33a3bf92f88e4db3c56fa5d11">
+<exp pvirg="true"/>
+<n32 lb="145" cb="3">
+<drx lb="145" cb="3" id="81e999517a8b47d923a0be0b49f4695c_62293af33a3bf92f88e4db3c56fa5d11" nm="tokenize_stdin"/>
+</n32>
+<n32 lb="145" cb="18">
+<drx lb="145" cb="18" id="ec5ae30de3563a98c9c2843191114748_ca335805d2aac211639eba9f52d9b2db" nm="handle_line"/>
+</n32>
+</ce>
+<rx lb="147" cb="3" le="147" ce="10" pvirg="true">
+<n45 lb="147" cb="10">
+<flit/>
+</n45>
+</rx>
+</u>
+
+</Stmt>
+</f>
+</tun>
+</Root>

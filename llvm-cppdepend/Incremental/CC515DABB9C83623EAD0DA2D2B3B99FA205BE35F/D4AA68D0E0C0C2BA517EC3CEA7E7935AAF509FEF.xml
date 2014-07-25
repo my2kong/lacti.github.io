@@ -1,0 +1,146 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="12"/>
+<c f="1" b="14" e="12"/>
+</Comments>
+<Macros/>
+<tun>
+<f name="targets_list" id="bbf26969eaeed053955eb7aefcacde90_9abdf44225f9283abb0c6fb6aedcc57b" file="1" linestart="17" lineend="30" extC="true" access="none" hasbody="true" isdef="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<Stmt>
+<u lb="17" cb="24" le="30" ce="1">
+<dst lb="18" cb="3" le="18" ce="18">
+<exp pvirg="true"/>
+<Var nm="t">
+<Tdef>
+<pt>
+<ety>
+<rt>
+<rc id="44208e462425b73ca6a3c6530c520295_8e0840218f3441e661cb657682d4e311"/>
+</rt>
+</ety>
+</pt>
+</Tdef>
+</Var>
+</dst>
+<ce lb="19" cb="3" le="19" ce="32" nbparm="0" id="f0b9bcc801d0f05fa2f6de3176c719d6_61509c60c162f819981ac02709fae736">
+<exp pvirg="true"/>
+<n32 lb="19" cb="3">
+<drx lb="19" cb="3" id="f0b9bcc801d0f05fa2f6de3176c719d6_61509c60c162f819981ac02709fae736" nm="LLVMInitializeAllTargetInfos"/>
+</n32>
+</ce>
+<ce lb="20" cb="3" le="20" ce="28" nbparm="0" id="f0b9bcc801d0f05fa2f6de3176c719d6_42dfd33be66e09cbc292f3b2853ab5b7">
+<exp pvirg="true"/>
+<n32 lb="20" cb="3">
+<drx lb="20" cb="3" id="f0b9bcc801d0f05fa2f6de3176c719d6_42dfd33be66e09cbc292f3b2853ab5b7" nm="LLVMInitializeAllTargets"/>
+</n32>
+</ce>
+<fx lb="22" cb="3" le="27" ce="3">
+<xop lb="22" cb="8" le="22" ce="31" kind="=">
+<drx lb="22" cb="8" kind="lvalue" nm="t"/>
+<ce lb="22" cb="12" le="22" ce="31" nbparm="0" id="44208e462425b73ca6a3c6530c520295_fe52a4eba5455e835027606c8a43e2ae">
+<exp pvirg="true"/>
+<n32 lb="22" cb="12">
+<drx lb="22" cb="12" id="44208e462425b73ca6a3c6530c520295_fe52a4eba5455e835027606c8a43e2ae" nm="LLVMGetFirstTarget"/>
+</n32>
+</ce>
+</xop>
+<n32 lb="22" cb="34">
+<drx lb="22" cb="34" kind="lvalue" nm="t"/>
+</n32>
+<xop lb="22" cb="37" le="22" ce="60" kind="=">
+<drx lb="22" cb="37" kind="lvalue" nm="t"/>
+<ce lb="22" cb="41" le="22" ce="60" nbparm="1" id="44208e462425b73ca6a3c6530c520295_f2f3e198a90b2e4e43b1f24dfaf8f726">
+<exp pvirg="true"/>
+<n32 lb="22" cb="41">
+<drx lb="22" cb="41" id="44208e462425b73ca6a3c6530c520295_f2f3e198a90b2e4e43b1f24dfaf8f726" nm="LLVMGetNextTarget"/>
+</n32>
+<n32 lb="22" cb="59">
+<drx lb="22" cb="59" kind="lvalue" nm="t"/>
+</n32>
+</ce>
+</xop>
+<u lb="22" cb="63" le="27" ce="3">
+<ce lb="23" cb="5" le="23" ce="38" nbparm="2" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="23" cb="5">
+<drx lb="23" cb="5" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="23" cb="12">
+<n32 lb="23" cb="12">
+<n52 lb="23" cb="12">
+<slit/>
+</n52>
+</n32>
+</n32>
+<ce lb="23" cb="18" le="23" ce="37" nbparm="1" id="44208e462425b73ca6a3c6530c520295_aaba6091bd6a2bea892cdbbefe9fad7e">
+<exp pvirg="true"/>
+<n32 lb="23" cb="18">
+<drx lb="23" cb="18" id="44208e462425b73ca6a3c6530c520295_aaba6091bd6a2bea892cdbbefe9fad7e" nm="LLVMGetTargetName"/>
+</n32>
+<n32 lb="23" cb="36">
+<drx lb="23" cb="36" kind="lvalue" nm="t"/>
+</n32>
+</ce>
+</ce>
+<if lb="24" cb="5" le="25" ce="23">
+<ce lb="24" cb="9" le="24" ce="27" nbparm="1" id="44208e462425b73ca6a3c6530c520295_693b85d9496ad72fb2c726b7bcd9162f">
+<exp pvirg="true"/>
+<n32 lb="24" cb="9">
+<drx lb="24" cb="9" id="44208e462425b73ca6a3c6530c520295_693b85d9496ad72fb2c726b7bcd9162f" nm="LLVMTargetHasJIT"/>
+</n32>
+<n32 lb="24" cb="26">
+<drx lb="24" cb="26" kind="lvalue" nm="t"/>
+</n32>
+</ce>
+<ce lb="25" cb="7" le="25" ce="23" nbparm="1" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="25" cb="7">
+<drx lb="25" cb="7" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="25" cb="14">
+<n32 lb="25" cb="14">
+<n52 lb="25" cb="14">
+<slit/>
+</n52>
+</n32>
+</n32>
+</ce>
+</if>
+<ce lb="26" cb="5" le="26" ce="52" nbparm="2" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798">
+<exp pvirg="true"/>
+<n32 lb="26" cb="5">
+<drx lb="26" cb="5" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" nm="printf"/>
+</n32>
+<n32 lb="26" cb="12">
+<n32 lb="26" cb="12">
+<n52 lb="26" cb="12">
+<slit/>
+</n52>
+</n32>
+</n32>
+<ce lb="26" cb="25" le="26" ce="51" nbparm="1" id="44208e462425b73ca6a3c6530c520295_348a3743253698aefea8e087a07b209b">
+<exp pvirg="true"/>
+<n32 lb="26" cb="25">
+<drx lb="26" cb="25" id="44208e462425b73ca6a3c6530c520295_348a3743253698aefea8e087a07b209b" nm="LLVMGetTargetDescription"/>
+</n32>
+<n32 lb="26" cb="50">
+<drx lb="26" cb="50" kind="lvalue" nm="t"/>
+</n32>
+</ce>
+</ce>
+</u>
+</fx>
+<rx lb="29" cb="3" le="29" ce="10" pvirg="true">
+<n45 lb="29" cb="10">
+<flit/>
+</n45>
+</rx>
+</u>
+
+</Stmt>
+</f>
+</tun>
+</Root>

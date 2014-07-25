@@ -1,0 +1,866 @@
+<Externals>
+<cr namespace="std" access="none" depth="1" kind="struct" name="char_traits" id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639" file="2" linestart="260" lineend="263">
+<base access="public">
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_0e14667e7fa909cae787013e4a665cda"/>
+<template_arguments>
+<ttp/>
+<bt name="long"/>
+</template_arguments>
+</tss>
+</base>
+</cr>
+<cr namespace="std" access="none" kind="class" name="basic_ostream" id="dc6a030260fdce02a4552ddbd0ff2ec9_7df99f34c778205aaa2e1759bec30243" file="2" linestart="630" lineend="630"/>
+<tm namespace="std" access="none" depth="0" kind="struct" name="pair" id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49" file="3" linestart="78" lineend="200">
+<template_parameters>
+<ttp name="_Ty1" id="a32934a7929d7a50ec111aa40bc74d41_54c9f296fcca0f29026ef3edaed525ce" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="_Ty2" id="a32934a7929d7a50ec111aa40bc74d41_ff854981a39c66acc76e2a6ba2ce8ef5" depth="" index="" proto="type-parameter-0-1"/>
+</template_parameters>
+<cr namespace="std" access="none" depth="0" kind="struct" name="pair" id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49" file="3" linestart="80" lineend="200">
+<cr access="public" kind="struct" name="pair" id="a32934a7929d7a50ec111aa40bc74d41_12f60c913bd6b534c07f47040150e1ca" file="3" linestart="80" lineend="80"/>
+</cr>
+</tm>
+<cr namespace="testing" access="none" depth="0" kind="class" name="Message" id="d6da877cd43d9ea62976e055cbb7a3f4_a57271b22cdb2fdb3d50588243bf5562" file="4" linestart="82" lineend="221" previous="361592d094a324447c0b12d8c282c7d5_a57271b22cdb2fdb3d50588243bf5562">
+<c name="Message" id="d6da877cd43d9ea62976e055cbb7a3f4_21a3d36d55284f1d8751ec8cddd8c404" file="4" linestart="94" lineend="98" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<initlist id="d6da877cd43d9ea62976e055cbb7a3f4_b337e99236191cea06ced5fb66037052"/>
+</c>
+</cr>
+<e parent="562ee964b610e766d302b8dfed46fd41_5f4fb82d9196d416897f8942199b65f3" access="public" name="Type" id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1" file="5" linestart="51" lineend="55" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="kNonFatalFailure" id="562ee964b610e766d302b8dfed46fd41_383aae76b62cf18ba08225968ae6e7a3" file="5" linestart="53" lineend="53">
+<et>
+<e id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1"/>
+</et>
+</ec>
+</e>
+<cr namespace="testing" access="none" depth="0" kind="class" name="AssertionResult" id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d" file="6" linestart="265" lineend="321" previous="361592d094a324447c0b12d8c282c7d5_1b0b5edb5a536c8577b46f6e0d5d791d">
+<c name="AssertionResult" id="0dc4cd8d4d61c13ddce2ee0effc89eca_90376d02aab3f76734cce9b29267f2af" file="6" linestart="269" lineend="269" copyconst="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="other" proto="const testing::AssertionResult &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</c>
+<cv name="operator bool" id="0dc4cd8d4d61c13ddce2ee0effc89eca_c2f20ab10b1a1c248f08973b7014d633" file="6" linestart="274" lineend="274" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+</cv>
+<m name="failure_message" id="0dc4cd8d4d61c13ddce2ee0effc89eca_50b6fa066d3e0d41ee32ad34528c8103" file="6" linestart="288" lineend="288" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+</m>
+</cr>
+<cr namespace="testing" access="none" depth="0" kind="class" name="Test" id="0dc4cd8d4d61c13ddce2ee0effc89eca_964ac3d325bf97cf954384b45d20b6e8" file="6" linestart="356" lineend="463" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_964ac3d325bf97cf954384b45d20b6e8">
+<m name="SetUpTestCase" id="0dc4cd8d4d61c13ddce2ee0effc89eca_9a9dc2bca30077fcc6a89530f92e1339" file="6" linestart="374" lineend="374" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="TearDownTestCase" id="0dc4cd8d4d61c13ddce2ee0effc89eca_d2e5bc6dcdf9b44bb09113afda19cad7" file="6" linestart="382" lineend="382" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<c name="Test" id="0dc4cd8d4d61c13ddce2ee0effc89eca_84d92362fbd4a41dfcdd762261a24cf5" file="6" linestart="411" lineend="411" access="protected">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</c>
+</cr>
+<cr namespace="testing" access="none" depth="0" kind="class" name="TestInfo" id="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e" file="6" linestart="625" lineend="735" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e"/>
+<tm namespace="testing.internal" access="none" depth="0" pod="true" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_350bece42c7c2286ac893ed2f9905d9f" file="6" linestart="1346" lineend="1372">
+<template_parameters/>
+<cr namespace="testing.internal" access="none" depth="0" pod="true" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_9f03c6b4788c855604a1b39f6bd8c43f" file="6" linestart="1347" lineend="1372">
+<cr access="public" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_07febb784a13e0e5d35719b4531e86a5" file="6" linestart="1347" lineend="1347"/>
+<ft name="Compare" id="0dc4cd8d4d61c13ddce2ee0effc89eca_54323f0a38144261d59641f516370cec" file="6" linestart="1350" lineend="1357">
+<template_parameters>
+<ttp name="T1" id="0dc4cd8d4d61c13ddce2ee0effc89eca_81567f84e62214361ffb26585bf6df11" depth="" index="" proto="type-parameter-1-0"/>
+<ttp name="T2" id="0dc4cd8d4d61c13ddce2ee0effc89eca_2230f6b110d39b1dbbe144486c06d097" depth="" index="" proto="type-parameter-1-1"/>
+</template_parameters>
+<m name="Compare" id="0dc4cd8d4d61c13ddce2ee0effc89eca_032d369924e43a9a8eb727d96d7cd8b0" file="6" linestart="1351" lineend="1357" access="public" storage="static" hasbody="true" isdef="true">
+<fpt proto="testing::AssertionResult">
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_1b0b5edb5a536c8577b46f6e0d5d791d"/>
+</rt>
+</fpt>
+<p name="expected_expression" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="actual_expression" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="expected" proto="const T1 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+<p name="actual" proto="const T2 &amp;" isRef="true" access2="none">
+<lrf>
+<QualType const="true">
+<ttp/>
+</QualType>
+</lrf>
+</p>
+</m>
+</ft>
+</cr>
+</tm>
+<cts Spec="&lt;true&gt;" namespace="testing.internal" access="none" depth="0" pod="true" kind="class" name="EqHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_4d7f03a8973ce1f7829c35839e1377ee" file="6" linestart="1376" lineend="1417">
+<ft name="Compare" id="0dc4cd8d4d61c13ddce2ee0effc89eca_45553afc752455fd11ef5236e49535ce" file="6" linestart="1383" lineend="1397">
+<template_parameters>
+<ttp name="T1" id="0dc4cd8d4d61c13ddce2ee0effc89eca_e3d6e2b892bcd3be04a4bc206004c805" depth="" index="" proto="type-parameter-0-0"/>
+<ttp name="T2" id="0dc4cd8d4d61c13ddce2ee0effc89eca_719b38c802ab33d64cd777f448b1ca7c" depth="" index="" proto="type-parameter-0-1"/>
+</template_parameters>
+</ft>
+</cts>
+<cr namespace="testing.internal" access="none" depth="0" kind="class" name="AssertHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_7260371f7d6759cab9d4e4b45f795755" file="6" linestart="1594" lineend="1631" previous="0dc4cd8d4d61c13ddce2ee0effc89eca_7260371f7d6759cab9d4e4b45f795755">
+<c name="AssertHelper" id="0dc4cd8d4d61c13ddce2ee0effc89eca_5f3bae04f063d84394fe9d50198f2c6a" file="6" linestart="1597" lineend="1600" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="type" proto="TestPartResult::Type" isLiteral="true" access2="none">
+<ety>
+<et>
+<e id="562ee964b610e766d302b8dfed46fd41_67f4b207fbe04cf7dec53cc0d08539d1"/>
+</et>
+</ety>
+</p>
+<p name="file" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="line" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+<p name="message" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</c>
+<m name="operator=" id="0dc4cd8d4d61c13ddce2ee0effc89eca_7c7803b0e3e57d066468d0bec8cde703" file="6" linestart="1605" lineend="1605" operator="true" access="public">
+<fpt const="true" proto="void">
+<bt name="void"/>
+</fpt>
+<p name="message" proto="const testing::Message &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="d6da877cd43d9ea62976e055cbb7a3f4_a57271b22cdb2fdb3d50588243bf5562"/>
+</rt>
+</QualType>
+</lrf>
+</p>
+</m>
+</cr>
+<v namespace="llvm.ScaledNumbers" name="MaxScale" proto="const int32_t" const="true" isLiteral="true" isPrimitive="true" id="5978644c5c973c2ee2721ac795982929_0c61858b57ce3661c48db22a875e789d" file="7" linestart="38" lineend="38" init="true" access2="none">
+<QualType const="true">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</QualType>
+</v>
+<f namespace="llvm.ScaledNumbers" name="getRounded32" id="5978644c5c973c2ee2721ac795982929_c99d6e7c318dd16c9b4295fe51d91975" file="7" linestart="66" lineend="69" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Digits" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="ShouldRound" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getRounded64" id="5978644c5c973c2ee2721ac795982929_2fff6a39531098fdb92a382dbb4a4a87" file="7" linestart="72" lineend="75" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Digits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="ShouldRound" proto="bool" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="bool"/>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getAdjusted32" id="5978644c5c973c2ee2721ac795982929_870ba6febf6e1971d2cffe617ebcf429" file="7" linestart="96" lineend="99" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Digits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getAdjusted64" id="5978644c5c973c2ee2721ac795982929_ce3568422804b5d84f68fb856a59351b" file="7" linestart="102" lineend="105" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Digits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" init="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getProduct32" id="5978644c5c973c2ee2721ac795982929_03ad447c948a516523382b5ba7ee1ff5" file="7" linestart="126" lineend="128" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LHS" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="RHS" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getProduct64" id="5978644c5c973c2ee2721ac795982929_4f0ab61e97e1a1f08e63f1ffc15a4b14" file="7" linestart="131" lineend="133" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LHS" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="RHS" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getQuotient32" id="5978644c5c973c2ee2721ac795982929_124a299a97040a8616e910fc1c31838e" file="7" linestart="172" lineend="175" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Dividend" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="Divisor" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getQuotient64" id="5978644c5c973c2ee2721ac795982929_41d15952bc9c5ade44966d119fda3ed4" file="7" linestart="178" lineend="181" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="Dividend" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="Divisor" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getLg" id="5978644c5c973c2ee2721ac795982929_b72209d28ac3ccb399d634b7e51f3352" file="7" linestart="215" lineend="217" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<ft name="getLg" id="5978644c5c973c2ee2721ac795982929_c939a6fb62e9a722bf1bc44d5ebba005" file="7" linestart="215" lineend="217">
+<template_parameters>
+<ttp name="DigitsT" id="5978644c5c973c2ee2721ac795982929_d3979a939f02ada2477d72fe2aa246e5" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm.ScaledNumbers" name="getLg" id="5978644c5c973c2ee2721ac795982929_b72209d28ac3ccb399d634b7e51f3352" file="7" linestart="215" lineend="217" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+</ft>
+<f namespace="llvm.ScaledNumbers" name="getLgFloor" id="5978644c5c973c2ee2721ac795982929_9220e884c81575178edea8ee59698b55" file="7" linestart="224" lineend="227" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<ft name="getLgFloor" id="5978644c5c973c2ee2721ac795982929_462db3cace3f4c58f02a945f7b1b792a" file="7" linestart="224" lineend="227">
+<template_parameters>
+<ttp name="DigitsT" id="5978644c5c973c2ee2721ac795982929_bd83a43e5a8a177b72c77ac0d1306244" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm.ScaledNumbers" name="getLgFloor" id="5978644c5c973c2ee2721ac795982929_9220e884c81575178edea8ee59698b55" file="7" linestart="224" lineend="227" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+</ft>
+<f namespace="llvm.ScaledNumbers" name="getLgCeiling" id="5978644c5c973c2ee2721ac795982929_44e78db0b3db81a879ca486e50ac5d12" file="7" linestart="234" lineend="237" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<ft name="getLgCeiling" id="5978644c5c973c2ee2721ac795982929_1f49dd46a7832ddea1c0cbe1ec5c696f" file="7" linestart="234" lineend="237">
+<template_parameters>
+<ttp name="DigitsT" id="5978644c5c973c2ee2721ac795982929_83a28b2e77e3948f65d8bd84c52c3738" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm.ScaledNumbers" name="getLgCeiling" id="5978644c5c973c2ee2721ac795982929_44e78db0b3db81a879ca486e50ac5d12" file="7" linestart="234" lineend="237" access="none" hasbody="true" isdef="true">
+<fpt proto="int32_t">
+<Tdef>
+<bt name="int"/>
+</Tdef>
+</fpt>
+<p name="Digits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="Scale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+</ft>
+<f namespace="llvm.ScaledNumbers" name="compare" id="5978644c5c973c2ee2721ac795982929_ce362e87ad8ca6327e8c372b5d20ba44" file="7" linestart="253" lineend="273" access="none" hasbody="true" isdef="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="LDigits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<ft name="compare" id="5978644c5c973c2ee2721ac795982929_59c3b88a8af3d063daeadce8a57fdc8b" file="7" linestart="252" lineend="273">
+<template_parameters>
+<ttp name="DigitsT" id="5978644c5c973c2ee2721ac795982929_325aa8851dd65f25dab208c1bc163b74" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm.ScaledNumbers" name="compare" id="5978644c5c973c2ee2721ac795982929_ce362e87ad8ca6327e8c372b5d20ba44" file="7" linestart="253" lineend="273" access="none" hasbody="true" isdef="true">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="LDigits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="DigitsT" access2="none">
+<ttp/>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+</ft>
+<f namespace="llvm.ScaledNumbers" name="matchScales" id="5978644c5c973c2ee2721ac795982929_0b76af76164908e99b7a5b710b0685cc" file="7" linestart="288" lineend="326" access="none" hasbody="true" isdef="true">
+<fpt proto="int16_t">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</fpt>
+<p name="LDigits" proto="DigitsT &amp;" isRef="true" access2="none">
+<lrf>
+<ttp/>
+</lrf>
+</p>
+<p name="LScale" proto="int16_t &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</lrf>
+</p>
+<p name="RDigits" proto="DigitsT &amp;" isRef="true" access2="none">
+<lrf>
+<ttp/>
+</lrf>
+</p>
+<p name="RScale" proto="int16_t &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</lrf>
+</p>
+</f>
+<ft name="matchScales" id="5978644c5c973c2ee2721ac795982929_5a0bf11e4f85a3c9b6a76107607f6d84" file="7" linestart="287" lineend="326">
+<template_parameters>
+<ttp name="DigitsT" id="5978644c5c973c2ee2721ac795982929_64770021225cb78eb5fbc54429ac7779" depth="" index="" proto="type-parameter-0-0"/>
+</template_parameters>
+<f namespace="llvm.ScaledNumbers" name="matchScales" id="5978644c5c973c2ee2721ac795982929_0b76af76164908e99b7a5b710b0685cc" file="7" linestart="288" lineend="326" access="none" hasbody="true" isdef="true">
+<fpt proto="int16_t">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</fpt>
+<p name="LDigits" proto="DigitsT &amp;" isRef="true" access2="none">
+<lrf>
+<ttp/>
+</lrf>
+</p>
+<p name="LScale" proto="int16_t &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</lrf>
+</p>
+<p name="RDigits" proto="DigitsT &amp;" isRef="true" access2="none">
+<lrf>
+<ttp/>
+</lrf>
+</p>
+<p name="RScale" proto="int16_t &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</lrf>
+</p>
+</f>
+</ft>
+<f namespace="llvm.ScaledNumbers" name="getSum32" id="5978644c5c973c2ee2721ac795982929_3feeae488dea655ae7315b89b4af808f" file="7" linestart="357" lineend="360" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LDigits" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getSum64" id="5978644c5c973c2ee2721ac795982929_5d05af8abf0f4f28f8476729ce7f6698" file="7" linestart="363" lineend="366" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LDigits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getDifference32" id="5978644c5c973c2ee2721ac795982929_04c43c27f351ea511ec7ffe1604d78c0" file="7" linestart="400" lineend="405" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint32_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LDigits" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="uint32_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="llvm.ScaledNumbers" name="getDifference64" id="5978644c5c973c2ee2721ac795982929_f6cd5b4de886c4a213539fa7f9c73b6f" file="7" linestart="408" lineend="413" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::pair&lt;uint64_t, int16_t&gt;">
+<ety>
+<tss>
+<templatebase id="a32934a7929d7a50ec111aa40bc74d41_588c02fb583a80daabf4c37e3fd82a49"/>
+<template_arguments>
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</template_arguments>
+</tss>
+</ety>
+</fpt>
+<p name="LDigits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="LScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+<p name="RDigits" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="RScale" proto="int16_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="short"/>
+</Tdef>
+</p>
+</f>
+<f namespace="testing.internal" name="GetTestTypeId" id="361592d094a324447c0b12d8c282c7d5_e8ecc4c7ff1c3d40cce55780474106a4" file="8" linestart="534" lineend="534" access="none">
+<fpt proto="TypeId">
+<Tdef>
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</Tdef>
+</fpt>
+</f>
+<f namespace="testing.internal" name="MakeAndRegisterTestInfo" id="361592d094a324447c0b12d8c282c7d5_c94e15073fa33c9f81254abdf66926e3" file="8" linestart="595" lineend="602" access="none">
+<fpt proto="testing::TestInfo *">
+<pt>
+<rt>
+<cr id="0dc4cd8d4d61c13ddce2ee0effc89eca_ae44971a2ffb8623a217837d7c76110e"/>
+</rt>
+</pt>
+</fpt>
+<p name="test_case_name" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="name" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="type_param" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="value_param" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="fixture_class_id" proto="TypeId" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<QualType const="true">
+<bt name="void"/>
+</QualType>
+</pt>
+</Tdef>
+</p>
+<p name="set_up_tc" proto="SetUpTestCaseFunc" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+<p name="tear_down_tc" proto="TearDownTestCaseFunc" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+<p name="factory" proto="testing::internal::TestFactoryBase *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="361592d094a324447c0b12d8c282c7d5_ebebd0ac8a5c6834880cc16f32b5b90a"/>
+</rt>
+</pt>
+</p>
+</f>
+</Externals>

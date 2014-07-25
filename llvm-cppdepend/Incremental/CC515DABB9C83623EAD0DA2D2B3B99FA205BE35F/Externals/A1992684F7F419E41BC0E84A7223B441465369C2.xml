@@ -1,0 +1,178 @@
+<Externals>
+<f name="strtol" id="17cba6e85ee945f0e4acd2e5f276ff1b_a959f91635665900917d89afa38ebd8a" file="3" linestart="544" lineend="544" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="long">
+<bt name="long"/>
+</fpt>
+<p name="_Str" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="_EndPtr" proto="char **" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<pt>
+<bt name="char"/>
+</pt>
+</pt>
+</p>
+<p name="_Radix" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+</f>
+<f name="LLVMCreateDisasm" id="eb3f4c548332eccc80e4751803482426_f9dc1c380f2ea7ccca9afc62c6da99e1" file="4" linestart="180" lineend="182" extC="true" access="none">
+<fpt proto="LLVMDisasmContextRef">
+<Tdef>
+<pt>
+<bt name="void"/>
+</pt>
+</Tdef>
+</fpt>
+<p name="TripleName" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+<p name="DisInfo" proto="void *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="void"/>
+</pt>
+</p>
+<p name="TagType" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+</p>
+<p name="GetOpInfo" proto="LLVMOpInfoCallback" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+<p name="SymbolLookUp" proto="LLVMSymbolLookupCallback" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<Paren/>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMDisasmDispose" id="eb3f4c548332eccc80e4751803482426_1a748142a0d101772dd5f6ab6685a818" file="4" linestart="216" lineend="216" extC="true" access="none">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="DC" proto="LLVMDisasmContextRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<bt name="void"/>
+</pt>
+</Tdef>
+</p>
+</f>
+<f name="LLVMDisasmInstruction" id="eb3f4c548332eccc80e4751803482426_0bc9e1934b08766e6abee094bbe1d5d3" file="4" linestart="228" lineend="230" extC="true" access="none">
+<fpt proto="size_t">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</fpt>
+<p name="DC" proto="LLVMDisasmContextRef" isPtr="true" isLiteral="true" access2="none">
+<Tdef>
+<pt>
+<bt name="void"/>
+</pt>
+</Tdef>
+</p>
+<p name="Bytes" proto="uint8_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</pt>
+</p>
+<p name="BytesSize" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="PC" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</p>
+<p name="OutString" proto="char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<bt name="char"/>
+</pt>
+</p>
+<p name="OutStringSize" proto="size_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned int"/>
+</Tdef>
+</p>
+</f>
+<f name="LLVMInitializeAllTargetInfos" id="f0b9bcc801d0f05fa2f6de3176c719d6_61509c60c162f819981ac02709fae736" file="5" linestart="81" lineend="85" access="none" storage="static" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</f>
+<f name="LLVMInitializeAllTargetMCs" id="f0b9bcc801d0f05fa2f6de3176c719d6_c8e1e1f74c0b7397e6414d082c60fd7f" file="5" linestart="99" lineend="103" access="none" storage="static" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</f>
+<f name="LLVMInitializeAllDisassemblers" id="f0b9bcc801d0f05fa2f6de3176c719d6_4fae9db6790d7d3e43f9e10d212a50b0" file="5" linestart="126" lineend="131" access="none" storage="static" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</f>
+<f name="__iob_func" id="f2afefb835ec069e32b58b8b40462113_5013c562ec2ef55029a4f83c363d6d82" file="6" linestart="137" lineend="137" extC="true" imported="true" access="none">
+<fpt cc="cdecl" proto="FILE *">
+<pt>
+<Tdef>
+<ety>
+<rt>
+<rc id="f2afefb835ec069e32b58b8b40462113_9b75e14604360f7936837e5997e12eba"/>
+</rt>
+</ety>
+</Tdef>
+</pt>
+</fpt>
+</f>
+<f name="fprintf" id="f2afefb835ec069e32b58b8b40462113_8006820dad779bb96e507d9f56921caa" file="6" linestart="215" lineend="215" extC="true" implicit="true" variadic="true" access="none" storage="extern">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="" proto="FILE *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<ety>
+<rt>
+<rc id="f2afefb835ec069e32b58b8b40462113_9b75e14604360f7936837e5997e12eba"/>
+</rt>
+</ety>
+</Tdef>
+</pt>
+</p>
+<p name="" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+<f name="printf" id="f2afefb835ec069e32b58b8b40462113_8ecc5426fc0e5d5dbabc0a56f272b798" file="6" linestart="264" lineend="264" extC="true" implicit="true" variadic="true" access="none" storage="extern">
+<fpt proto="int">
+<bt name="int"/>
+</fpt>
+<p name="" proto="const char *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</p>
+</f>
+</Externals>

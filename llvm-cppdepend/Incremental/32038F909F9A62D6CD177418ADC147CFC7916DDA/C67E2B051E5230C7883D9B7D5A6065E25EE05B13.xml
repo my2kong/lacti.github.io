@@ -1,0 +1,329 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="10" e="8"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="10" e="8"/>
+<c f="2" b="17" e="17"/>
+<c f="2" b="18" e="18"/>
+<c f="2" b="19" e="19"/>
+<c f="2" b="20" e="20"/>
+<c f="2" b="21" e="21"/>
+<c f="2" b="22" e="21"/>
+<c f="2" b="24" e="24"/>
+<c f="2" b="25" e="24"/>
+<c f="2" b="27" e="27"/>
+<c f="2" b="28" e="28"/>
+<c f="2" b="29" e="29"/>
+<c f="2" b="30" e="29"/>
+<c f="2" b="32" e="32"/>
+<c f="2" b="33" e="33"/>
+<c f="2" b="34" e="34"/>
+<c f="2" b="35" e="35"/>
+<c f="2" b="36" e="36"/>
+<c f="2" b="37" e="36"/>
+<c f="2" b="39" e="39"/>
+<c f="2" b="40" e="40"/>
+<c f="2" b="41" e="41"/>
+<c f="2" b="42" e="42"/>
+<c f="2" b="43" e="43"/>
+<c f="2" b="44" e="44"/>
+<c f="2" b="45" e="44"/>
+<c f="2" b="47" e="47"/>
+<c f="2" b="48" e="48"/>
+<c f="2" b="49" e="49"/>
+<c f="2" b="50" e="50"/>
+<c f="2" b="51" e="51"/>
+<c f="2" b="52" e="52"/>
+<c f="2" b="53" e="53"/>
+<c f="2" b="54" e="54"/>
+<c f="2" b="55" e="55"/>
+<c f="2" b="56" e="56"/>
+<c f="2" b="57" e="57"/>
+<c f="2" b="58" e="58"/>
+<c f="2" b="59" e="58"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="67ef76a375d1007e6acf4a94cc714470_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="15" lineend="62">
+<cr namespace="llvm" access="none" depth="0" kind="class" name="MemoryObject" id="67ef76a375d1007e6acf4a94cc714470_e75cc2226e1a5a44cddfc7f62d0b4266" file="2" linestart="22" lineend="60">
+<cr access="public" kind="class" name="MemoryObject" id="67ef76a375d1007e6acf4a94cc714470_df1a0443c9f4c81d8e4c7b562f6565f1" file="2" linestart="22" lineend="22"/>
+<Decl access="public"/>
+<d name="~MemoryObject" id="67ef76a375d1007e6acf4a94cc714470_706000672b593546de9d7ac525dced3f" file="2" linestart="25" lineend="25" virtual="true" access="public" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</d>
+<m name="getBase" id="67ef76a375d1007e6acf4a94cc714470_5709bad72d58a8e7f8275b668d479bd1" file="2" linestart="30" lineend="30" pure="true" virtual="true" access="public">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+</m>
+<m name="getExtent" id="67ef76a375d1007e6acf4a94cc714470_75a3c6ca1a7e81420677c8b045318eb4" file="2" linestart="37" lineend="37" pure="true" virtual="true" access="public">
+<fpt const="true" proto="uint64_t">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+</fpt>
+</m>
+<m name="readByte" id="67ef76a375d1007e6acf4a94cc714470_437790174970f0abd9ad7b134305f808" file="2" linestart="45" lineend="45" pure="true" virtual="true" access="public">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<p name="address" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="ptr" proto="uint8_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="readBytes" id="67ef76a375d1007e6acf4a94cc714470_c447b33bdae78e25016ce671de8d3f16" file="2" linestart="59" lineend="59" virtual="true" access="public" hasbody="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<p name="address" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="size" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="buf" proto="uint8_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="operator=" id="67ef76a375d1007e6acf4a94cc714470_40fee74e90c56d12c1be0c4284887b22" file="2" linestart="22" implicit="true" operator="true" access="public" inline="true">
+<fpt proto="llvm::MemoryObject &amp;">
+<lrf>
+<rt>
+<cr id="67ef76a375d1007e6acf4a94cc714470_e75cc2226e1a5a44cddfc7f62d0b4266"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const llvm::MemoryObject &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="67ef76a375d1007e6acf4a94cc714470_e75cc2226e1a5a44cddfc7f62d0b4266"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="054ffaac6e647733cb4aa6af55999fca_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="11" lineend="11"/>
+<d name="~MemoryObject" id="054ffaac6e647733cb4aa6af55999fca_706000672b593546de9d7ac525dced3f" file="1" linestart="13" lineend="14" previous="67ef76a375d1007e6acf4a94cc714470_706000672b593546de9d7ac525dced3f" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="13" cb="31" le="14" ce="1"/>
+
+</Stmt>
+</d>
+<m name="readBytes" id="054ffaac6e647733cb4aa6af55999fca_c447b33bdae78e25016ce671de8d3f16" file="1" linestart="16" lineend="33" previous="67ef76a375d1007e6acf4a94cc714470_c447b33bdae78e25016ce671de8d3f16" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="int">
+<bt name="int"/>
+</fpt>
+<p name="address" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="size" proto="uint64_t" isLiteral="true" isPrimitive="true" access2="none">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<Stmt>
+
+</Stmt>
+</p>
+<p name="buf" proto="uint8_t *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<Tdef>
+<bt name="unsigned char"/>
+</Tdef>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="18" cb="49" le="33" ce="1">
+<dst lb="19" cb="3" le="19" ce="29">
+<exp pvirg="true"/>
+<Var nm="current" value="true">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<n32 lb="19" cb="22">
+<drx lb="19" cb="22" kind="lvalue" nm="address"/>
+</n32>
+</Var>
+</dst>
+<dst lb="20" cb="3" le="20" ce="43">
+<exp pvirg="true"/>
+<Var nm="limit" value="true">
+<Tdef>
+<bt name="unsigned long long"/>
+</Tdef>
+<xop lb="20" cb="20" le="20" ce="42" kind="+">
+<mce lb="20" cb="20" le="20" ce="28" nbparm="0" id="67ef76a375d1007e6acf4a94cc714470_5709bad72d58a8e7f8275b668d479bd1">
+<exp pvirg="true"/>
+<mex lb="20" cb="20" id="67ef76a375d1007e6acf4a94cc714470_5709bad72d58a8e7f8275b668d479bd1" nm="getBase" arrow="1">
+<n19 lb="20" cb="20"/>
+</mex>
+</mce>
+<mce lb="20" cb="32" le="20" ce="42" nbparm="0" id="67ef76a375d1007e6acf4a94cc714470_75a3c6ca1a7e81420677c8b045318eb4">
+<exp pvirg="true"/>
+<mex lb="20" cb="32" id="67ef76a375d1007e6acf4a94cc714470_75a3c6ca1a7e81420677c8b045318eb4" nm="getExtent" arrow="1">
+<n19 lb="20" cb="32"/>
+</mex>
+</mce>
+</xop>
+</Var>
+</dst>
+<if lb="22" cb="3" le="23" ce="13">
+<xop lb="22" cb="7" le="22" ce="24" kind="&gt;">
+<xop lb="22" cb="7" le="22" ce="17" kind="+">
+<n32 lb="22" cb="7">
+<drx lb="22" cb="7" kind="lvalue" nm="current"/>
+</n32>
+<n32 lb="22" cb="17">
+<drx lb="22" cb="17" kind="lvalue" nm="size"/>
+</n32>
+</xop>
+<n32 lb="22" cb="24">
+<drx lb="22" cb="24" kind="lvalue" nm="limit"/>
+</n32>
+</xop>
+<rx lb="23" cb="5" le="23" ce="13" pvirg="true">
+<uo lb="23" cb="12" le="23" ce="13" kind="-">
+<n45 lb="23" cb="13">
+<flit/>
+</n45>
+</uo>
+</rx>
+</if>
+<wy lb="25" cb="3" le="30" ce="3">
+<xop lb="25" cb="10" le="25" ce="30" kind="&lt;">
+<xop lb="25" cb="10" le="25" ce="20" kind="-">
+<n32 lb="25" cb="10">
+<drx lb="25" cb="10" kind="lvalue" nm="current"/>
+</n32>
+<n32 lb="25" cb="20">
+<drx lb="25" cb="20" kind="lvalue" nm="address"/>
+</n32>
+</xop>
+<n32 lb="25" cb="30">
+<drx lb="25" cb="30" kind="lvalue" nm="size"/>
+</n32>
+</xop>
+<u lb="25" cb="36" le="30" ce="3">
+<if lb="26" cb="5" le="27" ce="15">
+<n32 lb="26" cb="9" le="26" ce="52">
+<mce lb="26" cb="9" le="26" ce="52" nbparm="2" id="67ef76a375d1007e6acf4a94cc714470_437790174970f0abd9ad7b134305f808">
+<exp pvirg="true"/>
+<mex lb="26" cb="9" id="67ef76a375d1007e6acf4a94cc714470_437790174970f0abd9ad7b134305f808" nm="readByte" arrow="1">
+<n19 lb="26" cb="9"/>
+</mex>
+<n32 lb="26" cb="18">
+<drx lb="26" cb="18" kind="lvalue" nm="current"/>
+</n32>
+<uo lb="26" cb="27" le="26" ce="51" kind="&amp;">
+<n2 lb="26" cb="28" le="26" ce="51">
+<exp pvirg="true"/>
+<n32 lb="26" cb="28">
+<drx lb="26" cb="28" kind="lvalue" nm="buf"/>
+</n32>
+<n46 lb="26" cb="32" le="26" ce="50">
+<exp pvirg="true"/>
+<xop lb="26" cb="33" le="26" ce="43" kind="-">
+<n32 lb="26" cb="33">
+<drx lb="26" cb="33" kind="lvalue" nm="current"/>
+</n32>
+<n32 lb="26" cb="43">
+<drx lb="26" cb="43" kind="lvalue" nm="address"/>
+</n32>
+</xop>
+</n46>
+</n2>
+</uo>
+</mce>
+</n32>
+<rx lb="27" cb="7" le="27" ce="15" pvirg="true">
+<uo lb="27" cb="14" le="27" ce="15" kind="-">
+<n45 lb="27" cb="15"/>
+</uo>
+</rx>
+</if>
+<uo lb="29" cb="5" le="29" ce="12" kind="++">
+<drx lb="29" cb="5" kind="lvalue" nm="current"/>
+</uo>
+</u>
+</wy>
+<rx lb="32" cb="3" le="32" ce="10" pvirg="true">
+<n45 lb="32" cb="10">
+<flit/>
+</n45>
+</rx>
+</u>
+
+</Stmt>
+</m>
+</tun>
+</Root>

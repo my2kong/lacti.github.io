@@ -1,0 +1,560 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="9" e="9"/>
+<c f="1" b="10" e="10"/>
+<c f="1" b="11" e="11"/>
+<c f="1" b="12" e="12"/>
+<c f="1" b="14" e="12"/>
+<c f="1" b="36" e="36"/>
+<c f="1" b="38" e="36"/>
+<c f="1" b="43" e="43"/>
+</Comments>
+<Macros>
+<m f="1" bl="22" bc="28" el="22" ec="28"/>
+<m f="1" bl="32" bc="5" el="33" ec="77"/>
+</Macros>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="14" e="12"/>
+<c f="2" b="32" e="32"/>
+<c f="2" b="34" e="32"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="0f1b296de944d83e47eb1bcbf3ddb640_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="19" lineend="32">
+<f namespace="llvm" name="vtabledump_category" id="0f1b296de944d83e47eb1bcbf3ddb640_b2503098fd1722ca478bff40be2ce436" file="2" linestart="20" lineend="20" access="none" hasbody="true">
+<fpt proto="const std::error_category &amp;">
+<lrf>
+<QualType const="true">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_b656d281fe181d1b890e1ae9ee3f26ae"/>
+</rt>
+</ety>
+</QualType>
+</lrf>
+</fpt>
+</f>
+<e namespace="llvm" access="none" name="vtabledump_error" id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca" file="2" linestart="22" lineend="26" scoped="true" fixed="true">
+<promotion_type>
+<bt name="int"/>
+</promotion_type>
+<integer_type>
+<bt name="int"/>
+</integer_type>
+<ec name="success" id="0f1b296de944d83e47eb1bcbf3ddb640_8bc17b8e146e695e43f1f9eb348d977e" file="2" linestart="23" lineend="23">
+<et>
+<e id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca"/>
+</et>
+<Stmt>
+<n45 lb="23" cb="13">
+<flit/>
+</n45>
+
+</Stmt>
+</ec>
+<ec name="file_not_found" id="0f1b296de944d83e47eb1bcbf3ddb640_0369bf429207cb46432067a6bfdf2407" file="2" linestart="24" lineend="24">
+<et>
+<e id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca"/>
+</et>
+</ec>
+<ec name="unrecognized_file_format" id="0f1b296de944d83e47eb1bcbf3ddb640_1d6aec03175db40c8803b1ab8de3c6b1" file="2" linestart="25" lineend="25">
+<et>
+<e id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca"/>
+</et>
+</ec>
+</e>
+<f namespace="llvm" name="make_error_code" id="0f1b296de944d83e47eb1bcbf3ddb640_9e8cb5e58ad29aaa10f5798b588e8a9d" file="2" linestart="28" lineend="30" access="none" inline="true" hasbody="true" isdef="true">
+<fpt proto="std::error_code">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_e05aa84c91ce6622c389e65793ed130d"/>
+</rt>
+</ety>
+</fpt>
+<p name="e" proto="llvm::vtabledump_error" isLiteral="true" access2="none">
+<et>
+<e id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca"/>
+</et>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="28" cb="60" le="30" ce="1">
+<rx lb="29" cb="3" le="29" ce="68" pvirg="true">
+<n10 lb="29" cb="10" le="29" ce="68">
+<typeptr id="f6355f3f78b40c97a695920d837447d8_7f16f3dbd4360713446cf8edc964a76e"/>
+<temp/>
+<mte lb="29" cb="10" le="29" ce="68">
+<exp pvirg="true"/>
+<n11 lb="29" cb="10" le="29" ce="68">
+<typeptr id="f6355f3f78b40c97a695920d837447d8_711ccc45b15444a5b89d81d27f751e39"/>
+<temp/>
+<scast lb="29" cb="26" le="29" ce="44">
+<cast cast="IntegralCast">
+<bt name="int"/>
+</cast>
+<n32 lb="29" cb="43">
+<drx lb="29" cb="43" kind="lvalue" nm="e"/>
+</n32>
+</scast>
+<ce lb="29" cb="47" le="29" ce="67" nbparm="0" id="0f1b296de944d83e47eb1bcbf3ddb640_b2503098fd1722ca478bff40be2ce436">
+<exp pvirg="true"/>
+<n32 lb="29" cb="47">
+<drx lb="29" cb="47" kind="lvalue" id="0f1b296de944d83e47eb1bcbf3ddb640_b2503098fd1722ca478bff40be2ce436" nm="vtabledump_category"/>
+</n32>
+</ce>
+</n11>
+</mte>
+</n10>
+</rx>
+</u>
+
+</Stmt>
+</f>
+</ns>
+<ns name="std" id="0f1b296de944d83e47eb1bcbf3ddb640_7e020283feb2ffe5b87f5a82223964a2" file="2" linestart="34" lineend="37" original="">
+<cts Spec="&lt;llvm::vtabledump_error&gt;" namespace="std" access="none" depth="1" kind="struct" name="is_error_code_enum" id="0f1b296de944d83e47eb1bcbf3ddb640_afa8516de45b7d234c088d9fef7071ec" file="2" linestart="35" lineend="36">
+<base access="public">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f343d81c816f82e7dd719c5b33ef7ea5_9f608860ac47c736aa9e7255f3b2c38a"/>
+<template_arguments>
+<bt name="bool"/>
+<Stmt>
+<n9 lb="47" cb="33"/>
+
+</Stmt>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</base>
+<cr access="public" kind="struct" name="is_error_code_enum" id="0f1b296de944d83e47eb1bcbf3ddb640_c1f896ea88ae61c82c52b8c4d1c7b741" file="2" linestart="36" lineend="36"/>
+</cts>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="4a410ef09ee37cead0d92f05ad63956b_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="17" lineend="17"/>
+<ns name="" id="4a410ef09ee37cead0d92f05ad63956b_43bdcff846069eec8f780891b4754c4e" file="1" linestart="19" lineend="36">
+<cr namespace="anonymous_namespace{error.cpp}" access="none" depth="1" kind="class" name="vtabledump_error_category" id="4a410ef09ee37cead0d92f05ad63956b_442dadb6839304c612487e7cca56bb8f" file="1" linestart="20" lineend="35">
+<base access="public">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_b656d281fe181d1b890e1ae9ee3f26ae"/>
+</rt>
+</ety>
+</base>
+<cr access="public" kind="class" name="vtabledump_error_category" id="4a410ef09ee37cead0d92f05ad63956b_b07539a1c2abbc160052b5eddecfa6fb" file="1" linestart="20" lineend="20"/>
+<Decl access="public"/>
+<m name="name" id="4a410ef09ee37cead0d92f05ad63956b_35633973b16d4ab2ac5f268f4c763f95" file="1" linestart="22" lineend="22" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="const char *">
+<pt>
+<QualType const="true">
+<bt name="char"/>
+</QualType>
+</pt>
+</fpt>
+<Stmt>
+<u lb="22" cb="51" le="22" ce="79">
+<rx lb="22" cb="53" le="22" ce="60" pvirg="true">
+<n32 lb="22" cb="60">
+<n52 lb="22" cb="60">
+<slit/>
+</n52>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</m>
+<m name="message" id="4a410ef09ee37cead0d92f05ad63956b_e0457a934af1693b223a2f1b108119f2" file="1" linestart="23" lineend="34" access="public" hasbody="true" isdef="true">
+<fpt const="true" proto="std::string">
+<ety>
+<Tdef>
+<tss>
+<templatebase id="f2e96efeaba09e7d8921632d675962d4_6ecc822215ca97386606c5e8e95c56fb"/>
+<template_arguments>
+<bt name="char"/>
+<tss>
+<templatebase id="dc6a030260fdce02a4552ddbd0ff2ec9_bf3447e13ccfc57e5fa847f5d78e7639"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+<tss>
+<templatebase id="e709ea4c3e9ceb4cc0600c1bf8d29ceb_07566aa809aee0bdf1c0fac16e19fa85"/>
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</tss>
+</template_arguments>
+</tss>
+</Tdef>
+</ety>
+</fpt>
+<p name="ev" proto="int" isLiteral="true" isPrimitive="true" access2="none">
+<bt name="int"/>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="23" cb="46" le="34" ce="3">
+<sy lb="24" cb="5" le="31" ce="5">
+<scast lb="24" cb="13" le="24" ce="45">
+<cast cast="IntegralCast">
+<et>
+<e id="0f1b296de944d83e47eb1bcbf3ddb640_f0046137f67a10434c9f73dac25325ca"/>
+</et>
+</cast>
+<n32 lb="24" cb="43">
+<drx lb="24" cb="43" kind="lvalue" nm="ev"/>
+</n32>
+</scast>
+<u lb="24" cb="48" le="31" ce="5">
+<cax lb="25" cb="5" le="26" ce="14">
+<drx lb="25" cb="10" le="25" ce="28" id="0f1b296de944d83e47eb1bcbf3ddb640_8bc17b8e146e695e43f1f9eb348d977e" nm="success"/>
+<rx lb="26" cb="7" le="26" ce="14" pvirg="true">
+<n37 lb="26" cb="7" le="26" ce="14">
+<n10 lb="26" cb="7" le="26" ce="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_e3eb16c4c3462a2d9004e988dec04a31">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<mte lb="26" cb="14">
+<exp pvirg="true"/>
+<n8 lb="26" cb="14" >
+<temp/>
+<n32 lb="26" cb="14">
+<n10 lb="26" cb="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_27c29e5ae4008e8e02d1117a50805d4f">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="26" cb="14">
+<n52 lb="26" cb="14">
+<slit/>
+</n52>
+</n32>
+</n10>
+</n32>
+</n8>
+</mte>
+</n10>
+</n37>
+</rx>
+</cax>
+<cax lb="27" cb="5" le="28" ce="14">
+<drx lb="27" cb="10" le="27" ce="28" id="0f1b296de944d83e47eb1bcbf3ddb640_0369bf429207cb46432067a6bfdf2407" nm="file_not_found"/>
+<rx lb="28" cb="7" le="28" ce="14" pvirg="true">
+<n37 lb="28" cb="7" le="28" ce="14">
+<n10 lb="28" cb="7" le="28" ce="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_e3eb16c4c3462a2d9004e988dec04a31">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<mte lb="28" cb="14">
+<exp pvirg="true"/>
+<n8 lb="28" cb="14" >
+<temp/>
+<n32 lb="28" cb="14">
+<n10 lb="28" cb="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_27c29e5ae4008e8e02d1117a50805d4f">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="28" cb="14">
+<n52 lb="28" cb="14">
+<slit/>
+</n52>
+</n32>
+</n10>
+</n32>
+</n8>
+</mte>
+</n10>
+</n37>
+</rx>
+</cax>
+<cax lb="29" cb="5" le="30" ce="14">
+<drx lb="29" cb="10" le="29" ce="28" id="0f1b296de944d83e47eb1bcbf3ddb640_1d6aec03175db40c8803b1ab8de3c6b1" nm="unrecognized_file_format"/>
+<rx lb="30" cb="7" le="30" ce="14" pvirg="true">
+<n37 lb="30" cb="7" le="30" ce="14">
+<n10 lb="30" cb="7" le="30" ce="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_e3eb16c4c3462a2d9004e988dec04a31">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<mte lb="30" cb="14">
+<exp pvirg="true"/>
+<n8 lb="30" cb="14" >
+<temp/>
+<n32 lb="30" cb="14">
+<n10 lb="30" cb="14">
+<typeptr id="f2e96efeaba09e7d8921632d675962d4_27c29e5ae4008e8e02d1117a50805d4f">
+<template_arguments>
+<bt name="char"/>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_76e43d9fa50c2ce16dafa9452550a098">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+<rt>
+<cts id="dc6a030260fdce02a4552ddbd0ff2ec9_07566aa809aee0bdf1c0fac16e19fa85">
+<template_arguments>
+<bt name="char"/>
+</template_arguments>
+</cts>
+</rt>
+</template_arguments>
+</typeptr>
+<temp/>
+<n32 lb="30" cb="14">
+<n52 lb="30" cb="14">
+<slit/>
+</n52>
+</n32>
+</n10>
+</n32>
+</n8>
+</mte>
+</n10>
+</n37>
+</rx>
+</cax>
+</u>
+</sy>
+<ce lb="32" cb="5" le="32" ce="5" nbparm="3" id="4490f7744b0eb140a59a313798e92590_041af46f83dd11078969ec645bc14a67">
+<exp pvirg="true"/>
+<n32 lb="32" cb="5" le="32" ce="5">
+<drx lb="32" cb="5" le="32" ce="5" kind="lvalue" id="4490f7744b0eb140a59a313798e92590_041af46f83dd11078969ec645bc14a67" nm="llvm_unreachable_internal"/>
+</n32>
+<n32 lb="32" cb="5">
+<n52 lb="32" cb="5">
+<slit/>
+</n52>
+</n32>
+<n32 lb="32" cb="5">
+<n52 lb="32" cb="5">
+<slit/>
+</n52>
+</n32>
+<n32 lb="32" cb="5">
+<n45 lb="32" cb="5">
+<flit/>
+</n45>
+</n32>
+</ce>
+</u>
+
+</Stmt>
+</m>
+<m name="operator=" id="4a410ef09ee37cead0d92f05ad63956b_b9d607a7584334a99e0edf4ade592120" file="1" linestart="20" implicit="true" operator="true" access="public" inline="true" isdef="true">
+<fpt proto="&lt;anonymous&gt;::vtabledump_error_category &amp;">
+<lrf>
+<rt>
+<cr id="4a410ef09ee37cead0d92f05ad63956b_442dadb6839304c612487e7cca56bb8f"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const &lt;anonymous&gt;::vtabledump_error_category &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="4a410ef09ee37cead0d92f05ad63956b_442dadb6839304c612487e7cca56bb8f"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<d name="~vtabledump_error_category" id="4a410ef09ee37cead0d92f05ad63956b_690ecfa1091a87e6dcb7c99722708b8c" file="1" linestart="20" lineend="20" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+<exception_specifiers nothrow="true"/>
+</fpt>
+<Stmt>
+<u lb="20" cb="7"/>
+
+</Stmt>
+</d>
+<c name="vtabledump_error_category" id="4a410ef09ee37cead0d92f05ad63956b_3600ec6a3f20f1d9eacb556c5854a915" file="1" linestart="20" lineend="20" implicit="true" access="public" inline="true" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<BaseInit>
+<n10 lb="20" cb="7">
+<typeptr id="f6355f3f78b40c97a695920d837447d8_d74ac5cba87f3240520c32d1583895f9"/>
+<temp/>
+</n10>
+
+</BaseInit>
+<Stmt>
+<u lb="20" cb="7"/>
+
+</Stmt>
+</c>
+<c name="vtabledump_error_category" id="4a410ef09ee37cead0d92f05ad63956b_a675458739b03b144580d8fce1309b90" file="1" linestart="20" lineend="20" copyconst="true" implicit="true" access="public" inline="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="const &lt;anonymous&gt;::vtabledump_error_category &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="4a410ef09ee37cead0d92f05ad63956b_442dadb6839304c612487e7cca56bb8f"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</c>
+</cr>
+</ns>
+<ns name="llvm" id="4a410ef09ee37cead0d92f05ad63956b_544dadc8774ac7e8cdf9804c9bca3e1f" file="1" linestart="38" lineend="43" original="">
+<f namespace="llvm" name="vtabledump_category" id="4a410ef09ee37cead0d92f05ad63956b_b2503098fd1722ca478bff40be2ce436" file="1" linestart="39" lineend="42" previous="0f1b296de944d83e47eb1bcbf3ddb640_b2503098fd1722ca478bff40be2ce436" access="none" hasbody="true" isdef="true">
+<fpt proto="const std::error_category &amp;">
+<lrf>
+<QualType const="true">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_b656d281fe181d1b890e1ae9ee3f26ae"/>
+</rt>
+</ety>
+</QualType>
+</lrf>
+</fpt>
+<Stmt>
+<u lb="39" cb="50" le="42" ce="1">
+<dst lb="40" cb="3" le="40" ce="37">
+<exp pvirg="true"/>
+<Var nm="o" static="true" value="true" vstr="static">
+<rt>
+<cr id="4a410ef09ee37cead0d92f05ad63956b_442dadb6839304c612487e7cca56bb8f"/>
+</rt>
+<n10 lb="40" cb="36">
+<typeptr id="4a410ef09ee37cead0d92f05ad63956b_3600ec6a3f20f1d9eacb556c5854a915"/>
+<temp/>
+</n10>
+</Var>
+</dst>
+<rx lb="41" cb="3" le="41" ce="10" pvirg="true">
+<n32 lb="41" cb="10">
+<n32 lb="41" cb="10">
+<drx lb="41" cb="10" kind="lvalue" nm="o"/>
+</n32>
+</n32>
+</rx>
+</u>
+
+</Stmt>
+</f>
+</ns>
+</tun>
+</Root>

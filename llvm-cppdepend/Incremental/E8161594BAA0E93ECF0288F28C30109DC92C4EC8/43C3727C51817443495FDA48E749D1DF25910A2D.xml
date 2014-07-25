@@ -1,0 +1,212 @@
+<Root>
+<Comments>
+<c f="1" b="1" e="1"/>
+<c f="1" b="2" e="2"/>
+<c f="1" b="3" e="3"/>
+<c f="1" b="4" e="4"/>
+<c f="1" b="5" e="5"/>
+<c f="1" b="6" e="6"/>
+<c f="1" b="7" e="7"/>
+<c f="1" b="8" e="8"/>
+<c f="1" b="9" e="9"/>
+<c f="1" b="10" e="10"/>
+<c f="1" b="11" e="11"/>
+<c f="1" b="12" e="12"/>
+<c f="1" b="13" e="13"/>
+<c f="1" b="15" e="13"/>
+</Comments>
+<Macros/>
+<Comments>
+<c f="2" b="1" e="1"/>
+<c f="2" b="2" e="2"/>
+<c f="2" b="3" e="3"/>
+<c f="2" b="4" e="4"/>
+<c f="2" b="5" e="5"/>
+<c f="2" b="6" e="6"/>
+<c f="2" b="7" e="7"/>
+<c f="2" b="8" e="8"/>
+<c f="2" b="9" e="9"/>
+<c f="2" b="10" e="10"/>
+<c f="2" b="11" e="11"/>
+<c f="2" b="12" e="12"/>
+<c f="2" b="13" e="13"/>
+<c f="2" b="14" e="14"/>
+<c f="2" b="15" e="15"/>
+<c f="2" b="16" e="16"/>
+<c f="2" b="18" e="16"/>
+<c f="2" b="35" e="35"/>
+<c f="2" b="36" e="36"/>
+<c f="2" b="37" e="36"/>
+<c f="2" b="39" e="39"/>
+<c f="2" b="40" e="40"/>
+<c f="2" b="41" e="40"/>
+<c f="2" b="43" e="43"/>
+<c f="2" b="44" e="44"/>
+<c f="2" b="45" e="44"/>
+<c f="2" b="47" e="47"/>
+<c f="2" b="48" e="48"/>
+<c f="2" b="49" e="49"/>
+<c f="2" b="50" e="50"/>
+<c f="2" b="51" e="51"/>
+<c f="2" b="52" e="51"/>
+<c f="2" b="54" e="54"/>
+<c f="2" b="55" e="55"/>
+<c f="2" b="56" e="55"/>
+<c f="2" b="61" e="61"/>
+<c f="2" b="63" e="61"/>
+</Comments>
+<Macros/>
+<tun>
+<ns name="llvm" id="4bec142fbf95bae5ef82ad8c531b45a2_544dadc8774ac7e8cdf9804c9bca3e1f" file="2" linestart="23" lineend="61">
+<cr namespace="llvm" access="none" kind="class" name="Function" id="4bec142fbf95bae5ef82ad8c531b45a2_c576018f16bd5ed52ec4fb4f94ef3d73" file="2" linestart="24" lineend="24"/>
+<cr namespace="llvm" access="none" kind="class" name="GlobalValue" id="4bec142fbf95bae5ef82ad8c531b45a2_c2081526ef5d29a0931b3b477d0568e9" file="2" linestart="25" lineend="25"/>
+<cr namespace="llvm" access="none" kind="class" name="Module" id="4bec142fbf95bae5ef82ad8c531b45a2_c889fdf0ed3d2bfb5cc555cfda99ef1e" file="2" linestart="26" lineend="26"/>
+<cr namespace="llvm" access="none" depth="0" kind="class" name="GVMaterializer" id="4bec142fbf95bae5ef82ad8c531b45a2_9f032c781b6bae52dcc6a97274b3fcd1" file="2" linestart="28" lineend="59">
+<cr access="public" kind="class" name="GVMaterializer" id="4bec142fbf95bae5ef82ad8c531b45a2_03263f63f8456deb100e8ac99773af74" file="2" linestart="28" lineend="28"/>
+<Decl access="protected"/>
+<c name="GVMaterializer" id="4bec142fbf95bae5ef82ad8c531b45a2_181978a1ee756f8be1305096cc2aed3c" file="2" linestart="30" lineend="30" access="protected" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="30" cb="20" le="30" ce="21"/>
+
+</Stmt>
+</c>
+<Decl access="public"/>
+<d name="~GVMaterializer" id="4bec142fbf95bae5ef82ad8c531b45a2_7b83f049fed93d4782def5a527552878" file="2" linestart="33" lineend="33" virtual="true" access="public" hasbody="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</d>
+<m name="isMaterializable" id="4bec142fbf95bae5ef82ad8c531b45a2_081503709b99072a24feaaf8f5dc0dcc" file="2" linestart="37" lineend="37" pure="true" virtual="true" access="public">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="GV" proto="const llvm::GlobalValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_c2081526ef5d29a0931b3b477d0568e9"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="isDematerializable" id="4bec142fbf95bae5ef82ad8c531b45a2_54571fbeb26a41e9340172a24bcf8aea" file="2" linestart="41" lineend="41" pure="true" virtual="true" access="public">
+<fpt const="true" proto="bool">
+<bt name="bool"/>
+</fpt>
+<p name="GV" proto="const llvm::GlobalValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<QualType const="true">
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_c2081526ef5d29a0931b3b477d0568e9"/>
+</rt>
+</QualType>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="Materialize" id="4bec142fbf95bae5ef82ad8c531b45a2_9741ab6d6f88f5f63af8ad91195fa86c" file="2" linestart="45" lineend="45" pure="true" virtual="true" access="public">
+<fpt proto="std::error_code">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_e05aa84c91ce6622c389e65793ed130d"/>
+</rt>
+</ety>
+</fpt>
+<p name="GV" proto="llvm::GlobalValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_c2081526ef5d29a0931b3b477d0568e9"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="Dematerialize" id="4bec142fbf95bae5ef82ad8c531b45a2_13a3b3e6a66b0c07089c45a783c5182f" file="2" linestart="52" lineend="52" virtual="true" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<p name="" proto="llvm::GlobalValue *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_c2081526ef5d29a0931b3b477d0568e9"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+<Stmt>
+<u lb="52" cb="45" le="52" ce="46"/>
+
+</Stmt>
+</m>
+<m name="MaterializeModule" id="4bec142fbf95bae5ef82ad8c531b45a2_def9ea585bd67a97b59572c0b309c0ed" file="2" linestart="56" lineend="56" pure="true" virtual="true" access="public">
+<fpt proto="std::error_code">
+<ety>
+<rt>
+<cr id="f6355f3f78b40c97a695920d837447d8_e05aa84c91ce6622c389e65793ed130d"/>
+</rt>
+</ety>
+</fpt>
+<p name="M" proto="llvm::Module *" isPtr="true" isLiteral="true" access2="none">
+<pt>
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_c889fdf0ed3d2bfb5cc555cfda99ef1e"/>
+</rt>
+</pt>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+<m name="releaseBuffer" id="4bec142fbf95bae5ef82ad8c531b45a2_48ac5188701e7b1d02c9cc57e3ff0e07" file="2" linestart="58" lineend="58" pure="true" virtual="true" access="public">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+</m>
+<m name="operator=" id="4bec142fbf95bae5ef82ad8c531b45a2_2993def5e26849ac00422c10e14d2fb0" file="2" linestart="28" implicit="true" operator="true" access="public" inline="true">
+<fpt proto="llvm::GVMaterializer &amp;">
+<lrf>
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_9f032c781b6bae52dcc6a97274b3fcd1"/>
+</rt>
+</lrf>
+</fpt>
+<p name="" proto="const llvm::GVMaterializer &amp;" isRef="true" isLiteral="true" access2="none">
+<lrf>
+<QualType const="true">
+<rt>
+<cr id="4bec142fbf95bae5ef82ad8c531b45a2_9f032c781b6bae52dcc6a97274b3fcd1"/>
+</rt>
+</QualType>
+</lrf>
+<Stmt>
+
+</Stmt>
+</p>
+</m>
+</cr>
+</ns>
+<NamedDecl name="&lt;using-directive&gt;" id="dfb806ab9bd8c15bcff0122e5a412ad8_6728b6b0f829183eb7bbd3d3d987c87d" file="1" linestart="16" lineend="16"/>
+<d name="~GVMaterializer" id="dfb806ab9bd8c15bcff0122e5a412ad8_7b83f049fed93d4782def5a527552878" file="1" linestart="18" lineend="18" previous="4bec142fbf95bae5ef82ad8c531b45a2_7b83f049fed93d4782def5a527552878" access="public" hasbody="true" isdef="true">
+<fpt proto="void">
+<bt name="void"/>
+</fpt>
+<Stmt>
+<u lb="18" cb="35" le="18" ce="36"/>
+
+</Stmt>
+</d>
+</tun>
+</Root>
