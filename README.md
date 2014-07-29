@@ -1,6 +1,6 @@
-# contents for blog.lacti.me
+# contents for lacti.me
 
-[blog.lacti.me](http://blog.lacti.me)에서 여기 등록된 글의 내용을 [Jekyll](http://github.com/mojombo/jekyll)에 의해 생성된 형태로 확인이 가능합니다.
+[lacti.me](http://lacti.me)에서 여기 등록된 글의 내용을 [Jekyll](http://github.com/mojombo/jekyll)에 의해 생성된 형태로 확인이 가능합니다.
 
 ## copyright
 
